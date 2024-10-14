@@ -54,6 +54,17 @@
     </div>
 </div>
 
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h2>Model Performance</h2>
+        <div id="modelPerformance"></div>
+    </div>
+    <div class="col-md-6">
+        <h2>Top Predictors</h2>
+        <canvas id="topPredictorsChart"></canvas>
+    </div>
+</div>
+
 <div id="notifications" class="mt-4">
     <h2>Recent Incidents</h2>
     <ul id="recentIncidentsList" class="list-group"></ul>
@@ -68,6 +79,7 @@
     const incidents = {{ incidents|tojson }};
     const statistics = {{ statistics|tojson }};
     const trends = {{ trends|default({})|tojson }};
+    const modelInsights = {{ model_insights|default({})|tojson }};
 
     document.addEventListener('DOMContentLoaded', function() {
         createChart();
@@ -75,6 +87,8 @@
         updateRecentIncidents();
         setupPredictionForm();
         createTrendChart();
+        updateModelPerformance();
+        createTopPredictorsChart();
     });
 
     function updateIncidentTypeStats() {
@@ -184,6 +198,61 @@
                 }
             }
         });
+    }
+
+    function updateModelPerformance() {
+        const performanceContainer = document.getElementById('modelPerformance');
+        if (modelInsights && modelInsights.cross_validation_scores) {
+            const scores = modelInsights.cross_validation_scores;
+            performanceContainer.innerHTML = `
+                <p><strong>Mean CV Score:</strong> ${scores.mean.toFixed(4)}</p>
+                <p><strong>Standard Deviation:</strong> ${scores.std.toFixed(4)}</p>
+                <p><strong>Individual Scores:</strong> ${scores.scores.map(s => s.toFixed(4)).join(', ')}</p>
+            `;
+        } else {
+            performanceContainer.innerHTML = '<p>Model performance data not available.</p>';
+        }
+    }
+
+    function createTopPredictorsChart() {
+        const ctx = document.getElementById('topPredictorsChart').getContext('2d');
+        if (modelInsights && modelInsights.top_predictors) {
+            const topPredictors = modelInsights.top_predictors;
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: topPredictors.map(p => p[0]),
+                    datasets: [{
+                        label: 'Feature Importance',
+                        data: topPredictors.map(p => p[1]),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Importance'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Features'
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            ctx.font = '20px Arial';
+            ctx.fillText('Top predictors data not available', 10, 50);
+        }
     }
 
     function getRandomColor() {

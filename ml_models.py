@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from xgboost import XGBClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
 from models import Incident
 from app import db
 import logging
@@ -40,6 +40,10 @@ def prepare_data():
     data['time_of_day'] = pd.cut(data['hour'], bins=[0, 6, 12, 18, 24], labels=['Night', 'Morning', 'Afternoon', 'Evening'])
     data['season'] = pd.cut(data['month'], bins=[0, 3, 6, 9, 12], labels=['Winter', 'Spring', 'Summer', 'Fall'])
     
+    # New features
+    data['incident_count'] = data.groupby('nearest_station')['incident_type'].transform('count')
+    data['station_risk_score'] = data.groupby('nearest_station')['incident_type'].transform(lambda x: x.nunique() / len(x))
+    
     return data
 
 def train_model():
@@ -55,7 +59,7 @@ def train_model():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Define preprocessing steps
-    numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center']
+    numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center', 'incident_count', 'station_risk_score']
     categorical_features = ['nearest_station', 'time_of_day', 'season']
     
     numeric_transformer = Pipeline(steps=[
@@ -74,54 +78,67 @@ def train_model():
             ('cat', categorical_transformer, categorical_features)
         ])
     
-    # Create pipelines for multiple models
-    xgb_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
-                                   ('classifier', XGBClassifier(random_state=42))])
+    # Create ensemble model
+    xgb_model = XGBClassifier(random_state=42)
+    rf_model = RandomForestClassifier(random_state=42)
+    gb_model = GradientBoostingClassifier(random_state=42)
     
-    rf_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
-                                  ('classifier', RandomForestClassifier(random_state=42))])
+    ensemble_model = VotingClassifier(
+        estimators=[
+            ('xgb', xgb_model),
+            ('rf', rf_model),
+            ('gb', gb_model)
+        ],
+        voting='soft'
+    )
+    
+    # Create pipeline
+    model_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
+                                     ('classifier', ensemble_model)])
     
     # Hyperparameter tuning
-    xgb_param_grid = {
-        'classifier__n_estimators': [100, 200],
-        'classifier__max_depth': [3, 5, 7],
-        'classifier__learning_rate': [0.01, 0.1, 0.3]
+    param_grid = {
+        'classifier__xgb__n_estimators': [100, 200],
+        'classifier__xgb__max_depth': [3, 5, 7],
+        'classifier__xgb__learning_rate': [0.01, 0.1],
+        'classifier__rf__n_estimators': [100, 200],
+        'classifier__rf__max_depth': [10, 20, None],
+        'classifier__gb__n_estimators': [100, 200],
+        'classifier__gb__max_depth': [3, 5, 7],
+        'classifier__gb__learning_rate': [0.01, 0.1]
     }
     
-    rf_param_grid = {
-        'classifier__n_estimators': [100, 200],
-        'classifier__max_depth': [10, 20, None],
-        'classifier__min_samples_split': [2, 5, 10]
-    }
+    grid_search = GridSearchCV(model_pipeline, param_grid, cv=5, n_jobs=-1, verbose=1)
     
-    xgb_grid_search = GridSearchCV(xgb_pipeline, xgb_param_grid, cv=5, n_jobs=-1, verbose=1)
-    rf_grid_search = GridSearchCV(rf_pipeline, rf_param_grid, cv=5, n_jobs=-1, verbose=1)
+    # Train the model
+    grid_search.fit(X_train, y_train)
     
-    # Train both models
-    xgb_grid_search.fit(X_train, y_train)
-    rf_grid_search.fit(X_train, y_train)
+    best_model = grid_search.best_estimator_
     
-    # Compare models and choose the best one
-    xgb_score = xgb_grid_search.best_score_
-    rf_score = rf_grid_search.best_score_
-    
-    best_model = xgb_grid_search.best_estimator_ if xgb_score > rf_score else rf_grid_search.best_estimator_
-    
-    # Evaluate the best model
+    # Evaluate the model
     y_pred = best_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     report = classification_report(y_test, y_pred)
     conf_matrix = confusion_matrix(y_test, y_pred)
     
-    logging.info(f"Best Model: {'XGBoost' if xgb_score > rf_score else 'Random Forest'}")
+    # Calculate ROC AUC score
+    y_pred_proba = best_model.predict_proba(X_test)
+    roc_auc = roc_auc_score(y_test, y_pred_proba, multi_class='ovr')
+    
+    # Cross-validation score
+    cv_scores = cross_val_score(best_model, X, y, cv=5)
+    
     logging.info(f"Model Accuracy: {accuracy}")
+    logging.info(f"ROC AUC Score: {roc_auc}")
+    logging.info(f"Cross-validation Scores: {cv_scores}")
+    logging.info(f"Mean CV Score: {np.mean(cv_scores)}")
     logging.info("Classification Report:")
     logging.info(report)
     logging.info("Confusion Matrix:")
     logging.info(conf_matrix)
     
     # Feature importance
-    feature_importance = best_model.named_steps['classifier'].feature_importances_
+    feature_importance = best_model.named_steps['classifier'].estimators_[1].feature_importances_
     feature_names = (numeric_features + 
                      best_model.named_steps['preprocessor']
                      .named_transformers_['cat']
@@ -147,6 +164,12 @@ def predict_incident_probability(latitude, longitude, hour, day_of_week, month, 
     time_of_day = pd.cut([hour], bins=[0, 6, 12, 18, 24], labels=['Night', 'Morning', 'Afternoon', 'Evening'])[0]
     season = pd.cut([month], bins=[0, 3, 6, 9, 12], labels=['Winter', 'Spring', 'Summer', 'Fall'])[0]
     
+    # Get incident count and station risk score for the nearest station
+    data = prepare_data()
+    station_data = data[data['nearest_station'] == nearest_station]
+    incident_count = station_data['incident_count'].iloc[0] if not station_data.empty else 0
+    station_risk_score = station_data['station_risk_score'].iloc[0] if not station_data.empty else 0
+    
     input_data = pd.DataFrame({
         'latitude': [latitude],
         'longitude': [longitude],
@@ -158,7 +181,9 @@ def predict_incident_probability(latitude, longitude, hour, day_of_week, month, 
         'is_night': [is_night],
         'distance_from_center': [distance_from_center],
         'time_of_day': [time_of_day],
-        'season': [season]
+        'season': [season],
+        'incident_count': [incident_count],
+        'station_risk_score': [station_risk_score]
     })
     
     # Make prediction
@@ -198,10 +223,21 @@ def get_model_insights():
         if model is None:
             return "Not enough data to generate insights. Please ensure there are at least 100 incident reports."
         
+        # Get cross-validation scores
+        data = prepare_data()
+        X = data.drop('incident_type', axis=1)
+        y = data['incident_type']
+        cv_scores = cross_val_score(model, X, y, cv=5)
+        
         insights = {
             "feature_importance": feature_importance,
             "model_parameters": model.named_steps['classifier'].get_params(),
-            "top_predictors": sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5]
+            "top_predictors": sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:10],
+            "cross_validation_scores": {
+                "mean": float(np.mean(cv_scores)),
+                "std": float(np.std(cv_scores)),
+                "scores": [float(score) for score in cv_scores]
+            }
         }
         
         return insights

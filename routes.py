@@ -81,6 +81,7 @@ def dashboard():
     incidents = get_incidents_for_map()
     statistics = get_incident_statistics()
     trends = {}
+    model_insights = {}
     
     try:
         trends = get_incident_trends()
@@ -88,10 +89,17 @@ def dashboard():
         logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
         flash("An error occurred while fetching incident trends. Some data may not be displayed correctly.", "warning")
     
+    try:
+        model_insights = get_model_insights()
+    except Exception as e:
+        logging.error(f"Error in get_model_insights: {str(e)}", exc_info=True)
+        flash("An error occurred while fetching model insights. Some data may not be displayed correctly.", "warning")
+    
     return render_template('dashboard.html', 
                            incidents=incidents, 
                            statistics=statistics,
-                           trends=trends)
+                           trends=trends,
+                           model_insights=model_insights)
 
 @app.route('/api/incidents')
 def get_incidents():

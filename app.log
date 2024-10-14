@@ -345,3 +345,46 @@ INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:46] "GET /static/css/custom.c
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "[32mGET /model_insights HTTP/1.1[0m" 302 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "GET /login?next=/model_insights HTTP/1.1" 200 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:01] "[32mGET /model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:01] "GET /login?next=/model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:02] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:15] "[32mPOST /login?next=/model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:15] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:15] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:18] "GET /register HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:18] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:33] "[32mPOST /register HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:33] "[32mGET /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:33] "GET /index HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:33] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:37] "GET /report_incident HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:37] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:44:37] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:09] "[32mPOST /report_incident HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:10] "GET /index HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:10] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:17] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:18] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:18] "[36mGET /static/js/chart.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:45:18] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:46:19] "GET /model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:46:20] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.196.25:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "[32mGET /model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "GET /login?next=/dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "GET /static/css/custom.css HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "GET /login?next=/model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:11] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "GET /login?next=/dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "GET /static/css/custom.css HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "GET /login?next=/dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:58] "GET /static/css/custom.css HTTP/1.1" 200 -
