@@ -24,3 +24,4 @@ class Incident(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    nearest_station = db.Column(db.String(100), nullable=True)
