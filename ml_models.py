@@ -1,15 +1,16 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+from sklearn.feature_selection import SelectFromModel
 from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
 from models import Incident
-from app import db
+from database import db
 import logging
 from datetime import datetime, timedelta
 
@@ -27,7 +28,8 @@ def prepare_data():
             'hour': incident.timestamp.hour,
             'day_of_week': incident.timestamp.weekday(),
             'month': incident.timestamp.month,
-            'nearest_station': incident.nearest_station
+            'nearest_station': incident.nearest_station,
+            'timestamp': incident.timestamp
         }
         for incident in incidents
     ])
@@ -44,6 +46,14 @@ def prepare_data():
     data['incident_count'] = data.groupby('nearest_station')['incident_type'].transform('count')
     data['station_risk_score'] = data.groupby('nearest_station')['incident_type'].transform(lambda x: x.nunique() / len(x))
     
+    # Time-based features
+    data['day_of_month'] = data['timestamp'].dt.day
+    data['week_of_year'] = data['timestamp'].dt.isocalendar().week
+    
+    # Interaction features
+    data['hour_day_interaction'] = data['hour'] * data['day_of_week']
+    data['lat_long_interaction'] = data['latitude'] * data['longitude']
+    
     return data
 
 def train_model():
@@ -56,10 +66,10 @@ def train_model():
     X = data.drop('incident_type', axis=1)
     y = data['incident_type']
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     
     # Define preprocessing steps
-    numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center', 'incident_count', 'station_risk_score']
+    numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center', 'incident_count', 'station_risk_score', 'day_of_month', 'week_of_year', 'hour_day_interaction', 'lat_long_interaction']
     categorical_features = ['nearest_station', 'time_of_day', 'season']
     
     numeric_transformer = Pipeline(steps=[
@@ -79,9 +89,9 @@ def train_model():
         ])
     
     # Create ensemble model
-    xgb_model = XGBClassifier(random_state=42)
-    rf_model = RandomForestClassifier(random_state=42)
-    gb_model = GradientBoostingClassifier(random_state=42)
+    xgb_model = XGBClassifier(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=5)
+    rf_model = RandomForestClassifier(random_state=42, n_estimators=100, max_depth=10)
+    gb_model = GradientBoostingClassifier(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=5)
     
     ensemble_model = VotingClassifier(
         estimators=[
@@ -92,23 +102,26 @@ def train_model():
         voting='soft'
     )
     
+    # Feature selection
+    selector = SelectFromModel(RandomForestClassifier(n_estimators=100, random_state=42), threshold='median')
+    
     # Create pipeline
-    model_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
-                                     ('classifier', ensemble_model)])
+    model_pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('selector', selector),
+        ('classifier', ensemble_model)
+    ])
     
     # Hyperparameter tuning
     param_grid = {
-        'classifier__xgb__n_estimators': [100, 200],
-        'classifier__xgb__max_depth': [3, 5, 7],
-        'classifier__xgb__learning_rate': [0.01, 0.1],
-        'classifier__rf__n_estimators': [100, 200],
-        'classifier__rf__max_depth': [10, 20, None],
-        'classifier__gb__n_estimators': [100, 200],
-        'classifier__gb__max_depth': [3, 5, 7],
-        'classifier__gb__learning_rate': [0.01, 0.1]
+        'selector__estimator__max_depth': [5, 10],
+        'classifier__xgb__max_depth': [3, 5],
+        'classifier__rf__max_depth': [5, 10],
+        'classifier__gb__max_depth': [3, 5],
     }
     
-    grid_search = GridSearchCV(model_pipeline, param_grid, cv=5, n_jobs=-1, verbose=1)
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    grid_search = GridSearchCV(model_pipeline, param_grid, cv=cv, n_jobs=-1, verbose=1, scoring='accuracy')
     
     # Train the model
     grid_search.fit(X_train, y_train)
@@ -126,7 +139,7 @@ def train_model():
     roc_auc = roc_auc_score(y_test, y_pred_proba, multi_class='ovr')
     
     # Cross-validation score
-    cv_scores = cross_val_score(best_model, X, y, cv=5)
+    cv_scores = cross_val_score(best_model, X, y, cv=cv, scoring='accuracy')
     
     logging.info(f"Model Accuracy: {accuracy}")
     logging.info(f"ROC AUC Score: {roc_auc}")
@@ -138,14 +151,18 @@ def train_model():
     logging.info(conf_matrix)
     
     # Feature importance
-    feature_importance = best_model.named_steps['classifier'].estimators_[1].feature_importances_
+    feature_importance = best_model.named_steps['selector'].estimator_.feature_importances_
     feature_names = (numeric_features + 
                      best_model.named_steps['preprocessor']
                      .named_transformers_['cat']
                      .named_steps['onehot']
                      .get_feature_names(categorical_features).tolist())
     
-    feature_importance_dict = dict(zip(feature_names, feature_importance))
+    selected_features_mask = best_model.named_steps['selector'].get_support()
+    selected_feature_names = [name for name, selected in zip(feature_names, selected_features_mask) if selected]
+    selected_feature_importance = feature_importance[selected_features_mask]
+    
+    feature_importance_dict = dict(zip(selected_feature_names, selected_feature_importance))
     logging.info("Feature Importance:")
     logging.info(feature_importance_dict)
     
@@ -227,7 +244,8 @@ def get_model_insights():
         data = prepare_data()
         X = data.drop('incident_type', axis=1)
         y = data['incident_type']
-        cv_scores = cross_val_score(model, X, y, cv=5)
+        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        cv_scores = cross_val_score(model, X, y, cv=cv)
         
         insights = {
             "feature_importance": feature_importance,

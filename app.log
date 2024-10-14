@@ -388,3 +388,17 @@ INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "GET /login?next=/dashboa
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:27] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:58] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:50:58] "GET /static/css/custom.css HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:51:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:51:14] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:51:43] "GET /register HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:51:43] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:52:47] "POST /register HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:52:47] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:52:59] "[32mPOST /register HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:00] "[32mGET /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:00] "GET /index HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:00] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/js/chart.js HTTP/1.1[0m" 304 -
