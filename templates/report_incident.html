@@ -1,40 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h1 class="mb-4 text-center">Reportar un Incidente</h1>
-        <form action="" method="post" novalidate id="incident-form">
+<div class="card">
+    <div class="card-header flex items-center">
+        <button onclick="setCurrentScreen('main')" class="btn btn-ghost btn-circle">
+            <i data-lucide="arrow-left"></i>
+        </button>
+        <h2 class="card-title ml-4">Registrar Incidente</h2>
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('report_incident') }}" method="post" id="incident-form" class="space-y-4">
             {{ form.hidden_tag() }}
-            <div class="mb-3">
-                {{ form.incident_type.label(class="form-label") }}
-                {{ form.incident_type(class="form-select") }}
-                {% for error in form.incident_type.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+            <div class="form-control">
+                {{ form.incident_type.label(class="label") }}
+                {{ form.incident_type(class="select select-bordered w-full") }}
             </div>
-            <div class="mb-3">
-                {{ form.description.label(class="form-label") }}
-                {{ form.description(rows=5, class="form-control") }}
-                {% for error in form.description.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+            <div class="form-control">
+                {{ form.description.label(class="label") }}
+                {{ form.description(rows=5, class="textarea textarea-bordered") }}
             </div>
-            <div class="mb-3">
-                <label for="nearest_station" class="form-label">Estación Transmilenio más cercana</label>
-                <input type="text" id="nearest_station" name="nearest_station" class="form-control" readonly>
+            <div class="form-control">
+                <label for="nearest_station" class="label">Estación Transmilenio más cercana</label>
+                <input type="text" id="nearest_station" name="nearest_station" class="input input-bordered" readonly>
             </div>
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
-            {{ form.submit(class="btn btn-primary w-100", id="submit-button") }}
+            {{ form.submit(class="btn btn-primary w-full", id="submit-button") }}
         </form>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div id="map" style="height: 400px;"></div>
-    </div>
+<div class="mt-4">
+    <div id="map" class="h-64 rounded-box"></div>
 </div>
 {% endblock %}
 
@@ -72,20 +69,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showError(error) {
+        let errorMessage;
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                alert("El usuario denegó la solicitud de geolocalización.");
+                errorMessage = "El usuario denegó la solicitud de geolocalización.";
                 break;
             case error.POSITION_UNAVAILABLE:
-                alert("La información de ubicación no está disponible.");
+                errorMessage = "La información de ubicación no está disponible.";
                 break;
             case error.TIMEOUT:
-                alert("La solicitud para obtener la ubicación del usuario ha expirado.");
+                errorMessage = "La solicitud para obtener la ubicación del usuario ha expirado.";
                 break;
             case error.UNKNOWN_ERROR:
-                alert("Ocurrió un error desconocido.");
+                errorMessage = "Ocurrió un error desconocido.";
                 break;
         }
+        alert(errorMessage);
     }
 
     submitButton.disabled = true;
