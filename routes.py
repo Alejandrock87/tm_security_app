@@ -9,7 +9,7 @@ from ml_models import predict_incident_probability, get_incident_trends, get_mod
 import logging
 from models import User, Incident
 from database import db
-from transmilenio_api import get_real_time_bus_locations, get_station_status, get_route_information
+from transmilenio_api import get_bus_locations, get_stations_status, get_route_information
 
 def init_routes(app):
     @app.route('/')
@@ -96,56 +96,21 @@ def init_routes(app):
                                trends=trends,
                                model_insights=model_insights)
 
-    @app.route('/api/incidents')
-    def get_incidents():
-        incidents = get_incidents_for_map()
-        return jsonify(incidents)
-
-    @app.route('/api/statistics')
-    def get_statistics():
-        statistics = get_incident_statistics()
-        return jsonify(statistics)
-
-    @app.route('/predict', methods=['POST'])
-    @login_required
-    def predict_incident():
-        data = request.json
-        probability = predict_incident_probability(
-            data['latitude'],
-            data['longitude'],
-            data['hour'],
-            data['day_of_week'],
-            data['month'],
-            data['nearest_station']
-        )
-        return jsonify(probability)
-
-    @app.route('/model_insights')
-    @login_required
-    def model_insights():
-        insights = get_model_insights()
-        if isinstance(insights, str):
-            flash(insights, "warning")
-            return render_template('model_insights.html', title='Model Insights', insights=None)
-        return render_template('model_insights.html', title='Model Insights', insights=insights)
-
     @app.route('/real_time_map')
     @login_required
     def real_time_map():
-        bus_locations = get_real_time_bus_locations()
-        station_status = get_station_status()
-        return render_template('real_time_map.html', bus_locations=bus_locations, station_status=station_status)
+        return render_template('real_time_map.html')
 
     @app.route('/api/bus_locations')
     @login_required
     def api_bus_locations():
-        bus_locations = get_real_time_bus_locations()
+        bus_locations = get_bus_locations()
         return jsonify(bus_locations)
 
     @app.route('/api/station_status')
     @login_required
     def api_station_status():
-        station_status = get_station_status()
+        station_status = get_stations_status()
         return jsonify(station_status)
 
     @app.route('/route/<route_id>')

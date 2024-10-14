@@ -12,12 +12,18 @@
 <div class="row mt-4">
     <div class="col-md-6">
         <h2>Bus Locations</h2>
+        <div id="bus-error" class="alert alert-warning d-none" role="alert">
+            Unable to fetch bus locations. Displaying mock data.
+        </div>
         <ul id="bus-list" class="list-group">
             <!-- Bus locations will be populated here -->
         </ul>
     </div>
     <div class="col-md-6">
         <h2>Station Status</h2>
+        <div id="station-error" class="alert alert-warning d-none" role="alert">
+            Unable to fetch station status. Displaying mock data.
+        </div>
         <ul id="station-list" class="list-group">
             <!-- Station status will be populated here -->
         </ul>
@@ -55,18 +61,31 @@
                 busMarkers.forEach(marker => map.removeLayer(marker));
                 busMarkers = [];
 
-                // Add new markers
-                data.forEach(bus => {
-                    const marker = L.marker([bus.latitude, bus.longitude]).addTo(map);
-                    marker.bindPopup(`Bus ${bus.id}<br>Route: ${bus.route}`);
-                    busMarkers.push(marker);
-                });
-
-                // Update bus list
                 const busList = document.getElementById('bus-list');
-                busList.innerHTML = data.map(bus => `
-                    <li class="list-group-item">Bus ${bus.id} - Route: ${bus.route}</li>
-                `).join('');
+                const busError = document.getElementById('bus-error');
+
+                if (data && data.length > 0) {
+                    // Add new markers
+                    data.forEach(bus => {
+                        const marker = L.marker([bus.latitude, bus.longitude]).addTo(map);
+                        marker.bindPopup(`Bus ${bus.id}<br>Route: ${bus.route}`);
+                        busMarkers.push(marker);
+                    });
+
+                    // Update bus list
+                    busList.innerHTML = data.map(bus => `
+                        <li class="list-group-item">Bus ${bus.id} - Route: ${bus.route}</li>
+                    `).join('');
+
+                    busError.classList.add('d-none');
+                } else {
+                    busList.innerHTML = '<li class="list-group-item">No bus data available</li>';
+                    busError.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching bus locations:', error);
+                document.getElementById('bus-error').classList.remove('d-none');
             });
     }
 
@@ -78,18 +97,31 @@
                 stationMarkers.forEach(marker => map.removeLayer(marker));
                 stationMarkers = [];
 
-                // Add new markers
-                data.forEach(station => {
-                    const marker = L.marker([station.latitude, station.longitude]).addTo(map);
-                    marker.bindPopup(`${station.name}<br>Status: ${station.status}`);
-                    stationMarkers.push(marker);
-                });
-
-                // Update station list
                 const stationList = document.getElementById('station-list');
-                stationList.innerHTML = data.map(station => `
-                    <li class="list-group-item">${station.name} - Status: ${station.status}</li>
-                `).join('');
+                const stationError = document.getElementById('station-error');
+
+                if (data && data.length > 0) {
+                    // Add new markers
+                    data.forEach(station => {
+                        const marker = L.marker([station.latitude, station.longitude]).addTo(map);
+                        marker.bindPopup(`${station.name}<br>Status: ${station.status}`);
+                        stationMarkers.push(marker);
+                    });
+
+                    // Update station list
+                    stationList.innerHTML = data.map(station => `
+                        <li class="list-group-item">${station.name} - Status: ${station.status}</li>
+                    `).join('');
+
+                    stationError.classList.add('d-none');
+                } else {
+                    stationList.innerHTML = '<li class="list-group-item">No station data available</li>';
+                    stationError.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching station status:', error);
+                document.getElementById('station-error').classList.remove('d-none');
             });
     }
 

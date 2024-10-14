@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 import os
+import random
 
 # Transmilenio API base URL (this is a placeholder, replace with the actual API URL)
 API_BASE_URL = "https://api.transmilenio.gov.co/api/v1"
@@ -24,7 +25,7 @@ def get_real_time_bus_locations():
         return response.json()
     except requests.RequestException as e:
         print(f"Error fetching real-time bus locations: {e}")
-        return None
+        return []  # Return an empty list instead of None
 
 def get_station_status():
     """
@@ -42,7 +43,7 @@ def get_station_status():
         return response.json()
     except requests.RequestException as e:
         print(f"Error fetching station status: {e}")
-        return None
+        return []  # Return an empty list instead of None
 
 def get_route_information(route_id):
     """
@@ -62,4 +63,36 @@ def get_route_information(route_id):
         print(f"Error fetching route information: {e}")
         return None
 
-# Add more functions as needed for other API endpoints
+# Mock data for testing purposes
+def generate_mock_bus_locations():
+    return [
+        {
+            "id": f"bus_{i}",
+            "latitude": 4.6097 + random.uniform(-0.1, 0.1),
+            "longitude": -74.0817 + random.uniform(-0.1, 0.1),
+            "route": f"route_{random.randint(1, 5)}"
+        }
+        for i in range(10)
+    ]
+
+def generate_mock_station_status():
+    stations = ["Portal Norte", "Calle 100", "Calle 72", "Calle 45", "Calle 26"]
+    statuses = ["Normal", "Crowded", "Delayed", "Closed"]
+    return [
+        {
+            "name": station,
+            "latitude": 4.6097 + random.uniform(-0.1, 0.1),
+            "longitude": -74.0817 + random.uniform(-0.1, 0.1),
+            "status": random.choice(statuses)
+        }
+        for station in stations
+    ]
+
+# Use mock data if API is not available
+def get_bus_locations():
+    real_data = get_real_time_bus_locations()
+    return real_data if real_data else generate_mock_bus_locations()
+
+def get_stations_status():
+    real_data = get_station_status()
+    return real_data if real_data else generate_mock_station_status()
