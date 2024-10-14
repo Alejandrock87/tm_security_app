@@ -1,79 +1,83 @@
-/* Custom styles */
+/* Add any custom styles here */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
-#app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex: 1;
-    padding: 1rem;
-}
-
-.navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding-bottom: 20px;
 }
 
 #map {
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+#notificationList {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.btn-icon svg {
-    width: 1.25rem;
-    height: 1.25rem;
-}
-
-footer {
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-}
-
-footer nav button {
-    transition: background-color 0.3s ease;
-}
-
-footer nav button:hover, footer nav button.active {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-#sideMenu {
-    transition: transform 0.3s ease-in-out;
-}
-
-@media (max-width: 640px) {
-    .card {
-        border-radius: 0;
-        box-shadow: none;
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     #map {
-        height: 250px;
+        height: 300px !important;
+    }
+
+    .navbar-nav {
+        margin-top: 10px;
+    }
+
+    #notificationButton {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .chart-container {
+        height: 300px !important;
     }
 }
 
-/* Utility classes */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+/* Improve touch targets for mobile */
+.nav-link, .btn {
+    padding: 12px 15px;
+}
+
+/* Adjust font sizes for better readability on small screens */
+@media (max-width: 767px) {
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
+
+/* Ensure proper spacing for form elements on mobile */
+.form-control, .form-select {
+    margin-bottom: 15px;
+}
+
+/* Improve table responsiveness */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }

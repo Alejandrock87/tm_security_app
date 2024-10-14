@@ -1,103 +1,21 @@
 {% extends "base.html" %}
 
-{% block auth_content %}
-<div class="card w-full max-w-sm mx-auto">
-    <div class="card-header">
-        <h2 class="card-title text-2xl font-bold text-center">Seguridad Transmilenio</h2>
-    </div>
-    <div class="card-body">
-        <div class="tabs tabs-boxed">
-            <a class="tab tab-active" id="login-tab">Iniciar Sesión</a>
-            <a class="tab" id="register-tab">Registrarse</a>
-        </div>
-        <div id="login-form" class="mt-4">
-            <form action="{{ url_for('login') }}" method="post" class="space-y-4">
-                <div class="form-control">
-                    <label class="label" for="username">
-                        <span class="label-text">Usuario</span>
-                    </label>
-                    <input type="text" id="username" name="username" class="input input-bordered" required>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="password">
-                        <span class="label-text">Contraseña</span>
-                    </label>
-                    <input type="password" id="password" name="password" class="input input-bordered" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Iniciar Sesión</button>
-            </form>
-        </div>
-        <div id="register-form" class="mt-4 hidden">
-            <form action="{{ url_for('register') }}" method="post" class="space-y-4">
-                <div class="form-control">
-                    <label class="label" for="reg-username">
-                        <span class="label-text">Usuario</span>
-                    </label>
-                    <input type="text" id="reg-username" name="username" class="input input-bordered" required>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="reg-email">
-                        <span class="label-text">Correo Electrónico</span>
-                    </label>
-                    <input type="email" id="reg-email" name="email" class="input input-bordered" required>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="reg-password">
-                        <span class="label-text">Contraseña</span>
-                    </label>
-                    <input type="password" id="reg-password" name="password" class="input input-bordered" required>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="reg-password2">
-                        <span class="label-text">Confirmar Contraseña</span>
-                    </label>
-                    <input type="password" id="reg-password2" name="password2" class="input input-bordered" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Registrarse</button>
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 {% block content %}
-<div class="grid gap-4">
-    <button onclick="setCurrentScreen('reportIncident')" class="btn btn-lg btn-outline">
-        <i data-lucide="alert-triangle" class="mr-2"></i>
-        Registrar Incidente
-    </button>
-    <button onclick="setCurrentScreen('incidentMap')" class="btn btn-lg btn-outline">
-        <i data-lucide="map" class="mr-2"></i>
-        Mapa de Incidentes
-    </button>
-    <button onclick="setCurrentScreen('predictiveAnalysis')" class="btn btn-lg btn-outline">
-        <i data-lucide="bar-chart-2" class="mr-2"></i>
-        Análisis Predictivo de Seguridad
-    </button>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="mb-4 text-center">Bienvenido al Sistema de Reporte de Incidentes de Seguridad Transmilenio</h1>
+        <p class="lead text-center">Esta aplicación te permite reportar y ver incidentes de seguridad en el sistema Transmilenio.</p>
+        {% if current_user.is_authenticated %}
+        <div class="d-grid gap-2 col-md-6 mx-auto">
+            <a href="{{ url_for('report_incident') }}" class="btn btn-primary btn-lg">Reportar un Incidente</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg">Ver Panel de Control</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-2 col-md-6 mx-auto">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary btn-lg">Registrarse</a>
+        </div>
+        {% endif %}
+    </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loginTab = document.getElementById('login-tab');
-    const registerTab = document.getElementById('register-tab');
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-
-    loginTab.addEventListener('click', function() {
-        loginTab.classList.add('tab-active');
-        registerTab.classList.remove('tab-active');
-        loginForm.classList.remove('hidden');
-        registerForm.classList.add('hidden');
-    });
-
-    registerTab.addEventListener('click', function() {
-        registerTab.classList.add('tab-active');
-        loginTab.classList.remove('tab-active');
-        registerForm.classList.remove('hidden');
-        loginForm.classList.add('hidden');
-    });
-});
-</script>
 {% endblock %}

@@ -3,70 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{% block title %}Seguridad Transmilenio{% endblock %}</title>
+    <title>{% block title %}Reporte de Incidentes de Seguridad Transmilenio{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
-    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div id="app" class="h-screen flex flex-col bg-gray-100">
-        {% if current_user.is_authenticated %}
-        <header class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 class="text-lg font-semibold">Seguridad Transmilenio</h1>
-                <button id="menuButton" class="btn btn-ghost btn-icon">
-                    <i data-lucide="menu"></i>
-                    <span class="sr-only">Abrir menú</span>
-                </button>
-            </div>
-        </header>
-        <main class="flex-1 overflow-y-auto p-4">
-            {% block content %}{% endblock %}
-        </main>
-        <footer class="bg-white shadow-sm-top">
-            <nav class="flex justify-around">
-                <button onclick="setCurrentScreen('main')" class="btn btn-ghost flex-1 py-4">
-                    <i data-lucide="map-pin"></i>
-                    <span class="sr-only">Inicio</span>
-                </button>
-                <button onclick="setCurrentScreen('reportIncident')" class="btn btn-ghost flex-1 py-4">
-                    <i data-lucide="alert-triangle"></i>
-                    <span class="sr-only">Reportar</span>
-                </button>
-                <button onclick="setCurrentScreen('incidentMap')" class="btn btn-ghost flex-1 py-4">
-                    <i data-lucide="map"></i>
-                    <span class="sr-only">Mapa</span>
-                </button>
-                <button onclick="setCurrentScreen('predictiveAnalysis')" class="btn btn-ghost flex-1 py-4">
-                    <i data-lucide="bar-chart-2"></i>
-                    <span class="sr-only">Predicciones</span>
-                </button>
-                <button id="notificationButton" class="btn btn-ghost flex-1 py-4 relative">
-                    <i data-lucide="bell"></i>
-                    <span id="notificationBadge" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Seguridad Transmilenio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('report_incident') }}">Reportar Incidente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Panel de Control</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Registrarse</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if current_user.is_authenticated %}
+                <button id="notificationButton" class="btn btn-outline-light position-relative">
+                    Notificaciones
+                    <span id="notificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
                         0
                     </span>
-                    <span class="sr-only">Notificaciones</span>
                 </button>
-            </nav>
-        </footer>
-        {% else %}
-        <main class="flex-1 flex items-center justify-center p-4">
-            {% block auth_content %}{% endblock %}
-        </main>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
     </div>
 
-    <div id="sideMenu" class="fixed inset-y-0 right-0 w-64 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
-        <div class="p-4">
-            <h2 class="text-lg font-semibold mb-4">Menú</h2>
-            <nav class="flex flex-col space-y-4">
-                <a href="{{ url_for('index') }}" class="btn btn-ghost">Inicio</a>
-                <a href="{{ url_for('report_incident') }}" class="btn btn-ghost">Reportar Incidente</a>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-ghost">Panel de Control</a>
-                <a href="{{ url_for('logout') }}" class="btn btn-ghost">Cerrar Sesión</a>
-            </nav>
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notificaciones Recientes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -74,7 +85,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
