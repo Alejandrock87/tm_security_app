@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Real-Time Transmilenio Map</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div id="real-time-map" style="height: 600px;"></div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h2>Bus Locations</h2>
+        <ul id="bus-list" class="list-group">
+            <!-- Bus locations will be populated here -->
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h2>Station Status</h2>
+        <ul id="station-list" class="list-group">
+            <!-- Station status will be populated here -->
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    let map;
+    let busMarkers = [];
+    let stationMarkers = [];
+
+    function initMap() {
+        map = L.map('real-time-map').setView([4.6097, -74.0817], 11); // Centered on Bogotá
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        updateBusLocations();
+        updateStationStatus();
+
+        // Update every 30 seconds
+        setInterval(updateBusLocations, 30000);
+        setInterval(updateStationStatus, 30000);
+    }
+
+    function updateBusLocations() {
+        fetch('/api/bus_locations')
+            .then(response => response.json())
+            .then(data => {
+                // Clear existing markers
+                busMarkers.forEach(marker => map.removeLayer(marker));
+                busMarkers = [];
+
+                // Add new markers
+                data.forEach(bus => {
+                    const marker = L.marker([bus.latitude, bus.longitude]).addTo(map);
+                    marker.bindPopup(`Bus ${bus.id}<br>Route: ${bus.route}`);
+                    busMarkers.push(marker);
+                });
+
+                // Update bus list
+                const busList = document.getElementById('bus-list');
+                busList.innerHTML = data.map(bus => `
+                    <li class="list-group-item">Bus ${bus.id} - Route: ${bus.route}</li>
+                `).join('');
+            });
+    }
+
+    function updateStationStatus() {
+        fetch('/api/station_status')
+            .then(response => response.json())
+            .then(data => {
+                // Clear existing markers
+                stationMarkers.forEach(marker => map.removeLayer(marker));
+                stationMarkers = [];
+
+                // Add new markers
+                data.forEach(station => {
+                    const marker = L.marker([station.latitude, station.longitude]).addTo(map);
+                    marker.bindPopup(`${station.name}<br>Status: ${station.status}`);
+                    stationMarkers.push(marker);
+                });
+
+                // Update station list
+                const stationList = document.getElementById('station-list');
+                stationList.innerHTML = data.map(station => `
+                    <li class="list-group-item">${station.name} - Status: ${station.status}</li>
+                `).join('');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %}

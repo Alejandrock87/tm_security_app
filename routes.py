@@ -9,6 +9,7 @@ from ml_models import predict_incident_probability, get_incident_trends, get_mod
 import logging
 from models import User, Incident
 from database import db
+from transmilenio_api import get_real_time_bus_locations, get_station_status, get_route_information
 
 def init_routes(app):
     @app.route('/')
@@ -73,11 +74,8 @@ def init_routes(app):
             db.session.commit()
             flash('Incident reported successfully!')
             
-            # Send real-time notification
             send_notification(incident.incident_type, incident.timestamp.isoformat())
             
-            # Send push notification (simulated for this example)
-            # In a real-world scenario, you would retrieve the device token from the user's profile
             device_token = "simulated_device_token"
             send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
             
@@ -130,5 +128,30 @@ def init_routes(app):
             flash(insights, "warning")
             return render_template('model_insights.html', title='Model Insights', insights=None)
         return render_template('model_insights.html', title='Model Insights', insights=insights)
+
+    @app.route('/real_time_map')
+    @login_required
+    def real_time_map():
+        bus_locations = get_real_time_bus_locations()
+        station_status = get_station_status()
+        return render_template('real_time_map.html', bus_locations=bus_locations, station_status=station_status)
+
+    @app.route('/api/bus_locations')
+    @login_required
+    def api_bus_locations():
+        bus_locations = get_real_time_bus_locations()
+        return jsonify(bus_locations)
+
+    @app.route('/api/station_status')
+    @login_required
+    def api_station_status():
+        station_status = get_station_status()
+        return jsonify(station_status)
+
+    @app.route('/route/<route_id>')
+    @login_required
+    def route_information(route_id):
+        route_info = get_route_information(route_id)
+        return render_template('route_information.html', route_info=route_info)
 
     return app
