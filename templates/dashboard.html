@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4 text-center">Panel de Control de Incidentes</h1>
+<h1 class="mb-4 text-center">Mapa de Incidentes</h1>
 
 {% if incidents is defined and incidents %}
 <div class="row">
@@ -35,103 +35,6 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Análisis Predictivo</h2>
-            </div>
-            <div class="card-body">
-                <form id="predict-form">
-                    <div class="mb-3">
-                        <label for="latitude" class="form-label">Latitud</label>
-                        <input type="number" step="any" class="form-control" id="latitude" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="longitude" class="form-label">Longitud</label>
-                        <input type="number" step="any" class="form-control" id="longitude" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="hour" class="form-label">Hora (0-23)</label>
-                        <input type="number" min="0" max="23" class="form-control" id="hour" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="day_of_week" class="form-label">Día de la Semana (0-6, 0 es Lunes)</label>
-                        <input type="number" min="0" max="6" class="form-control" id="day_of_week" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="month" class="form-label">Mes (1-12)</label>
-                        <input type="number" min="1" max="12" class="form-control" id="month" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nearest_station" class="form-label">Estación más Cercana</label>
-                        <input type="text" class="form-control" id="nearest_station" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Predecir Probabilidad de Incidente</button>
-                </form>
-                <div id="prediction-result" class="mt-3"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Tendencias de Incidentes</h2>
-            </div>
-            <div class="card-body">
-                {% if trends is defined and trends %}
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="trendChart"></canvas>
-                </div>
-                {% else %}
-                <p>No hay tendencias de incidentes disponibles en este momento.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Rendimiento del Modelo</h2>
-            </div>
-            <div class="card-body">
-                <div id="modelPerformance"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Principales Predictores</h2>
-            </div>
-            <div class="card-body">
-                {% if model_insights is defined and model_insights %}
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="topPredictorsChart"></canvas>
-                </div>
-                {% else %}
-                <p>No hay insights del modelo disponibles en este momento.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Incidentes Recientes</h2>
-            </div>
-            <div class="card-body">
-                <ul id="recentIncidentsList" class="list-group"></ul>
-            </div>
-        </div>
-    </div>
-</div>
 {% else %}
 <p class="text-center">No hay datos de incidentes disponibles en este momento. Por favor, vuelva a revisar más tarde.</p>
 {% endif %}
@@ -141,194 +44,28 @@
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
-    const incidents = {{ incidents|tojson|safe if incidents is defined else '[]' }};
-    const statistics = {{ statistics|tojson|safe if statistics is defined else '{}' }};
-    const trends = {{ trends|tojson|safe if trends is defined else '{}' }};
-    const modelInsights = {{ model_insights|tojson|safe if model_insights is defined else '{}' }};
-
-    document.addEventListener('DOMContentLoaded', function() {
-        if (incidents.length > 0) {
-            createChart();
-            updateIncidentTypeStats();
-            updateRecentIncidents();
-            setupPredictionForm();
-            createTrendChart();
-            updateModelPerformance();
-            createTopPredictorsChart();
-        }
-    });
-
-    function updateIncidentTypeStats() {
-        const statsContainer = document.getElementById('incidentTypeStats');
-        const incidentTypes = statistics.incidents_by_type;
-        let statsHTML = '<h3>Incidentes por Tipo</h3><ul class="list-group">';
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initMap === 'function') {
+        initMap();
+    }
+    
+    if (typeof createChart === 'function' && {{ statistics|tojson|safe }}) {
+        createChart();
+    }
+    
+    const incidentTypeStats = document.getElementById('incidentTypeStats');
+    if (incidentTypeStats && {{ statistics.incidents_by_type|tojson|safe }}) {
+        const incidentTypes = {{ statistics.incidents_by_type|tojson|safe }};
+        let statsHtml = '<h3 class="mt-4">Tipos de Incidentes</h3><ul class="list-group">';
         for (const [type, count] of Object.entries(incidentTypes)) {
-            statsHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
+            statsHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
                 ${type}
                 <span class="badge bg-primary rounded-pill">${count}</span>
             </li>`;
         }
-        statsHTML += '</ul>';
-        statsContainer.innerHTML = statsHTML;
+        statsHtml += '</ul>';
+        incidentTypeStats.innerHTML = statsHtml;
     }
-
-    function updateRecentIncidents() {
-        const recentList = document.getElementById('recentIncidentsList');
-        const recentIncidents = incidents.slice(-5).reverse(); // Get last 5 incidents
-        recentList.innerHTML = '';
-        recentIncidents.forEach(incident => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item';
-            li.textContent = `${incident.incident_type} - ${new Date(incident.timestamp).toLocaleString()}`;
-            recentList.appendChild(li);
-        });
-    }
-
-    function setupPredictionForm() {
-        const form = document.getElementById('predict-form');
-        const resultDiv = document.getElementById('prediction-result');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('/predict', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-                const result = await response.json();
-                let resultHTML = '<h4>Probabilidades de Incidentes:</h4><ul class="list-group">';
-                for (const [incidentType, probability] of Object.entries(result)) {
-                    resultHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                        ${incidentType}
-                        <span class="badge bg-primary rounded-pill">${(probability * 100).toFixed(2)}%</span>
-                    </li>`;
-                }
-                resultHTML += '</ul>';
-                resultDiv.innerHTML = resultHTML;
-            } catch (error) {
-                console.error('Error:', error);
-                resultDiv.textContent = 'Ocurrió un error al hacer la predicción.';
-            }
-        });
-    }
-
-    function createTrendChart() {
-        const ctx = document.getElementById('trendChart').getContext('2d');
-
-        if (Object.keys(trends).length === 0) {
-            ctx.font = '20px Arial';
-            ctx.fillText('No hay suficientes datos para mostrar tendencias', 10, 50);
-            return;
-        }
-
-        const dates = Object.keys(trends);
-        const datasets = Object.keys(trends[dates[0]]).map(incidentType => ({
-            label: incidentType,
-            data: dates.map(date => trends[date][incidentType]),
-            borderColor: getRandomColor(),
-            fill: false
-        }));
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: 'Tendencias de Incidentes (Media Móvil de 7 días)'
-                },
-                scales: {
-                    x: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Fecha'
-                        }
-                    },
-                    y: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Número de Incidentes'
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateModelPerformance() {
-        const performanceContainer = document.getElementById('modelPerformance');
-        if (modelInsights && modelInsights.cross_validation_scores) {
-            const scores = modelInsights.cross_validation_scores;
-            performanceContainer.innerHTML = `
-                <p><strong>Puntuación CV Media:</strong> ${scores.mean.toFixed(4)}</p>
-                <p><strong>Desviación Estándar:</strong> ${scores.std.toFixed(4)}</p>
-                <p><strong>Puntuaciones Individuales:</strong> ${scores.scores.map(s => s.toFixed(4)).join(', ')}</p>
-            `;
-        } else {
-            performanceContainer.innerHTML = '<p>Datos de rendimiento del modelo no disponibles.</p>';
-        }
-    }
-
-    function createTopPredictorsChart() {
-        const ctx = document.getElementById('topPredictorsChart').getContext('2d');
-        if (modelInsights && modelInsights.top_predictors) {
-            const topPredictors = modelInsights.top_predictors;
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: topPredictors.map(p => p[0]),
-                    datasets: [{
-                        label: 'Importancia de Característica',
-                        data: topPredictors.map(p => p[1]),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Importancia'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Características'
-                            }
-                        }
-                    }
-                }
-            });
-        } else {
-            ctx.font = '20px Arial';
-            ctx.fillText('Datos de los principales predictores no disponibles', 10, 50);
-        }
-    }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+});
 </script>
 {% endblock %}

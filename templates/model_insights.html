@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Model Insights</h1>
+<h1>Insights del Modelo</h1>
 
 {% if insights is none %}
-    <p>No insights available at the moment. Please try again later.</p>
+    <p>No hay insights disponibles en este momento. Por favor, inténtelo de nuevo más tarde.</p>
 {% elif insights is string %}
     <p>{{ insights }}</p>
 {% else %}
-    <h2>Feature Importance</h2>
+    <h2>Importancia de las Características</h2>
     <canvas id="featureImportanceChart"></canvas>
 
-    <h2>Top Predictors</h2>
+    <h2>Principales Predictores</h2>
     <ul class="list-group">
     {% for feature, importance in insights.top_predictors %}
         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -21,12 +21,12 @@
     {% endfor %}
     </ul>
 
-    <h2>Model Parameters</h2>
+    <h2>Parámetros del Modelo</h2>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Parameter</th>
-                <th>Value</th>
+                <th>Parámetro</th>
+                <th>Valor</th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +57,7 @@
             data: {
                 labels: sortedFeatures.map(f => f[0]),
                 datasets: [{
-                    label: 'Feature Importance',
+                    label: 'Importancia de las Características',
                     data: sortedFeatures.map(f => f[1]),
                     backgroundColor: 'rgba(75, 192, 192, 0.6)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -71,13 +71,13 @@
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Importance'
+                            text: 'Importancia'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Features'
+                            text: 'Características'
                         }
                     }
                 }

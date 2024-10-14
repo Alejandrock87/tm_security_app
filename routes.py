@@ -15,7 +15,7 @@ def init_routes(app):
     @app.route('/')
     @app.route('/index')
     def index():
-        return render_template('index.html', title='Home')
+        return render_template('index.html', title='Inicio')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -25,14 +25,14 @@ def init_routes(app):
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             if user is None or not user.check_password(form.password.data):
-                flash('Invalid username or password')
+                flash('Nombre de usuario o contraseña inválidos')
                 return redirect(url_for('login'))
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             if not next_page or urlparse(next_page).netloc != '':
                 next_page = url_for('index')
             return redirect(next_page)
-        return render_template('login.html', title='Sign In', form=form)
+        return render_template('login.html', title='Iniciar sesión', form=form)
 
     @app.route('/logout')
     def logout():
@@ -49,9 +49,9 @@ def init_routes(app):
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
-            flash('Congratulations, you are now a registered user!')
+            flash('¡Felicidades, ahora estás registrado!')
             return redirect(url_for('login'))
-        return render_template('register.html', title='Register', form=form)
+        return render_template('register.html', title='Registro', form=form)
 
     @app.route('/report_incident', methods=['GET', 'POST'])
     @login_required
@@ -61,7 +61,7 @@ def init_routes(app):
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
             if not latitude or not longitude:
-                flash('Location data is required. Please enable geolocation in your browser.')
+                flash('Se requieren datos de ubicación. Por favor, active la geolocalización en su navegador.')
                 return redirect(url_for('report_incident'))
             
             incident = Incident(incident_type=form.incident_type.data,
@@ -72,7 +72,7 @@ def init_routes(app):
                                 nearest_station=request.form.get('nearest_station'))
             db.session.add(incident)
             db.session.commit()
-            flash('Incident reported successfully!')
+            flash('¡Incidente reportado con éxito!')
             
             send_notification(incident.incident_type, incident.timestamp.isoformat())
             
@@ -80,24 +80,24 @@ def init_routes(app):
             send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
             
             return redirect(url_for('index'))
-        return render_template('report_incident.html', title='Report Incident', form=form)
+        return render_template('report_incident.html', title='Reportar incidente', form=form)
 
     @app.route('/dashboard')
     @login_required
     def dashboard():
         try:
-            logging.info("Fetching data for dashboard")
+            logging.info("Obteniendo datos para el panel de control")
             incidents = get_incidents_for_map()
-            logging.info(f"Fetched {len(incidents)} incidents")
+            logging.info(f"Se obtuvieron {len(incidents)} incidentes")
             
             statistics = get_incident_statistics()
-            logging.info("Fetched incident statistics")
+            logging.info("Se obtuvieron estadísticas de incidentes")
             
             trends = get_incident_trends()
-            logging.info("Fetched incident trends")
+            logging.info("Se obtuvieron tendencias de incidentes")
             
             model_insights = get_model_insights()
-            logging.info("Fetched model insights")
+            logging.info("Se obtuvieron insights del modelo")
             
             return render_template('dashboard.html', 
                                    incidents=incidents, 
@@ -105,8 +105,8 @@ def init_routes(app):
                                    trends=trends,
                                    model_insights=model_insights)
         except Exception as e:
-            logging.error(f"Error in dashboard route: {str(e)}")
-            flash("An error occurred while loading the dashboard. Please try again later.", "error")
+            logging.error(f"Error en la ruta del panel de control: {str(e)}")
+            flash("Ocurrió un error al cargar el panel de control. Por favor, intente de nuevo más tarde.", "error")
             return redirect(url_for('index'))
 
     @app.route('/model_insights')
@@ -116,8 +116,8 @@ def init_routes(app):
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
         except Exception as e:
-            logging.error(f"Error in model_insights route: {str(e)}")
-            flash("An error occurred while loading model insights. Please try again later.", "error")
+            logging.error(f"Error en la ruta de insights del modelo: {str(e)}")
+            flash("Ocurrió un error al cargar los insights del modelo. Por favor, intente de nuevo más tarde.", "error")
             return redirect(url_for('dashboard'))
 
     @app.route('/real_time_map')
