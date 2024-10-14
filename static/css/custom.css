@@ -1,0 +1,14 @@
+/* Add any custom styles here */
+body {
+    padding-bottom: 20px;
+}
+
+#map {
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#notificationList {
+    max-height: 300px;
+    overflow-y: auto;
+}
