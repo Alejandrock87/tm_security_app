@@ -5,7 +5,7 @@ from app import app, db
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from utils import get_incidents_for_map, get_incident_statistics
 from datetime import datetime
-from ml_models import predict_incident_probability, get_high_risk_areas, get_incident_trends, get_model_insights
+from ml_models import predict_incident_probability, get_incident_trends, get_model_insights
 import logging
 from models import User, Incident
 
@@ -80,14 +80,7 @@ def report_incident():
 def dashboard():
     incidents = get_incidents_for_map()
     statistics = get_incident_statistics()
-    high_risk_areas = []
     trends = {}
-    
-    try:
-        high_risk_areas = get_high_risk_areas()
-    except Exception as e:
-        logging.error(f"Error in get_high_risk_areas: {str(e)}", exc_info=True)
-        flash("An error occurred while fetching high-risk areas. Some data may not be displayed correctly.", "warning")
     
     try:
         trends = get_incident_trends()
@@ -95,21 +88,15 @@ def dashboard():
         logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
         flash("An error occurred while fetching incident trends. Some data may not be displayed correctly.", "warning")
     
-    # Ensure all data is JSON serializable
-    incidents = [incident.to_dict() for incident in incidents]
-    high_risk_areas = [area.to_dict() if hasattr(area, 'to_dict') else area for area in high_risk_areas]
-    trends = {str(k): v for k, v in trends.items()} if trends else {}
-    
     return render_template('dashboard.html', 
                            incidents=incidents, 
-                           statistics=statistics, 
-                           high_risk_areas=high_risk_areas, 
+                           statistics=statistics,
                            trends=trends)
 
 @app.route('/api/incidents')
 def get_incidents():
     incidents = get_incidents_for_map()
-    return jsonify([incident.to_dict() for incident in incidents])
+    return jsonify(incidents)
 
 @app.route('/api/statistics')
 def get_statistics():
@@ -129,12 +116,6 @@ def predict_incident():
         data['nearest_station']
     )
     return jsonify(probability)
-
-@app.route('/high_risk_areas')
-@login_required
-def high_risk_areas():
-    areas = get_high_risk_areas()
-    return jsonify([area.to_dict() if hasattr(area, 'to_dict') else area for area in areas])
 
 @app.route('/model_insights')
 @login_required

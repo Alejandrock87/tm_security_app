@@ -6,6 +6,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from xgboost import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from models import Incident
 from app import db
@@ -14,6 +15,9 @@ from datetime import datetime, timedelta
 
 def prepare_data():
     incidents = Incident.query.all()
+    
+    if not incidents:
+        return pd.DataFrame()
     
     data = pd.DataFrame([
         {
@@ -28,11 +32,13 @@ def prepare_data():
         for incident in incidents
     ])
     
-    # Feature engineering
+    # Advanced feature engineering
     data['is_weekend'] = data['day_of_week'].isin([5, 6]).astype(int)
     data['is_night'] = ((data['hour'] >= 22) | (data['hour'] < 6)).astype(int)
     data['distance_from_center'] = np.sqrt((data['latitude'] - data['latitude'].mean())**2 + 
                                            (data['longitude'] - data['longitude'].mean())**2)
+    data['time_of_day'] = pd.cut(data['hour'], bins=[0, 6, 12, 18, 24], labels=['Night', 'Morning', 'Afternoon', 'Evening'])
+    data['season'] = pd.cut(data['month'], bins=[0, 3, 6, 9, 12], labels=['Winter', 'Spring', 'Summer', 'Fall'])
     
     return data
 
@@ -40,6 +46,7 @@ def train_model():
     data = prepare_data()
     
     if len(data) < 100:
+        logging.warning("Not enough data to train the model.")
         return None, None
     
     X = data.drop('incident_type', axis=1)
@@ -49,7 +56,7 @@ def train_model():
     
     # Define preprocessing steps
     numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center']
-    categorical_features = ['nearest_station']
+    categorical_features = ['nearest_station', 'time_of_day', 'season']
     
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),
@@ -67,28 +74,46 @@ def train_model():
             ('cat', categorical_transformer, categorical_features)
         ])
     
-    # Create a pipeline with preprocessor and XGBoost classifier
-    model = Pipeline(steps=[('preprocessor', preprocessor),
-                            ('classifier', XGBClassifier(random_state=42))])
+    # Create pipelines for multiple models
+    xgb_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
+                                   ('classifier', XGBClassifier(random_state=42))])
+    
+    rf_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
+                                  ('classifier', RandomForestClassifier(random_state=42))])
     
     # Hyperparameter tuning
-    param_grid = {
+    xgb_param_grid = {
         'classifier__n_estimators': [100, 200],
         'classifier__max_depth': [3, 5, 7],
         'classifier__learning_rate': [0.01, 0.1, 0.3]
     }
     
-    grid_search = GridSearchCV(model, param_grid, cv=5, n_jobs=-1, verbose=1)
-    grid_search.fit(X_train, y_train)
+    rf_param_grid = {
+        'classifier__n_estimators': [100, 200],
+        'classifier__max_depth': [10, 20, None],
+        'classifier__min_samples_split': [2, 5, 10]
+    }
     
-    best_model = grid_search.best_estimator_
+    xgb_grid_search = GridSearchCV(xgb_pipeline, xgb_param_grid, cv=5, n_jobs=-1, verbose=1)
+    rf_grid_search = GridSearchCV(rf_pipeline, rf_param_grid, cv=5, n_jobs=-1, verbose=1)
     
-    # Evaluate the model
+    # Train both models
+    xgb_grid_search.fit(X_train, y_train)
+    rf_grid_search.fit(X_train, y_train)
+    
+    # Compare models and choose the best one
+    xgb_score = xgb_grid_search.best_score_
+    rf_score = rf_grid_search.best_score_
+    
+    best_model = xgb_grid_search.best_estimator_ if xgb_score > rf_score else rf_grid_search.best_estimator_
+    
+    # Evaluate the best model
     y_pred = best_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     report = classification_report(y_test, y_pred)
     conf_matrix = confusion_matrix(y_test, y_pred)
     
+    logging.info(f"Best Model: {'XGBoost' if xgb_score > rf_score else 'Random Forest'}")
     logging.info(f"Model Accuracy: {accuracy}")
     logging.info("Classification Report:")
     logging.info(report)
@@ -119,6 +144,8 @@ def predict_incident_probability(latitude, longitude, hour, day_of_week, month, 
     is_weekend = int(day_of_week in [5, 6])
     is_night = int((hour >= 22) or (hour < 6))
     distance_from_center = np.sqrt((latitude - 4.6097)**2 + (longitude - (-74.0817))**2)  # Bogotá coordinates
+    time_of_day = pd.cut([hour], bins=[0, 6, 12, 18, 24], labels=['Night', 'Morning', 'Afternoon', 'Evening'])[0]
+    season = pd.cut([month], bins=[0, 3, 6, 9, 12], labels=['Winter', 'Spring', 'Summer', 'Fall'])[0]
     
     input_data = pd.DataFrame({
         'latitude': [latitude],
@@ -129,7 +156,9 @@ def predict_incident_probability(latitude, longitude, hour, day_of_week, month, 
         'nearest_station': [nearest_station],
         'is_weekend': [is_weekend],
         'is_night': [is_night],
-        'distance_from_center': [distance_from_center]
+        'distance_from_center': [distance_from_center],
+        'time_of_day': [time_of_day],
+        'season': [season]
     })
     
     # Make prediction
@@ -143,57 +172,24 @@ def predict_incident_probability(latitude, longitude, hour, day_of_week, month, 
     
     return prediction
 
-def get_high_risk_areas():
-    data = prepare_data()
-    
-    if len(data) < 100:
-        logging.warning("Not enough data to identify high-risk areas.")
-        return []
-    
-    try:
-        # Group by location and calculate incident frequency
-        location_risk = data.groupby(['latitude', 'longitude']).size().reset_index(name='incident_count')
-        
-        # Calculate the risk score based on incident count and recency
-        current_time = datetime.utcnow()
-        location_risk['risk_score'] = location_risk.apply(lambda row: calculate_risk_score(row, current_time), axis=1)
-        
-        # Sort by risk score in descending order and get top 5 high-risk areas
-        high_risk_areas = location_risk.sort_values('risk_score', ascending=False).head(5)
-        
-        return high_risk_areas.to_dict('records')
-    except Exception as e:
-        logging.error(f"Error in get_high_risk_areas: {str(e)}", exc_info=True)
-        return []
-
-def calculate_risk_score(row, current_time):
-    incidents = Incident.query.filter_by(latitude=row['latitude'], longitude=row['longitude']).all()
-    
-    total_score = 0
-    for incident in incidents:
-        time_diff = current_time - incident.timestamp
-        if time_diff <= timedelta(days=7):
-            total_score += 1  # Higher weight for recent incidents
-        elif time_diff <= timedelta(days=30):
-            total_score += 0.5
-        else:
-            total_score += 0.1
-    
-    return total_score
-
 def get_incident_trends():
     data = prepare_data()
     
     if len(data) < 100:
-        return None
+        logging.warning("Not enough data to calculate incident trends.")
+        return {}
     
-    # Group by date and incident type
-    daily_incidents = data.groupby([pd.Grouper(key='timestamp', freq='D'), 'incident_type']).size().unstack(fill_value=0)
-    
-    # Calculate 7-day moving average
-    trends = daily_incidents.rolling(window=7).mean()
-    
-    return trends.to_dict()
+    try:
+        # Group by date and incident type
+        daily_incidents = data.groupby([pd.Grouper(key='timestamp', freq='D'), 'incident_type']).size().unstack(fill_value=0)
+        
+        # Calculate 7-day moving average
+        trends = daily_incidents.rolling(window=7).mean()
+        
+        return trends.to_dict()
+    except Exception as e:
+        logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
+        return {}
 
 def get_model_insights():
     model, feature_importance = train_model()
