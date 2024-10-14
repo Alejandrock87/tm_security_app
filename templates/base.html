@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="es" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{% block title %}Transmilenio Security Incident Reporting{% endblock %}</title>
+    <title>{% block title %}Reporte de Incidentes de Seguridad Transmilenio{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
@@ -11,37 +11,37 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Transmilenio Security</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">Seguridad Transmilenio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
                     </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('report_incident') }}">Report Incident</a>
+                        <a class="nav-link" href="{{ url_for('report_incident') }}">Reportar Incidente</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Panel de Control</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        <a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-link" href="{{ url_for('register') }}">Registrarse</a>
                     </li>
                     {% endif %}
                 </ul>
                 {% if current_user.is_authenticated %}
                 <button id="notificationButton" class="btn btn-outline-light position-relative">
-                    Notifications
+                    Notificaciones
                     <span id="notificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
                         0
                     </span>
@@ -52,13 +52,13 @@
     </nav>
 
     <div class="container mt-4">
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-            {{ message }}<br>
-            {% endfor %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
         </div>
+        {% endfor %}
         {% endif %}
         {% endwith %}
 
@@ -69,7 +69,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="notificationModalLabel">Recent Notifications</h5>
+                    <h5 class="modal-title" id="notificationModalLabel">Notificaciones Recientes</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

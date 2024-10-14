@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4">Welcome to Transmilenio Security Incident Reporting</h1>
-<p>This application allows you to report and view security incidents in the Transmilenio system.</p>
-{% if current_user.is_authenticated %}
-<p>
-    <a href="{{ url_for('report_incident') }}" class="btn btn-primary">Report an Incident</a>
-    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">View Dashboard</a>
-</p>
-{% else %}
-<p>
-    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
-</p>
-{% endif %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="mb-4 text-center">Bienvenido al Sistema de Reporte de Incidentes de Seguridad Transmilenio</h1>
+        <p class="lead text-center">Esta aplicación te permite reportar y ver incidentes de seguridad en el sistema Transmilenio.</p>
+        {% if current_user.is_authenticated %}
+        <div class="d-grid gap-2 col-md-6 mx-auto">
+            <a href="{{ url_for('report_incident') }}" class="btn btn-primary btn-lg">Reportar un Incidente</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg">Ver Panel de Control</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-2 col-md-6 mx-auto">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary btn-lg">Registrarse</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

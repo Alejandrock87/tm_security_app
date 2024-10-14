@@ -1,34 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Report an Incident</h1>
-<form action="" method="post" novalidate id="incident-form">
-    {{ form.hidden_tag() }}
-    <div class="mb-3">
-        {{ form.incident_type.label(class="form-label") }}
-        {{ form.incident_type(class="form-select") }}
-        {% for error in form.incident_type.errors %}
-        <span class="text-danger">{{ error }}</span>
-        {% endfor %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="mb-4 text-center">Reportar un Incidente</h1>
+        <form action="" method="post" novalidate id="incident-form">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.incident_type.label(class="form-label") }}
+                {{ form.incident_type(class="form-select") }}
+                {% for error in form.incident_type.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(rows=5, class="form-control") }}
+                {% for error in form.description.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                <label for="nearest_station" class="form-label">Estación Transmilenio más cercana</label>
+                <input type="text" id="nearest_station" name="nearest_station" class="form-control" readonly>
+            </div>
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+            {{ form.submit(class="btn btn-primary w-100", id="submit-button") }}
+        </form>
     </div>
-    <div class="mb-3">
-        {{ form.description.label(class="form-label") }}
-        {{ form.description(rows=5, class="form-control") }}
-        {% for error in form.description.errors %}
-        <span class="text-danger">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="mb-3">
-        <label for="nearest_station" class="form-label">Nearest Transmilenio Station</label>
-        <input type="text" id="nearest_station" name="nearest_station" class="form-control" readonly>
-    </div>
-    <input type="hidden" id="latitude" name="latitude">
-    <input type="hidden" id="longitude" name="longitude">
-    {{ form.submit(class="btn btn-primary", id="submit-button") }}
-</form>
+</div>
 
-<div id="map" style="height: 400px; margin-top: 20px;"></div>
-
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -45,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         } else {
-            alert("Geolocation is not supported by this browser.");
+            alert("La geolocalización no es compatible con este navegador.");
         }
     }
 
@@ -54,12 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
         longitudeInput.value = position.coords.longitude;
         submitButton.disabled = false;
         
-        // Update map with user's location
         if (typeof updateMapWithUserLocation === 'function') {
             updateMapWithUserLocation(position.coords.latitude, position.coords.longitude);
         }
 
-        // Find and display nearest station
         if (typeof findNearestStation === 'function') {
             const nearestStation = findNearestStation(position.coords.latitude, position.coords.longitude);
             nearestStationInput.value = nearestStation;
@@ -69,31 +74,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function showError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                alert("User denied the request for Geolocation.");
+                alert("El usuario denegó la solicitud de geolocalización.");
                 break;
             case error.POSITION_UNAVAILABLE:
-                alert("Location information is unavailable.");
+                alert("La información de ubicación no está disponible.");
                 break;
             case error.TIMEOUT:
-                alert("The request to get user location timed out.");
+                alert("La solicitud para obtener la ubicación del usuario ha expirado.");
                 break;
             case error.UNKNOWN_ERROR:
-                alert("An unknown error occurred.");
+                alert("Ocurrió un error desconocido.");
                 break;
         }
     }
 
-    // Disable submit button until location is obtained
     submitButton.disabled = true;
-
-    // Get location when the page loads
     getLocation();
 
-    // Prevent form submission if location hasn't been obtained
     form.addEventListener('submit', function(event) {
         if (!latitudeInput.value || !longitudeInput.value) {
             event.preventDefault();
-            alert("Please wait for your location to be determined or enable location services.");
+            alert("Por favor, espere a que se determine su ubicación o habilite los servicios de ubicación.");
         }
     });
 });
