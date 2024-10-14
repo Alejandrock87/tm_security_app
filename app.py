@@ -2,6 +2,8 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from database import init_db, db
+from flask_socketio import SocketIO
+from utils import socketio, send_notification
 
 def create_app():
     app = Flask(__name__)
@@ -29,6 +31,11 @@ def create_app():
     from routes import init_routes
     init_routes(app)
 
+    socketio.init_app(app, cors_allowed_origins="*")
+
     return app
 
 app = create_app()
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000)

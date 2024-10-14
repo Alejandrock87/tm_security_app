@@ -2,14 +2,13 @@ from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
-from utils import get_incidents_for_map, get_incident_statistics
+from incident_utils import get_incidents_for_map, get_incident_statistics
+from utils import send_notification, send_push_notification
 from datetime import datetime
 from ml_models import predict_incident_probability, get_incident_trends, get_model_insights
 import logging
 from models import User, Incident
 from database import db
-
-logging.basicConfig(filename='app.log', level=logging.ERROR)
 
 def init_routes(app):
     @app.route('/')
@@ -73,6 +72,15 @@ def init_routes(app):
             db.session.add(incident)
             db.session.commit()
             flash('Incident reported successfully!')
+            
+            # Send real-time notification
+            send_notification(incident.incident_type, incident.timestamp.isoformat())
+            
+            # Send push notification (simulated for this example)
+            # In a real-world scenario, you would retrieve the device token from the user's profile
+            device_token = "simulated_device_token"
+            send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
+            
             return redirect(url_for('index'))
         return render_template('report_incident.html', title='Report Incident', form=form)
 
@@ -81,20 +89,8 @@ def init_routes(app):
     def dashboard():
         incidents = get_incidents_for_map()
         statistics = get_incident_statistics()
-        trends = {}
-        model_insights = {}
-        
-        try:
-            trends = get_incident_trends()
-        except Exception as e:
-            logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
-            flash("An error occurred while fetching incident trends. Some data may not be displayed correctly.", "warning")
-        
-        try:
-            model_insights = get_model_insights()
-        except Exception as e:
-            logging.error(f"Error in get_model_insights: {str(e)}", exc_info=True)
-            flash("An error occurred while fetching model insights. Some data may not be displayed correctly.", "warning")
+        trends = get_incident_trends()
+        model_insights = get_model_insights()
         
         return render_template('dashboard.html', 
                                incidents=incidents, 
@@ -129,13 +125,10 @@ def init_routes(app):
     @app.route('/model_insights')
     @login_required
     def model_insights():
-        try:
-            insights = get_model_insights()
-            if isinstance(insights, str):
-                flash(insights, "warning")
-                return render_template('model_insights.html', title='Model Insights', insights=None)
-            return render_template('model_insights.html', title='Model Insights', insights=insights)
-        except Exception as e:
-            logging.error(f"Error in model_insights route: {str(e)}", exc_info=True)
-            flash("An error occurred while fetching model insights. Please try again later.", "error")
+        insights = get_model_insights()
+        if isinstance(insights, str):
+            flash(insights, "warning")
             return render_template('model_insights.html', title='Model Insights', insights=None)
+        return render_template('model_insights.html', title='Model Insights', insights=insights)
+
+    return app

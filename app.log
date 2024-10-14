@@ -402,3 +402,10 @@ INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "GET /dashboard HTTP/1.1"
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:53:13] "[36mGET /static/js/chart.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.196.25:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 09:14:44] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 09:14:45] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
