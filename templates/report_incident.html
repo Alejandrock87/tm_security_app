@@ -18,6 +18,10 @@
         <span class="text-danger">{{ error }}</span>
         {% endfor %}
     </div>
+    <div class="mb-3">
+        <label for="nearest_station" class="form-label">Nearest Transmilenio Station</label>
+        <input type="text" id="nearest_station" name="nearest_station" class="form-control" readonly>
+    </div>
     <input type="hidden" id="latitude" name="latitude">
     <input type="hidden" id="longitude" name="longitude">
     {{ form.submit(class="btn btn-primary", id="submit-button") }}
@@ -35,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButton = document.getElementById('submit-button');
     const latitudeInput = document.getElementById('latitude');
     const longitudeInput = document.getElementById('longitude');
+    const nearestStationInput = document.getElementById('nearest_station');
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -52,6 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update map with user's location
         if (typeof updateMapWithUserLocation === 'function') {
             updateMapWithUserLocation(position.coords.latitude, position.coords.longitude);
+        }
+
+        // Find and display nearest station
+        if (typeof findNearestStation === 'function') {
+            const nearestStation = findNearestStation(position.coords.latitude, position.coords.longitude);
+            nearestStationInput.value = nearestStation;
         }
     }
 

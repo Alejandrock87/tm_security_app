@@ -55,6 +55,7 @@ def report_incident():
     if form.validate_on_submit():
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
+        nearest_station = request.form.get('nearest_station')
         if not latitude or not longitude:
             flash('Location data is required. Please enable geolocation in your browser.')
             return render_template('report_incident.html', title='Report Incident', form=form)
@@ -64,6 +65,7 @@ def report_incident():
             description=form.description.data,
             latitude=float(latitude),
             longitude=float(longitude),
+            nearest_station=nearest_station,
             author=current_user,
             timestamp=datetime.utcnow()
         )
