@@ -9,7 +9,7 @@ from ml_models import predict_incident_probability, get_incident_trends, get_mod
 import logging
 from models import User, Incident
 from database import db
-from transmilenio_api import get_bus_locations, get_stations_status, get_route_information
+from transmilenio_api import get_all_stations, get_route_information
 
 def init_routes(app):
     @app.route('/')
@@ -101,17 +101,11 @@ def init_routes(app):
     def real_time_map():
         return render_template('real_time_map.html')
 
-    @app.route('/api/bus_locations')
+    @app.route('/api/stations')
     @login_required
-    def api_bus_locations():
-        bus_locations = get_bus_locations()
-        return jsonify(bus_locations)
-
-    @app.route('/api/station_status')
-    @login_required
-    def api_station_status():
-        station_status = get_stations_status()
-        return jsonify(station_status)
+    def api_stations():
+        stations = get_all_stations()
+        return jsonify(stations)
 
     @app.route('/route/<route_id>')
     @login_required
