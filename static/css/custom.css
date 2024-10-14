@@ -12,3 +12,72 @@ body {
     max-height: 300px;
     overflow-y: auto;
 }
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #map {
+        height: 300px !important;
+    }
+
+    .navbar-nav {
+        margin-top: 10px;
+    }
+
+    #notificationButton {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .chart-container {
+        height: 300px !important;
+    }
+}
+
+/* Improve touch targets for mobile */
+.nav-link, .btn {
+    padding: 12px 15px;
+}
+
+/* Adjust font sizes for better readability on small screens */
+@media (max-width: 767px) {
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
+
+/* Ensure proper spacing for form elements on mobile */
+.form-control, .form-select {
+    margin-bottom: 15px;
+}
+
+/* Improve table responsiveness */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

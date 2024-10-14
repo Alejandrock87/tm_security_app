@@ -1,23 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Incident Dashboard</h1>
+<h1 class="mb-4">Incident Dashboard</h1>
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-12 col-md-8 mb-4">
         <h2>Incident Map</h2>
-        <div id="map" style="height: 500px;"></div>
+        <div id="map" style="height: 400px;"></div>
     </div>
-    <div class="col-md-4">
+    <div class="col-12 col-md-4 mb-4">
         <h2>Incident Statistics</h2>
-        <canvas id="incidentChart"></canvas>
+        <div class="chart-container" style="position: relative; height:300px;">
+            <canvas id="incidentChart"></canvas>
+        </div>
         <div id="incidentTypeStats" class="mt-3"></div>
         <a href="{{ url_for('model_insights') }}" class="btn btn-primary mt-3">View Model Insights</a>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-6">
+<div class="row">
+    <div class="col-12 col-md-6 mb-4">
         <h2>Predictive Analysis</h2>
         <form id="predict-form">
             <div class="mb-3">
@@ -48,24 +50,28 @@
         </form>
         <div id="prediction-result" class="mt-3"></div>
     </div>
-    <div class="col-md-6">
+    <div class="col-12 col-md-6 mb-4">
         <h2>Incident Trends</h2>
-        <canvas id="trendChart"></canvas>
+        <div class="chart-container" style="position: relative; height:300px;">
+            <canvas id="trendChart"></canvas>
+        </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-6">
+<div class="row">
+    <div class="col-12 col-md-6 mb-4">
         <h2>Model Performance</h2>
         <div id="modelPerformance"></div>
     </div>
-    <div class="col-md-6">
+    <div class="col-12 col-md-6 mb-4">
         <h2>Top Predictors</h2>
-        <canvas id="topPredictorsChart"></canvas>
+        <div class="chart-container" style="position: relative; height:300px;">
+            <canvas id="topPredictorsChart"></canvas>
+        </div>
     </div>
 </div>
 
-<div id="notifications" class="mt-4">
+<div id="notifications" class="mb-4">
     <h2>Recent Incidents</h2>
     <ul id="recentIncidentsList" class="list-group"></ul>
 </div>
