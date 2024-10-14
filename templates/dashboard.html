@@ -3,6 +3,7 @@
 {% block content %}
 <h1 class="mb-4">Incident Dashboard</h1>
 
+{% if incidents is defined and incidents %}
 <div class="row">
     <div class="col-12 col-md-8 mb-4">
         <h2>Incident Map</h2>
@@ -10,10 +11,14 @@
     </div>
     <div class="col-12 col-md-4 mb-4">
         <h2>Incident Statistics</h2>
+        {% if statistics is defined and statistics %}
         <div class="chart-container" style="position: relative; height:300px;">
             <canvas id="incidentChart"></canvas>
         </div>
         <div id="incidentTypeStats" class="mt-3"></div>
+        {% else %}
+        <p>No incident statistics available at the moment.</p>
+        {% endif %}
         <a href="{{ url_for('model_insights') }}" class="btn btn-primary mt-3">View Model Insights</a>
     </div>
 </div>
@@ -52,9 +57,13 @@
     </div>
     <div class="col-12 col-md-6 mb-4">
         <h2>Incident Trends</h2>
+        {% if trends is defined and trends %}
         <div class="chart-container" style="position: relative; height:300px;">
             <canvas id="trendChart"></canvas>
         </div>
+        {% else %}
+        <p>No incident trends available at the moment.</p>
+        {% endif %}
     </div>
 </div>
 
@@ -65,9 +74,13 @@
     </div>
     <div class="col-12 col-md-6 mb-4">
         <h2>Top Predictors</h2>
+        {% if model_insights is defined and model_insights %}
         <div class="chart-container" style="position: relative; height:300px;">
             <canvas id="topPredictorsChart"></canvas>
         </div>
+        {% else %}
+        <p>No model insights available at the moment.</p>
+        {% endif %}
     </div>
 </div>
 
@@ -75,26 +88,30 @@
     <h2>Recent Incidents</h2>
     <ul id="recentIncidentsList" class="list-group"></ul>
 </div>
-
+{% else %}
+<p>No incident data available at the moment. Please check back later.</p>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
-    const incidents = {{ incidents|tojson }};
-    const statistics = {{ statistics|tojson }};
-    const trends = {{ trends|default({})|tojson }};
-    const modelInsights = {{ model_insights|default({})|tojson }};
+    const incidents = {{ incidents|tojson|safe if incidents is defined else '[]' }};
+    const statistics = {{ statistics|tojson|safe if statistics is defined else '{}' }};
+    const trends = {{ trends|tojson|safe if trends is defined else '{}' }};
+    const modelInsights = {{ model_insights|tojson|safe if model_insights is defined else '{}' }};
 
     document.addEventListener('DOMContentLoaded', function() {
-        createChart();
-        updateIncidentTypeStats();
-        updateRecentIncidents();
-        setupPredictionForm();
-        createTrendChart();
-        updateModelPerformance();
-        createTopPredictorsChart();
+        if (incidents.length > 0) {
+            createChart();
+            updateIncidentTypeStats();
+            updateRecentIncidents();
+            setupPredictionForm();
+            createTrendChart();
+            updateModelPerformance();
+            createTopPredictorsChart();
+        }
     });
 
     function updateIncidentTypeStats() {

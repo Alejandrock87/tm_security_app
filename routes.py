@@ -85,16 +85,40 @@ def init_routes(app):
     @app.route('/dashboard')
     @login_required
     def dashboard():
-        incidents = get_incidents_for_map()
-        statistics = get_incident_statistics()
-        trends = get_incident_trends()
-        model_insights = get_model_insights()
-        
-        return render_template('dashboard.html', 
-                               incidents=incidents, 
-                               statistics=statistics,
-                               trends=trends,
-                               model_insights=model_insights)
+        try:
+            logging.info("Fetching data for dashboard")
+            incidents = get_incidents_for_map()
+            logging.info(f"Fetched {len(incidents)} incidents")
+            
+            statistics = get_incident_statistics()
+            logging.info("Fetched incident statistics")
+            
+            trends = get_incident_trends()
+            logging.info("Fetched incident trends")
+            
+            model_insights = get_model_insights()
+            logging.info("Fetched model insights")
+            
+            return render_template('dashboard.html', 
+                                   incidents=incidents, 
+                                   statistics=statistics,
+                                   trends=trends,
+                                   model_insights=model_insights)
+        except Exception as e:
+            logging.error(f"Error in dashboard route: {str(e)}")
+            flash("An error occurred while loading the dashboard. Please try again later.", "error")
+            return redirect(url_for('index'))
+
+    @app.route('/model_insights')
+    @login_required
+    def model_insights():
+        try:
+            insights = get_model_insights()
+            return render_template('model_insights.html', insights=insights)
+        except Exception as e:
+            logging.error(f"Error in model_insights route: {str(e)}")
+            flash("An error occurred while loading model insights. Please try again later.", "error")
+            return redirect(url_for('dashboard'))
 
     @app.route('/real_time_map')
     @login_required
