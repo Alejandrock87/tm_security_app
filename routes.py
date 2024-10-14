@@ -1,20 +1,20 @@
-from flask import render_template, redirect, url_for, flash, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
-from app import app, db, login_manager
-from models import User, Incident
+from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask_login import login_user, logout_user, current_user, login_required
+from urllib.parse import urlparse
+from app import app, db
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from utils import get_incidents_for_map, get_incident_statistics
 from datetime import datetime
-from ml_models import predict_incident_probability, get_high_risk_areas
+from ml_models import predict_incident_probability, get_high_risk_areas, get_incident_trends, get_model_insights
+import logging
+from models import User, Incident
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+logging.basicConfig(filename='app.log', level=logging.ERROR)
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', title='Home')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -27,7 +27,10 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        next_page = request.args.get('next')
+        if not next_page or urlparse(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
@@ -56,20 +59,16 @@ def report_incident():
     if form.validate_on_submit():
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
-        nearest_station = request.form.get('nearest_station')
         if not latitude or not longitude:
             flash('Location data is required. Please enable geolocation in your browser.')
-            return render_template('report_incident.html', title='Report Incident', form=form)
+            return redirect(url_for('report_incident'))
         
-        incident = Incident(
-            incident_type=form.incident_type.data,
-            description=form.description.data,
-            latitude=float(latitude),
-            longitude=float(longitude),
-            nearest_station=nearest_station,
-            author=current_user,
-            timestamp=datetime.utcnow()
-        )
+        incident = Incident(incident_type=form.incident_type.data,
+                            description=form.description.data,
+                            latitude=float(latitude),
+                            longitude=float(longitude),
+                            user_id=current_user.id,
+                            nearest_station=request.form.get('nearest_station'))
         db.session.add(incident)
         db.session.commit()
         flash('Incident reported successfully!')
@@ -81,13 +80,36 @@ def report_incident():
 def dashboard():
     incidents = get_incidents_for_map()
     statistics = get_incident_statistics()
-    high_risk_areas = get_high_risk_areas()
-    return render_template('dashboard.html', incidents=incidents, statistics=statistics, high_risk_areas=high_risk_areas)
+    high_risk_areas = []
+    trends = {}
+    
+    try:
+        high_risk_areas = get_high_risk_areas()
+    except Exception as e:
+        logging.error(f"Error in get_high_risk_areas: {str(e)}", exc_info=True)
+        flash("An error occurred while fetching high-risk areas. Some data may not be displayed correctly.", "warning")
+    
+    try:
+        trends = get_incident_trends()
+    except Exception as e:
+        logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
+        flash("An error occurred while fetching incident trends. Some data may not be displayed correctly.", "warning")
+    
+    # Ensure all data is JSON serializable
+    incidents = [incident.to_dict() for incident in incidents]
+    high_risk_areas = [area.to_dict() if hasattr(area, 'to_dict') else area for area in high_risk_areas]
+    trends = {str(k): v for k, v in trends.items()} if trends else {}
+    
+    return render_template('dashboard.html', 
+                           incidents=incidents, 
+                           statistics=statistics, 
+                           high_risk_areas=high_risk_areas, 
+                           trends=trends)
 
 @app.route('/api/incidents')
 def get_incidents():
     incidents = get_incidents_for_map()
-    return jsonify(incidents)
+    return jsonify([incident.to_dict() for incident in incidents])
 
 @app.route('/api/statistics')
 def get_statistics():
@@ -103,12 +125,19 @@ def predict_incident():
         data['longitude'],
         data['hour'],
         data['day_of_week'],
-        data['month']
+        data['month'],
+        data['nearest_station']
     )
-    return jsonify({'probability': probability})
+    return jsonify(probability)
 
 @app.route('/high_risk_areas')
 @login_required
 def high_risk_areas():
     areas = get_high_risk_areas()
-    return jsonify(areas)
+    return jsonify([area.to_dict() if hasattr(area, 'to_dict') else area for area in areas])
+
+@app.route('/model_insights')
+@login_required
+def model_insights():
+    insights = get_model_insights()
+    return render_template('model_insights.html', title='Model Insights', insights=insights)

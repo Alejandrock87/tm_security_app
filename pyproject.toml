@@ -13,4 +13,5 @@ dependencies = [
     "pandas>=2.2.3",
     "numpy>=2.1.2",
     "scikit-learn>=1.5.2",
+    "xgboost>=2.1.1",
 ]
