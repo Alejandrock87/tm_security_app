@@ -1,8 +1,9 @@
 import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from sqlalchemy.orm import DeclarativeBase
+from flask_login import LoginManager
 
 class Base(DeclarativeBase):
     pass
@@ -10,23 +11,28 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 login_manager = LoginManager()
 
+# create the app
 app = Flask(__name__)
+# setup a secret key, required by sessions
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+# configure the database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
 }
-
+# initialize the app with the extension, flask-sqlalchemy >= 3.0.x
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 with app.app_context():
-    import models
+    # Make sure to import the models here or their tables won't be created
+    import models  # noqa: F401
+
+    # Drop all tables and recreate them
+    db.drop_all()
     db.create_all()
 
+# Import routes after the app is created
 from routes import *
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
