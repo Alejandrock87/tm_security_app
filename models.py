@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
 
 class Incident(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    incident_type = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)

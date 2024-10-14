@@ -1,9 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
 from models import User, Incident
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from utils import get_incidents_for_map, get_incident_statistics
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,11 +53,20 @@ def register():
 def report_incident():
     form = IncidentReportForm()
     if form.validate_on_submit():
-        incident = Incident(title=form.title.data,
-                            description=form.description.data,
-                            latitude=form.latitude.data,
-                            longitude=form.longitude.data,
-                            author=current_user)
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
+        if not latitude or not longitude:
+            flash('Location data is required. Please enable geolocation in your browser.')
+            return render_template('report_incident.html', title='Report Incident', form=form)
+        
+        incident = Incident(
+            incident_type=form.incident_type.data,
+            description=form.description.data,
+            latitude=float(latitude),
+            longitude=float(longitude),
+            author=current_user,
+            timestamp=datetime.utcnow()
+        )
         db.session.add(incident)
         db.session.commit()
         flash('Incident reported successfully!')

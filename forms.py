@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from models import User
 
@@ -27,8 +27,14 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 class IncidentReportForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
+    incident_type = SelectField('Incident Type', choices=[
+        ('Hurto', 'Hurto'),
+        ('Hurto a mano armada', 'Hurto a mano armada'),
+        ('Cosquilleo', 'Cosquilleo'),
+        ('Ataque', 'Ataque'),
+        ('Apertura de Puertas', 'Apertura de Puertas'),
+        ('Sospechoso', 'Sospechoso'),
+        ('Acoso', 'Acoso')
+    ], validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    latitude = FloatField('Latitude', validators=[DataRequired()])
-    longitude = FloatField('Longitude', validators=[DataRequired()])
     submit = SubmitField('Report Incident')

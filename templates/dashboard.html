@@ -11,12 +11,13 @@
     <div class="col-md-4">
         <h2>Incident Statistics</h2>
         <canvas id="incidentChart"></canvas>
+        <div id="incidentTypeStats" class="mt-3"></div>
     </div>
 </div>
 
 <div id="notifications" class="mt-4">
-    <h2>Real-time Notifications</h2>
-    <ul id="notificationList" class="list-group"></ul>
+    <h2>Recent Incidents</h2>
+    <ul id="recentIncidentsList" class="list-group"></ul>
 </div>
 
 {% endblock %}
@@ -24,9 +25,37 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
-<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 <script>
     const incidents = {{ incidents|tojson }};
     const statistics = {{ statistics|tojson }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        createChart();
+        updateIncidentTypeStats();
+        updateRecentIncidents();
+    });
+
+    function updateIncidentTypeStats() {
+        const statsContainer = document.getElementById('incidentTypeStats');
+        const incidentTypes = statistics.incidents_by_type;
+        let statsHTML = '<h3>Incidents by Type</h3><ul>';
+        for (const [type, count] of Object.entries(incidentTypes)) {
+            statsHTML += `<li>${type}: ${count}</li>`;
+        }
+        statsHTML += '</ul>';
+        statsContainer.innerHTML = statsHTML;
+    }
+
+    function updateRecentIncidents() {
+        const recentList = document.getElementById('recentIncidentsList');
+        const recentIncidents = incidents.slice(-5).reverse(); // Get last 5 incidents
+        recentList.innerHTML = '';
+        recentIncidents.forEach(incident => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.textContent = `${incident.incident_type} - ${new Date(incident.timestamp).toLocaleString()}`;
+            recentList.appendChild(li);
+        });
+    }
 </script>
 {% endblock %}
