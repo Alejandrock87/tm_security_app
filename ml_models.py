@@ -192,15 +192,19 @@ def get_incident_trends():
         return {}
 
 def get_model_insights():
-    model, feature_importance = train_model()
-    
-    if model is None:
-        return "Not enough data to generate insights."
-    
-    insights = {
-        "feature_importance": feature_importance,
-        "model_parameters": model.named_steps['classifier'].get_params(),
-        "top_predictors": sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5]
-    }
-    
-    return insights
+    try:
+        model, feature_importance = train_model()
+        
+        if model is None:
+            return "Not enough data to generate insights. Please ensure there are at least 100 incident reports."
+        
+        insights = {
+            "feature_importance": feature_importance,
+            "model_parameters": model.named_steps['classifier'].get_params(),
+            "top_predictors": sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5]
+        }
+        
+        return insights
+    except Exception as e:
+        logging.error(f"Error in get_model_insights: {str(e)}", exc_info=True)
+        return "An error occurred while generating model insights. Please check the logs for more information."

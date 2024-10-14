@@ -120,5 +120,13 @@ def predict_incident():
 @app.route('/model_insights')
 @login_required
 def model_insights():
-    insights = get_model_insights()
-    return render_template('model_insights.html', title='Model Insights', insights=insights)
+    try:
+        insights = get_model_insights()
+        if isinstance(insights, str):
+            flash(insights, "warning")
+            return render_template('model_insights.html', title='Model Insights', insights=None)
+        return render_template('model_insights.html', title='Model Insights', insights=insights)
+    except Exception as e:
+        logging.error(f"Error in model_insights route: {str(e)}", exc_info=True)
+        flash("An error occurred while fetching model insights. Please try again later.", "error")
+        return render_template('model_insights.html', title='Model Insights', insights=None)

@@ -201,3 +201,147 @@ INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:03] "[36mGET /static/css/cus
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:09] "[32mGET /model_insights HTTP/1.1[0m" 302 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:09] "GET /login?next=/model_insights HTTP/1.1" 200 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:09] "GET /static/css/custom.css HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:26] "[32mGET /model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:27] "GET /login?next=/model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:27] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:47] "[32mPOST /login?next=/model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:47] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:47] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:52] "GET /register HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:40:52] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:11] "[32mPOST /register HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:12] "[32mGET /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:12] "GET /index HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:12] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:24] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:24] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:24] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:24] "[36mGET /static/js/chart.js HTTP/1.1[0m" 304 -
+ERROR:app:Exception on /model_insights [GET]
+Traceback (most recent call last):
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/routes.py", line 124, in model_insights
+    return render_template('model_insights.html', title='Model Insights', insights=insights)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/TransmilenioSafetyApp/templates/model_insights.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/TransmilenioSafetyApp/templates/base.html", line 63, in top-level template code
+    {% block scripts %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/templates/model_insights.html", line 46, in block 'scripts'
+    const featureImportance = {{ insights.feature_importance|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/json/provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/json/provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:41:49] "[35m[1mGET /model_insights HTTP/1.1[0m" 500 -
+ERROR:app:Exception on /model_insights [GET]
+Traceback (most recent call last):
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/routes.py", line 124, in model_insights
+    insights = get_model_insights()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/TransmilenioSafetyApp/templates/model_insights.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/TransmilenioSafetyApp/templates/base.html", line 63, in top-level template code
+    {% block scripts %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/templates/model_insights.html", line 46, in block 'scripts'
+    <script>
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/jinja2/utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/json/provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/f98g7xbckgqbkagdvpzc2r6lv3h1p9ki-python3-3.11.9/lib/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/runner/TransmilenioSafetyApp/.pythonlibs/lib/python3.11/site-packages/flask/json/provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:38] "[35m[1mGET /model_insights HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.196.25:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:46] "[32mGET /model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:46] "GET /login?next=/model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:46] "GET /static/css/custom.css HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "[32mGET /model_insights HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "GET /login?next=/model_insights HTTP/1.1" 200 -
+INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 08:43:47] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -

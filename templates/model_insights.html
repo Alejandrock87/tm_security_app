@@ -3,7 +3,9 @@
 {% block content %}
 <h1>Model Insights</h1>
 
-{% if insights == "Not enough data to generate insights." %}
+{% if insights is none %}
+    <p>No insights available at the moment. Please try again later.</p>
+{% elif insights is string %}
     <p>{{ insights }}</p>
 {% else %}
     <h2>Feature Importance</h2>
@@ -40,6 +42,7 @@
 {% endblock %}
 
 {% block scripts %}
+{% if insights is not none and insights is not string %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('featureImportanceChart').getContext('2d');
@@ -82,4 +85,5 @@
         });
     });
 </script>
+{% endif %}
 {% endblock %}
