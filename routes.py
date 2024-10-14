@@ -5,6 +5,7 @@ from models import User, Incident
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from utils import get_incidents_for_map, get_incident_statistics
 from datetime import datetime
+from ml_models import predict_incident_probability, get_high_risk_areas
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -80,7 +81,8 @@ def report_incident():
 def dashboard():
     incidents = get_incidents_for_map()
     statistics = get_incident_statistics()
-    return render_template('dashboard.html', incidents=incidents, statistics=statistics)
+    high_risk_areas = get_high_risk_areas()
+    return render_template('dashboard.html', incidents=incidents, statistics=statistics, high_risk_areas=high_risk_areas)
 
 @app.route('/api/incidents')
 def get_incidents():
@@ -91,3 +93,22 @@ def get_incidents():
 def get_statistics():
     statistics = get_incident_statistics()
     return jsonify(statistics)
+
+@app.route('/predict', methods=['POST'])
+@login_required
+def predict_incident():
+    data = request.json
+    probability = predict_incident_probability(
+        data['latitude'],
+        data['longitude'],
+        data['hour'],
+        data['day_of_week'],
+        data['month']
+    )
+    return jsonify({'probability': probability})
+
+@app.route('/high_risk_areas')
+@login_required
+def high_risk_areas():
+    areas = get_high_risk_areas()
+    return jsonify(areas)
