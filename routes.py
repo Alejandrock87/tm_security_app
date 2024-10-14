@@ -123,7 +123,8 @@ def init_routes(app):
     @app.route('/real_time_map')
     @login_required
     def real_time_map():
-        return render_template('real_time_map.html')
+        stations = get_all_stations()
+        return render_template('real_time_map.html', stations=stations)
 
     @app.route('/api/stations')
     @login_required

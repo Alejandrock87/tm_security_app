@@ -13,7 +13,9 @@
     <div class="col-md-6">
         <h2>Transmilenio Stations</h2>
         <ul id="station-list" class="list-group">
-            <!-- Stations will be populated here -->
+            {% for station in stations %}
+            <li class="list-group-item">{{ station.name }}</li>
+            {% endfor %}
         </ul>
     </div>
     <div class="col-md-6">
@@ -24,10 +26,8 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
-    const socket = io();
     let map;
     let userMarker;
     let stationMarkers = [];
@@ -39,104 +39,32 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        updateStations();
+        addTransmilenioStations();
         initializeUserLocation();
-
-        socket.on('update_user_location', (data) => { 
-            console.log('Received location update:', data);
-            updateUserLocation(data.latitude, data.longitude); 
-        });
     }
 
-    function updateStations() {
-        console.log("Updating stations...");  // Debug log
-        map.setView([4.6097, -74.0817], 11);  // Reset view to Bogotá
-
-        fetch('/api/stations')
-            .then(response => response.json())
-            .then(data => {
-                // Clear existing markers
-                stationMarkers.forEach(marker => map.removeLayer(marker));
-                stationMarkers = [];
-
-                const stationList = document.getElementById('station-list');
-
-                console.log("Received station data:", data);  // Debug log
-
-                if (data && data.length > 0) {
-                    // Add new markers
-                    data.forEach(station => {
-                        const marker = L.marker([station.latitude, station.longitude], {icon: createStationIcon()}).addTo(map);
-                        marker.bindPopup(`<b>${station.name}</b><br>Transmilenio Station`);
-                        stationMarkers.push(marker);
-                    });
-
-                    // Update station list
-                    stationList.innerHTML = data.map(station => `
-                        <li class="list-group-item">${station.name}</li>
-                    `).join('');
-                } else {
-                    stationList.innerHTML = '<li class="list-group-item">No station data available</li>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching stations:', error);  // Debug log
-            });
-    }
-
-    function createStationIcon() {
-        return L.icon({
-            iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
+    function addTransmilenioStations() {
+        const stations = {{ stations|tojson|safe }};
+        
+        stations.forEach(station => {
+            const marker = L.marker([station.latitude, station.longitude], {
+                icon: L.icon({
+                    iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                })
+            }).addTo(map);
+            marker.bindPopup(`<b>${station.name}</b><br>Transmilenio Station`);
+            stationMarkers.push(marker);
         });
     }
 
     function initializeUserLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-
-                if (userMarker) {
-                    map.removeLayer(userMarker);
-                }
-
-                userMarker = L.marker([latitude, longitude], {
-                    icon: L.icon({
-                        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-red.png',
-                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41], 
-                        popupAnchor: [1, -34],
-                        shadowSize: [41, 41]
-                    })
-                }).addTo(map);
-                map.setView([latitude, longitude], 15);  // Center map on user's location
-                userMarker.bindPopup("Your current location");
-                
-                document.getElementById('user-location').textContent = `Latitude: ${latitude.toFixed(4)}, Longitude: ${longitude.toFixed(4)}`;
-                
-                // Emit the initial location to the server 
-                socket.emit('update_user_location', { latitude, longitude });
-                
-                // Start watching for location changes
-                navigator.geolocation.watchPosition(
-                    newPosition => {
-                        const { latitude, longitude } = newPosition.coords;
-                        console.log('Sending location update:', { latitude, longitude });
-                        socket.emit('update_user_location', { latitude, longitude });
-                        updateUserLocation(latitude, longitude);
-                    },
-                    error => console.error('Error watching position:', error),
-                    { enableHighAccuracy: true }
-                );
-            }, error => {
-                console.error('Error getting user location:', error);
-                document.getElementById('user-location').textContent = 'Unable to get your location. Please enable geolocation.';
-            }, {
+            navigator.geolocation.watchPosition(updateUserLocation, handleLocationError, {
                 enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: 0
@@ -146,14 +74,32 @@
         }
     }
 
-    function updateUserLocation(latitude, longitude) {
-        console.log('Updating user location:', latitude, longitude);
+    function updateUserLocation(position) {
+        const { latitude, longitude } = position.coords;
+
         if (userMarker) {
-            userMarker.setLatLng([latitude, longitude]);
-            map.setView([latitude, longitude], 15);  // Center map on updated user location
+            map.removeLayer(userMarker);
         }
-        map.setView([latitude, longitude], 15);  // Center map on updated user location
+
+        userMarker = L.marker([latitude, longitude], {
+            icon: L.icon({
+                iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41], 
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map);
+        map.setView([latitude, longitude], 15);
+        userMarker.bindPopup("Your current location");
+        
         document.getElementById('user-location').textContent = `Latitude: ${latitude.toFixed(4)}, Longitude: ${longitude.toFixed(4)}`;
+    }
+
+    function handleLocationError(error) {
+        console.error('Error getting user location:', error);
+        document.getElementById('user-location').textContent = 'Unable to get your location. Please enable geolocation.';
     }
 
     document.addEventListener('DOMContentLoaded', initMap);

@@ -1,6 +1,4 @@
-import random
-
-# Transmilenio stations data
+# Static list of Transmilenio stations with their coordinates
 TRANSMILENIO_STATIONS = [
     {"name": "Portal Norte", "latitude": 4.7545, "longitude": -74.0457},
     {"name": "Calle 100", "latitude": 4.6866, "longitude": -74.0491},
@@ -27,7 +25,7 @@ def get_all_stations():
 
 def get_route_information(route_id):
     """
-    Fetch information about a specific route (mock data)
+    Return information about a specific route (static data)
     """
     routes = {
         "1": {"name": "Troncal Caracas", "stations": ["Portal Norte", "Calle 100", "Calle 72", "Calle 45", "Calle 26"]},
