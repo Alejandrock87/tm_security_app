@@ -2,82 +2,143 @@
 
 ## Descripción General
 
-Esta aplicación web permite a los usuarios reportar y visualizar incidentes de seguridad en el sistema Transmilenio de Bogotá, Colombia. Utiliza Flask como framework backend, SQLAlchemy para la gestión de la base de datos, y Bootstrap para el diseño frontend.
+¡Bienvenido al Sistema de Reporte de Incidentes de Seguridad Transmilenio! Esta aplicación web está diseñada para mejorar la seguridad en el sistema de transporte Transmilenio de Bogotá, Colombia. Permite a los usuarios reportar y visualizar incidentes de seguridad, ayudando a crear un entorno más seguro para todos los pasajeros.
 
 ## Características Principales
 
 1. **Registro e Inicio de Sesión de Usuarios**
-   - Los usuarios pueden registrarse proporcionando un nombre de usuario, correo electrónico y contraseña.
-   - El inicio de sesión se realiza con el nombre de usuario y contraseña.
+   - Crea tu cuenta personal para acceder a todas las funciones.
+   - Inicia sesión de forma segura con tu nombre de usuario y contraseña.
 
 2. **Reporte de Incidentes**
-   - Los usuarios autenticados pueden reportar incidentes de seguridad.
-   - Se captura automáticamente la ubicación del usuario (latitud y longitud).
-   - Se puede seleccionar el tipo de incidente y proporcionar una descripción.
+   - Reporta incidentes de seguridad de forma rápida y sencilla.
+   - La aplicación captura automáticamente tu ubicación para mayor precisión.
+   - Elige entre varios tipos de incidentes y proporciona detalles adicionales.
 
-3. **Mapa de Incidentes**
-   - Visualización de todos los incidentes reportados en un mapa interactivo.
-   - Los incidentes se muestran como marcadores en el mapa.
+3. **Mapa de Incidentes Interactivo**
+   - Visualiza todos los incidentes reportados en un mapa fácil de usar.
+   - Filtra los incidentes por tipo o fecha para un análisis más detallado.
 
 4. **Estadísticas de Incidentes**
-   - Gráficos que muestran la distribución de incidentes por tipo y por tiempo.
+   - Accede a gráficos intuitivos que muestran tendencias de seguridad.
+   - Analiza la distribución de incidentes por tipo y tiempo.
 
-5. **Análisis Predictivo**
-   - Utiliza modelos de aprendizaje automático para predecir posibles áreas de riesgo.
+5. **Análisis Predictivo de Seguridad**
+   - Recibe alertas sobre posibles áreas de riesgo basadas en datos históricos.
+   - Planifica tus viajes de manera más segura con esta información.
 
 6. **Mapa en Tiempo Real**
-   - Muestra la ubicación en tiempo real del usuario y las estaciones de Transmilenio cercanas.
+   - Observa tu ubicación en tiempo real en relación con las estaciones de Transmilenio.
+   - Identifica fácilmente las estaciones más cercanas a tu posición.
 
 7. **Notificaciones en Tiempo Real**
-   - Los usuarios reciben notificaciones sobre nuevos incidentes reportados.
+   - Mantente informado con alertas instantáneas sobre nuevos incidentes en tu área.
 
-## Cómo Usar la Aplicación
+## Guía de Uso Paso a Paso
 
-1. **Registro e Inicio de Sesión**
-   - Acceda a la página principal y haga clic en "Registrarse".
-   - Complete el formulario de registro con su información.
-   - Una vez registrado, inicie sesión con sus credenciales.
+### 1. Registro e Inicio de Sesión
 
-2. **Reportar un Incidente**
-   - Después de iniciar sesión, haga clic en "Reportar Incidente".
-   - Seleccione el tipo de incidente y proporcione una descripción.
-   - Asegúrese de que su ubicación esté activada para capturar las coordenadas.
-   - Haga clic en "Enviar Reporte" para registrar el incidente.
+1. Accede a la página principal de la aplicación.
+2. Haz clic en el botón "Registrarse" en la esquina superior derecha.
+3. Completa el formulario con tu nombre de usuario, correo electrónico y contraseña.
+4. Haz clic en "Registrarse" para crear tu cuenta.
+5. Una vez registrado, usa el botón "Iniciar Sesión" e ingresa tus credenciales.
 
-3. **Ver el Mapa de Incidentes**
-   - Acceda a "Mapa de Incidentes" desde el menú principal.
-   - Explore el mapa para ver todos los incidentes reportados.
-   - Utilice los filtros disponibles para ver incidentes específicos.
+### 2. Reportar un Incidente
 
-4. **Consultar Estadísticas**
-   - En la página del dashboard, podrá ver gráficos y estadísticas sobre los incidentes reportados.
+1. Después de iniciar sesión, haz clic en "Reportar Incidente" en el menú principal.
+2. Asegúrate de que tu ubicación esté activada cuando la aplicación lo solicite.
+3. Selecciona el tipo de incidente de la lista desplegable.
+4. Proporciona una breve descripción del incidente en el campo de texto.
+5. Verifica que la estación más cercana y la hora sean correctas (se llenan automáticamente).
+6. Haz clic en "Enviar Reporte" para registrar el incidente.
 
-5. **Mapa en Tiempo Real**
-   - Acceda a "Mapa en Tiempo Real" para ver su ubicación actual y las estaciones de Transmilenio cercanas.
+### 3. Explorar el Mapa de Incidentes
 
-6. **Recibir Notificaciones**
-   - Las notificaciones sobre nuevos incidentes aparecerán automáticamente en la interfaz de usuario.
+1. En el menú principal, selecciona "Mapa de Incidentes".
+2. Utiliza los controles de zoom para acercarte o alejarte en el mapa.
+3. Haz clic en los marcadores para ver detalles de incidentes específicos.
+4. Usa los filtros en la parte superior del mapa para mostrar tipos específicos de incidentes o rangos de fechas.
+
+### 4. Consultar Estadísticas
+
+1. Accede a "Estadísticas" desde el menú principal.
+2. Explora los diferentes gráficos que muestran tendencias de incidentes.
+3. Utiliza los selectores de fecha para ver estadísticas de períodos específicos.
+
+### 5. Usar el Mapa en Tiempo Real
+
+1. Selecciona "Mapa en Tiempo Real" en el menú.
+2. Permite que la aplicación acceda a tu ubicación cuando lo solicite.
+3. Observa tu posición en el mapa junto con las estaciones de Transmilenio cercanas.
+4. Utiliza esta función para planificar rutas más seguras.
+
+### 6. Configurar Notificaciones
+
+1. Ve a la sección "Configuración" en tu perfil de usuario.
+2. Activa las notificaciones y selecciona los tipos de alertas que deseas recibir.
+3. Elige el radio de distancia para el cual quieres recibir notificaciones.
+
+## Preguntas Frecuentes (FAQ)
+
+**P: ¿Es necesario crear una cuenta para reportar incidentes?**
+R: Sí, es necesario registrarse para poder reportar incidentes. Esto nos ayuda a mantener la integridad de los datos y prevenir reportes falsos.
+
+**P: ¿Cómo se protege mi privacidad al reportar incidentes?**
+R: Tu información personal nunca se muestra públicamente. Solo utilizamos tu ubicación para el reporte de incidentes y las estadísticas se muestran de forma anónima.
+
+**P: ¿Puedo reportar incidentes que ocurrieron en el pasado?**
+R: Sí, al reportar un incidente, tienes la opción de ajustar la fecha y hora del suceso.
+
+**P: ¿Con qué frecuencia se actualizan las estadísticas y el mapa de incidentes?**
+R: El mapa y las estadísticas se actualizan en tiempo real cada vez que se reporta un nuevo incidente.
+
+**P: ¿La aplicación funciona fuera de Bogotá o en otros sistemas de transporte?**
+R: Actualmente, la aplicación está diseñada específicamente para el sistema Transmilenio en Bogotá. Estamos considerando expandirnos a otros sistemas en el futuro.
+
+## Resolución de Problemas
+
+- **No puedo iniciar sesión**: Verifica que estés usando el nombre de usuario y contraseña correctos. Si olvidaste tu contraseña, usa la opción "Olvidé mi contraseña" en la página de inicio de sesión.
+
+- **La aplicación no detecta mi ubicación**: Asegúrate de que has dado permiso a la aplicación para acceder a tu ubicación en la configuración de tu dispositivo o navegador.
+
+- **No veo los incidentes en el mapa**: Prueba a refrescar la página. Si el problema persiste, verifica tu conexión a internet.
+
+- **No recibo notificaciones**: Revisa la configuración de notificaciones en tu perfil y asegúrate de que las has activado correctamente.
 
 ## Consideraciones Técnicas
 
-- La aplicación utiliza Flask como framework backend.
-- SQLAlchemy se usa para la gestión de la base de datos.
-- El frontend está diseñado con Bootstrap para una experiencia responsiva.
-- Se utiliza Leaflet.js para la renderización de mapas interactivos.
-- Socket.IO se implementa para las funcionalidades en tiempo real.
+- La aplicación está desarrollada con Flask, un framework ligero y potente de Python.
+- Utilizamos SQLAlchemy para una gestión eficiente de la base de datos.
+- El frontend está diseñado con Bootstrap, garantizando una experiencia responsiva en todos los dispositivos.
+- Los mapas interactivos se implementan con Leaflet.js, una librería de código abierto para mapas interactivos.
+- Las funcionalidades en tiempo real se logran mediante Socket.IO.
 
 ## Seguridad
 
-- Las contraseñas de los usuarios se almacenan de forma segura utilizando hash.
-- Se implementa autenticación de usuarios para acceder a funcionalidades sensibles.
-- La geolocalización requiere el consentimiento explícito del usuario.
+- Todas las contraseñas se almacenan de forma segura utilizando técnicas de hash avanzadas.
+- La autenticación de usuarios es obligatoria para acceder a funcionalidades sensibles.
+- La geolocalización requiere el consentimiento explícito del usuario y puede desactivarse en cualquier momento.
 
-## Desarrollo Futuro
+## Planes Futuros
 
-- Integración con APIs oficiales de Transmilenio para datos en tiempo real.
-- Mejora de los modelos de aprendizaje automático para predicciones más precisas.
-- Implementación de una aplicación móvil nativa para mejorar la experiencia del usuario en dispositivos móviles.
+Estamos constantemente trabajando para mejorar la aplicación. Algunos de nuestros planes futuros incluyen:
+
+- Integración con APIs oficiales de Transmilenio para obtener datos en tiempo real sobre el estado del servicio.
+- Implementación de modelos de aprendizaje automático más avanzados para mejorar las predicciones de seguridad.
+- Desarrollo de una aplicación móvil nativa para mejorar aún más la experiencia en dispositivos móviles.
+- Expansión a otros sistemas de transporte público en Colombia y América Latina.
+
+## Contacto y Soporte
+
+Si tienes alguna pregunta, sugerencia o necesitas ayuda, no dudes en contactarnos:
+
+- Correo electrónico: soporte@seguridadtransmilenio.com
+- Twitter: @SeguridadTM
+- Facebook: /SeguridadTransmilenio
+
+Agradecemos tu participación en hacer del Transmilenio un sistema más seguro para todos.
 
 ---
 
-Para cualquier pregunta o soporte, por favor contacte al equipo de desarrollo.
+Desarrollado con ❤️ por el equipo de Seguridad Transmilenio.
