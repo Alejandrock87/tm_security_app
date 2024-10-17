@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+        }
+        .station-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #808080;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .station-icon::after {
+            content: "T";
+            color: white;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="station-icon"></div>
+</body>
+</html>

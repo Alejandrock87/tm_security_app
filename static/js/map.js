@@ -27,28 +27,6 @@ function initMap() {
 }
 
 function loadGeoJSONLayers() {
-    // Load stations GeoJSON
-    fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
-        .then(response => response.json())
-        .then(data => {
-            stationsLayer = L.geoJSON(data, {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 6,
-                        fillColor: "#ff7800",
-                        color: "#000",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    });
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.NOMBRE);
-                }
-            }).addTo(map);
-        })
-        .catch(error => console.error("Error loading stations GeoJSON:", error));
-
     // Load routes GeoJSON
     fetch('/static/Rutas_Troncales_de_TRANSMILENIO.geojson')
         .then(response => response.json())
@@ -56,7 +34,7 @@ function loadGeoJSONLayers() {
             routesLayer = L.geoJSON(data, {
                 style: function (feature) {
                     return {
-                        color: "#ff0000",
+                        color: "#87CEFA",
                         weight: 3,
                         opacity: 0.7
                     };
@@ -67,6 +45,28 @@ function loadGeoJSONLayers() {
             }).addTo(map);
         })
         .catch(error => console.error("Error loading routes GeoJSON:", error));
+
+    // Load stations GeoJSON
+    fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+        .then(response => response.json())
+        .then(data => {
+            stationsLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: L.icon({
+                            iconUrl: '/static/images/station_icon.png',
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12],
+                            popupAnchor: [0, -12]
+                        })
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.NOMBRE);
+                }
+            }).addTo(map);
+        })
+        .catch(error => console.error("Error loading stations GeoJSON:", error));
 }
 
 function addIncidentMarker(incident) {
@@ -130,7 +130,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-// Initialize the map when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOMContentLoaded event fired in map.js");
     initMap();
