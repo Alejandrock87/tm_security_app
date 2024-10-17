@@ -15,12 +15,14 @@ def init_routes(app):
     @app.route('/')
     @app.route('/index')
     def index():
+        if current_user.is_authenticated:
+            return redirect(url_for('dashboard'))
         return render_template('index.html', title='Inicio')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         form = LoginForm()
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
@@ -30,7 +32,7 @@ def init_routes(app):
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             if not next_page or urlparse(next_page).netloc != '':
-                next_page = url_for('index')
+                next_page = url_for('dashboard')
             return redirect(next_page)
         return render_template('login.html', title='Iniciar sesión', form=form)
 
@@ -42,7 +44,7 @@ def init_routes(app):
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         if current_user.is_authenticated:
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         form = RegistrationForm()
         if form.validate_on_submit():
             user = User(username=form.username.data, email=form.email.data)
@@ -79,7 +81,7 @@ def init_routes(app):
             device_token = "simulated_device_token"
             send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
             
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         return render_template('report_incident.html', title='Reportar incidente', form=form)
 
     @app.route('/dashboard')

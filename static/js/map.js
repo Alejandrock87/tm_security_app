@@ -52,13 +52,14 @@ function loadGeoJSONLayers() {
         .then(data => {
             stationsLayer = L.geoJSON(data, {
                 pointToLayer: function (feature, latlng) {
+                    const stationName = feature.properties.NOMBRE || 'Estación sin nombre';
                     return L.marker(latlng, {
                         icon: L.divIcon({
                             html: `<div style="text-align: center;">
                                      <img src="/static/images/station_icon.png" width="24" height="24" style="filter: hue-rotate(60deg);">
                                      <div style="background-color: rgba(255,255,255,0.7); padding: 2px; border-radius: 3px; margin-top: 2px;">
                                        <span style="font-size: 12px; font-weight: bold; color: #333;">
-                                         ${feature.properties.NOMBRE}
+                                         ${stationName}
                                        </span>
                                      </div>
                                    </div>`,
@@ -69,7 +70,8 @@ function loadGeoJSONLayers() {
                     });
                 },
                 onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.NOMBRE);
+                    const stationName = feature.properties.NOMBRE || 'Estación sin nombre';
+                    layer.bindPopup(stationName);
                 }
             }).addTo(map);
         })
@@ -119,7 +121,7 @@ function findNearestStation(userLat, userLng) {
         const distance = calculateDistance(userLat, userLng, layer.getLatLng().lat, layer.getLatLng().lng);
         if (distance < shortestDistance) {
             shortestDistance = distance;
-            nearestStation = layer.feature.properties.NOMBRE;
+            nearestStation = layer.feature.properties.NOMBRE || 'Estación sin nombre';
         }
     });
 
