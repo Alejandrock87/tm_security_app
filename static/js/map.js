@@ -53,11 +53,17 @@ function loadGeoJSONLayers() {
             stationsLayer = L.geoJSON(data, {
                 pointToLayer: function (feature, latlng) {
                     return L.marker(latlng, {
-                        icon: L.icon({
-                            iconUrl: '/static/images/station_icon.png',
-                            iconSize: [24, 24],
-                            iconAnchor: [12, 12],
-                            popupAnchor: [0, -12]
+                        icon: L.divIcon({
+                            html: `<div style="text-align: center;">
+                                     <img src="/static/images/station_icon.png" width="24" height="24" style="filter: hue-rotate(60deg);">
+                                     <br>
+                                     <span style="background-color: white; padding: 2px; border-radius: 3px; font-size: 10px;">
+                                       ${feature.properties.NOMBRE}
+                                     </span>
+                                   </div>`,
+                            className: 'station-label',
+                            iconSize: [120, 50],
+                            iconAnchor: [60, 25]
                         })
                     });
                 },

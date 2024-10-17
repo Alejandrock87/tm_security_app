@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 
-def create_station_icon(size=24, bg_color=(128, 128, 128), text_color=(255, 255, 255)):
+def create_station_icon(size=24, bg_color=(144, 238, 144), text_color=(0, 0, 0)):
     image = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
     
