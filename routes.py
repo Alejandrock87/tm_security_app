@@ -101,9 +101,9 @@ def init_routes(app):
             
             return render_template('dashboard.html', 
                                    incidents=incidents, 
-                                   statistics=statistics,
-                                   trends=trends,
-                                   model_insights=model_insights)
+                                   statistics=statistics if statistics else {},
+                                   trends=trends if trends else [],
+                                   model_insights=model_insights if model_insights else {})
         except Exception as e:
             logging.error(f"Error en la ruta del panel de control: {str(e)}")
             flash("Ocurrió un error al cargar el panel de control. Por favor, intente de nuevo más tarde.", "error")

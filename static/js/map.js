@@ -56,14 +56,15 @@ function loadGeoJSONLayers() {
                         icon: L.divIcon({
                             html: `<div style="text-align: center;">
                                      <img src="/static/images/station_icon.png" width="24" height="24" style="filter: hue-rotate(60deg);">
-                                     <br>
-                                     <span style="background-color: white; padding: 2px; border-radius: 3px; font-size: 10px;">
-                                       ${feature.properties.NOMBRE}
-                                     </span>
+                                     <div style="background-color: rgba(255,255,255,0.7); padding: 2px; border-radius: 3px; margin-top: 2px;">
+                                       <span style="font-size: 12px; font-weight: bold; color: #333;">
+                                         ${feature.properties.NOMBRE}
+                                       </span>
+                                     </div>
                                    </div>`,
                             className: 'station-label',
-                            iconSize: [120, 50],
-                            iconAnchor: [60, 25]
+                            iconSize: [120, 60],
+                            iconAnchor: [60, 30]
                         })
                     });
                 },

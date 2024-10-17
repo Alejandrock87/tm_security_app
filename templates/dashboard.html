@@ -56,13 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("initMap function not found");
     }
     
-    if (typeof createChart === 'function' && {{ statistics|tojson|safe }}) {
-        createChart();
+    const statistics = {{ statistics|tojson|safe }};
+    if (typeof createChart === 'function' && statistics && Object.keys(statistics).length > 0) {
+        createChart(statistics);
     }
     
     const incidentTypeStats = document.getElementById('incidentTypeStats');
-    if (incidentTypeStats && {{ statistics.incidents_by_type|tojson|safe }}) {
-        const incidentTypes = {{ statistics.incidents_by_type|tojson|safe }};
+    if (incidentTypeStats && statistics && statistics.incidents_by_type) {
+        const incidentTypes = statistics.incidents_by_type;
         let statsHtml = '<h3 class="mt-4">Tipos de Incidentes</h3><ul class="list-group">';
         for (const [type, count] of Object.entries(incidentTypes)) {
             statsHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
