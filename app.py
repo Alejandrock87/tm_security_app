@@ -31,12 +31,11 @@ def create_app():
     from routes import init_routes
     init_routes(app)
 
-    # Update SocketIO configuration
-    socketio.init_app(app, cors_allowed_origins="*", async_mode='eventlet')
+    socketio.init_app(app, cors_allowed_origins="*")
 
     return app
 
 app = create_app()
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)

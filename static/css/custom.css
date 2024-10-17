@@ -1,155 +1,83 @@
-/* Existing styles */
+/* Add any custom styles here */
+body {
+    padding-bottom: 20px;
+}
 
-/* Map styles */
 #map {
-    height: 600px;
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Custom marker styles */
-.custom-div-icon {
-    background: none;
-    border: none;
-}
-
-.marker-pin {
-    width: 30px;
-    height: 30px;
-    border-radius: 50% 50% 50% 0;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 50%;
-    top: 50%;
-    margin: -15px 0 0 -15px;
-}
-
-.marker-pin::after {
-    content: '';
-    width: 24px;
-    height: 24px;
-    margin: 3px 0 0 3px;
-    background: #2b2b2b;
-    position: absolute;
-    border-radius: 50%;
-}
-
-.custom-div-icon i {
-    position: absolute;
-    width: 22px;
-    font-size: 22px;
-    left: 0;
-    right: 0;
-    margin: 10px auto;
-    text-align: center;
-}
-
-/* Legend styles */
-.info.legend {
-    background: rgba(43, 43, 43, 0.8);
-    padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.info.legend h4 {
-    margin: 0 0 5px;
-    color: #ffffff;
+#notificationList {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.info.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #map {
+        height: 300px !important;
+    }
+
+    .navbar-nav {
+        margin-top: 10px;
+    }
+
+    #notificationButton {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .chart-container {
+        height: 300px !important;
+    }
 }
 
-/* Layer control styles */
-.leaflet-control-layers {
-    background: rgba(43, 43, 43, 0.8);
-    padding: 6px 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+/* Improve touch targets for mobile */
+.nav-link, .btn {
+    padding: 12px 15px;
 }
 
-.leaflet-control-layers-toggle {
-    background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/layers.png);
-    width: 36px;
-    height: 36px;
+/* Adjust font sizes for better readability on small screens */
+@media (max-width: 767px) {
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
 }
 
-.leaflet-control-layers-expanded {
-    padding: 6px 10px 6px 6px;
-    color: #ffffff;
-    background: rgba(43, 43, 43, 0.8);
+/* Ensure proper spacing for form elements on mobile */
+.form-control, .form-select {
+    margin-bottom: 15px;
 }
 
-.leaflet-control-layers-expanded .leaflet-control-layers-list {
-    display: inline-block;
-}
-
-.leaflet-control-layers-selector {
-    margin-top: 2px;
-    position: relative;
-    top: 1px;
-}
-
-.leaflet-control-layers label {
-    display: block;
-    font-size: 13px;
-    font-weight: normal;
-    margin-bottom: 5px;
-}
-
-/* Search control styles */
-.leaflet-control-search .search-input {
-    background-color: #2b2b2b;
-    color: #ffffff;
-    border: 1px solid #4a4a4a;
-}
-
-.leaflet-control-search .search-tooltip {
-    background-color: #2b2b2b;
-    color: #ffffff;
-}
-
-.leaflet-control-search .search-tip {
-    background-color: #3a3a3a;
-    color: #ffffff;
-}
-
-.leaflet-control-search .search-tip:hover {
-    background-color: #4a4a4a;
-}
-
-/* Fullscreen control styles */
-.leaflet-control-fullscreen a {
-    background-color: #2b2b2b;
-    color: #ffffff;
-}
-
-/* Zoom control styles */
-.leaflet-control-zoom a {
-    background-color: #2b2b2b;
-    color: #ffffff;
-    border: 1px solid #4a4a4a;
-}
-
-.leaflet-control-zoom a:hover {
-    background-color: #3a3a3a;
-}
-
-/* Popup styles */
-.leaflet-popup-content-wrapper {
-    background-color: #2b2b2b;
-    color: #ffffff;
-}
-
-.leaflet-popup-tip {
-    background-color: #2b2b2b;
+/* Improve table responsiveness */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
