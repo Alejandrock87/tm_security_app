@@ -1,0 +1,39 @@
+* Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 107-246-767
+(2593) wsgi starting up on http://0.0.0.0:5000
+(2593) accepted ('172.31.196.46', 36244)
+WARNING:root:Not enough data to calculate incident trends.
+WARNING:root:Not enough data to train the model.
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:13:49] "GET /dashboard HTTP/1.1" 200 4374 0.250895
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:13:49] "GET /static/css/custom.css HTTP/1.1" 304 218 0.003516
+(2593) accepted ('172.31.196.46', 36246)
+181.61.208.166,10.81.0.209,172.31.196.46 - - [17/Oct/2024 08:13:49] "GET /static/js/notifications.js HTTP/1.1" 304 224 0.001194
+(2593) accepted ('172.31.196.46', 36262)
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:13:49] "GET /static/js/map.js HTTP/1.1" 304 214 0.001115
+(2593) accepted ('172.31.196.46', 36274)
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:13:50] "GET /socket.io/?EIO=4&transport=polling&t=PAPYMDX HTTP/1.1" 200 254 0.000326
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:13:50] "POST /socket.io/?EIO=4&transport=polling&t=PAPYMFE&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000882
+(2593) accepted ('172.31.196.46', 36284)
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:13:50] "GET /socket.io/?EIO=4&transport=polling&t=PAPYMFF&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 189 0.000161
+(2593) accepted ('172.31.196.46', 36294)
+Invalid transport for session up5TV-In79fvEnakAAAA (further occurrences of this error will be logged with level INFO)
+ERROR:engineio.server:Invalid transport for session up5TV-In79fvEnakAAAA (further occurrences of this error will be logged with level INFO)
+181.61.208.166,10.81.2.97,172.31.196.46 - - [17/Oct/2024 08:13:50] "GET /socket.io/?EIO=4&transport=websocket&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 400 280 0.000324
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:14:15] "GET /socket.io/?EIO=4&transport=polling&t=PAPYMGq&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 24.803894
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:14:15] "POST /socket.io/?EIO=4&transport=polling&t=PAPYSNU&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000224
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:14:40] "GET /socket.io/?EIO=4&transport=polling&t=PAPYSNW&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 25.006064
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:14:40] "POST /socket.io/?EIO=4&transport=polling&t=PAPYYW5&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000253
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:15:05] "GET /socket.io/?EIO=4&transport=polling&t=PAPYYW6&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 25.005985
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:15:05] "POST /socket.io/?EIO=4&transport=polling&t=PAPYef4&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000254
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:15:30] "GET /socket.io/?EIO=4&transport=polling&t=PAPYef6&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 25.000760
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:15:30] "POST /socket.io/?EIO=4&transport=polling&t=PAPYkno&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000309
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:15:55] "GET /socket.io/?EIO=4&transport=polling&t=PAPYknq&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 25.003543
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:15:55] "POST /socket.io/?EIO=4&transport=polling&t=PAPYqwf&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000225
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:16:20] "GET /socket.io/?EIO=4&transport=polling&t=PAPYqwg&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 24.953150
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:16:21] "POST /socket.io/?EIO=4&transport=polling&t=PAPYx34&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000332
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:16:46] "GET /socket.io/?EIO=4&transport=polling&t=PAPYx36&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 24.818509
+(2593) accepted ('172.31.196.46', 56890)
+181.61.208.166,10.81.4.154,172.31.196.46 - - [17/Oct/2024 08:16:46] "POST /socket.io/?EIO=4&transport=polling&t=PAPZ1Bm&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000201
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:17:11] "GET /socket.io/?EIO=4&transport=polling&t=PAPZ1Bo&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 157 25.002015
+181.61.208.166,10.81.5.78,172.31.196.46 - - [17/Oct/2024 08:17:11] "POST /socket.io/?EIO=4&transport=polling&t=PAPZ7K9&sid=up5TV-In79fvEnakAAAA HTTP/1.1" 200 253 0.000341

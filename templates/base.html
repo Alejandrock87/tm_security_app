@@ -21,7 +21,17 @@
     <script src="https://unpkg.com/leaflet-search@2.9.8/dist/leaflet-search.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('Global error:', message, 'Source:', source, 'Line:', lineno, 'Column:', colno, 'Error:', error);
+        };
+    </script>
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
     {% block scripts %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('All scripts loaded successfully');
+        });
+    </script>
 </body>
 </html>
