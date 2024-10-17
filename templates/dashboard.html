@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4 text-center">Mapa de Incidentes</h1>
+<h1 class="mb-4 text-center">Mapa de Incidentes y Rutas de Transmilenio</h1>
 
-{% if incidents is defined and incidents %}
 <div class="row">
     <div class="col-12 col-lg-8 mb-4">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Mapa de Incidentes</h2>
+                <h2 class="card-title">Mapa Interactivo</h2>
             </div>
             <div class="card-body">
-                <div id="map" style="height: 400px;"></div>
+                <div id="map" style="height: 600px;"></div>
             </div>
         </div>
     </div>
@@ -21,7 +20,7 @@
                 <h2 class="card-title">Estadísticas de Incidentes</h2>
             </div>
             <div class="card-body">
-                {% if statistics is defined and statistics %}
+                {% if statistics and statistics.incidents_by_type %}
                 <div class="chart-container" style="position: relative; height:300px;">
                     <canvas id="incidentChart"></canvas>
                 </div>
@@ -35,37 +34,94 @@
     </div>
 </div>
 
+{% if incidents %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Lista de Incidentes Recientes</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tipo de Incidente</th>
+                                <th>Fecha y Hora</th>
+                                <th>Ubicación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for incident in incidents[:10] %}
+                            <tr>
+                                <td>{{ incident.incident_type }}</td>
+                                <td>{{ incident.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>{{ incident.location }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% else %}
-<p class="text-center">No hay datos de incidentes disponibles en este momento. Por favor, vuelva a revisar más tarde.</p>
+<p class="text-center mt-4">No hay datos de incidentes disponibles en este momento. Por favor, vuelva a revisar más tarde.</p>
 {% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
-<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof initMap === 'function') {
         initMap();
     }
     
-    if (typeof createChart === 'function' && {{ statistics|tojson|safe }}) {
-        createChart();
-    }
+    {% if statistics and statistics.incidents_by_type %}
+    const ctx = document.getElementById('incidentChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ statistics.incidents_by_type.keys()|list|tojson }},
+            datasets: [{
+                data: {{ statistics.incidents_by_type.values()|list|tojson }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Distribución de Tipos de Incidentes'
+                }
+            }
+        }
+    });
     
     const incidentTypeStats = document.getElementById('incidentTypeStats');
-    if (incidentTypeStats && {{ statistics.incidents_by_type|tojson|safe }}) {
-        const incidentTypes = {{ statistics.incidents_by_type|tojson|safe }};
-        let statsHtml = '<h3 class="mt-4">Tipos de Incidentes</h3><ul class="list-group">';
-        for (const [type, count] of Object.entries(incidentTypes)) {
-            statsHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                ${type}
-                <span class="badge bg-primary rounded-pill">${count}</span>
-            </li>`;
-        }
-        statsHtml += '</ul>';
-        incidentTypeStats.innerHTML = statsHtml;
+    const incidentTypes = {{ statistics.incidents_by_type|tojson|safe }};
+    let statsHtml = '<h3 class="mt-4">Tipos de Incidentes</h3><ul class="list-group">';
+    for (const [type, count] of Object.entries(incidentTypes)) {
+        statsHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
+            ${type}
+            <span class="badge bg-primary rounded-pill">${count}</span>
+        </li>`;
     }
+    statsHtml += '</ul>';
+    incidentTypeStats.innerHTML = statsHtml;
+    {% endif %}
 });
 </script>
 {% endblock %}

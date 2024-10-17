@@ -1,88 +1,200 @@
 let map;
 let userMarker;
 let stationMarkers = [];
-
-const transmilenioStations = [
-    { name: "Portal Norte", lat: 4.7545, lng: -74.0457 },
-    { name: "Calle 100", lat: 4.6866, lng: -74.0491 },
-    { name: "Calle 72", lat: 4.6583, lng: -74.0652 },
-    { name: "Calle 45", lat: 4.6322, lng: -74.0715 },
-    { name: "Calle 26", lat: 4.6159, lng: -74.0706 },
-    { name: "Ricaurte", lat: 4.6131, lng: -74.0958 },
-    { name: "Portal Suba", lat: 4.7437, lng: -74.0936 },
-    { name: "Portal 80", lat: 4.7106, lng: -74.1113 },
-    { name: "Portal Américas", lat: 4.6297, lng: -74.2052 },
-    { name: "Portal Sur", lat: 4.5781, lng: -74.1428 },
-    { name: "Calle 187", lat: 4.7652, lng: -74.0446 },
-    { name: "Terminal", lat: 4.6007, lng: -74.0823 },
-    { name: "Calle 146", lat: 4.7268, lng: -74.0468 },
-    { name: "Calle 127", lat: 4.7031, lng: -74.0513 },
-    { name: "Pepe Sierra", lat: 4.6759, lng: -74.0541 }
-];
-
-const transmilenioRoutes = [
-    { name: "Troncal Caracas", color: "#FF0000", stations: ["Portal Norte", "Calle 100", "Calle 72", "Calle 45", "Calle 26"] },
-    { name: "Troncal NQS", color: "#0000FF", stations: ["Portal Sur", "Ricaurte", "Calle 26"] },
-    { name: "Troncal Suba", color: "#00FF00", stations: ["Portal Suba", "Calle 127", "Pepe Sierra", "Calle 100"] },
-    { name: "Troncal Calle 80", color: "#FFA500", stations: ["Portal 80", "Calle 72", "Terminal"] }
-];
+let routeLayers = {};
+let incidentLayer;
+let searchControl;
 
 function initMap() {
-    map = L.map('map').setView([4.6097, -74.0817], 11); // Centered on Bogotá
+    map = L.map('map', {
+        fullscreenControl: true,
+        zoomControl: false
+    }).setView([4.6097, -74.0817], 11); // Centered on Bogotá
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
 
-    addTransmilenioStations();
-    drawTransmilenioRoutes();
+    L.control.zoom({
+        position: 'bottomright'
+    }).addTo(map);
 
-    if (typeof incidents !== 'undefined') {
+    L.control.scale({
+        imperial: false,
+        position: 'bottomleft'
+    }).addTo(map);
+
+    addTransmilenioLayers();
+    addIncidentLayer();
+    addLayerControl();
+    addLegend();
+    addSearchControl();
+
+    if (typeof incidents !== 'undefined' && incidents) {
         incidents.forEach(incident => {
             addIncidentMarker(incident);
         });
     }
 }
 
-function addTransmilenioStations() {
-    const stationIcon = L.icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
+function addTransmilenioLayers() {
+    // Load Transmilenio stations
+    fetch('/static/geojson/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+        .then(response => response.json())
+        .then(data => {
+            const stationLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: L.divIcon({
+                            className: 'custom-div-icon',
+                            html: "<div style='background-color:#4a4a4a;' class='marker-pin'></div><i class='fas fa-bus' style='color: #ffffff;'></i>",
+                            iconSize: [30, 42],
+                            iconAnchor: [15, 42]
+                        })
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(`
+                        <b>${feature.properties.NOMBRE}</b><br>
+                        Estación de Transmilenio<br>
+                        <small>Troncal: ${feature.properties.TRONCAL}</small>
+                    `);
+                }
+            }).addTo(map);
+            stationMarkers.push(stationLayer);
+        });
 
-    transmilenioStations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {icon: stationIcon}).addTo(map);
-        marker.bindPopup(`<b>${station.name}</b><br>Transmilenio Station`);
-        stationMarkers.push(marker);
-    });
+    // Load Transmilenio routes
+    fetch('/static/geojson/Rutas_Troncales_de_TRANSMILENIO.geojson')
+        .then(response => response.json())
+        .then(data => {
+            const routeLayer = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: getRouteColor(feature.properties.NOMBRE),
+                        weight: 4,
+                        opacity: 0.7
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(`
+                        <b>Ruta: ${feature.properties.NOMBRE}</b><br>
+                        <small>Longitud: ${(feature.properties.LONGITUD / 1000).toFixed(2)} km</small>
+                    `);
+                    routeLayers[feature.properties.NOMBRE] = layer;
+                }
+            }).addTo(map);
+
+            // Add route icons
+            data.features.forEach(feature => {
+                const coordinates = feature.geometry.coordinates;
+                const midpoint = coordinates[Math.floor(coordinates.length / 2)];
+                L.marker([midpoint[1], midpoint[0]], {
+                    icon: L.divIcon({
+                        className: 'custom-div-icon',
+                        html: `<div style='background-color:${getRouteColor(feature.properties.NOMBRE)};' class='marker-pin'></div><i class='fas fa-route' style='color: #ffffff;'></i>`,
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    })
+                }).addTo(map).bindPopup(`<b>Ruta: ${feature.properties.NOMBRE}</b>`);
+            });
+        });
 }
 
-function drawTransmilenioRoutes() {
-    transmilenioRoutes.forEach(route => {
-        const routeCoordinates = route.stations.map(stationName => {
-            const station = transmilenioStations.find(s => s.name === stationName);
-            return [station.lat, station.lng];
-        });
-        L.polyline(routeCoordinates, {color: route.color, weight: 3}).addTo(map);
-    });
+function getRouteColor(routeName) {
+    const colors = {
+        'A': '#FF6B6B',
+        'B': '#4ECDC4',
+        'C': '#45B7D1',
+        'D': '#FFA07A',
+        'E': '#98D8C8',
+        'F': '#F06292',
+        'G': '#AED581',
+        'H': '#FFD54F',
+        'J': '#BA68C8',
+        'K': '#4DB6AC'
+    };
+    return colors[routeName.charAt(0)] || getRandomColor();
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function addIncidentLayer() {
+    incidentLayer = L.layerGroup().addTo(map);
 }
 
 function addIncidentMarker(incident) {
-    const incidentIcon = L.icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-red.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+    const incidentIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div style='background-color:#ff0000;' class='marker-pin'></div><i class='fas fa-exclamation-triangle' style='color: #ffffff;'></i>`,
+        iconSize: [30, 42],
+        iconAnchor: [15, 42]
     });
 
-    const marker = L.marker([incident.latitude, incident.longitude], {icon: incidentIcon}).addTo(map);
-    marker.bindPopup(`<b>${incident.incident_type}</b><br>Reported on: ${new Date(incident.timestamp).toLocaleString()}`);
+    const marker = L.marker([incident.latitude, incident.longitude], {icon: incidentIcon}).addTo(incidentLayer);
+    marker.bindPopup(`
+        <b>${incident.incident_type}</b><br>
+        Reportado el: ${new Date(incident.timestamp).toLocaleString()}<br>
+        <small>${incident.description}</small>
+    `);
+}
+
+function addLayerControl() {
+    const baseMaps = {
+        "Mapa Oscuro": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }),
+        "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
+    };
+
+    const overlayMaps = {
+        "Estaciones Transmilenio": L.layerGroup(stationMarkers),
+        "Incidentes Reportados": incidentLayer,
+        ...routeLayers
+    };
+
+    L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+}
+
+function addLegend() {
+    const legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML += '<h4>Leyenda</h4>';
+        div.innerHTML += '<i class="fas fa-bus" style="color: #4a4a4a;"></i> Estación de Transmilenio<br>';
+        div.innerHTML += '<i class="fas fa-route" style="color: #4ECDC4;"></i> Ruta de Transmilenio<br>';
+        div.innerHTML += '<i class="fas fa-exclamation-triangle" style="color: #ff0000;"></i> Incidente Reportado<br>';
+        return div;
+    };
+
+    legend.addTo(map);
+}
+
+function addSearchControl() {
+    searchControl = new L.Control.Search({
+        layer: L.layerGroup(stationMarkers),
+        propertyName: 'NOMBRE',
+        marker: false,
+        moveToLocation: function(latlng, title, map) {
+            map.setView(latlng, 15);
+        }
+    });
+
+    searchControl.on('search:locationfound', function(e) {
+        e.layer.openPopup();
+    });
+
+    map.addControl(searchControl);
 }
 
 function updateMapWithUserLocation(latitude, longitude) {
@@ -90,45 +202,16 @@ function updateMapWithUserLocation(latitude, longitude) {
         map.removeLayer(userMarker);
     }
 
-    const userIcon = L.icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-green.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+    const userIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: "<div style='background-color:#4CAF50;' class='marker-pin'></div><i class='fas fa-user' style='color: #ffffff;'></i>",
+        iconSize: [30, 42],
+        iconAnchor: [15, 42]
     });
 
     userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
-    userMarker.bindPopup("Your current location");
+    userMarker.bindPopup("Su ubicación actual");
     map.setView([latitude, longitude], 13);
-}
-
-function findNearestStation(userLat, userLng) {
-    let nearestStation = transmilenioStations[0];
-    let shortestDistance = calculateDistance(userLat, userLng, nearestStation.lat, nearestStation.lng);
-
-    for (let i = 1; i < transmilenioStations.length; i++) {
-        const station = transmilenioStations[i];
-        const distance = calculateDistance(userLat, userLng, station.lat, station.lng);
-        if (distance < shortestDistance) {
-            shortestDistance = distance;
-            nearestStation = station;
-        }
-    }
-
-    return nearestStation.name;
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
