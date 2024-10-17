@@ -1,41 +1,23 @@
 let map;
 let userMarker;
 let stationMarkers = [];
-
-const transmilenioStations = [
-    { name: "Portal Norte", lat: 4.7545, lng: -74.0457 },
-    { name: "Calle 100", lat: 4.6866, lng: -74.0491 },
-    { name: "Calle 72", lat: 4.6583, lng: -74.0652 },
-    { name: "Calle 45", lat: 4.6322, lng: -74.0715 },
-    { name: "Calle 26", lat: 4.6159, lng: -74.0706 },
-    { name: "Ricaurte", lat: 4.6131, lng: -74.0958 },
-    { name: "Portal Suba", lat: 4.7437, lng: -74.0936 },
-    { name: "Portal 80", lat: 4.7106, lng: -74.1113 },
-    { name: "Portal Américas", lat: 4.6297, lng: -74.2052 },
-    { name: "Portal Sur", lat: 4.5781, lng: -74.1428 },
-    { name: "Calle 187", lat: 4.7652, lng: -74.0446 },
-    { name: "Terminal", lat: 4.6007, lng: -74.0823 },
-    { name: "Calle 146", lat: 4.7268, lng: -74.0468 },
-    { name: "Calle 127", lat: 4.7031, lng: -74.0513 },
-    { name: "Pepe Sierra", lat: 4.6759, lng: -74.0541 }
-];
-
-const transmilenioRoutes = [
-    { name: "Troncal Caracas", color: "#FF0000", stations: ["Portal Norte", "Calle 100", "Calle 72", "Calle 45", "Calle 26"] },
-    { name: "Troncal NQS", color: "#0000FF", stations: ["Portal Sur", "Ricaurte", "Calle 26"] },
-    { name: "Troncal Suba", color: "#00FF00", stations: ["Portal Suba", "Calle 127", "Pepe Sierra", "Calle 100"] },
-    { name: "Troncal Calle 80", color: "#FFA500", stations: ["Portal 80", "Calle 72", "Terminal"] }
-];
+let stationsLayer, routesLayer;
 
 function initMap() {
+    console.log("initMap function called in map.js");
+    if (!document.getElementById('map')) {
+        console.error("Map element not found in initMap (map.js). Retrying in 500ms...");
+        setTimeout(initMap, 500);
+        return;
+    }
+
     map = L.map('map').setView([4.6097, -74.0817], 11); // Centered on Bogotá
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    addTransmilenioStations();
-    drawTransmilenioRoutes();
+    loadGeoJSONLayers();
 
     if (typeof incidents !== 'undefined') {
         incidents.forEach(incident => {
@@ -44,31 +26,47 @@ function initMap() {
     }
 }
 
-function addTransmilenioStations() {
-    const stationIcon = L.icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-blue.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
+function loadGeoJSONLayers() {
+    // Load stations GeoJSON
+    fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+        .then(response => response.json())
+        .then(data => {
+            stationsLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "#ff7800",
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.NOMBRE);
+                }
+            }).addTo(map);
+        })
+        .catch(error => console.error("Error loading stations GeoJSON:", error));
 
-    transmilenioStations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {icon: stationIcon}).addTo(map);
-        marker.bindPopup(`<b>${station.name}</b><br>Transmilenio Station`);
-        stationMarkers.push(marker);
-    });
-}
-
-function drawTransmilenioRoutes() {
-    transmilenioRoutes.forEach(route => {
-        const routeCoordinates = route.stations.map(stationName => {
-            const station = transmilenioStations.find(s => s.name === stationName);
-            return [station.lat, station.lng];
-        });
-        L.polyline(routeCoordinates, {color: route.color, weight: 3}).addTo(map);
-    });
+    // Load routes GeoJSON
+    fetch('/static/Rutas_Troncales_de_TRANSMILENIO.geojson')
+        .then(response => response.json())
+        .then(data => {
+            routesLayer = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: "#ff0000",
+                        weight: 3,
+                        opacity: 0.7
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.RUTA);
+                }
+            }).addTo(map);
+        })
+        .catch(error => console.error("Error loading routes GeoJSON:", error));
 }
 
 function addIncidentMarker(incident) {
@@ -105,19 +103,20 @@ function updateMapWithUserLocation(latitude, longitude) {
 }
 
 function findNearestStation(userLat, userLng) {
-    let nearestStation = transmilenioStations[0];
-    let shortestDistance = calculateDistance(userLat, userLng, nearestStation.lat, nearestStation.lng);
+    if (!stationsLayer) return null;
 
-    for (let i = 1; i < transmilenioStations.length; i++) {
-        const station = transmilenioStations[i];
-        const distance = calculateDistance(userLat, userLng, station.lat, station.lng);
+    let nearestStation = null;
+    let shortestDistance = Infinity;
+
+    stationsLayer.eachLayer(function(layer) {
+        const distance = calculateDistance(userLat, userLng, layer.getLatLng().lat, layer.getLatLng().lng);
         if (distance < shortestDistance) {
             shortestDistance = distance;
-            nearestStation = station;
+            nearestStation = layer.feature.properties.NOMBRE;
         }
-    }
+    });
 
-    return nearestStation.name;
+    return nearestStation;
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -131,4 +130,10 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-document.addEventListener('DOMContentLoaded', initMap);
+// Initialize the map when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOMContentLoaded event fired in map.js");
+    initMap();
+});
+
+console.log("map.js loaded");

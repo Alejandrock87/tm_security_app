@@ -41,12 +41,19 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
+    
     if (typeof initMap === 'function') {
+        console.log("Calling initMap from dashboard.html");
         initMap();
+    } else {
+        console.error("initMap function not found");
     }
     
     if (typeof createChart === 'function' && {{ statistics|tojson|safe }}) {
@@ -66,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
         statsHtml += '</ul>';
         incidentTypeStats.innerHTML = statsHtml;
     }
+    
+    console.log("All scripts loaded successfully");
 });
 </script>
 {% endblock %}
