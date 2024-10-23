@@ -23,7 +23,7 @@ def init_routes(app):
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('index'))
         form = LoginForm()
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
@@ -33,7 +33,7 @@ def init_routes(app):
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             if not next_page or urlparse(next_page).netloc != '':
-                next_page = url_for('dashboard')
+                next_page = url_for('index')
             return redirect(next_page)
         return render_template('login.html', title='Iniciar sesión', form=form)
 
