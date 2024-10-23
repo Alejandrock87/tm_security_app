@@ -49,7 +49,7 @@ function initMap() {
 
     document.getElementById('troncalFilter').addEventListener('change', function(e) {
         const selectedTroncal = this.value;
-        filterByTroncal([selectedTroncal]);
+        filterByTroncal(selectedTroncal === 'all' ? ['all'] : [selectedTroncal]);
     });
 }
 
@@ -153,9 +153,10 @@ function updateMapWithUserLocation(latitude, longitude) {
     }
 
     const userIcon = L.divIcon({
-        html: '<div style="background-color: #4CAF50; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+        html: '<div style="background-color: #4CAF50; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3);"></div>',
         className: 'user-marker',
-        iconSize: [12, 12]
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
     });
 
     userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
