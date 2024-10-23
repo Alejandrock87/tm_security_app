@@ -1,102 +1,170 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h1 class="mb-4 text-center">Reportar un Incidente</h1>
-        <form action="" method="post" novalidate id="incident-form">
-            {{ form.hidden_tag() }}
-            <div class="mb-3">
-                {{ form.incident_type.label(class="form-label") }}
-                {{ form.incident_type(class="form-select") }}
-                {% for error in form.incident_type.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+<div class="container">
+    <h1 class="mb-4">Reportar Incidente</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+                        <input type="hidden" id="nearest_station" name="nearest_station">
+                        
+                        <div class="mb-3">
+                            {{ form.incident_type.label(class="form-label") }}
+                            {{ form.incident_type(class="form-select") }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows="4") }}
+                        </div>
+                        
+                        <div id="location-status" class="alert alert-info mb-3" role="alert">
+                            Obteniendo tu ubicación...
+                        </div>
+                        
+                        <div id="nearest-station-info" class="alert alert-success mb-3" style="display: none;">
+                            Estación más cercana: <span id="station-name"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div id="report-map" style="height: 300px;"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="submit-button" disabled>
+                            Reportar Incidente
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                {{ form.description.label(class="form-label") }}
-                {{ form.description(rows=5, class="form-control") }}
-                {% for error in form.description.errors %}
-                <span class="text-danger">{{ error }}</span>
-                {% endfor %}
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Niveles de Inseguridad</h5>
+                </div>
+                <div class="card-body">
+                    <div class="legend-item d-flex align-items-center mb-2">
+                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #ff0000; margin-right: 10px;"></div>
+                        <span>Alto (>5 incidentes/mes)</span>
+                    </div>
+                    <div class="legend-item d-flex align-items-center mb-2">
+                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #ffa500; margin-right: 10px;"></div>
+                        <span>Medio (2-5 incidentes/mes)</span>
+                    </div>
+                    <div class="legend-item d-flex align-items-center">
+                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #008000; margin-right: 10px;"></div>
+                        <span>Bajo (<2 incidentes/mes)</span>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="nearest_station" class="form-label">Estación Transmilenio más cercana</label>
-                <input type="text" id="nearest_station" name="nearest_station" class="form-control" readonly>
-            </div>
-            <input type="hidden" id="latitude" name="latitude">
-            <input type="hidden" id="longitude" name="longitude">
-            {{ form.submit(class="btn btn-primary w-100", id="submit-button") }}
-        </form>
-    </div>
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div id="map" style="height: 400px;"></div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script>
+let reportMap;
+let userMarker;
+let nearestStationMarker;
+
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('incident-form');
+    const locationStatus = document.getElementById('location-status');
     const submitButton = document.getElementById('submit-button');
-    const latitudeInput = document.getElementById('latitude');
-    const longitudeInput = document.getElementById('longitude');
-    const nearestStationInput = document.getElementById('nearest_station');
-
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-            alert("La geolocalización no es compatible con este navegador.");
-        }
+    const nearestStationInfo = document.getElementById('nearest-station-info');
+    const stationName = document.getElementById('station-name');
+    
+    // Initialize report map
+    reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(reportMap);
+    
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lon;
+                
+                // Update user marker
+                if (userMarker) reportMap.removeLayer(userMarker);
+                userMarker = L.marker([lat, lon]).addTo(reportMap);
+                userMarker.bindPopup('Tu ubicación').openPopup();
+                
+                reportMap.setView([lat, lon], 15);
+                
+                // Find nearest station
+                fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+                    .then(response => response.json())
+                    .then(data => {
+                        let nearestStation = null;
+                        let minDistance = Infinity;
+                        
+                        data.features.forEach(station => {
+                            const stationCoords = station.geometry.coordinates;
+                            const distance = calculateDistance(
+                                lat, lon,
+                                stationCoords[1], stationCoords[0]
+                            );
+                            
+                            if (distance < minDistance) {
+                                minDistance = distance;
+                                nearestStation = station;
+                            }
+                        });
+                        
+                        if (nearestStation) {
+                            const coords = nearestStation.geometry.coordinates;
+                            if (nearestStationMarker) reportMap.removeLayer(nearestStationMarker);
+                            
+                            nearestStationMarker = L.marker([coords[1], coords[0]], {
+                                icon: L.divIcon({
+                                    html: `<div style="background-color: #4CAF50; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white;"></div>`,
+                                    className: 'station-marker'
+                                })
+                            }).addTo(reportMap);
+                            
+                            const stationNameValue = nearestStation.properties.nombre_estacion;
+                            document.getElementById('nearest_station').value = stationNameValue;
+                            stationName.textContent = stationNameValue;
+                            nearestStationInfo.style.display = 'block';
+                            
+                            locationStatus.classList.remove('alert-info');
+                            locationStatus.classList.add('alert-success');
+                            locationStatus.textContent = 'Ubicación obtenida correctamente';
+                            submitButton.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading stations:', error);
+                        locationStatus.classList.remove('alert-info');
+                        locationStatus.classList.add('alert-danger');
+                        locationStatus.textContent = 'Error al cargar las estaciones';
+                    });
+            },
+            function(error) {
+                locationStatus.classList.remove('alert-info');
+                locationStatus.classList.add('alert-danger');
+                locationStatus.textContent = 'Error al obtener la ubicación: ' + error.message;
+            }
+        );
+    } else {
+        locationStatus.classList.remove('alert-info');
+        locationStatus.classList.add('alert-danger');
+        locationStatus.textContent = 'Geolocalización no está disponible en este navegador';
     }
-
-    function showPosition(position) {
-        latitudeInput.value = position.coords.latitude;
-        longitudeInput.value = position.coords.longitude;
-        submitButton.disabled = false;
-        
-        if (typeof updateMapWithUserLocation === 'function') {
-            updateMapWithUserLocation(position.coords.latitude, position.coords.longitude);
-        }
-
-        if (typeof findNearestStation === 'function') {
-            const nearestStation = findNearestStation(position.coords.latitude, position.coords.longitude);
-            nearestStationInput.value = nearestStation;
-        }
-    }
-
-    function showError(error) {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                alert("El usuario denegó la solicitud de geolocalización.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                alert("La información de ubicación no está disponible.");
-                break;
-            case error.TIMEOUT:
-                alert("La solicitud para obtener la ubicación del usuario ha expirado.");
-                break;
-            case error.UNKNOWN_ERROR:
-                alert("Ocurrió un error desconocido.");
-                break;
-        }
-    }
-
-    submitButton.disabled = true;
-    getLocation();
-
-    form.addEventListener('submit', function(event) {
-        if (!latitudeInput.value || !longitudeInput.value) {
-            event.preventDefault();
-            alert("Por favor, espere a que se determine su ubicación o habilite los servicios de ubicación.");
-        }
-    });
 });
 </script>
 {% endblock %}

@@ -4,12 +4,13 @@ from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
 from utils import send_notification, send_push_notification
-from datetime import datetime
+from datetime import datetime, timedelta
 from ml_models import predict_incident_probability, get_incident_trends, get_model_insights
 import logging
 from models import User, Incident
 from database import db
 from transmilenio_api import get_all_stations, get_route_information
+from sqlalchemy import func
 
 def init_routes(app):
     @app.route('/')
@@ -62,27 +63,47 @@ def init_routes(app):
         if form.validate_on_submit():
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
-            if not latitude or not longitude:
-                flash('Se requieren datos de ubicación. Por favor, active la geolocalización en su navegador.')
+            nearest_station = request.form.get('nearest_station')
+            
+            if not all([latitude, longitude, nearest_station]):
+                flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
                 return redirect(url_for('report_incident'))
             
-            incident = Incident(incident_type=form.incident_type.data,
-                                description=form.description.data,
-                                latitude=float(latitude),
-                                longitude=float(longitude),
-                                user_id=current_user.id,
-                                nearest_station=request.form.get('nearest_station'))
+            incident = Incident(
+                incident_type=form.incident_type.data,
+                description=form.description.data,
+                latitude=float(latitude),
+                longitude=float(longitude),
+                user_id=current_user.id,
+                nearest_station=nearest_station
+            )
             db.session.add(incident)
             db.session.commit()
+            
             flash('¡Incidente reportado con éxito!')
-            
             send_notification(incident.incident_type, incident.timestamp.isoformat())
-            
             device_token = "simulated_device_token"
             send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
             
             return redirect(url_for('dashboard'))
         return render_template('report_incident.html', title='Reportar incidente', form=form)
+
+    @app.route('/station_statistics')
+    @login_required
+    def station_statistics():
+        # Get incidents from the last 30 days
+        thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+        incidents_by_station = db.session.query(
+            Incident.nearest_station,
+            func.count(Incident.id).label('incident_count')
+        ).filter(
+            Incident.timestamp >= thirty_days_ago
+        ).group_by(
+            Incident.nearest_station
+        ).all()
+        
+        statistics = {station: count for station, count in incidents_by_station}
+        return jsonify(statistics)
 
     @app.route('/dashboard')
     @login_required
@@ -90,22 +111,42 @@ def init_routes(app):
         try:
             logging.info("Obteniendo datos para el panel de control")
             incidents = get_incidents_for_map()
-            logging.info(f"Se obtuvieron {len(incidents)} incidentes")
+            
+            # Get station statistics for the last 30 days
+            thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+            station_stats = db.session.query(
+                Incident.nearest_station,
+                func.count(Incident.id).label('incident_count')
+            ).filter(
+                Incident.timestamp >= thirty_days_ago
+            ).group_by(
+                Incident.nearest_station
+            ).all()
+            
+            # Calculate insecurity levels
+            station_security_levels = {}
+            for station, count in station_stats:
+                if count > 5:
+                    level = 'high'
+                    color = '#ff0000'
+                elif count >= 2:
+                    level = 'medium'
+                    color = '#ffa500'
+                else:
+                    level = 'low'
+                    color = '#008000'
+                station_security_levels[station] = {'level': level, 'color': color, 'count': count}
             
             statistics = get_incident_statistics()
-            logging.info("Se obtuvieron estadísticas de incidentes")
-            
             trends = get_incident_trends()
-            logging.info("Se obtuvieron tendencias de incidentes")
-            
             model_insights = get_model_insights()
-            logging.info("Se obtuvieron insights del modelo")
             
-            return render_template('dashboard.html', 
-                                   incidents=incidents, 
-                                   statistics=statistics if statistics else {},
-                                   trends=trends if trends else [],
-                                   model_insights=model_insights if model_insights else {})
+            return render_template('dashboard.html',
+                                incidents=incidents,
+                                statistics=statistics if statistics else {},
+                                trends=trends if trends else [],
+                                model_insights=model_insights if model_insights else {},
+                                station_security_levels=station_security_levels)
         except Exception as e:
             logging.error(f"Error en la ruta del panel de control: {str(e)}")
             flash("Ocurrió un error al cargar el panel de control. Por favor, intente de nuevo más tarde.", "error")
