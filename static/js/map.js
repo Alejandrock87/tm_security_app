@@ -1,7 +1,8 @@
-let map;
-let userMarker;
+let map = null;
+let userMarker = null;
 let stationMarkers = [];
-let stationsLayer, routesLayer;
+let stationsLayer = null;
+let routesLayer = null;
 let troncales = new Set();
 let mapInitialized = false;
 let stationSecurityLevels = {};
@@ -28,22 +29,6 @@ function initMap() {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Initialize location tracking
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    updateMapWithUserLocation(position.coords.latitude, position.coords.longitude);
-                },
-                error => {
-                    console.warn("Geolocation error:", error.message);
-                    loadGeoJSONLayers();
-                }
-            );
-        } else {
-            console.warn("Geolocation not supported");
-            loadGeoJSONLayers();
-        }
-
         // Add legend control
         const legend = L.control({position: 'bottomright'});
         legend.onAdd = function (map) {
@@ -65,7 +50,7 @@ function initMap() {
             });
         }
 
-        // Load station security levels
+        // Load station security levels and GeoJSON layers
         fetch('/station_statistics')
             .then(response => response.json())
             .then(data => {
@@ -193,4 +178,24 @@ function loadGeoJSONLayers() {
     }
 }
 
-// Rest of the existing functions remain the same...
+function filterByTroncal(selectedTroncales) {
+    try {
+        const showAll = selectedTroncales.includes('all');
+
+        if (stationsLayer) {
+            stationsLayer.eachLayer(layer => {
+                if (showAll || selectedTroncales.includes(layer.troncal)) {
+                    if (!map.hasLayer(layer)) {
+                        layer.addTo(map);
+                    }
+                } else {
+                    if (map.hasLayer(layer)) {
+                        map.removeLayer(layer);
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.warn('Error in filterByTroncal:', error);
+    }
+}

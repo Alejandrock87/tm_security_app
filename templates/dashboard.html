@@ -2,6 +2,14 @@
 
 {% block content %}
 <style>
+#map {
+    height: 400px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
 .info.legend {
     background: white;
     padding: 12px;
@@ -62,7 +70,7 @@
                 <h2 class="card-title">Mapa de Incidentes</h2>
             </div>
             <div class="card-body">
-                <div id="map" style="height: 400px;"></div>
+                <div id="map"></div>
             </div>
         </div>
     </div>
@@ -107,6 +115,10 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     try {
+        if (document.getElementById('map')) {
+            initMap();
+        }
+        
         const statistics = {{ statistics|tojson|safe if statistics else '{}' }};
         if (typeof createChart === 'function' && statistics && Object.keys(statistics).length > 0) {
             createChart(statistics);
