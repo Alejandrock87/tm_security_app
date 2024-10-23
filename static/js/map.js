@@ -5,21 +5,17 @@ let stationsLayer, routesLayer;
 let troncales = new Set();
 
 function initMap() {
-    console.log("initMap function called in map.js");
     if (!document.getElementById('map')) {
-        console.error("Map element not found in initMap (map.js). Retrying in 500ms...");
-        setTimeout(initMap, 500);
+        console.error("Map element not found in initMap (map.js)");
         return;
     }
 
-    // Initialize map centered on Bogotá
     map = L.map('map').setView([4.6097, -74.0817], 11);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Request user location
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
@@ -27,7 +23,6 @@ function initMap() {
             },
             function(error) {
                 console.error("Error getting user location:", error.message);
-                // Continue loading the map without centering on user location
                 loadGeoJSONLayers();
             },
             {
@@ -41,27 +36,24 @@ function initMap() {
         loadGeoJSONLayers();
     }
 
-    // Add legend for insecurity levels with improved styling
     let legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         let div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<h4 style="color: #000;">Niveles de Inseguridad</h4>';
-        div.innerHTML += '<i style="background: #ff0000"></i> <span style="color: #000;">Alto</span><br>';
-        div.innerHTML += '<i style="background: #ffa500"></i> <span style="color: #000;">Medio</span><br>';
-        div.innerHTML += '<i style="background: #008000"></i> <span style="color: #000;">Bajo</span><br>';
+        div.innerHTML = '<h4>Niveles de Inseguridad</h4>';
+        div.innerHTML += '<i style="background: #ff0000"></i> <span>Alto</span><br>';
+        div.innerHTML += '<i style="background: #ffa500"></i> <span>Medio</span><br>';
+        div.innerHTML += '<i style="background: #008000"></i> <span>Bajo</span><br>';
         return div;
     };
     legend.addTo(map);
 
-    // Initialize Select2 change event handler
-    $('#troncalSelect').on('change', function(e) {
-        const selectedTroncales = $(this).val();
-        filterByTroncal(selectedTroncales);
+    document.getElementById('troncalFilter').addEventListener('change', function(e) {
+        const selectedTroncal = this.value;
+        filterByTroncal([selectedTroncal]);
     });
 }
 
 function loadGeoJSONLayers() {
-    // Load routes GeoJSON
     fetch('/static/Rutas_Troncales_de_TRANSMILENIO.geojson')
         .then(response => response.json())
         .then(data => {
@@ -87,8 +79,7 @@ function loadStationsLayer() {
     fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
         .then(response => response.json())
         .then(data => {
-            // Collect unique troncales and populate select
-            const select = document.getElementById('troncalSelect');
+            const select = document.getElementById('troncalFilter');
             data.features.forEach(feature => {
                 if (feature.properties.troncal_estacion && !troncales.has(feature.properties.troncal_estacion)) {
                     troncales.add(feature.properties.troncal_estacion);
@@ -131,11 +122,7 @@ function loadStationsLayer() {
 }
 
 function filterByTroncal(selectedTroncales) {
-    if (!Array.isArray(selectedTroncales)) {
-        selectedTroncales = [];
-    }
-
-    const showAll = selectedTroncales.includes('all') || selectedTroncales.length === 0;
+    const showAll = selectedTroncales.includes('all');
 
     stationsLayer.eachLayer(layer => {
         if (showAll || selectedTroncales.includes(layer.troncal)) {
@@ -149,7 +136,6 @@ function filterByTroncal(selectedTroncales) {
         }
     });
 
-    // Handle routes layer visibility
     if (showAll) {
         if (!map.hasLayer(routesLayer)) {
             routesLayer.addTo(map);
@@ -161,10 +147,35 @@ function filterByTroncal(selectedTroncales) {
     }
 }
 
-// Rest of the code remains the same...
-[Previous code for addIncidentMarker, updateMapWithUserLocation, findNearestStation, and calculateDistance functions]
+function updateMapWithUserLocation(latitude, longitude) {
+    if (userMarker) {
+        map.removeLayer(userMarker);
+    }
+
+    const userIcon = L.divIcon({
+        html: '<div style="background-color: #4CAF50; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+        className: 'user-marker',
+        iconSize: [12, 12]
+    });
+
+    userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
+    userMarker.bindPopup("Tu ubicación actual");
+    map.setView([latitude, longitude], 13);
+
+    loadGeoJSONLayers();
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOMContentLoaded event fired in map.js");
     initMap();
 });

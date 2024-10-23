@@ -27,35 +27,34 @@
     font-weight: bold;
 }
 
-.troncal-filter {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.select2-container {
-    width: 100% !important;
-}
-
-.select2-container--default .select2-selection--multiple {
-    border-radius: 4px;
-    border: 1px solid #ced4da;
+.form-select {
+    max-width: 100%;
 }
 
 @media (max-width: 768px) {
-    .troncal-filter {
-        padding: 10px;
+    .card {
+        margin-bottom: 1rem;
     }
 }
 </style>
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
 <h1 class="mb-4 text-center">Mapa de Incidentes</h1>
 
 {% if incidents is defined and incidents %}
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <label for="troncalFilter" class="form-label">Filtrar por Troncal:</label>
+                <select class="form-select" id="troncalFilter">
+                    <option value="all">Todas las Troncales</option>
+                    <!-- Troncales will be added dynamically -->
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12 col-lg-8 mb-4">
         <div class="card">
@@ -63,13 +62,6 @@
                 <h2 class="card-title">Mapa de Incidentes</h2>
             </div>
             <div class="card-body">
-                <div class="troncal-filter mb-3">
-                    <h5>Filtrar por Troncal:</h5>
-                    <select class="form-select select2" id="troncalSelect" multiple>
-                        <option value="all">Todas las Troncales</option>
-                        <!-- Options will be added dynamically -->
-                    </select>
-                </div>
                 <div id="map" style="height: 400px;"></div>
             </div>
         </div>
@@ -102,7 +94,6 @@
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
@@ -110,13 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof initMap === 'function') {
         initMap();
     }
-    
-    // Initialize Select2
-    $('#troncalSelect').select2({
-        placeholder: "Seleccionar troncales",
-        allowClear: true,
-        width: '100%'
-    });
     
     const statistics = {{ statistics|tojson|safe if statistics else '{}' }};
     if (typeof createChart === 'function' && statistics && Object.keys(statistics).length > 0) {
