@@ -66,9 +66,10 @@ function loadGeoJSONLayers() {
                     };
                 },
                 onEachFeature: function (feature, layer) {
+                    console.log('Route properties:', feature.properties); // Debug log
                     layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
-                    // Make sure the TRONCAL property is accessible
-                    layer.feature = feature;
+                    // Store troncal in layer for filtering
+                    layer.troncal = feature.properties.troncal_ruta || feature.properties.TRONCAL;
                 }
             }).addTo(map);
             
@@ -142,8 +143,8 @@ function filterByTroncal(selectedTroncales) {
     // Filter routes
     if (routesLayer) {
         routesLayer.eachLayer(layer => {
-            // Get troncal from feature properties
-            const routeTroncal = layer.feature.properties.TRONCAL;
+            const routeTroncal = layer.troncal;
+            console.log('Route troncal:', routeTroncal); // Debug log
             if (showAll || selectedTroncales.includes(routeTroncal)) {
                 if (!map.hasLayer(layer)) {
                     layer.addTo(map);
@@ -191,9 +192,7 @@ function updateMapWithUserLocation(latitude, longitude) {
     userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
     userMarker.bindPopup("Tu ubicación actual");
     
-    // Center and zoom to user location
     map.setView([latitude, longitude], 15);
-
     loadGeoJSONLayers();
 }
 
