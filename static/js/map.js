@@ -67,10 +67,10 @@ function loadGeoJSONLayers() {
                 },
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
-                    // Store troncal information in layer
-                    layer.troncal = feature.properties.TRONCAL;
+                    // Make sure the TRONCAL property is accessible
+                    layer.feature = feature;
                 }
-            }).addTo(map);  // Add to map by default
+            }).addTo(map);
             
             loadStationsLayer();
         })
@@ -142,7 +142,9 @@ function filterByTroncal(selectedTroncales) {
     // Filter routes
     if (routesLayer) {
         routesLayer.eachLayer(layer => {
-            if (showAll || selectedTroncales.includes(layer.troncal)) {
+            // Get troncal from feature properties
+            const routeTroncal = layer.feature.properties.TRONCAL;
+            if (showAll || selectedTroncales.includes(routeTroncal)) {
                 if (!map.hasLayer(layer)) {
                     layer.addTo(map);
                 }
