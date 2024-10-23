@@ -3,11 +3,59 @@
 {% block content %}
 <style>
 #report-map {
-    height: 300px;
+    height: 400px;
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 1rem;
+}
+
+.legend-card {
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 8px;
+}
+
+.legend-card .card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.station-marker {
+    background: none;
+    border: none;
+}
+
+.station-marker-selected {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 </style>
 
@@ -34,11 +82,11 @@
                         </div>
                         
                         <div id="location-status" class="alert alert-info mb-3" role="alert">
-                            Obteniendo tu ubicación...
+                            <i class="fas fa-location-arrow"></i> Obteniendo tu ubicación...
                         </div>
                         
                         <div id="nearest-station-info" class="alert alert-success mb-3" style="display: none;">
-                            Estación más cercana: <span id="station-name"></span>
+                            <i class="fas fa-map-marker-alt"></i> Estación más cercana: <span id="station-name"></span>
                         </div>
                         
                         <div class="mb-3">
@@ -46,7 +94,7 @@
                         </div>
                         
                         <button type="submit" class="btn btn-primary" id="submit-button" disabled>
-                            Reportar Incidente
+                            <i class="fas fa-exclamation-triangle"></i> Reportar Incidente
                         </button>
                     </form>
                 </div>
@@ -54,23 +102,38 @@
         </div>
         
         <div class="col-md-4">
-            <div class="card">
+            <div class="card legend-card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Niveles de Inseguridad</h5>
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar"></i> Niveles de Inseguridad
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <div class="legend-item d-flex align-items-center mb-2">
-                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #ff0000; margin-right: 10px;"></div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #ff0000;"></div>
                         <span>Alto (>5 incidentes/mes)</span>
                     </div>
-                    <div class="legend-item d-flex align-items-center mb-2">
-                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #ffa500; margin-right: 10px;"></div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #ffa500;"></div>
                         <span>Medio (2-5 incidentes/mes)</span>
                     </div>
-                    <div class="legend-item d-flex align-items-center">
-                        <div class="legend-color" style="width: 20px; height: 20px; background-color: #008000; margin-right: 10px;"></div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #008000;"></div>
                         <span>Bajo (<2 incidentes/mes)</span>
                     </div>
+                </div>
+            </div>
+
+            <div class="card legend-card mt-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">
+                        <i class="fas fa-info-circle"></i> Información
+                    </h6>
+                    <p class="card-text">
+                        El sistema automáticamente seleccionará la estación más cercana a tu ubicación actual.
+                        Los niveles de inseguridad se calculan basándose en la cantidad de incidentes reportados
+                        en el último mes.
+                    </p>
                 </div>
             </div>
         </div>
@@ -81,10 +144,12 @@
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
 <script>
 let reportMap = null;
 let reportUserMarker = null;
 let reportNearestStationMarker = null;
+let stations = [];
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -97,106 +162,126 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
+function getStationSecurityColor(count) {
+    if (count > 5) return '#ff0000';
+    if (count >= 2) return '#ffa500';
+    return '#008000';
+}
+
+function updateNearestStation(userLat, userLon) {
+    if (!stations.length) return null;
+    
+    let nearestStation = null;
+    let minDistance = Infinity;
+    
+    stations.forEach(station => {
+        const stationCoords = station.geometry.coordinates;
+        const distance = calculateDistance(
+            userLat, userLon,
+            stationCoords[1], stationCoords[0]
+        );
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearestStation = station;
+        }
+    });
+    
+    return nearestStation;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const locationStatus = document.getElementById('location-status');
     const submitButton = document.getElementById('submit-button');
     const nearestStationInfo = document.getElementById('nearest-station-info');
     const stationName = document.getElementById('station-name');
     
-    // Initialize report map with a different variable name
+    // Initialize report map
     reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(reportMap);
     
-    // Update geolocation handling
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lon;
-                
-                // Update user marker with new variable name
-                if (reportUserMarker) reportMap.removeLayer(reportUserMarker);
-                reportUserMarker = L.marker([lat, lon]).addTo(reportMap);
-                reportUserMarker.bindPopup('Tu ubicación').openPopup();
-                
-                reportMap.setView([lat, lon], 15);
-                
-                // Find nearest station
-                fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
-                    .then(response => response.json())
-                    .then(data => {
-                        let nearestStation = null;
-                        let minDistance = Infinity;
+    // Load station statistics and station data
+    Promise.all([
+        fetch('/station_statistics'),
+        fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+    ])
+    .then(responses => Promise.all(responses.map(response => response.json())))
+    .then(([statistics, stationsData]) => {
+        stations = stationsData.features;
+        
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lon;
+                    
+                    if (reportUserMarker) reportMap.removeLayer(reportUserMarker);
+                    reportUserMarker = L.marker([lat, lon]).addTo(reportMap);
+                    reportUserMarker.bindPopup('Tu ubicación').openPopup();
+                    
+                    reportMap.setView([lat, lon], 15);
+                    
+                    const nearestStation = updateNearestStation(lat, lon);
+                    
+                    if (nearestStation) {
+                        const coords = nearestStation.geometry.coordinates;
+                        if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
                         
-                        data.features.forEach(station => {
-                            const stationCoords = station.geometry.coordinates;
-                            const distance = calculateDistance(
-                                lat, lon,
-                                stationCoords[1], stationCoords[0]
-                            );
-                            
-                            if (distance < minDistance) {
-                                minDistance = distance;
-                                nearestStation = station;
-                            }
-                        });
+                        const stationNameValue = nearestStation.properties.nombre_estacion;
+                        const incidentCount = statistics[stationNameValue] || 0;
+                        const stationColor = getStationSecurityColor(incidentCount);
                         
-                        if (nearestStation) {
-                            const coords = nearestStation.geometry.coordinates;
-                            if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
-                            
-                            const stationNameValue = nearestStation.properties.nombre_estacion;
-                            reportNearestStationMarker = L.marker([coords[1], coords[0]], {
-                                icon: L.divIcon({
-                                    html: `<div style="text-align: center;">
-                                            <div style="background-color: #4CAF50; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
-                                                <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
-                                            </div>
-                                            <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
-                                                <span style="font-size: 12px; font-weight: bold; color: #333;">
-                                                    ${stationNameValue}
-                                                </span>
-                                            </div>
-                                        </div>`,
-                                    className: 'station-marker',
-                                    iconSize: [120, 60],
-                                    iconAnchor: [60, 30]
-                                })
-                            }).addTo(reportMap);
-                            
-                            document.getElementById('nearest_station').value = stationNameValue;
-                            stationName.textContent = stationNameValue;
-                            nearestStationInfo.style.display = 'block';
-                            
-                            locationStatus.classList.remove('alert-info');
-                            locationStatus.classList.add('alert-success');
-                            locationStatus.textContent = 'Ubicación obtenida correctamente';
-                            submitButton.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error loading stations:', error);
+                        reportNearestStationMarker = L.marker([coords[1], coords[0]], {
+                            icon: L.divIcon({
+                                html: `<div class="station-marker station-marker-selected">
+                                        <div style="background-color: ${stationColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
+                                            <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
+                                        </div>
+                                        <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
+                                            <span style="font-size: 12px; font-weight: bold; color: #333;">
+                                                ${stationNameValue}
+                                            </span>
+                                        </div>
+                                    </div>`,
+                                className: 'station-marker',
+                                iconSize: [120, 60],
+                                iconAnchor: [60, 30]
+                            })
+                        }).addTo(reportMap);
+                        
+                        document.getElementById('nearest_station').value = stationNameValue;
+                        stationName.textContent = stationNameValue;
+                        nearestStationInfo.style.display = 'block';
+                        
                         locationStatus.classList.remove('alert-info');
-                        locationStatus.classList.add('alert-danger');
-                        locationStatus.textContent = 'Error al cargar las estaciones';
-                    });
-            },
-            function(error) {
-                locationStatus.classList.remove('alert-info');
-                locationStatus.classList.add('alert-danger');
-                locationStatus.textContent = 'Error al obtener la ubicación: ' + error.message;
-            }
-        );
-    } else {
+                        locationStatus.classList.add('alert-success');
+                        locationStatus.innerHTML = '<i class="fas fa-check-circle"></i> Ubicación obtenida correctamente';
+                        submitButton.disabled = false;
+                    }
+                },
+                function(error) {
+                    locationStatus.classList.remove('alert-info');
+                    locationStatus.classList.add('alert-danger');
+                    locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al obtener la ubicación: ' + error.message;
+                }
+            );
+        } else {
+            locationStatus.classList.remove('alert-info');
+            locationStatus.classList.add('alert-danger');
+            locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Geolocalización no está disponible en este navegador';
+        }
+    })
+    .catch(error => {
+        console.error('Error loading data:', error);
         locationStatus.classList.remove('alert-info');
         locationStatus.classList.add('alert-danger');
-        locationStatus.textContent = 'Geolocalización no está disponible en este navegador';
-    }
+        locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al cargar los datos de las estaciones';
+    });
 });
 </script>
 {% endblock %}
