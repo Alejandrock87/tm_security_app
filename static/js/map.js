@@ -3,12 +3,18 @@ let userMarker;
 let stationMarkers = [];
 let stationsLayer, routesLayer;
 let troncales = new Set();
+let mapInitialized = false;
 
 function initMap() {
     try {
+        if (mapInitialized) {
+            console.warn('Map already initialized');
+            return true;
+        }
+
         const mapElement = document.getElementById('map');
         if (!mapElement) {
-            console.warn("Map element not found in initMap");
+            console.warn('Map element not found in initMap');
             return false;
         }
 
@@ -58,10 +64,11 @@ function initMap() {
             });
         }
 
-        return true; // Indicate successful initialization
+        mapInitialized = true;
+        return true;
     } catch (error) {
         console.warn('Error in initMap:', error);
-        return false; // Indicate failed initialization
+        return false;
     }
 }
 
@@ -249,7 +256,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        if (typeof initMap === 'function') {
+        if (typeof initMap === 'function' && !mapInitialized) {
             const success = initMap();
             if (!success) {
                 console.warn('Map initialization failed');

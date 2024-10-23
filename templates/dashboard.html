@@ -107,13 +107,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     try {
-        if (typeof initMap === 'function') {
-            const success = initMap();
-            if (!success) {
-                console.warn('Map initialization failed');
-            }
-        }
-        
         const statistics = {{ statistics|tojson|safe if statistics else '{}' }};
         if (typeof createChart === 'function' && statistics && Object.keys(statistics).length > 0) {
             createChart(statistics);
