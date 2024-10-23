@@ -66,10 +66,7 @@ function loadGeoJSONLayers() {
                     };
                 },
                 onEachFeature: function (feature, layer) {
-                    console.log('Route properties:', feature.properties); // Debug log
                     layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
-                    // Store troncal in layer for filtering
-                    layer.troncal = feature.properties.troncal_ruta || feature.properties.TRONCAL;
                 }
             }).addTo(map);
             
@@ -140,21 +137,9 @@ function filterByTroncal(selectedTroncales) {
         }
     });
 
-    // Filter routes
-    if (routesLayer) {
-        routesLayer.eachLayer(layer => {
-            const routeTroncal = layer.troncal;
-            console.log('Route troncal:', routeTroncal); // Debug log
-            if (showAll || selectedTroncales.includes(routeTroncal)) {
-                if (!map.hasLayer(layer)) {
-                    layer.addTo(map);
-                }
-            } else {
-                if (map.hasLayer(layer)) {
-                    map.removeLayer(layer);
-                }
-            }
-        });
+    // Always show all routes
+    if (routesLayer && !map.hasLayer(routesLayer)) {
+        routesLayer.addTo(map);
     }
 }
 
