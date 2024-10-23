@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+#report-map {
+    height: 300px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+</style>
+
 <div class="container">
     <h1 class="mb-4">Reportar Incidente</h1>
     <div class="row">
@@ -32,7 +42,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <div id="report-map" style="height: 300px;"></div>
+                            <div id="report-map"></div>
                         </div>
                         
                         <button type="submit" class="btn btn-primary" id="submit-button" disabled>
@@ -71,11 +81,21 @@
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script>
-let reportMap;
-let userMarker;
-let nearestStationMarker;
+let reportMap = null;
+let reportUserMarker = null;
+let reportNearestStationMarker = null;
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const locationStatus = document.getElementById('location-status');
@@ -83,12 +103,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const nearestStationInfo = document.getElementById('nearest-station-info');
     const stationName = document.getElementById('station-name');
     
-    // Initialize report map
+    // Initialize report map with a different variable name
     reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(reportMap);
     
+    // Update geolocation handling
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
@@ -98,10 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('latitude').value = lat;
                 document.getElementById('longitude').value = lon;
                 
-                // Update user marker
-                if (userMarker) reportMap.removeLayer(userMarker);
-                userMarker = L.marker([lat, lon]).addTo(reportMap);
-                userMarker.bindPopup('Tu ubicación').openPopup();
+                // Update user marker with new variable name
+                if (reportUserMarker) reportMap.removeLayer(reportUserMarker);
+                reportUserMarker = L.marker([lat, lon]).addTo(reportMap);
+                reportUserMarker.bindPopup('Tu ubicación').openPopup();
                 
                 reportMap.setView([lat, lon], 15);
                 
@@ -127,9 +148,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (nearestStation) {
                             const coords = nearestStation.geometry.coordinates;
-                            if (nearestStationMarker) reportMap.removeLayer(nearestStationMarker);
+                            if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
                             
-                            nearestStationMarker = L.marker([coords[1], coords[0]], {
+                            reportNearestStationMarker = L.marker([coords[1], coords[0]], {
                                 icon: L.divIcon({
                                     html: `<div style="background-color: #4CAF50; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white;"></div>`,
                                     className: 'station-marker'
