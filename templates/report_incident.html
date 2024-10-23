@@ -150,14 +150,25 @@ document.addEventListener('DOMContentLoaded', function() {
                             const coords = nearestStation.geometry.coordinates;
                             if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
                             
+                            const stationNameValue = nearestStation.properties.nombre_estacion;
                             reportNearestStationMarker = L.marker([coords[1], coords[0]], {
                                 icon: L.divIcon({
-                                    html: `<div style="background-color: #4CAF50; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white;"></div>`,
-                                    className: 'station-marker'
+                                    html: `<div style="text-align: center;">
+                                            <div style="background-color: #4CAF50; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
+                                                <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
+                                            </div>
+                                            <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
+                                                <span style="font-size: 12px; font-weight: bold; color: #333;">
+                                                    ${stationNameValue}
+                                                </span>
+                                            </div>
+                                        </div>`,
+                                    className: 'station-marker',
+                                    iconSize: [120, 60],
+                                    iconAnchor: [60, 30]
                                 })
                             }).addTo(reportMap);
                             
-                            const stationNameValue = nearestStation.properties.nombre_estacion;
                             document.getElementById('nearest_station').value = stationNameValue;
                             stationName.textContent = stationNameValue;
                             nearestStationInfo.style.display = 'block';
