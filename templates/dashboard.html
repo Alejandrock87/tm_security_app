@@ -108,7 +108,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     try {
         if (typeof initMap === 'function') {
-            initMap();
+            const success = initMap();
+            if (!success) {
+                console.warn('Map initialization failed');
+            }
         }
         
         const statistics = {{ statistics|tojson|safe if statistics else '{}' }};
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             createChart(statistics);
         }
     } catch (error) {
-        console.log('Error initializing dashboard:', error);
+        console.warn('Error initializing dashboard:', error);
     }
 });
 </script>

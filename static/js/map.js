@@ -8,39 +8,39 @@ function initMap() {
     try {
         const mapElement = document.getElementById('map');
         if (!mapElement) {
-            console.error("Map element not found in initMap (map.js)");
-            return;
+            console.warn("Map element not found in initMap");
+            return false;
         }
 
-        map = L.map('map').setView([4.6097, -74.0817], 11);
+        map = L.map('map', {
+            zoomControl: true,
+            attributionControl: true
+        }).setView([4.6097, -74.0817], 11);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        // Initialize location tracking
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
-                function(position) {
+                position => {
                     updateMapWithUserLocation(position.coords.latitude, position.coords.longitude);
                 },
-                function(error) {
-                    console.error("Error getting user location:", error.message);
+                error => {
+                    console.warn("Geolocation error:", error.message);
                     loadGeoJSONLayers();
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 5000,
-                    maximumAge: 0
                 }
             );
         } else {
-            console.log("Geolocation is not supported by this browser");
+            console.warn("Geolocation not supported");
             loadGeoJSONLayers();
         }
 
-        let legend = L.control({position: 'bottomright'});
+        // Add legend control
+        const legend = L.control({position: 'bottomright'});
         legend.onAdd = function (map) {
-            let div = L.DomUtil.create('div', 'info legend');
+            const div = L.DomUtil.create('div', 'info legend');
             div.innerHTML = '<h4 style="color: #000; margin-bottom: 10px;">Niveles de Inseguridad</h4>';
             div.innerHTML += '<i style="background: #ff0000"></i> <span style="color: #000;">Alto</span><br>';
             div.innerHTML += '<i style="background: #ffa500"></i> <span style="color: #000;">Medio</span><br>';
@@ -49,6 +49,7 @@ function initMap() {
         };
         legend.addTo(map);
 
+        // Add troncal filter event listener
         const troncalFilter = document.getElementById('troncalFilter');
         if (troncalFilter) {
             troncalFilter.addEventListener('change', function(e) {
@@ -56,8 +57,11 @@ function initMap() {
                 filterByTroncal(selectedTroncal === 'all' ? ['all'] : [selectedTroncal]);
             });
         }
+
+        return true; // Indicate successful initialization
     } catch (error) {
-        console.error('Error in initMap:', error);
+        console.warn('Error in initMap:', error);
+        return false; // Indicate failed initialization
     }
 }
 
@@ -80,15 +84,17 @@ function loadGeoJSONLayers() {
                         };
                     },
                     onEachFeature: function (feature, layer) {
-                        layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
+                        if (feature.properties && feature.properties.RUTA) {
+                            layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
+                        }
                     }
                 }).addTo(map);
                 
                 loadStationsLayer();
             })
-            .catch(error => console.error("Error loading routes GeoJSON:", error));
+            .catch(error => console.warn("Error loading routes GeoJSON:", error));
     } catch (error) {
-        console.error('Error in loadGeoJSONLayers:', error);
+        console.warn('Error in loadGeoJSONLayers:', error);
     }
 }
 
@@ -103,9 +109,11 @@ function loadStationsLayer() {
             })
             .then(data => {
                 const select = document.getElementById('troncalFilter');
-                if (select) {
+                if (select && data.features) {
                     data.features.forEach(feature => {
-                        if (feature.properties.troncal_estacion && !troncales.has(feature.properties.troncal_estacion)) {
+                        if (feature.properties && 
+                            feature.properties.troncal_estacion && 
+                            !troncales.has(feature.properties.troncal_estacion)) {
                             troncales.add(feature.properties.troncal_estacion);
                             const option = new Option(feature.properties.troncal_estacion, feature.properties.troncal_estacion);
                             select.add(option);
@@ -115,7 +123,7 @@ function loadStationsLayer() {
 
                 stationsLayer = L.geoJSON(data, {
                     pointToLayer: function (feature, latlng) {
-                        const stationName = feature.properties.nombre_estacion || 'Sin nombre';
+                        const stationName = feature.properties?.nombre_estacion || 'Sin nombre';
                         return L.marker(latlng, {
                             icon: L.divIcon({
                                 html: `<div style="text-align: center;">
@@ -133,19 +141,20 @@ function loadStationsLayer() {
                         });
                     },
                     onEachFeature: function (feature, layer) {
+                        const props = feature.properties || {};
                         layer.bindPopup(`
-                            <b>Estación:</b> ${feature.properties.nombre_estacion || 'Sin nombre'}<br>
-                            <b>Troncal:</b> ${feature.properties.troncal_estacion || 'N/A'}<br>
-                            <b>Vagones:</b> ${feature.properties.numero_vagones_estacion || 'N/A'}<br>
-                            <b>Accesos:</b> ${feature.properties.numero_accesos_estacion || 'N/A'}
+                            <b>Estación:</b> ${props.nombre_estacion || 'Sin nombre'}<br>
+                            <b>Troncal:</b> ${props.troncal_estacion || 'N/A'}<br>
+                            <b>Vagones:</b> ${props.numero_vagones_estacion || 'N/A'}<br>
+                            <b>Accesos:</b> ${props.numero_accesos_estacion || 'N/A'}
                         `);
-                        layer.troncal = feature.properties.troncal_estacion;
+                        layer.troncal = props.troncal_estacion;
                     }
                 }).addTo(map);
             })
-            .catch(error => console.error("Error loading stations GeoJSON:", error));
+            .catch(error => console.warn("Error loading stations GeoJSON:", error));
     } catch (error) {
-        console.error('Error in loadStationsLayer:', error);
+        console.warn('Error in loadStationsLayer:', error);
     }
 }
 
@@ -171,12 +180,17 @@ function filterByTroncal(selectedTroncales) {
             routesLayer.addTo(map);
         }
     } catch (error) {
-        console.error('Error in filterByTroncal:', error);
+        console.warn('Error in filterByTroncal:', error);
     }
 }
 
 function updateMapWithUserLocation(latitude, longitude) {
     try {
+        if (!map) {
+            console.warn('Map not initialized');
+            return;
+        }
+
         if (userMarker) {
             map.removeLayer(userMarker);
         }
@@ -213,7 +227,7 @@ function updateMapWithUserLocation(latitude, longitude) {
         map.setView([latitude, longitude], 15);
         loadGeoJSONLayers();
     } catch (error) {
-        console.error('Error in updateMapWithUserLocation:', error);
+        console.warn('Error in updateMapWithUserLocation:', error);
     }
 }
 
@@ -228,17 +242,20 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
     } catch (error) {
-        console.error('Error in calculateDistance:', error);
+        console.warn('Error in calculateDistance:', error);
         return 0;
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        if (document.getElementById('map')) {
-            initMap();
+        if (typeof initMap === 'function') {
+            const success = initMap();
+            if (!success) {
+                console.warn('Map initialization failed');
+            }
         }
     } catch (error) {
-        console.error('Error initializing map:', error);
+        console.warn('Error initializing map:', error);
     }
 });
