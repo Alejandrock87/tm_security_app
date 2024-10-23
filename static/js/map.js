@@ -24,28 +24,6 @@ function initMap() {
             addIncidentMarker(incident);
         });
     }
-
-    // Add layer control
-    let baseMaps = {
-        "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-    };
-    let overlayMaps = {
-        "Rutas Transmilenio": routesLayer,
-        "Estaciones Transmilenio": stationsLayer
-    };
-    L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-    // Add legend
-    let legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (map) {
-        let div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML += '<h4>Leyenda</h4>';
-        div.innerHTML += '<i style="background: #87CEFA"></i> Rutas Transmilenio<br>';
-        div.innerHTML += '<i style="background: #FF0000"></i> Estaciones Transmilenio<br>';
-        div.innerHTML += '<i style="background: #FF4500"></i> Incidentes<br>';
-        return div;
-    };
-    legend.addTo(map);
 }
 
 function loadGeoJSONLayers() {
@@ -65,17 +43,21 @@ function loadGeoJSONLayers() {
                     layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
                 }
             }).addTo(map);
+            
+            // Load stations after routes are loaded
+            loadStationsLayer();
         })
         .catch(error => console.error("Error loading routes GeoJSON:", error));
+}
 
-    // Load stations GeoJSON
+function loadStationsLayer() {
     fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
         .then(response => response.json())
         .then(data => {
             stationsLayer = L.geoJSON(data, {
                 pointToLayer: function (feature, latlng) {
                     console.log("Station feature properties:", feature.properties);
-                    const stationName = feature.properties.NOMBRE || feature.properties.nombre || feature.properties.name || 'Estación sin nombre';
+                    const stationName = feature.properties.nombre_estacion || 'Sin nombre';
                     return L.marker(latlng, {
                         icon: L.divIcon({
                             html: `<div style="text-align: center;">
@@ -93,15 +75,36 @@ function loadGeoJSONLayers() {
                     });
                 },
                 onEachFeature: function (feature, layer) {
-                    const stationName = feature.properties.NOMBRE || feature.properties.nombre || feature.properties.name || 'Estación sin nombre';
                     layer.bindPopup(`
-                        <b>Estación:</b> ${stationName}<br>
+                        <b>Estación:</b> ${feature.properties.nombre_estacion || 'Sin nombre'}<br>
                         <b>Troncal:</b> ${feature.properties.troncal_estacion || 'N/A'}<br>
                         <b>Vagones:</b> ${feature.properties.numero_vagones_estacion || 'N/A'}<br>
                         <b>Accesos:</b> ${feature.properties.numero_accesos_estacion || 'N/A'}
                     `);
                 }
             }).addTo(map);
+
+            // Add layer control after both layers are added
+            let baseMaps = {
+                "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+            };
+            let overlayMaps = {
+                "Rutas Transmilenio": routesLayer,
+                "Estaciones Transmilenio": stationsLayer
+            };
+            L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+            // Add legend
+            let legend = L.control({position: 'bottomright'});
+            legend.onAdd = function (map) {
+                let div = L.DomUtil.create('div', 'info legend');
+                div.innerHTML += '<h4>Leyenda</h4>';
+                div.innerHTML += '<i style="background: #87CEFA"></i> Rutas Transmilenio<br>';
+                div.innerHTML += '<i style="background: #FF0000"></i> Estaciones Transmilenio<br>';
+                div.innerHTML += '<i style="background: #FF4500"></i> Incidentes<br>';
+                return div;
+            };
+            legend.addTo(map);
         })
         .catch(error => console.error("Error loading stations GeoJSON:", error));
 }
@@ -149,7 +152,7 @@ function findNearestStation(userLat, userLng) {
         const distance = calculateDistance(userLat, userLng, layer.getLatLng().lat, layer.getLatLng().lng);
         if (distance < shortestDistance) {
             shortestDistance = distance;
-            nearestStation = layer.feature.properties.NOMBRE || layer.feature.properties.nombre || layer.feature.properties.name || 'Estación sin nombre';
+            nearestStation = layer.feature.properties.nombre_estacion || 'Sin nombre';
         }
     });
 
