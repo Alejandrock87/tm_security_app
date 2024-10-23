@@ -16,9 +16,9 @@ def init_routes(app):
     @app.route('/')
     @app.route('/index')
     def index():
-        if current_user.is_authenticated:
-            return redirect(url_for('dashboard'))
-        return render_template('index.html', title='Inicio')
+        if not current_user.is_authenticated:
+            return render_template('index.html', title='Inicio')
+        return render_template('home.html', title='Inicio')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
