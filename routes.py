@@ -40,6 +40,7 @@ def init_routes(app):
     @app.route('/logout')
     def logout():
         logout_user()
+        flash('Has cerrado sesión exitosamente.')
         return redirect(url_for('index'))
 
     @app.route('/register', methods=['GET', 'POST'])
@@ -91,7 +92,6 @@ def init_routes(app):
     @app.route('/station_statistics')
     @login_required
     def station_statistics():
-        # Get incidents from the last 30 days
         thirty_days_ago = datetime.utcnow() - timedelta(days=30)
         incidents_by_station = db.session.query(
             Incident.nearest_station,
@@ -112,7 +112,6 @@ def init_routes(app):
             logging.info("Obteniendo datos para el panel de control")
             incidents = get_incidents_for_map()
             
-            # Get station statistics for the last 30 days
             thirty_days_ago = datetime.utcnow() - timedelta(days=30)
             station_stats = db.session.query(
                 Incident.nearest_station,
@@ -123,7 +122,6 @@ def init_routes(app):
                 Incident.nearest_station
             ).all()
             
-            # Calculate insecurity levels
             station_security_levels = {}
             for station, count in station_stats:
                 if count > 5:
