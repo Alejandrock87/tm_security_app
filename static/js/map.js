@@ -2,6 +2,7 @@ let map;
 let userMarker;
 let stationMarkers = [];
 let stationsLayer, routesLayer;
+let troncales = new Set();
 
 function initMap() {
     console.log("initMap function called in map.js");
@@ -24,6 +25,18 @@ function initMap() {
             addIncidentMarker(incident);
         });
     }
+
+    // Add legend for insecurity levels
+    let legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        let div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = '<h4 style="color: #000;">Niveles de Inseguridad</h4>';
+        div.innerHTML += '<i style="background: #ff0000"></i> <span style="color: #000;">Alto</span><br>';
+        div.innerHTML += '<i style="background: #ffa500"></i> <span style="color: #000;">Medio</span><br>';
+        div.innerHTML += '<i style="background: #008000"></i> <span style="color: #000;">Bajo</span><br>';
+        return div;
+    };
+    legend.addTo(map);
 }
 
 function loadGeoJSONLayers() {
@@ -42,7 +55,7 @@ function loadGeoJSONLayers() {
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
                 }
-            }).addTo(map);
+            });
             
             // Load stations after routes are loaded
             loadStationsLayer();
@@ -54,9 +67,27 @@ function loadStationsLayer() {
     fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
         .then(response => response.json())
         .then(data => {
+            // Collect unique troncales
+            data.features.forEach(feature => {
+                if (feature.properties.troncal_estacion) {
+                    troncales.add(feature.properties.troncal_estacion);
+                }
+            });
+            
+            // Create troncal filter buttons
+            const troncalFilter = document.getElementById('troncalFilter').querySelector('.btn-group');
+            troncales.forEach(troncal => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-outline-primary';
+                btn.textContent = troncal;
+                btn.setAttribute('data-troncal', troncal);
+                btn.onclick = () => filterByTroncal(troncal);
+                troncalFilter.appendChild(btn);
+            });
+
             stationsLayer = L.geoJSON(data, {
                 pointToLayer: function (feature, latlng) {
-                    console.log("Station feature properties:", feature.properties);
                     const stationName = feature.properties.nombre_estacion || 'Sin nombre';
                     return L.marker(latlng, {
                         icon: L.divIcon({
@@ -81,42 +112,63 @@ function loadStationsLayer() {
                         <b>Vagones:</b> ${feature.properties.numero_vagones_estacion || 'N/A'}<br>
                         <b>Accesos:</b> ${feature.properties.numero_accesos_estacion || 'N/A'}
                     `);
+                    layer.troncal = feature.properties.troncal_estacion;
                 }
             }).addTo(map);
-
-            // Add layer control after both layers are added
-            let baseMaps = {
-                "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-            };
-            let overlayMaps = {
-                "Rutas Transmilenio": routesLayer,
-                "Estaciones Transmilenio": stationsLayer
-            };
-            L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-            // Add legend
-            let legend = L.control({position: 'bottomright'});
-            legend.onAdd = function (map) {
-                let div = L.DomUtil.create('div', 'info legend');
-                div.innerHTML += '<h4>Leyenda</h4>';
-                div.innerHTML += '<i style="background: #87CEFA"></i> Rutas Transmilenio<br>';
-                div.innerHTML += '<i style="background: #FF0000"></i> Estaciones Transmilenio<br>';
-                div.innerHTML += '<i style="background: #FF4500"></i> Incidentes<br>';
-                return div;
-            };
-            legend.addTo(map);
         })
         .catch(error => console.error("Error loading stations GeoJSON:", error));
 }
 
+function filterByTroncal(selectedTroncal) {
+    const buttons = document.querySelectorAll('#troncalFilter .btn');
+    buttons.forEach(btn => {
+        if (btn.getAttribute('data-troncal') === selectedTroncal || 
+            (selectedTroncal === 'all' && btn.getAttribute('data-troncal') === 'all')) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    if (selectedTroncal === 'all') {
+        stationsLayer.eachLayer(layer => {
+            layer.addTo(map);
+        });
+        if (!map.hasLayer(routesLayer)) {
+            routesLayer.addTo(map);
+        }
+    } else {
+        stationsLayer.eachLayer(layer => {
+            if (layer.troncal === selectedTroncal) {
+                layer.addTo(map);
+            } else {
+                map.removeLayer(layer);
+            }
+        });
+        // TODO: Filter routes by troncal when that data is available
+    }
+}
+
 function addIncidentMarker(incident) {
-    const incidentIcon = L.icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-red.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+    let color;
+    switch(incident.severity || 'medium') {
+        case 'high':
+            color = '#ff0000';
+            break;
+        case 'medium':
+            color = '#ffa500';
+            break;
+        case 'low':
+            color = '#008000';
+            break;
+        default:
+            color = '#ffa500';
+    }
+
+    const incidentIcon = L.divIcon({
+        html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>`,
+        className: 'incident-marker',
+        iconSize: [12, 12]
     });
 
     const marker = L.marker([incident.latitude, incident.longitude], {icon: incidentIcon}).addTo(map);
@@ -160,7 +212,7 @@ function findNearestStation(userLat, userLng) {
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the Earth in kilometers
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = Math.sin(dLat/2) * Math.sin(dLat/2) +

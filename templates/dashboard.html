@@ -2,26 +2,35 @@
 
 {% block content %}
 <style>
-.leaflet-control-layers {
-    background: white;
-    padding: 6px;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-}
-
 .info.legend {
     background: white;
-    padding: 6px 8px;
+    padding: 8px;
     border-radius: 4px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.4);
 }
-
 .info.legend i {
     width: 18px;
     height: 18px;
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+.info.legend span {
+    color: #000;
+}
+
+.troncal-filter {
+    margin-bottom: 15px;
+}
+
+.troncal-filter .btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.troncal-filter .btn.active {
+    background-color: var(--bs-primary);
+    color: white;
 }
 </style>
 
@@ -35,6 +44,12 @@
                 <h2 class="card-title">Mapa de Incidentes</h2>
             </div>
             <div class="card-body">
+                <div class="troncal-filter" id="troncalFilter">
+                    <h5>Filtrar por Troncal:</h5>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active" data-troncal="all">Todas</button>
+                    </div>
+                </div>
                 <div id="map" style="height: 400px;"></div>
             </div>
         </div>
@@ -98,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
         statsHtml += '</ul>';
         incidentTypeStats.innerHTML = statsHtml;
     }
-    
-    console.log("All scripts loaded successfully");
 });
 </script>
 {% endblock %}
