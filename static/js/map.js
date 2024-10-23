@@ -39,10 +39,10 @@ function initMap() {
     let legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         let div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<h4>Niveles de Inseguridad</h4>';
-        div.innerHTML += '<i style="background: #ff0000"></i> <span>Alto</span><br>';
-        div.innerHTML += '<i style="background: #ffa500"></i> <span>Medio</span><br>';
-        div.innerHTML += '<i style="background: #008000"></i> <span>Bajo</span><br>';
+        div.innerHTML = '<h4 style="color: #000; margin-bottom: 10px;">Niveles de Inseguridad</h4>';
+        div.innerHTML += '<i style="background: #ff0000"></i> <span style="color: #000;">Alto</span><br>';
+        div.innerHTML += '<i style="background: #ffa500"></i> <span style="color: #000;">Medio</span><br>';
+        div.innerHTML += '<i style="background: #008000"></i> <span style="color: #000;">Bajo</span><br>';
         return div;
     };
     legend.addTo(map);
@@ -124,6 +124,7 @@ function loadStationsLayer() {
 function filterByTroncal(selectedTroncales) {
     const showAll = selectedTroncales.includes('all');
 
+    // Filter stations
     stationsLayer.eachLayer(layer => {
         if (showAll || selectedTroncales.includes(layer.troncal)) {
             if (!map.hasLayer(layer)) {
@@ -136,13 +137,22 @@ function filterByTroncal(selectedTroncales) {
         }
     });
 
-    if (showAll) {
-        if (!map.hasLayer(routesLayer)) {
+    // Filter routes
+    if (routesLayer) {
+        if (showAll) {
             routesLayer.addTo(map);
-        }
-    } else {
-        if (map.hasLayer(routesLayer)) {
-            map.removeLayer(routesLayer);
+        } else {
+            routesLayer.eachLayer(layer => {
+                if (selectedTroncales.includes(layer.feature.properties.TRONCAL)) {
+                    if (!map.hasLayer(layer)) {
+                        layer.addTo(map);
+                    }
+                } else {
+                    if (map.hasLayer(layer)) {
+                        map.removeLayer(layer);
+                    }
+                }
+            });
         }
     }
 }
@@ -153,15 +163,36 @@ function updateMapWithUserLocation(latitude, longitude) {
     }
 
     const userIcon = L.divIcon({
-        html: '<div style="background-color: #4CAF50; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3);"></div>',
+        html: `<div style="
+            background-color: #4CAF50;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            position: relative;
+        ">
+            <div style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 8px;
+                height: 8px;
+                background-color: white;
+                border-radius: 50%;
+            "></div>
+        </div>`,
         className: 'user-marker',
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
     });
 
     userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
     userMarker.bindPopup("Tu ubicación actual");
-    map.setView([latitude, longitude], 13);
+    
+    // Center and zoom to user location
+    map.setView([latitude, longitude], 15);
 
     loadGeoJSONLayers();
 }
