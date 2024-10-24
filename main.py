@@ -5,6 +5,6 @@ from app import app, socketio
 # WARNING: This should only be used in development, not in production
 os.environ['WERKZEUG_DEBUG_PIN'] = 'None'
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    socketio.run(app, host="0.0.0.0", port=port, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=port, debug=True, allow_unsafe_werkzeug=True, use_reloader=True, log_output=True)
