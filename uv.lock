@@ -594,6 +594,7 @@ dependencies = [
     { name = "psycopg2-binary" },
     { name = "requests" },
     { name = "scikit-learn" },
+    { name = "sqlalchemy" },
     { name = "xgboost" },
 ]
 
@@ -612,6 +613,7 @@ requires-dist = [
     { name = "psycopg2-binary", specifier = ">=2.9.9" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "scikit-learn", specifier = ">=1.5.2" },
+    { name = "sqlalchemy", specifier = ">=2.0.35" },
     { name = "xgboost", specifier = ">=2.1.1" },
 ]
 
