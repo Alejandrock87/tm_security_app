@@ -1,5 +1,4 @@
 modules = ["python-3.11"]
-
 [nix]
 channel = "stable-24_05"
 
@@ -10,15 +9,12 @@ runButton = "Project"
 name = "Project"
 mode = "parallel"
 author = "agent"
-
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Start Flask App"
-
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Retrain Model"
-
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Generate Station Icon"
@@ -26,22 +22,18 @@ args = "Generate Station Icon"
 [[workflows.workflow]]
 name = "Start Flask App"
 author = "agent"
-
 [workflows.workflow.metadata]
 agentRequireRestartOnSave = false
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
-waitForPort = 5000
+waitForPort = 3000  # Cambiado de 80 a 3000
 
 [[workflows.workflow]]
 name = "Retrain Model"
 author = "agent"
-
 [workflows.workflow.metadata]
 agentRequireRestartOnSave = false
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python retrain_model.py"
@@ -49,10 +41,8 @@ args = "python retrain_model.py"
 [[workflows.workflow]]
 name = "Generate Station Icon"
 author = "agent"
-
 [workflows.workflow.metadata]
 agentRequireRestartOnSave = false
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python generate_station_icon.py"
@@ -61,13 +51,5 @@ args = "python generate_station_icon.py"
 run = ["sh", "-c", "python main.py"]
 
 [[ports]]
-localPort = 80
-externalPort = 80
-
-[[ports]]
-localPort = 3000
-externalPort = 3001
-
-[[ports]]
-localPort = 5000
-externalPort = 80
+localPort = 3000  # Cambiado de 80 a 3000
+externalPort = 3000  # Asegurarse de que coincida con el puerto local
