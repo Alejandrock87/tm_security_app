@@ -9,8 +9,8 @@ if __name__ == '__main__':
     socketio.run(app, 
                 host='0.0.0.0', 
                 port=port, 
-                debug=False,  # Cambiado a False para producción
-                allow_unsafe_werkzeug=False,  # Cambiado a False para producción
-                use_reloader=False,  # Deshabilitado para producción
-                log_output=True  # Mantenemos los logs para monitorear la aplicación
+                debug=True,  # Enable debug for development
+                allow_unsafe_werkzeug=True,
+                use_reloader=True,
+                log_output=True
     )
