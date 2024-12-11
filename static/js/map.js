@@ -8,6 +8,7 @@ let troncales = new Set();
 let mapInitialized = false;
 let stationSecurityLevels = {};
 let incidents = [];
+let selectedStation = null;
 
 function initMap() {
     if (mapInitialized) return;
@@ -45,9 +46,7 @@ async function fetchInitialData() {
         const stations = await stationsResponse.json();
         
         populateFilters(incidents, stations);
-        updateMap(incidents);
-        updateIncidentsList(incidents);
-        updateStatistics(incidents);
+        clearMap();
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -65,9 +64,13 @@ function populateFilters(incidents, stations) {
         incidentTypeSelect.appendChild(option);
     });
 
-    // Populate troncales
+    // Populate troncales and stations
     const troncalSelect = document.getElementById('troncalFilter');
+    const stationSelect = document.getElementById('stationFilter');
+    
     troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+    stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+    
     stations.forEach(station => {
         if (station.troncal && !troncales.has(station.troncal)) {
             troncales.add(station.troncal);
@@ -76,17 +79,19 @@ function populateFilters(incidents, stations) {
             option.textContent = station.troncal;
             troncalSelect.appendChild(option);
         }
+        
+        const stationOption = document.createElement('option');
+        stationOption.value = station.nombre;
+        stationOption.textContent = station.nombre;
+        stationSelect.appendChild(stationOption);
     });
+}
 
-    // Populate stations
-    const stationSelect = document.getElementById('stationFilter');
-    stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-    stations.forEach(station => {
-        const option = document.createElement('option');
-        option.value = station.nombre;
-        option.textContent = station.nombre;
-        stationSelect.appendChild(option);
-    });
+function clearMap() {
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+    const incidentsList = document.getElementById('incidentsList');
+    if (incidentsList) incidentsList.innerHTML = '';
 }
 
 function resetFilters() {
@@ -96,7 +101,8 @@ function resetFilters() {
     document.getElementById('securityLevelFilter').value = 'all';
     document.getElementById('troncalFilter').value = 'all';
     document.getElementById('stationFilter').value = 'all';
-    applyFilters();
+    clearMap();
+    selectedStation = null;
 }
 
 function applyFilters() {
@@ -125,56 +131,64 @@ function applyFilters() {
 
     updateMap(filteredIncidents);
     updateIncidentsList(filteredIncidents);
-    updateStatistics(filteredIncidents);
 }
 
 function updateMap(filteredIncidents) {
-    // Clear existing markers
-    markers.forEach(marker => map.removeLayer(marker));
-    markers = [];
+    clearMap();
 
-    // Add filtered incidents to map
-    filteredIncidents.forEach(incident => {
-        const marker = L.marker([incident.latitude, incident.longitude])
-            .bindPopup(`
-                <b>Tipo:</b> ${incident.incident_type}<br>
-                <b>Fecha:</b> ${new Date(incident.timestamp).toLocaleDateString()}<br>
-                <b>Hora:</b> ${new Date(incident.timestamp).toLocaleTimeString()}<br>
-                <b>Estación:</b> ${incident.nearest_station}
-            `);
-        markers.push(marker);
-        marker.addTo(map);
-    });
+    if (selectedStation) {
+        const stationIncidents = filteredIncidents.filter(
+            incident => incident.nearest_station === selectedStation
+        );
+        stationIncidents.forEach(addIncidentToMap);
+    } else {
+        filteredIncidents.forEach(addIncidentToMap);
+    }
 
-    // If only one incident is selected, center map on it
     if (filteredIncidents.length === 1) {
         map.setView([filteredIncidents[0].latitude, filteredIncidents[0].longitude], 15);
     }
+}
+
+function addIncidentToMap(incident) {
+    const marker = L.marker([incident.latitude, incident.longitude])
+        .bindPopup(`
+            <b>Tipo:</b> ${incident.incident_type}<br>
+            <b>Fecha:</b> ${new Date(incident.timestamp).toLocaleDateString()}<br>
+            <b>Hora:</b> ${new Date(incident.timestamp).toLocaleTimeString()}<br>
+            <b>Estación:</b> ${incident.nearest_station}
+        `);
+    markers.push(marker);
+    marker.addTo(map);
 }
 
 function updateIncidentsList(filteredIncidents) {
     const listContainer = document.getElementById('incidentsList');
     listContainer.innerHTML = '';
 
+    const groupedIncidents = {};
     filteredIncidents.forEach(incident => {
+        if (!groupedIncidents[incident.nearest_station]) {
+            groupedIncidents[incident.nearest_station] = [];
+        }
+        groupedIncidents[incident.nearest_station].push(incident);
+    });
+
+    Object.entries(groupedIncidents).forEach(([station, stationIncidents]) => {
         const item = document.createElement('a');
         item.className = 'list-group-item list-group-item-action';
         item.innerHTML = `
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">${incident.incident_type}</h5>
-                <small>${new Date(incident.timestamp).toLocaleDateString()}</small>
+                <h5 class="mb-1">${station}</h5>
+                <small>${stationIncidents.length} incidente(s)</small>
             </div>
-            <p class="mb-1">${incident.nearest_station}</p>
-            <small>${new Date(incident.timestamp).toLocaleTimeString()}</small>
+            <p class="mb-1">Nivel de Inseguridad: ${getSecurityLevel(station)}</p>
         `;
         item.onclick = () => {
-            map.setView([incident.latitude, incident.longitude], 15);
-            markers.forEach(marker => {
-                if (marker.getLatLng().lat === incident.latitude && 
-                    marker.getLatLng().lng === incident.longitude) {
-                    marker.openPopup();
-                }
-            });
+            selectedStation = station;
+            updateMap(stationIncidents);
+            const firstIncident = stationIncidents[0];
+            map.setView([firstIncident.latitude, firstIncident.longitude], 15);
         };
         listContainer.appendChild(item);
     });
@@ -182,9 +196,9 @@ function updateIncidentsList(filteredIncidents) {
 
 function getSecurityLevel(stationName) {
     const count = stationSecurityLevels[stationName] || 0;
-    if (count > 5) return 'high';
-    if (count >= 2) return 'medium';
-    return 'low';
+    if (count > 5) return 'Alto';
+    if (count >= 2) return 'Medio';
+    return 'Bajo';
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
