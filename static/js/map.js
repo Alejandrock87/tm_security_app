@@ -1,201 +1,199 @@
+
 let map = null;
-let userMarker = null;
+let markers = [];
 let stationMarkers = [];
 let stationsLayer = null;
 let routesLayer = null;
 let troncales = new Set();
 let mapInitialized = false;
 let stationSecurityLevels = {};
+let incidents = [];
 
 function initMap() {
+    if (mapInitialized) return;
+
+    map = L.map('map').setView([4.6097, -74.0817], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add legend
+    const legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = '<h4>Niveles de Inseguridad</h4>' +
+            '<i style="background: #ff0000"></i> Alto<br>' +
+            '<i style="background: #ffa500"></i> Medio<br>' +
+            '<i style="background: #008000"></i> Bajo';
+        return div;
+    };
+    legend.addTo(map);
+
+    fetchInitialData();
+    mapInitialized = true;
+}
+
+async function fetchInitialData() {
     try {
-        if (mapInitialized) {
-            console.warn('Map already initialized');
-            return true;
+        const [statsResponse, incidentsResponse] = await Promise.all([
+            fetch('/station_statistics'),
+            fetch('/incidents')
+        ]);
+        
+        stationSecurityLevels = await statsResponse.json();
+        incidents = await incidentsResponse.json();
+        
+        loadGeoJSONLayers();
+        populateFilters();
+        updateStatistics();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+function populateFilters() {
+    const incidentTypes = [...new Set(incidents.map(i => i.incident_type))];
+    const incidentTypeSelect = document.getElementById('incidentTypeFilter');
+    
+    incidentTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        incidentTypeSelect.appendChild(option);
+    });
+}
+
+function applyFilters() {
+    const date = document.getElementById('dateFilter').value;
+    const time = document.getElementById('timeFilter').value;
+    const type = document.getElementById('incidentTypeFilter').value;
+    const level = document.getElementById('securityLevelFilter').value;
+    const troncal = document.getElementById('troncalFilter').value;
+
+    const filteredIncidents = incidents.filter(incident => {
+        if (date && !incident.timestamp.includes(date)) return false;
+        if (time) {
+            const incidentTime = incident.timestamp.split('T')[1].substring(0, 5);
+            if (incidentTime !== time) return false;
         }
-
-        const mapElement = document.getElementById('map');
-        if (!mapElement) {
-            console.warn('Map element not found in initMap');
-            return false;
+        if (type !== 'all' && incident.incident_type !== type) return false;
+        if (level !== 'all') {
+            const stationLevel = getSecurityLevel(incident.nearest_station);
+            if (stationLevel !== level) return false;
         }
-
-        map = L.map('map', {
-            zoomControl: true,
-            attributionControl: true
-        }).setView([4.6097, -74.0817], 11);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Add legend control
-        const legend = L.control({position: 'bottomright'});
-        legend.onAdd = function (map) {
-            const div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML = '<h4 style="color: #000; margin-bottom: 10px;">Niveles de Inseguridad</h4>';
-            div.innerHTML += '<i style="background: #ff0000"></i> <span style="color: #000;">Alto (>5 incidentes/mes)</span><br>';
-            div.innerHTML += '<i style="background: #ffa500"></i> <span style="color: #000;">Medio (2-5 incidentes/mes)</span><br>';
-            div.innerHTML += '<i style="background: #008000"></i> <span style="color: #000;">Bajo (<2 incidentes/mes)</span><br>';
-            return div;
-        };
-        legend.addTo(map);
-
-        // Add troncal filter
-        const troncalFilter = document.getElementById('troncalFilter');
-        if (troncalFilter) {
-            troncalFilter.addEventListener('change', function(e) {
-                const selectedTroncal = this.value;
-                filterByTroncal(selectedTroncal === 'all' ? ['all'] : [selectedTroncal]);
-            });
-        }
-
-        // Load station security levels and GeoJSON layers
-        fetch('/station_statistics')
-            .then(response => response.json())
-            .then(data => {
-                stationSecurityLevels = data;
-                loadGeoJSONLayers();
-            })
-            .catch(error => {
-                console.warn('Error loading station statistics:', error);
-                loadGeoJSONLayers();
-            });
-
-        mapInitialized = true;
         return true;
-    } catch (error) {
-        console.warn('Error in initMap:', error);
-        return false;
-    }
+    });
+
+    updateMap(filteredIncidents);
+    updateIncidentsList(filteredIncidents);
+    updateStatistics(filteredIncidents);
 }
 
-function getStationColor(stationName) {
-    const count = stationSecurityLevels[stationName] || 0;
-    if (count > 5) return '#ff0000';  // High risk
-    if (count >= 2) return '#ffa500';  // Medium risk
-    return '#008000';  // Low risk
+function updateMap(filteredIncidents) {
+    // Clear existing markers
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+
+    // Add filtered incidents to map
+    filteredIncidents.forEach(incident => {
+        const marker = L.marker([incident.latitude, incident.longitude])
+            .bindPopup(`
+                <b>Tipo:</b> ${incident.incident_type}<br>
+                <b>Fecha:</b> ${new Date(incident.timestamp).toLocaleDateString()}<br>
+                <b>Hora:</b> ${new Date(incident.timestamp).toLocaleTimeString()}<br>
+                <b>Estación:</b> ${incident.nearest_station}
+            `);
+        markers.push(marker);
+        marker.addTo(map);
+    });
 }
 
-function loadStationsLayer() {
-    try {
-        fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const select = document.getElementById('troncalFilter');
-                if (select && data.features) {
-                    data.features.forEach(feature => {
-                        if (feature.properties && 
-                            feature.properties.troncal_estacion && 
-                            !troncales.has(feature.properties.troncal_estacion)) {
-                            troncales.add(feature.properties.troncal_estacion);
-                            const option = new Option(feature.properties.troncal_estacion, feature.properties.troncal_estacion);
-                            select.add(option);
-                        }
-                    });
-                }
+function updateIncidentsList(filteredIncidents) {
+    const listContainer = document.getElementById('incidentsList');
+    listContainer.innerHTML = '';
 
-                stationsLayer = L.geoJSON(data, {
-                    pointToLayer: function (feature, latlng) {
-                        const stationName = feature.properties?.nombre_estacion || 'Sin nombre';
-                        const stationColor = getStationColor(stationName);
-                        
-                        return L.marker(latlng, {
-                            icon: L.divIcon({
-                                html: `<div style="text-align: center;">
-                                         <div style="background-color: ${stationColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
-                                           <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
-                                         </div>
-                                         <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
-                                           <span style="font-size: 12px; font-weight: bold; color: #333;">
-                                             ${stationName}
-                                           </span>
-                                         </div>
-                                       </div>`,
-                                className: 'station-label',
-                                iconSize: [120, 60],
-                                iconAnchor: [60, 30]
-                            })
-                        });
-                    },
-                    onEachFeature: function (feature, layer) {
-                        const props = feature.properties || {};
-                        const stationName = props.nombre_estacion || 'Sin nombre';
-                        const incidentCount = stationSecurityLevels[stationName] || 0;
-                        
-                        layer.bindPopup(`
-                            <b>Estación:</b> ${stationName}<br>
-                            <b>Troncal:</b> ${props.troncal_estacion || 'N/A'}<br>
-                            <b>Incidentes (último mes):</b> ${incidentCount}<br>
-                            <b>Vagones:</b> ${props.numero_vagones_estacion || 'N/A'}<br>
-                            <b>Accesos:</b> ${props.numero_accesos_estacion || 'N/A'}
-                        `);
-                        layer.troncal = props.troncal_estacion;
-                    }
-                }).addTo(map);
-            })
-            .catch(error => console.warn("Error loading stations GeoJSON:", error));
-    } catch (error) {
-        console.warn('Error in loadStationsLayer:', error);
-    }
+    filteredIncidents.forEach(incident => {
+        const item = document.createElement('a');
+        item.className = 'list-group-item list-group-item-action';
+        item.innerHTML = `
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">${incident.incident_type}</h5>
+                <small>${new Date(incident.timestamp).toLocaleDateString()}</small>
+            </div>
+            <p class="mb-1">${incident.nearest_station}</p>
+            <small>${new Date(incident.timestamp).toLocaleTimeString()}</small>
+        `;
+        listContainer.appendChild(item);
+    });
 }
 
-function loadGeoJSONLayers() {
-    try {
-        fetch('/static/Rutas_Troncales_de_TRANSMILENIO.geojson')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                routesLayer = L.geoJSON(data, {
-                    style: function (feature) {
-                        return {
-                            color: "#87CEFA",
-                            weight: 5,
-                            opacity: 0.7
-                        };
-                    },
-                    onEachFeature: function (feature, layer) {
-                        if (feature.properties && feature.properties.RUTA) {
-                            layer.bindPopup(`<b>Ruta:</b> ${feature.properties.RUTA}`);
-                        }
-                    }
-                }).addTo(map);
-                
-                loadStationsLayer();
-            })
-            .catch(error => console.warn("Error loading routes GeoJSON:", error));
-    } catch (error) {
-        console.warn('Error in loadGeoJSONLayers:', error);
-    }
+function updateStatistics(filteredIncidents) {
+    updateHourlyChart(filteredIncidents);
+    updateIncidentTypeChart(filteredIncidents);
 }
 
-function filterByTroncal(selectedTroncales) {
-    try {
-        const showAll = selectedTroncales.includes('all');
+function updateHourlyChart(incidents) {
+    const hourlyData = new Array(24).fill(0);
+    incidents.forEach(incident => {
+        const hour = new Date(incident.timestamp).getHours();
+        hourlyData[hour]++;
+    });
 
-        if (stationsLayer) {
-            stationsLayer.eachLayer(layer => {
-                if (showAll || selectedTroncales.includes(layer.troncal)) {
-                    if (!map.hasLayer(layer)) {
-                        layer.addTo(map);
-                    }
-                } else {
-                    if (map.hasLayer(layer)) {
-                        map.removeLayer(layer);
-                    }
+    const ctx = document.getElementById('hourlyChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+            datasets: [{
+                label: 'Incidentes por Hora',
+                data: hourlyData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
-            });
+            }
         }
-    } catch (error) {
-        console.warn('Error in filterByTroncal:', error);
-    }
+    });
 }
+
+function updateIncidentTypeChart(incidents) {
+    const typeCount = {};
+    incidents.forEach(incident => {
+        typeCount[incident.incident_type] = (typeCount[incident.incident_type] || 0) + 1;
+    });
+
+    const ctx = document.getElementById('incidentTypeChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(typeCount),
+            datasets: [{
+                data: Object.values(typeCount),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function getSecurityLevel(stationName) {
+    const count = stationSecurityLevels[stationName] || 0;
+    if (count > 5) return 'high';
+    if (count >= 2) return 'medium';
+    return 'low';
+}
+
+document.addEventListener('DOMContentLoaded', initMap);

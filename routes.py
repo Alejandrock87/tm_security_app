@@ -191,4 +191,18 @@ def init_routes(app):
         route_info = get_route_information(route_id)
         return render_template('route_information.html', route_info=route_info)
 
+    @app.route('/incidents')
+    @login_required
+    def get_incidents():
+        incidents = Incident.query.all()
+        return jsonify([{
+            'id': i.id,
+            'incident_type': i.incident_type,
+            'latitude': i.latitude,
+            'longitude': i.longitude,
+            'timestamp': i.timestamp.isoformat(),
+            'nearest_station': i.nearest_station,
+            'description': i.description
+        } for i in incidents])
+
     return app
