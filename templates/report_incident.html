@@ -166,6 +166,7 @@ let reportMap = null;
 let reportUserMarker = null;
 let reportNearestStationMarker = null;
 let stations = [];
+let stationSecurityLevels = {};
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -269,6 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ])
     .then(responses => Promise.all(responses.map(response => response.json())))
     .then(([statistics, stationsData]) => {
+        stationSecurityLevels = statistics;
         stations = stationsData.features;
         
         if ("geolocation" in navigator) {
