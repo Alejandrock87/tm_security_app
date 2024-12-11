@@ -62,6 +62,10 @@ def init_routes(app):
     @login_required
     def report_incident():
         form = IncidentReportForm()
+        # Load all stations for the dropdown
+        stations = db.session.query(Incident.nearest_station).distinct().all()
+        station_choices = [(station[0], station[0]) for station in stations]
+        form.station.choices = station_choices
         if form.validate_on_submit():
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
