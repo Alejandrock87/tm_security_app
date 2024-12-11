@@ -1,3 +1,4 @@
+
 from database import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,9 +23,7 @@ class Incident(db.Model):
     description = db.Column(db.Text, nullable=True)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    incident_date = db.Column(db.Date, nullable=False)
-    incident_time = db.Column(db.Time, nullable=False)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     nearest_station = db.Column(db.String(100), nullable=False)
 
