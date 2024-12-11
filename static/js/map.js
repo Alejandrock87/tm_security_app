@@ -221,6 +221,9 @@ function updateIncidentsList(filteredIncidents) {
     Object.entries(groupedIncidents).forEach(([station, stationIncidents]) => {
         const item = document.createElement('a');
         item.className = 'list-group-item list-group-item-action';
+        if (selectedStation === station) {
+            item.classList.add('active');
+        }
         item.innerHTML = `
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">${station}</h5>
@@ -230,11 +233,54 @@ function updateIncidentsList(filteredIncidents) {
         `;
         item.onclick = () => {
             selectedStation = station;
-            updateMap(stationIncidents);
-            const firstIncident = stationIncidents[0];
-            map.setView([firstIncident.latitude, firstIncident.longitude], 15);
+            const markers = stationIncidents.map(incident => 
+                addIncidentToMap(incident)
+            );
+            if (stationIncidents.length > 0) {
+                const firstIncident = stationIncidents[0];
+                map.setView([firstIncident.latitude, firstIncident.longitude], 15);
+            }
+            updateIncidentsList(filteredIncidents);
         };
         listContainer.appendChild(item);
+    });
+}
+
+function createChart(data) {
+    const ctx = document.getElementById('incidentChart');
+    if (!ctx) return;
+    
+    if (window.incidentChart) {
+        window.incidentChart.destroy();
+    }
+
+    const incidents = data.incidents_by_type || {};
+    const labels = Object.keys(incidents);
+    const values = Object.values(incidents);
+
+    window.incidentChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Número de Incidentes',
+                data: values,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
     });
 }
 
