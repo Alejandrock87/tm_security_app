@@ -86,7 +86,14 @@
                         </select>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <button class="btn btn-primary mt-4" onclick="applyFilters()">Aplicar Filtros</button>
+                        <label for="stationFilter" class="form-label">Estación:</label>
+                        <select class="form-select" id="stationFilter">
+                            <option value="all">Todas las Estaciones</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <button class="btn btn-primary mt-4 me-2" onclick="applyFilters()">Aplicar Filtros</button>
+                        <button class="btn btn-secondary mt-4" onclick="resetFilters()">Restablecer</button>
                     </div>
                 </div>
             </div>

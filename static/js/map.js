@@ -17,7 +17,6 @@ function initMap() {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Add legend
     const legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
@@ -35,32 +34,69 @@ function initMap() {
 
 async function fetchInitialData() {
     try {
-        const [statsResponse, incidentsResponse] = await Promise.all([
+        const [statsResponse, incidentsResponse, stationsResponse] = await Promise.all([
             fetch('/station_statistics'),
-            fetch('/incidents')
+            fetch('/incidents'),
+            fetch('/api/stations')
         ]);
         
         stationSecurityLevels = await statsResponse.json();
         incidents = await incidentsResponse.json();
+        const stations = await stationsResponse.json();
         
-        loadGeoJSONLayers();
-        populateFilters();
-        updateStatistics();
+        populateFilters(incidents, stations);
+        updateMap(incidents);
+        updateIncidentsList(incidents);
+        updateStatistics(incidents);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
 
-function populateFilters() {
+function populateFilters(incidents, stations) {
+    // Populate incident types
     const incidentTypes = [...new Set(incidents.map(i => i.incident_type))];
     const incidentTypeSelect = document.getElementById('incidentTypeFilter');
-    
+    incidentTypeSelect.innerHTML = '<option value="all">Todos los tipos</option>';
     incidentTypes.forEach(type => {
         const option = document.createElement('option');
         option.value = type;
         option.textContent = type;
         incidentTypeSelect.appendChild(option);
     });
+
+    // Populate troncales
+    const troncalSelect = document.getElementById('troncalFilter');
+    troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+    stations.forEach(station => {
+        if (station.troncal && !troncales.has(station.troncal)) {
+            troncales.add(station.troncal);
+            const option = document.createElement('option');
+            option.value = station.troncal;
+            option.textContent = station.troncal;
+            troncalSelect.appendChild(option);
+        }
+    });
+
+    // Populate stations
+    const stationSelect = document.getElementById('stationFilter');
+    stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+    stations.forEach(station => {
+        const option = document.createElement('option');
+        option.value = station.nombre;
+        option.textContent = station.nombre;
+        stationSelect.appendChild(option);
+    });
+}
+
+function resetFilters() {
+    document.getElementById('dateFilter').value = '';
+    document.getElementById('timeFilter').value = '';
+    document.getElementById('incidentTypeFilter').value = 'all';
+    document.getElementById('securityLevelFilter').value = 'all';
+    document.getElementById('troncalFilter').value = 'all';
+    document.getElementById('stationFilter').value = 'all';
+    applyFilters();
 }
 
 function applyFilters() {
@@ -69,6 +105,7 @@ function applyFilters() {
     const type = document.getElementById('incidentTypeFilter').value;
     const level = document.getElementById('securityLevelFilter').value;
     const troncal = document.getElementById('troncalFilter').value;
+    const station = document.getElementById('stationFilter').value;
 
     const filteredIncidents = incidents.filter(incident => {
         if (date && !incident.timestamp.includes(date)) return false;
@@ -81,6 +118,8 @@ function applyFilters() {
             const stationLevel = getSecurityLevel(incident.nearest_station);
             if (stationLevel !== level) return false;
         }
+        if (troncal !== 'all' && incident.troncal !== troncal) return false;
+        if (station !== 'all' && incident.nearest_station !== station) return false;
         return true;
     });
 
@@ -106,6 +145,11 @@ function updateMap(filteredIncidents) {
         markers.push(marker);
         marker.addTo(map);
     });
+
+    // If only one incident is selected, center map on it
+    if (filteredIncidents.length === 1) {
+        map.setView([filteredIncidents[0].latitude, filteredIncidents[0].longitude], 15);
+    }
 }
 
 function updateIncidentsList(filteredIncidents) {
@@ -123,69 +167,16 @@ function updateIncidentsList(filteredIncidents) {
             <p class="mb-1">${incident.nearest_station}</p>
             <small>${new Date(incident.timestamp).toLocaleTimeString()}</small>
         `;
-        listContainer.appendChild(item);
-    });
-}
-
-function updateStatistics(filteredIncidents) {
-    updateHourlyChart(filteredIncidents);
-    updateIncidentTypeChart(filteredIncidents);
-}
-
-function updateHourlyChart(incidents) {
-    const hourlyData = new Array(24).fill(0);
-    incidents.forEach(incident => {
-        const hour = new Date(incident.timestamp).getHours();
-        hourlyData[hour]++;
-    });
-
-    const ctx = document.getElementById('hourlyChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Array.from({length: 24}, (_, i) => `${i}:00`),
-            datasets: [{
-                label: 'Incidentes por Hora',
-                data: hourlyData,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)'
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+        item.onclick = () => {
+            map.setView([incident.latitude, incident.longitude], 15);
+            markers.forEach(marker => {
+                if (marker.getLatLng().lat === incident.latitude && 
+                    marker.getLatLng().lng === incident.longitude) {
+                    marker.openPopup();
                 }
-            }
-        }
-    });
-}
-
-function updateIncidentTypeChart(incidents) {
-    const typeCount = {};
-    incidents.forEach(incident => {
-        typeCount[incident.incident_type] = (typeCount[incident.incident_type] || 0) + 1;
-    });
-
-    const ctx = document.getElementById('incidentTypeChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: Object.keys(typeCount),
-            datasets: [{
-                data: Object.values(typeCount),
-                backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56',
-                    '#4BC0C0',
-                    '#9966FF'
-                ]
-            }]
-        },
-        options: {
-            responsive: true
-        }
+            });
+        };
+        listContainer.appendChild(item);
     });
 }
 

@@ -182,7 +182,15 @@ def init_routes(app):
     @app.route('/api/stations')
     @login_required
     def api_stations():
-        stations = get_all_stations()
+        import json
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+            stations = [{
+                'nombre': feature['properties']['nombre_estacion'],
+                'troncal': feature['properties'].get('troncal_estacion', 'N/A'),
+                'latitude': feature['geometry']['coordinates'][1],
+                'longitude': feature['geometry']['coordinates'][0]
+            } for feature in geojson_data['features']]
         return jsonify(stations)
 
     @app.route('/route/<route_id>')
