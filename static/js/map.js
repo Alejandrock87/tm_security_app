@@ -10,6 +10,36 @@ let stationSecurityLevels = {};
 let incidents = [];
 let selectedStation = null;
 
+function updateStatistics(filteredIncidents) {
+    // Calculate critical hours
+    const hourCounts = {};
+    filteredIncidents.forEach(incident => {
+        const hour = new Date(incident.timestamp).getHours();
+        hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+    });
+
+    // Calculate incident types
+    const typeCounts = {};
+    filteredIncidents.forEach(incident => {
+        typeCounts[incident.incident_type] = (typeCounts[incident.incident_type] || 0) + 1;
+    });
+
+    // Update chart
+    createChart({ incidents_by_type: typeCounts });
+
+    // Update critical hours display
+    const criticalHoursDiv = document.getElementById('criticalHours');
+    if (criticalHoursDiv) {
+        const sortedHours = Object.entries(hourCounts)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 5);
+        criticalHoursDiv.innerHTML = sortedHours
+            .map(([hour, count]) => 
+                `<div>${hour}:00 - ${Number(hour)+1}:00: ${count} incidentes</div>`)
+            .join('');
+    }
+}
+
 function initMap() {
     if (mapInitialized) return;
 
@@ -17,6 +47,11 @@ function initMap() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
+
+    // Initialize statistics on load
+    fetchInitialData().then(() => {
+        updateStatistics(incidents);
+    });
 
     const legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
@@ -113,24 +148,33 @@ function applyFilters() {
     const troncal = document.getElementById('troncalFilter').value;
     const station = document.getElementById('stationFilter').value;
 
-    const filteredIncidents = incidents.filter(incident => {
-        if (date && !incident.timestamp.includes(date)) return false;
-        if (time) {
-            const incidentTime = incident.timestamp.split('T')[1].substring(0, 5);
-            if (incidentTime !== time) return false;
-        }
-        if (type !== 'all' && incident.incident_type !== type) return false;
-        if (level !== 'all') {
-            const stationLevel = getSecurityLevel(incident.nearest_station);
-            if (stationLevel !== level) return false;
-        }
-        if (troncal !== 'all' && incident.troncal !== troncal) return false;
-        if (station !== 'all' && incident.nearest_station !== station) return false;
-        return true;
-    });
+    let filteredIncidents = [...incidents];
+
+    if (date) {
+        filteredIncidents = filteredIncidents.filter(i => i.timestamp.includes(date));
+    }
+    if (time) {
+        filteredIncidents = filteredIncidents.filter(i => {
+            const incidentTime = i.timestamp.split('T')[1].substring(0, 5);
+            return incidentTime === time;
+        });
+    }
+    if (type !== 'all') {
+        filteredIncidents = filteredIncidents.filter(i => i.incident_type === type);
+    }
+    if (level !== 'all') {
+        filteredIncidents = filteredIncidents.filter(i => getSecurityLevel(i.nearest_station) === level);
+    }
+    if (troncal !== 'all') {
+        filteredIncidents = filteredIncidents.filter(i => i.troncal === troncal);
+    }
+    if (station !== 'all') {
+        filteredIncidents = filteredIncidents.filter(i => i.nearest_station === station);
+    }
 
     updateMap(filteredIncidents);
     updateIncidentsList(filteredIncidents);
+    updateStatistics(filteredIncidents);
 }
 
 function updateMap(filteredIncidents) {
