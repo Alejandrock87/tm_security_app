@@ -80,13 +80,29 @@
                             {{ form.description.label(class="form-label") }}
                             {{ form.description(class="form-control", rows="4") }}
                         </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.incident_date.label(class="form-label") }}
+                                {{ form.incident_date(class="form-control", type="date") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.incident_time.label(class="form-label") }}
+                                {{ form.incident_time(class="form-control", type="time") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.station.label(class="form-label") }}
+                            {{ form.station(class="form-select") }}
+                        </div>
                         
                         <div id="location-status" class="alert alert-info mb-3" role="alert">
                             <i class="fas fa-location-arrow"></i> Obteniendo tu ubicación...
                         </div>
                         
-                        <div id="nearest-station-info" class="alert alert-success mb-3" style="display: none;">
-                            <i class="fas fa-map-marker-alt"></i> Estación más cercana: <span id="station-name"></span>
+                        <div id="nearest-station-info" class="alert alert-success mb-3">
+                            <i class="fas fa-info-circle"></i> La estación más cercana se selecciona automáticamente según tu ubicación, pero puedes cambiarla si el incidente ocurrió en otra estación. La fecha y hora actual se establecen por defecto, pero pueden modificarse para reportar incidentes pasados.
                         </div>
                         
                         <div class="mb-3">
@@ -235,6 +251,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         const stationNameValue = nearestStation.properties.nombre_estacion;
                         const incidentCount = statistics[stationNameValue] || 0;
                         const stationColor = getStationSecurityColor(incidentCount);
+                        
+                        // Update the station select with the nearest station
+                        document.querySelector('select[name="station"]').value = stationNameValue;
                         
                         reportNearestStationMarker = L.marker([coords[1], coords[0]], {
                             icon: L.divIcon({
