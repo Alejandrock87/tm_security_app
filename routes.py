@@ -86,8 +86,11 @@ def init_routes(app):
                 description=form.description.data,
                 latitude=float(latitude),
                 longitude=float(longitude),
+                incident_date=form.incident_date.data,
+                incident_time=form.incident_time.data,
                 user_id=current_user.id,
-                nearest_station=nearest_station
+                nearest_station=form.station.data,
+                timestamp=datetime.combine(form.incident_date.data, form.incident_time.data)
             )
             db.session.add(incident)
             db.session.commit()

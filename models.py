@@ -22,9 +22,11 @@ class Incident(db.Model):
     description = db.Column(db.Text, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    incident_date = db.Column(db.Date, nullable=False)
+    incident_time = db.Column(db.Time, nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    nearest_station = db.Column(db.String(100), nullable=True)
+    nearest_station = db.Column(db.String(100), nullable=False)
 
     def to_dict(self):
         return {
