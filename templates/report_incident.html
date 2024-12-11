@@ -210,7 +210,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationStatus = document.getElementById('location-status');
     const submitButton = document.getElementById('submit-button');
     const nearestStationInfo = document.getElementById('nearest-station-info');
-    const stationName = document.getElementById('station-name');
+    
+    // Set current date and time
+    const now = new Date();
+    const dateInput = document.querySelector('input[name="incident_date"]');
+    const timeInput = document.querySelector('input[name="incident_time"]');
+    
+    // Format date as YYYY-MM-DD
+    const dateStr = now.toISOString().split('T')[0];
+    dateInput.value = dateStr;
+    
+    // Format time as HH:MM
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    timeInput.value = `${hours}:${minutes}`;
     
     // Initialize report map
     reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
