@@ -38,7 +38,7 @@ class IncidentReportForm(FlaskForm):
         ('Sospechoso', 'Sospechoso'),
         ('Acoso', 'Acoso')
     ], validators=[DataRequired()])
-    description = TextAreaField('Descripción', validators=[DataRequired()])
+    description = TextAreaField('Descripción')
     incident_date = DateField('Fecha del incidente', validators=[DataRequired()], default=datetime.now)
     incident_time = TimeField('Hora del incidente', validators=[DataRequired()], default=datetime.now)
     station = SelectField('Estación', validators=[DataRequired()], choices=[])
