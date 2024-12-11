@@ -62,10 +62,16 @@ def init_routes(app):
     @login_required
     def report_incident():
         form = IncidentReportForm()
-        # Load all stations for the dropdown
-        stations = db.session.query(Incident.nearest_station).distinct().all()
-        station_choices = [(station[0], station[0]) for station in stations]
-        form.station.choices = station_choices
+        # Load all stations from GeoJSON file
+        import json
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+            stations = [(feature['properties']['nombre_estacion'], 
+                        f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
+                       for feature in geojson_data['features']
+                       if 'nombre_estacion' in feature['properties']]
+            stations.sort(key=lambda x: x[0])  # Sort by station name
+            form.station.choices = stations
         if form.validate_on_submit():
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
