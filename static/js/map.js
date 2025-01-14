@@ -129,7 +129,8 @@ function createHourlyChart(hourlyData) {
     const ctx = document.getElementById('hourlyChart');
     if (!ctx) return;
     
-    if (window.hourlyChart) {
+    // Verificar si existe el gráfico anterior y si tiene el método destroy
+    if (window.hourlyChart && typeof window.hourlyChart.destroy === 'function') {
         window.hourlyChart.destroy();
     }
 
