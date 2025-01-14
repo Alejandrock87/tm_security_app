@@ -76,9 +76,18 @@ async function fetchInitialData() {
             fetch('/api/stations')
         ]);
         
-        stationSecurityLevels = await statsResponse.json();
-        incidents = await incidentsResponse.json();
-        const stations = await stationsResponse.json();
+        if (!statsResponse.ok || !incidentsResponse.ok || !stationsResponse.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        
+        const [stationStats, incidentsData, stationsData] = await Promise.all([
+            statsResponse.json(),
+            incidentsResponse.json(),
+            stationsResponse.json()
+        ]);
+        
+        stationSecurityLevels = stationStats;
+        incidents = incidentsData;
         
         // Update statistics immediately with all incidents
         updateStatistics(incidents);
@@ -91,11 +100,11 @@ async function fetchInitialData() {
         const typeData = processIncidentTypes(incidents);
         createIncidentTypeChart(typeData);
         
-        populateFilters(incidents, stations);
+        populateFilters(incidents, stationsData);
         updateMap(incidents);
         updateIncidentsList(incidents);
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error al cargar los datos:', error.message);
     }
 }
 
