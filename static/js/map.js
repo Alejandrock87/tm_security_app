@@ -82,6 +82,9 @@ async function fetchInitialData() {
         
         populateFilters(incidents, stations);
         clearMap();
+        
+        // Update statistics with all incidents by default
+        updateStatistics(incidents);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
