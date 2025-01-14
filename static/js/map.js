@@ -80,14 +80,119 @@ async function fetchInitialData() {
         incidents = await incidentsResponse.json();
         const stations = await stationsResponse.json();
         
-        populateFilters(incidents, stations);
-        clearMap();
-        
-        // Update statistics with all incidents by default
+        // Update statistics immediately with all incidents
         updateStatistics(incidents);
+        
+        // Create hourly statistics chart
+        const hourlyData = processHourlyData(incidents);
+        createHourlyChart(hourlyData);
+        
+        // Create incident types chart
+        const typeData = processIncidentTypes(incidents);
+        createIncidentTypeChart(typeData);
+        
+        populateFilters(incidents, stations);
+        updateMap(incidents);
+        updateIncidentsList(incidents);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+}
+
+function processHourlyData(incidents) {
+    const hourCounts = {};
+    incidents.forEach(incident => {
+        const hour = new Date(incident.timestamp).getHours();
+        hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+    });
+    return hourCounts;
+}
+
+function processIncidentTypes(incidents) {
+    const typeCounts = {};
+    incidents.forEach(incident => {
+        typeCounts[incident.incident_type] = (typeCounts[incident.incident_type] || 0) + 1;
+    });
+    return typeCounts;
+}
+
+function createHourlyChart(hourlyData) {
+    const ctx = document.getElementById('hourlyChart');
+    if (!ctx) return;
+    
+    if (window.hourlyChart) {
+        window.hourlyChart.destroy();
+    }
+
+    const hours = Array.from({length: 24}, (_, i) => i);
+    const data = hours.map(hour => hourlyData[hour] || 0);
+
+    window.hourlyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: hours.map(h => `${h}:00`),
+            datasets: [{
+                label: 'Incidentes por Hora',
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createIncidentTypeChart(typeData) {
+    const ctx = document.getElementById('incidentTypeChart');
+    if (!ctx) return;
+    
+    if (window.incidentTypeChart) {
+        window.incidentTypeChart.destroy();
+    }
+
+    window.incidentTypeChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(typeData),
+            datasets: [{
+                data: Object.values(typeData),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
 }
 
 function populateFilters(incidents, stations) {
