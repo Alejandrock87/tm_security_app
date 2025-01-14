@@ -167,7 +167,7 @@ function createIncidentTypeChart(typeData) {
     const ctx = document.getElementById('incidentTypeChart');
     if (!ctx) return;
     
-    if (window.incidentTypeChart) {
+    if (window.incidentTypeChart && typeof window.incidentTypeChart.destroy === 'function') {
         window.incidentTypeChart.destroy();
     }
 
