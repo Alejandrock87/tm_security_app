@@ -51,5 +51,9 @@ args = "python generate_station_icon.py"
 run = ["sh", "-c", "python main.py"]
 
 [[ports]]
-localPort = 3000  # Cambiado de 80 a 3000
-externalPort = 3000  # Asegurarse de que coincida con el puerto local
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 8000
+externalPort = 80
