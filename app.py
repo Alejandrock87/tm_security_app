@@ -25,8 +25,6 @@ def create_app():
             from ml_models import train_model
             model, feature_importance = train_model()
 
-    init_db(app)
-
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
