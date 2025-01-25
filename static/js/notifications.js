@@ -10,12 +10,65 @@ let notificationFilters = {
 // Notification settings in localStorage
 const getNotificationSettings = () => {
     return JSON.parse(localStorage.getItem('notificationSettings')) || {
-        troncal: 'all',
-        station: 'all',
-        incidentType: 'all',
+        troncal: ['all'],
+        station: ['all'],
+        incidentType: ['all'],
         enabled: true
     };
 };
+
+function saveNotificationPreferences() {
+    const settings = {
+        enabled: document.getElementById('notificationsEnabled').checked,
+        troncal: Array.from(document.getElementById('troncalPreference').selectedOptions).map(opt => opt.value),
+        station: Array.from(document.getElementById('stationPreference').selectedOptions).map(opt => opt.value),
+        incidentType: Array.from(document.getElementById('typePreference').selectedOptions).map(opt => opt.value)
+    };
+    
+    localStorage.setItem('notificationSettings', JSON.stringify(settings));
+    showToast({ type: 'success', message: 'Preferencias guardadas exitosamente' });
+}
+
+// Initialize preferences when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const settings = getNotificationSettings();
+    document.getElementById('notificationsEnabled').checked = settings.enabled;
+    
+    // Populate troncal options from the API
+    fetch('/api/stations')
+        .then(response => response.json())
+        .then(stations => {
+            const troncales = new Set(stations.map(station => station.troncal));
+            const troncalSelect = document.getElementById('troncalPreference');
+            troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+            troncales.forEach(troncal => {
+                if (troncal && troncal !== 'N/A') {
+                    const option = document.createElement('option');
+                    option.value = troncal;
+                    option.textContent = troncal;
+                    option.selected = settings.troncal.includes(troncal);
+                    troncalSelect.appendChild(option);
+                }
+            });
+
+            // Populate station options
+            const stationSelect = document.getElementById('stationPreference');
+            stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+            stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station.nombre;
+                option.textContent = station.nombre;
+                option.selected = settings.station.includes(station.nombre);
+                stationSelect.appendChild(option);
+            });
+        });
+    
+    // Set incident type preferences
+    const typeSelect = document.getElementById('typePreference');
+    Array.from(typeSelect.options).forEach(option => {
+        option.selected = settings.incidentType.includes(option.value);
+    });
+});
 
 socket.on('connect', () => {
     console.log('Connected to SocketIO server');

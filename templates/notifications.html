@@ -3,31 +3,76 @@
 
 {% block content %}
 <div class="container">
-    <h2>Notificaciones</h2>
-    <div class="card">
-        <div class="card-body">
-            <div class="notification-filters mb-3">
-                <h5>Filtros</h5>
-                <div class="row">
-                    <div class="col-md-4">
-                        <select class="form-select" id="troncalFilter">
-                            <option value="all">Todas las Troncales</option>
-                        </select>
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <h2>Configuración de Notificaciones</h2>
+            <div class="card">
+                <div class="card-body">
+                    <h5>Preferencias de Notificaciones</h5>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="notificationsEnabled" checked>
+                        <label class="form-check-label" for="notificationsEnabled">Recibir notificaciones</label>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-select" id="stationFilter">
-                            <option value="all">Todas las Estaciones</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="troncalPreference">Troncales:</label>
+                            <select class="form-select" id="troncalPreference" multiple>
+                                <option value="all" selected>Todas las Troncales</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="stationPreference">Estaciones:</label>
+                            <select class="form-select" id="stationPreference" multiple>
+                                <option value="all" selected>Todas las Estaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="typePreference">Tipos de Incidente:</label>
+                            <select class="form-select" id="typePreference" multiple>
+                                <option value="all" selected>Todos los tipos</option>
+                                <option value="Hurto">Hurto</option>
+                                <option value="Hurto a mano armada">Hurto a mano armada</option>
+                                <option value="Cosquilleo">Cosquilleo</option>
+                                <option value="Ataque">Ataque</option>
+                                <option value="Apertura de puertas">Apertura de puertas</option>
+                                <option value="Sospechoso">Sospechoso</option>
+                                <option value="Acoso">Acoso</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-select" id="typeFilter">
-                            <option value="all">Todos los tipos</option>
-                        </select>
-                    </div>
+                    <button class="btn btn-primary mt-3" onclick="saveNotificationPreferences()">Guardar Preferencias</button>
                 </div>
             </div>
-            <div id="notificationList" class="notification-list">
-                <!-- Notifications will be populated here -->
+        </div>
+
+        <div class="col-md-12">
+            <h2>Historial de Notificaciones</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="notification-filters mb-3">
+                        <h5>Filtrar Historial</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select class="form-select" id="troncalFilter">
+                                    <option value="all">Todas las Troncales</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="stationFilter">
+                                    <option value="all">Todas las Estaciones</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="typeFilter">
+                                    <option value="all">Todos los tipos</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="notificationList" class="notification-list">
+                        <!-- Notifications will be populated here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
