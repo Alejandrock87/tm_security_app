@@ -56,7 +56,19 @@ def prepare_data():
 
     return data
 
+_cached_model = None
+_cached_feature_importance = None
+_last_train_time = None
+
 def train_model():
+    global _cached_model, _cached_feature_importance, _last_train_time
+    current_time = datetime.now()
+    
+    # Return cached model if less than 1 hour old
+    if (_cached_model is not None and _last_train_time is not None and 
+        (current_time - _last_train_time).total_seconds() < 3600):
+        return _cached_model, _cached_feature_importance
+        
     data = prepare_data()
 
     if len(data) < 100:
@@ -156,7 +168,7 @@ def train_model():
                      best_model.named_steps['preprocessor']
                      .named_transformers_['cat']
                      .named_steps['onehot']
-                     .get_feature_names(categorical_features).tolist())
+                     .get_feature_names_out(categorical_features).tolist())
 
     selected_features_mask = best_model.named_steps['selector'].get_support()
     selected_feature_names = [name for name, selected in zip(feature_names, selected_features_mask) if selected]

@@ -19,6 +19,11 @@ class User(UserMixin, db.Model):
 
 class Incident(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    __table_args__ = (
+        db.Index('idx_incident_timestamp', 'timestamp'),
+        db.Index('idx_incident_station', 'nearest_station'),
+        db.Index('idx_incident_type', 'incident_type'),
+    )
     incident_type = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
     latitude = db.Column(db.Float, nullable=False)

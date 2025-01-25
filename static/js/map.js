@@ -17,12 +17,18 @@ function initMap() {
     }).addTo(map);
 }
 
+let stationsData = null;
+let incidentsData = null;
+
 async function loadStations() {
     try {
-        const [stationsResponse, incidentsResponse] = await Promise.all([
-            fetch('/api/stations'),
-            fetch('/incidents')
-        ]);
+        if (!stationsData) {
+            const stationsResponse = await fetch('/api/stations');
+            stationsData = await stationsResponse.json();
+        }
+        
+        const incidentsResponse = await fetch('/incidents');
+        incidentsData = await incidentsResponse.json();
 
         const stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
