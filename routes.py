@@ -287,7 +287,19 @@ def init_routes(app):
     @app.route('/incidents')
     @login_required
     def get_incidents():
-        incidents = Incident.query.all()
+        query = Incident.query
+
+        troncal = request.args.get('troncal')
+        station = request.args.get('station')
+        incident_type = request.args.get('incident_type')
+        security_level = request.args.get('security_level')
+
+        if station and station != 'all':
+            query = query.filter(Incident.nearest_station == station)
+        if incident_type and incident_type != 'all':
+            query = query.filter(Incident.incident_type == incident_type)
+        
+        incidents = query.all()
         return jsonify([{
             'id': i.id,
             'incident_type': i.incident_type,

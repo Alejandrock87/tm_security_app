@@ -18,16 +18,26 @@ function initMap() {
     }).addTo(map);
 }
 
-async function loadIncidentData() {
+async function loadIncidentData(filters = {}) {
     try {
-        const response = await fetch('/incidents');
+        const queryParams = new URLSearchParams({
+            troncal: filters.troncal || 'all',
+            station: filters.station || 'all',
+            incident_type: filters.incidentType || 'all',
+            security_level: filters.securityLevel || 'all'
+        });
+        
+        const response = await fetch(`/incidents?${queryParams}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         if (data) {
             updateMap(data);
             createChart(data);
         }
     } catch (error) {
-        console.error('Error loading map data:', error);
+        console.error('Error loading map data:', error.message);
     }
 }
 
