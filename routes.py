@@ -5,7 +5,7 @@ from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
 from utils import send_notification, send_push_notification
 from datetime import datetime, timedelta
-from ml_models import predict_incident_probability, get_incident_trends, get_model_insights
+from ml_models import predict_incident_probability, get_incident_trends, get_model_insights, predict_station_risk, predict_incident_type
 import logging
 from models import User, Incident
 from database import db
@@ -76,11 +76,11 @@ def init_routes(app):
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
             nearest_station = request.form.get('nearest_station')
-            
+
             if not all([latitude, longitude, nearest_station]):
                 flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
                 return redirect(url_for('report_incident'))
-            
+
             incident = Incident(
                 incident_type=form.incident_type.data,
                 description=form.description.data,
@@ -92,12 +92,12 @@ def init_routes(app):
             )
             db.session.add(incident)
             db.session.commit()
-            
+
             flash('¡Incidente reportado con éxito!')
             send_notification(incident.incident_type, incident.timestamp.isoformat())
             device_token = "simulated_device_token"
             send_push_notification(incident.incident_type, incident.timestamp.isoformat(), device_token)
-            
+
             return redirect(url_for('dashboard'))
         return render_template('report_incident.html', title='Reportar incidente', form=form)
 
@@ -113,7 +113,7 @@ def init_routes(app):
         ).group_by(
             Incident.nearest_station
         ).all()
-        
+
         statistics = {station: count for station, count in incidents_by_station}
         return jsonify(statistics)
 
@@ -123,7 +123,7 @@ def init_routes(app):
         try:
             logging.info("Obteniendo datos para el panel de control")
             incidents = get_incidents_for_map()
-            
+
             thirty_days_ago = datetime.utcnow() - timedelta(days=30)
             station_stats = db.session.query(
                 Incident.nearest_station,
@@ -133,7 +133,7 @@ def init_routes(app):
             ).group_by(
                 Incident.nearest_station
             ).all()
-            
+
             station_security_levels = {}
             for station, count in station_stats:
                 if count > 5:
@@ -146,11 +146,11 @@ def init_routes(app):
                     level = 'low'
                     color = '#008000'
                 station_security_levels[station] = {'level': level, 'color': color, 'count': count}
-            
+
             statistics = get_incident_statistics()
             trends = get_incident_trends()
             model_insights = get_model_insights()
-            
+
             return render_template('dashboard.html',
                                 incidents=incidents,
                                 statistics=statistics if statistics else {},
@@ -161,6 +161,38 @@ def init_routes(app):
             logging.error(f"Error en la ruta del panel de control: {str(e)}")
             flash("Ocurrió un error al cargar el panel de control. Por favor, intente de nuevo más tarde.", "error")
             return redirect(url_for('index'))
+
+    @app.route('/predictions')
+    @login_required
+    def predictions():
+        return render_template('predictions.html')
+
+    @app.route('/api/predictions')
+    @login_required
+    def get_predictions():
+        try:
+            # Obtener predicciones para las próximas 24 horas
+            predictions = []
+            stations = db.session.query(Incident.nearest_station).distinct().all()
+            current_hour = datetime.now()
+
+            for hour in range(24):
+                pred_time = current_hour + timedelta(hours=hour)
+                for station in stations:
+                    risk_score = predict_station_risk(station[0], pred_time.hour)
+                    if risk_score > 0.3:  # Solo mostrar predicciones con riesgo significativo
+                        predictions.append({
+                            'station': station[0],
+                            'predicted_time': pred_time.isoformat(),
+                            'risk_score': risk_score,
+                            'incident_type': predict_incident_type(station[0], pred_time.hour),
+                        })
+
+            return jsonify(sorted(predictions, key=lambda x: x['risk_score'], reverse=True))
+        except Exception as e:
+            logging.error(f"Error getting predictions: {str(e)}")
+            return jsonify([])
+
 
     @app.route('/model_insights')
     @login_required

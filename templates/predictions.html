@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Predicciones de Seguridad</h3>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="notificationToggle">
+                        <label class="form-check-label" for="notificationToggle">Activar notificaciones</label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="predictionsList" class="list-group">
+                        <!-- Las predicciones se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/predictions.js') }}"></script>
+{% endblock %}
