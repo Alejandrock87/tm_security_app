@@ -10,6 +10,55 @@
     margin-bottom: 1rem;
 }
 
+<div id="toastContainer"></div>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Configuración de Notificaciones</h3>
+            </div>
+            <div class="card-body">
+                <div class="notification-filters">
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="notificationsEnabled">
+                        <label class="form-check-label" for="notificationsEnabled">Activar notificaciones</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="troncalFilter">Troncal:</label>
+                            <select class="form-select" id="troncalFilter" onchange="applyNotificationFilters()">
+                                <option value="all">Todas las Troncales</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="stationFilter">Estación:</label>
+                            <select class="form-select" id="stationFilter" onchange="applyNotificationFilters()">
+                                <option value="all">Todas las Estaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="incidentTypeFilter">Tipo de Incidente:</label>
+                            <select class="form-select" id="incidentTypeFilter" onchange="applyNotificationFilters()">
+                                <option value="all">Todos los tipos</option>
+                                <option value="Hurto">Hurto</option>
+                                <option value="Hurto a mano armada">Hurto a mano armada</option>
+                                <option value="Cosquilleo">Cosquilleo</option>
+                                <option value="Ataque">Ataque</option>
+                                <option value="Apertura de puertas">Apertura de puertas</option>
+                                <option value="Sospechoso">Sospechoso</option>
+                                <option value="Acoso">Acoso</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="notificationList" class="notification-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 .info.legend {
     background: white;
     padding: 12px;

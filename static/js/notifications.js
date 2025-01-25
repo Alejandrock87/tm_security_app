@@ -1,5 +1,21 @@
+
 // Connect to the SocketIO server
 const socket = io();
+let notificationFilters = {
+    troncal: 'all',
+    station: 'all',
+    incidentType: 'all'
+};
+
+// Notification settings in localStorage
+const getNotificationSettings = () => {
+    return JSON.parse(localStorage.getItem('notificationSettings')) || {
+        troncal: 'all',
+        station: 'all',
+        incidentType: 'all',
+        enabled: true
+    };
+};
 
 socket.on('connect', () => {
     console.log('Connected to SocketIO server');
@@ -10,77 +26,93 @@ socket.on('disconnect', () => {
 });
 
 socket.on('new_incident', (data) => {
-    updateNotifications(data);
+    const settings = getNotificationSettings();
+    if (settings.enabled && shouldShowNotification(data)) {
+        showToast(data);
+        updateNotificationsList(data);
+    }
 });
 
-socket.on('push_notification', (data) => {
-    const notification = JSON.parse(data);
-    showPushNotification(notification);
-});
+function shouldShowNotification(incident) {
+    const settings = getNotificationSettings();
+    return (settings.troncal === 'all' || incident.troncal === settings.troncal) &&
+           (settings.station === 'all' || incident.nearest_station === settings.station) &&
+           (settings.incidentType === 'all' || incident.incident_type === settings.incidentType);
+}
 
-function updateNotifications(newIncident) {
+function showToast(incident) {
+    const toast = document.createElement('div');
+    toast.className = 'notification-toast';
+    toast.innerHTML = `
+        <div class="toast-header">
+            <strong>Nuevo Incidente</strong>
+            <small>${new Date(incident.timestamp).toLocaleTimeString()}</small>
+        </div>
+        <div class="toast-body">
+            ${incident.incident_type} en ${incident.nearest_station}
+        </div>
+    `;
+    
+    document.getElementById('toastContainer').appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 500);
+    }, 5000);
+}
+
+function updateNotificationsList(newIncident) {
     const notificationList = document.getElementById('notificationList');
+    if (!notificationList) return;
+
+    const listItem = document.createElement('div');
+    listItem.className = 'notification-item';
+    listItem.innerHTML = `
+        <div class="notification-header">
+            <span class="incident-type">${newIncident.incident_type}</span>
+            <span class="timestamp">${new Date(newIncident.timestamp).toLocaleString()}</span>
+        </div>
+        <div class="notification-body">
+            <span class="station">Estación: ${newIncident.nearest_station}</span>
+            <span class="troncal">Troncal: ${newIncident.troncal}</span>
+        </div>
+    `;
     
-    if (!notificationList) {
-        console.error('Notification list element not found');
-        return;
-    }
+    notificationList.insertBefore(listItem, notificationList.firstChild);
+    updateNotificationBadge();
+}
 
-    const listItem = document.createElement('li');
-    listItem.className = 'list-group-item';
-    listItem.textContent = `${newIncident.incident_type} - ${new Date(newIncident.timestamp).toLocaleString()}`;
-    
-    notificationList.prepend(listItem);
-
-    // Remove oldest notification if there are more than 5
-    if (notificationList.children.length > 5) {
-        notificationList.removeChild(notificationList.lastChild);
-    }
-
-    // Update notification badge
-    const notificationBadge = document.getElementById('notificationBadge');
-    if (notificationBadge) {
-        const currentCount = parseInt(notificationBadge.textContent) || 0;
-        notificationBadge.textContent = currentCount + 1;
-        notificationBadge.classList.remove('d-none');
+function updateNotificationBadge() {
+    const badge = document.getElementById('notificationBadge');
+    if (badge) {
+        const count = parseInt(badge.textContent || '0') + 1;
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'block' : 'none';
     }
 }
 
-function showPushNotification(notification) {
-    // Check if the browser supports notifications
-    if (!("Notification" in window)) {
-        console.log("This browser does not support desktop notification");
-    } else if (Notification.permission === "granted") {
-        // If it's okay let's create a notification
-        new Notification("New Incident Reported", {
-            body: `${notification.incident_type} - ${new Date(notification.timestamp).toLocaleString()}`,
-            icon: "/static/img/notification-icon.png" // Make sure to add this icon to your static files
-        });
-    } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(function (permission) {
-            if (permission === "granted") {
-                new Notification("New Incident Reported", {
-                    body: `${notification.incident_type} - ${new Date(notification.timestamp).toLocaleString()}`,
-                    icon: "/static/img/notification-icon.png"
-                });
-            }
-        });
-    }
+function applyNotificationFilters() {
+    const settings = {
+        troncal: document.getElementById('troncalFilter').value,
+        station: document.getElementById('stationFilter').value,
+        incidentType: document.getElementById('incidentTypeFilter').value,
+        enabled: document.getElementById('notificationsEnabled').checked
+    };
+    localStorage.setItem('notificationSettings', JSON.stringify(settings));
 }
 
+// Initialize notification settings when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    const notificationButton = document.getElementById('notificationButton');
-    const notificationBadge = document.getElementById('notificationBadge');
-
-    if (notificationButton && notificationBadge) {
-        notificationButton.addEventListener('click', () => {
-            notificationBadge.textContent = '0';
-            notificationBadge.classList.add('d-none');
-        });
+    const settings = getNotificationSettings();
+    if (document.getElementById('notificationsEnabled')) {
+        document.getElementById('notificationsEnabled').checked = settings.enabled;
     }
-
-    // Request notification permission when the page loads
-    if ("Notification" in window) {
-        Notification.requestPermission();
+    if (document.getElementById('troncalFilter')) {
+        document.getElementById('troncalFilter').value = settings.troncal;
+    }
+    if (document.getElementById('stationFilter')) {
+        document.getElementById('stationFilter').value = settings.station;
+    }
+    if (document.getElementById('incidentTypeFilter')) {
+        document.getElementById('incidentTypeFilter').value = settings.incidentType;
     }
 });
