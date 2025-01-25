@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask
 from flask_login import LoginManager
@@ -7,19 +8,20 @@ from utils import socketio, send_notification
 
 def create_app():
     app = Flask(__name__)
-
-# Load model at startup
-from ml_models import load_cached_model
-model, feature_importance = load_cached_model()
-if model is None:
-    from ml_models import train_model
-    model, feature_importance = train_model()
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_recycle": 300,
         "pool_pre_ping": True,
     }
+
+    # Load model at startup
+    from ml_models import load_cached_model
+    model, feature_importance = load_cached_model()
+    if model is None:
+        from ml_models import train_model
+        model, feature_importance = train_model()
+
     init_db(app)
 
     login_manager = LoginManager()
