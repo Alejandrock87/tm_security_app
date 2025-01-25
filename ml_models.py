@@ -337,3 +337,19 @@ def predict_station_risk(station, hour):
     risk_score = model.predict(input_data)
 
     return float(risk_score[0])
+
+def predict_incident_type(station, hour):
+    incidents = Incident.query.filter_by(nearest_station=station).all()
+    if not incidents:
+        return "Hurto"  # Default prediction
+        
+    # Get most common incident type for this hour
+    hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
+    if not hour_incidents:
+        return "Hurto"
+        
+    incident_counts = {}
+    for incident in hour_incidents:
+        incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
+        
+    return max(incident_counts.items(), key=lambda x: x[1])[0]
