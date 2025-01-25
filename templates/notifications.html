@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Notificaciones</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="notification-filters mb-3">
+                <h5>Filtros</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-select" id="troncalFilter">
+                            <option value="all">Todas las Troncales</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="stationFilter">
+                            <option value="all">Todas las Estaciones</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="typeFilter">
+                            <option value="all">Todos los tipos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="notificationList" class="notification-list">
+                <!-- Notifications will be populated here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endblock %}

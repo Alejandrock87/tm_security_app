@@ -167,6 +167,11 @@ def init_routes(app):
     def predictions():
         return render_template('predictions.html')
 
+    @app.route('/notifications')
+    @login_required
+    def notifications():
+        return render_template('notifications.html')
+
     @app.route('/api/predictions')
     @login_required
     def get_predictions():
