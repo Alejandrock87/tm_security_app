@@ -93,20 +93,27 @@ function shouldShowNotification(incident) {
            (settings.incidentType === 'all' || incident.incident_type === settings.incidentType);
 }
 
-function showToast(incident) {
+function showToast(data) {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        document.body.appendChild(container);
+    }
+
     const toast = document.createElement('div');
     toast.className = 'notification-toast';
     toast.innerHTML = `
         <div class="toast-header">
-            <strong>Nuevo Incidente</strong>
-            <small>${new Date(incident.timestamp).toLocaleTimeString()}</small>
+            <strong>${data.type || 'Notificación'}</strong>
+            <small>${new Date().toLocaleTimeString()}</small>
         </div>
         <div class="toast-body">
-            ${incident.incident_type} en ${incident.nearest_station}
+            ${data.message || 'Nueva notificación'}
         </div>
     `;
     
-    document.getElementById('toastContainer').appendChild(toast);
+    container.appendChild(toast);
     setTimeout(() => {
         toast.classList.add('fade-out');
         setTimeout(() => toast.remove(), 500);
