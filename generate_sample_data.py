@@ -84,6 +84,93 @@ def populate_real_incident_data():
             db.session.commit()
 
         # Clear existing incidents
+        print("Clearing existing incidents...")
+        Incident.query.delete()
+        db.session.commit()
+
+        # Real station data with coordenadas
+        stations_data = {
+            "Avenida Jiménez": {
+                "coords": (4.598056, -74.074167),
+                "incidents": {
+                    "Hurto": 150,
+                    "Cosquilleo": 100,
+                    "Acoso": 50,
+                    "Hurto a mano armada": 30,
+                    "Ataque": 20,
+                    "Apertura de puertas": 10,
+                    "Sospechoso": 40
+                },
+                "peak_hours": [(6,9), (17,20)],
+                "peak_days": [0,2,4]  # Lunes, Miércoles, Viernes
+            },
+            "Universidades": {
+                "coords": (4.634667, -74.065139),
+                "incidents": {
+                    "Hurto": 120,
+                    "Cosquilleo": 80,
+                    "Acoso": 40,
+                    "Hurto a mano armada": 25,
+                    "Ataque": 15,
+                    "Apertura de puertas": 5,
+                    "Sospechoso": 35
+                },
+                "peak_hours": [(7,10), (16,19)],
+                "peak_days": [1,3]  # Martes, Jueves
+            }
+        }
+
+        # Generar reportes para enero 2025
+        start_date = datetime.datetime(2025, 1, 1)
+        end_date = datetime.datetime(2025, 1, 25)  # Hasta hoy
+        
+        print("Generating incidents...")
+        for station_name, station_info in stations_data.items():
+            lat, lon = station_info["coords"]
+            
+            for incident_type, total_count in station_info["incidents"].items():
+                # Distribuir los incidentes a lo largo del mes
+                incidents_per_day = total_count // 25  # Distribuir en 25 días
+                remaining = total_count % 25
+                
+                current_date = start_date
+                while current_date <= end_date:
+                    day_count = incidents_per_day + (1 if remaining > 0 else 0)
+                    remaining -= 1 if remaining > 0 else 0
+                    
+                    for _ in range(day_count):
+                        # Generar hora con preferencia por horas pico
+                        is_peak = random.random() < 0.7  # 70% probabilidad hora pico
+                        if is_peak:
+                            peak_period = random.choice(station_info["peak_hours"])
+                            hour = random.randint(peak_period[0], peak_period[1]-1)
+                        else:
+                            hour = random.randint(0, 23)
+                        
+                        # Variación en coordenadas
+                        incident_lat = lat + random.uniform(-0.0002, 0.0002)
+                        incident_lon = lon + random.uniform(-0.0002, 0.0002)
+                        
+                        timestamp = current_date.replace(hour=hour, 
+                                                      minute=random.randint(0, 59))
+                        
+                        incident = Incident(
+                            incident_type=incident_type,
+                            description=f"Incidente reportado en estación {station_name}",
+                            latitude=incident_lat,
+                            longitude=incident_lon,
+                            timestamp=timestamp,
+                            user_id=user.id,
+                            nearest_station=station_name
+                        )
+                        db.session.add(incident)
+                    
+                    current_date += datetime.timedelta(days=1)
+        
+        db.session.commit()
+        print("Real incident data has been populated successfully.")
+
+        # Clear existing incidents
         Incident.query.delete()
         db.session.commit()
         
