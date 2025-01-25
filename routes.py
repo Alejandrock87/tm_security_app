@@ -297,28 +297,36 @@ def init_routes(app):
         # Obtener todas las estaciones para el filtrado por troncal
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
+            # Primero obtenemos todas las troncales
+            all_features = geojson_data['features']
+            all_troncales = set(
+                feature['properties'].get('troncal_estacion')
+                for feature in all_features
+                if feature['properties'].get('troncal_estacion')
+            )
+
+            # Luego construimos el diccionario de estaciones por troncal
             stations_by_troncal = {
-                feature['properties'].get('troncal_estacion'): [
+                current_troncal: [
                     feature['properties']['nombre_estacion']
-                    for feature in geojson_data['features']
-                    if feature['properties'].get('troncal_estacion') == troncal
+                    for feature in all_features
+                    if feature['properties'].get('troncal_estacion') == current_troncal
                 ]
-                for troncal in set(feature['properties'].get('troncal_estacion')
-                    for feature in geojson_data['features'])
-                if troncal
+                for current_troncal in all_troncales
             }
+
 
         # Aplicar filtros
         if troncal:
             stations_in_troncal = stations_by_troncal.get(troncal, [])
             query = query.filter(Incident.nearest_station.in_(stations_in_troncal))
-        
+
         if station:
             query = query.filter(Incident.nearest_station == station)
-            
+
         if incident_type:
             query = query.filter(Incident.incident_type == incident_type)
-            
+
         if security_level:
             # Implementar lógica de nivel de seguridad si es necesario
             pass
