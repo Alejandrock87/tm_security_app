@@ -1,3 +1,24 @@
+
+.station-popup {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.station-popup h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.station-popup ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.station-popup li {
+    margin: 3px 0;
+}
+
 /* Add any custom styles here */
 body {
     padding-bottom: 20px;
