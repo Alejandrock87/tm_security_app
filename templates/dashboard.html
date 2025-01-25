@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block content %}
@@ -21,39 +20,31 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="dateFilter">Fecha</label>
-                            <input type="date" id="dateFilter" class="form-control">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="timeFilter">Hora</label>
-                            <input type="time" id="timeFilter" class="form-control">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="incidentTypeFilter">Tipo de Incidente</label>
-                            <select id="incidentTypeFilter" class="form-select">
-                                <option value="all">Todos</option>
+                        <div class="col-md-3 mb-3">
+                            <label for="troncalFilter">Troncal</label>
+                            <select id="troncalFilter" class="form-select">
+                                <option value="all">Todas las Troncales</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="securityLevelFilter">Nivel de Seguridad</label>
+                        <div class="col-md-3 mb-3">
+                            <label for="stationFilter">Estación</label>
+                            <select id="stationFilter" class="form-select">
+                                <option value="all">Todas las Estaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="incidentTypeFilter">Tipo de Incidente</label>
+                            <select id="incidentTypeFilter" class="form-select">
+                                <option value="all">Todos los tipos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="securityLevelFilter">Nivel de Inseguridad</label>
                             <select id="securityLevelFilter" class="form-select">
-                                <option value="all">Todos</option>
+                                <option value="all">Todos los niveles</option>
                                 <option value="Alto">Alto</option>
                                 <option value="Medio">Medio</option>
                                 <option value="Bajo">Bajo</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="troncalFilter">Troncal</label>
-                            <select id="troncalFilter" class="form-select">
-                                <option value="all">Todas</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="stationFilter">Estación</label>
-                            <select id="stationFilter" class="form-select">
-                                <option value="all">Todas</option>
                             </select>
                         </div>
                     </div>
