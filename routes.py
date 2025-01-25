@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify, json
 from flask_login import login_user, logout_user, current_user, login_required
+from app import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
@@ -123,6 +124,8 @@ def init_routes(app):
         try:
             logging.info("Obteniendo datos para el panel de control")
             cached_data = cache.get('dashboard_data')
+            if not cached_data:
+                cached_data = {}
             if cached_data:
                 return render_template('dashboard.html', **cached_data)
                 
