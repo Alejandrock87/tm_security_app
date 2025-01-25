@@ -294,11 +294,35 @@ def init_routes(app):
         incident_type = request.args.get('incident_type')
         security_level = request.args.get('security_level')
 
-        if station and station != 'all':
-            query = query.filter(Incident.nearest_station == station)
-        if incident_type and incident_type != 'all':
-            query = query.filter(Incident.incident_type == incident_type)
+        # Obtener todas las estaciones para el filtrado por troncal
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+            stations_by_troncal = {
+                feature['properties'].get('troncal_estacion'): [
+                    feature['properties']['nombre_estacion']
+                    for feature in geojson_data['features']
+                    if feature['properties'].get('troncal_estacion') == troncal
+                ]
+                for troncal in set(feature['properties'].get('troncal_estacion')
+                    for feature in geojson_data['features'])
+                if troncal
+            }
+
+        # Aplicar filtros
+        if troncal:
+            stations_in_troncal = stations_by_troncal.get(troncal, [])
+            query = query.filter(Incident.nearest_station.in_(stations_in_troncal))
         
+        if station:
+            query = query.filter(Incident.nearest_station == station)
+            
+        if incident_type:
+            query = query.filter(Incident.incident_type == incident_type)
+            
+        if security_level:
+            # Implementar lógica de nivel de seguridad si es necesario
+            pass
+
         incidents = query.all()
         return jsonify([{
             'id': i.id,

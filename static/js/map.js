@@ -20,25 +20,76 @@ function initMap() {
 
 async function loadIncidentData(filters = {}) {
     try {
-        const queryParams = new URLSearchParams({
-            troncal: filters.troncal || 'all',
-            station: filters.station || 'all',
-            incident_type: filters.incidentType || 'all',
-            security_level: filters.securityLevel || 'all'
-        });
+        // Validar y limpiar los filtros
+        const cleanFilters = {
+            troncal: filters.troncal && filters.troncal !== 'all' ? filters.troncal : undefined,
+            station: filters.station && filters.station !== 'all' ? filters.station : undefined,
+            incident_type: filters.incidentType && filters.incidentType !== 'all' ? filters.incidentType : undefined,
+            security_level: filters.securityLevel && filters.securityLevel !== 'all' ? filters.securityLevel : undefined
+        };
+
+        // Construir query params solo con filtros válidos
+        const queryParams = new URLSearchParams(
+            Object.entries(cleanFilters)
+                .filter(([_, value]) => value !== undefined)
+                .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+        );
 
         const response = await fetch(`/incidents?${queryParams}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        if (data) {
+        
+        if (Array.isArray(data) && data.length > 0) {
             updateMap(data);
             createChart(data);
+        } else {
+            console.log('No se encontraron incidentes con los filtros especificados');
+            // Limpiar el mapa y el gráfico cuando no hay datos
+            clearMap();
+            createEmptyChart();
         }
     } catch (error) {
-        console.error('Error loading map data:', error.message);
+        console.error('Error loading map data:', error);
+        clearMap();
+        createEmptyChart();
     }
+}
+
+function clearMap() {
+    if (markers) {
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+    }
+}
+
+function createEmptyChart() {
+    const ctx = document.getElementById('incidentChart');
+    if (!ctx) return;
+
+    if (currentChart) {
+        currentChart.destroy();
+    }
+
+    currentChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Sin datos'],
+            datasets: [{
+                data: [1],
+                backgroundColor: ['#e0e0e0']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
 }
 
 function updateMap(incidents) {
