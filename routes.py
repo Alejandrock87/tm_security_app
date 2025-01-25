@@ -228,24 +228,14 @@ def init_routes(app):
     @login_required
     def get_predictions():
         try:
-            # Obtener predicciones para las próximas 24 horas
-            predictions = []
-            stations = db.session.query(Incident.nearest_station).distinct().all()
-            current_hour = datetime.now()
-
-            for hour in range(24):
-                pred_time = current_hour + timedelta(hours=hour)
-                for station in stations:
-                    risk_score = predict_station_risk(station[0], pred_time.hour)
-                    if risk_score > 0.3:  # Solo mostrar predicciones con riesgo significativo
-                        predictions.append({
-                            'station': station[0],
-                            'predicted_time': pred_time.isoformat(),
-                            'risk_score': risk_score,
-                            'incident_type': predict_incident_type(station[0], pred_time.hour),
-                        })
-
-            return jsonify(sorted(predictions, key=lambda x: x['risk_score'], reverse=True))
+            PREDICTIONS_CACHE_FILE = 'predictions_cache.json'
+            if os.path.exists(PREDICTIONS_CACHE_FILE):
+                with open(PREDICTIONS_CACHE_FILE, 'r') as f:
+                    predictions = json.load(f)
+                return jsonify(sorted(predictions, key=lambda x: x['risk_score'], reverse=True))
+            else:
+                logging.warning("No cached predictions found")
+                return jsonify([])
         except Exception as e:
             logging.error(f"Error getting predictions: {str(e)}")
             return jsonify([])
