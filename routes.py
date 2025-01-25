@@ -172,6 +172,54 @@ def init_routes(app):
     def notifications():
         return render_template('notifications.html')
 
+    @app.route('/statistics')
+    @login_required
+    def statistics():
+        return render_template('statistics.html')
+
+    @app.route('/api/statistics')
+    @login_required
+    def get_statistics():
+        # Get filter parameters
+        date = request.args.get('date')
+        time = request.args.get('time')
+        incident_type = request.args.get('incidentType')
+        security_level = request.args.get('securityLevel')
+        troncal = request.args.get('troncal')
+        station = request.args.get('station')
+
+        # Base query
+        query = Incident.query
+
+        # Apply filters
+        if date:
+            query = query.filter(func.date(Incident.timestamp) == date)
+        if time:
+            query = query.filter(func.extract('hour', Incident.timestamp) == int(time.split(':')[0]))
+        if incident_type != 'all':
+            query = query.filter(Incident.incident_type == incident_type)
+        if station != 'all':
+            query = query.filter(Incident.nearest_station == station)
+
+        incidents = query.all()
+
+        # Process data for charts
+        hourly_stats = {}
+        incident_types = {}
+
+        for incident in incidents:
+            # Hourly statistics
+            hour = incident.timestamp.hour
+            hourly_stats[hour] = hourly_stats.get(hour, 0) + 1
+
+            # Incident types
+            incident_types[incident.incident_type] = incident_types.get(incident.incident_type, 0) + 1
+
+        return jsonify({
+            'hourly_stats': hourly_stats,
+            'incident_types': incident_types
+        })
+
     @app.route('/api/predictions')
     @login_required
     def get_predictions():

@@ -1,46 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-#map {
-    height: 400px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-}
-
-<div id="toastContainer"></div>
-
-<div class="row mb-3">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3>Configuración de Notificaciones</h3>
-            </div>
-            <div class="card-body">
-                <div class="notification-filters">
-                    <div class="form-check mb-3">
-                        <input type="checkbox" class="form-check-input" id="notificationsEnabled">
-                        <label class="form-check-label" for="notificationsEnabled">Activar notificaciones</label>
-                    </div>
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filtros</h5>
                     <div class="row">
-                        <div class="col-md-4">
-                            <label for="troncalFilter">Troncal:</label>
-                            <select class="form-select" id="troncalFilter" onchange="applyNotificationFilters()">
+                        <div class="col-md-3">
+                            <select class="form-select" id="securityLevelFilter">
+                                <option value="all">Todos los niveles de seguridad</option>
+                                <option value="low">Bajo</option>
+                                <option value="medium">Medio</option>
+                                <option value="high">Alto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="troncalFilter">
                                 <option value="all">Todas las Troncales</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label for="stationFilter">Estación:</label>
-                            <select class="form-select" id="stationFilter" onchange="applyNotificationFilters()">
+                        <div class="col-md-3">
+                            <select class="form-select" id="stationFilter">
                                 <option value="all">Todas las Estaciones</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label for="incidentTypeFilter">Tipo de Incidente:</label>
-                            <select class="form-select" id="incidentTypeFilter" onchange="applyNotificationFilters()">
-                                <option value="all">Todos los tipos</option>
+                        <div class="col-md-3">
+                            <select class="form-select" id="incidentTypeFilter">
+                                <option value="all">Todos los tipos de incidentes</option>
                                 <option value="Hurto">Hurto</option>
                                 <option value="Hurto a mano armada">Hurto a mano armada</option>
                                 <option value="Cosquilleo">Cosquilleo</option>
@@ -52,184 +40,33 @@
                         </div>
                     </div>
                 </div>
-                <div id="notificationList" class="notification-list"></div>
             </div>
         </div>
     </div>
-</div>
 
-
-.info.legend {
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-.info.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.9;
-}
-.info.legend span {
-    color: #000;
-    font-size: 14px;
-    line-height: 18px;
-}
-.info.legend h4 {
-    margin: 0 0 10px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.form-select {
-    max-width: 100%;
-}
-
-@media (max-width: 768px) {
-    .card {
-        margin-bottom: 1rem;
-    }
-}
-</style>
-
-<h1 class="mb-4 text-center">Mapa de Incidentes</h1>
-
-{% if incidents is defined and incidents %}
-<div class="row mb-3">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 mb-2">
-                        <label for="dateFilter" class="form-label">Fecha:</label>
-                        <input type="date" class="form-control" id="dateFilter">
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label for="timeFilter" class="form-label">Hora:</label>
-                        <input type="time" class="form-control" id="timeFilter">
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label for="incidentTypeFilter" class="form-label">Tipo de Incidente:</label>
-                        <select class="form-select" id="incidentTypeFilter">
-                            <option value="all">Todos los tipos</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label for="securityLevelFilter" class="form-label">Nivel de Inseguridad:</label>
-                        <select class="form-select" id="securityLevelFilter">
-                            <option value="all">Todos los niveles</option>
-                            <option value="high">Alto</option>
-                            <option value="medium">Medio</option>
-                            <option value="low">Bajo</option>
-                        </select>
-                    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mapa de Incidentes</h5>
+                    <div id="map" style="height: 600px;"></div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-md-3 mb-2">
-                        <label for="troncalFilter" class="form-label">Troncal:</label>
-                        <select class="form-select" id="troncalFilter">
-                            <option value="all">Todas las Troncales</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label for="stationFilter" class="form-label">Estación:</label>
-                        <select class="form-select" id="stationFilter">
-                            <option value="all">Todas las Estaciones</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <button class="btn btn-primary mt-4 me-2" onclick="applyFilters()">Aplicar Filtros</button>
-                        <button class="btn btn-secondary mt-4" onclick="resetFilters()">Restablecer</button>
-                    </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Distribución de Incidentes</h5>
+                    <canvas id="incidentChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<div class="row mb-3">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Incidentes Filtrados</h3>
-            </div>
-            <div class="card-body">
-                <div id="incidentsList" class="list-group" style="max-height: 400px; overflow-y: auto;">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Estadísticas</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>Horarios Críticos</h4>
-                        <canvas id="hourlyChart"></canvas>
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Tipos de Incidentes</h4>
-                        <canvas id="incidentTypeChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 col-lg-8 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Mapa de Incidentes</h2>
-            </div>
-            <div class="card-body">
-                <div id="map"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Estadísticas de Incidentes</h2>
-            </div>
-            <div class="card-body">
-                {% if statistics is defined and statistics and statistics.incidents_by_type %}
-                    <div class="chart-container" style="position: relative; height:300px;">
-                        <canvas id="incidentChart"></canvas>
-                    </div>
-                    <div id="incidentTypeStats" class="mt-3"></div>
-                {% else %}
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> No se han reportado incidentes todavía.
-                        <hr>
-                        <p class="mb-0">Use el botón "Reportar Incidente" para registrar el primer incidente.</p>
-                    </div>
-                {% endif %}
-                <a href="{{ url_for('model_insights') }}" class="btn btn-primary mt-3">Ver Insights del Modelo</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-{% else %}
-<div class="alert alert-info">
-    <i class="fas fa-info-circle"></i> No hay datos de incidentes disponibles en este momento.
-    <hr>
-    <p class="mb-0">Por favor, vuelva a revisar más tarde o use el botón "Reportar Incidente" para registrar un nuevo incidente.</p>
-</div>
-{% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
@@ -239,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('map')) {
             initMap();
         }
-        
         const statistics = {{ statistics|tojson|safe if statistics else '{}' }};
         if (typeof createChart === 'function' && statistics && Object.keys(statistics).length > 0) {
             createChart(statistics);

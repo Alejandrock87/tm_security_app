@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filtros de Estadísticas</h5>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" id="dateFilter">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="time" class="form-control" id="timeFilter">
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="incidentTypeFilter">
+                                <option value="all">Tipo de incidente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="securityLevelFilter">
+                                <option value="all">Nivel de seguridad</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="troncalFilter">
+                                <option value="all">Troncal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="stationFilter">
+                                <option value="all">Estación</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Horarios Críticos</h5>
+                    <canvas id="criticalHoursChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tipos de Incidentes Reportados</h5>
+                    <canvas id="incidentTypesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/statistics.js') }}"></script>
+{% endblock %}
