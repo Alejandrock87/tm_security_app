@@ -82,6 +82,106 @@ def populate_real_incident_data():
             user.set_password("sample_password")
             db.session.add(user)
             db.session.commit()
+
+        # Clear existing incidents
+        Incident.query.delete()
+        db.session.commit()
+        
+        # Coordenadas de las estaciones
+        station_coords = {
+            "Avenida Jiménez": (4.598056, -74.074167),
+            "Universidades": (4.634667, -74.065139),
+            "Portal Norte": (4.754722, -74.045556),
+            "Banderas": (4.616389, -74.135833)
+        }
+
+        # Data de incidentes por estación
+        station_data = {
+            "Avenida Jiménez": {
+                "peak_hours": [(6,9), (17,20)],
+                "peak_days": [0,2,4],  # Lunes, Miércoles, Viernes
+                "incidents": {
+                    "Hurto": 150,
+                    "Cosquilleo": 100,
+                    "Acoso": 50,
+                    "Hurto a mano armada": 30,
+                    "Ataque": 20,
+                    "Apertura de puertas": 10,
+                    "Sospechoso": 40
+                }
+            },
+            "Universidades": {
+                "peak_hours": [(7,10), (16,19)],
+                "peak_days": [1,3],  # Martes, Jueves
+                "incidents": {
+                    "Hurto": 120,
+                    "Cosquilleo": 80,
+                    "Acoso": 40,
+                    "Hurto a mano armada": 25,
+                    "Ataque": 15,
+                    "Apertura de puertas": 5,
+                    "Sospechoso": 35
+                }
+            },
+            "Portal Norte": {
+                "peak_hours": [(6,9), (17,20)],
+                "peak_days": [0,2,4],  # Lunes, Miércoles, Viernes
+                "incidents": {
+                    "Hurto": 130,
+                    "Cosquilleo": 90,
+                    "Acoso": 45,
+                    "Hurto a mano armada": 20,
+                    "Ataque": 25,
+                    "Apertura de puertas": 8,
+                    "Sospechoso": 30
+                }
+            }
+        }
+
+        # Generar incidentes para los últimos 30 días
+        start_date = datetime.datetime.now() - datetime.timedelta(days=30)
+
+        for station, data in station_data.items():
+            lat, lon = station_coords[station]
+            
+            for incident_type, count in data["incidents"].items():
+                for _ in range(count):
+                    # Generar hora aleatoria con preferencia por horas pico
+                    is_peak = uniform(0, 1) < 0.7  # 70% de probabilidad de hora pico
+                    if is_peak:
+                        peak_period = data["peak_hours"][int(uniform(0, len(data["peak_hours"])))]
+                        hour = int(uniform(peak_period[0], peak_period[1]))
+                    else:
+                        hour = int(uniform(0, 24))
+                    
+                    # Generar día aleatorio con preferencia por días pico
+                    is_peak_day = uniform(0, 1) < 0.7  # 70% de probabilidad de día pico
+                    if is_peak_day and data["peak_days"]:
+                        day = data["peak_days"][int(uniform(0, len(data["peak_days"])))]
+                    else:
+                        day = int(uniform(0, 7))
+                    
+                    random_days = int(uniform(0, 30))
+                    timestamp = start_date + datetime.timedelta(days=random_days)
+                    timestamp = timestamp.replace(hour=hour)
+                    
+                    # Añadir variación aleatoria a las coordenadas
+                    incident_lat = lat + uniform(-0.0002, 0.0002)
+                    incident_lon = lon + uniform(-0.0002, 0.0002)
+                    
+                    incident = Incident(
+                        incident_type=incident_type,
+                        description=f"Incidente reportado en {station}",
+                        latitude=incident_lat,
+                        longitude=incident_lon,
+                        timestamp=timestamp,
+                        user_id=user.id,
+                        nearest_station=station
+                    )
+                    db.session.add(incident)
+
+        db.session.commit()
+        print("Real incident data has been populated successfully.")
         
         station_data = {
             "Avenida Jiménez": {"lat": 4.598056, "lon": -74.074167},
