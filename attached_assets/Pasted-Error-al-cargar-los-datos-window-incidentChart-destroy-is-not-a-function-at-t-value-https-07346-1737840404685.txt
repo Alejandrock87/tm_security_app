@@ -1,0 +1,21 @@
+Error al cargar los datos: window.incidentChart.destroy is not a function
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+window.incidentChart.destroy is not a function
+at createChart (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/static/js/map.js:377:30)
+at updateStatistics (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/static/js/map.js:28:5)
+at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/static/js/map.js:53:9
+Error al cargar los datos: window.incidentChart.destroy is not a function
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Error loading map data: 
+TypeError {}
+
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
