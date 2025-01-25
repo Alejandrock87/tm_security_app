@@ -42,7 +42,7 @@ agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python retrain_model.py"
+args = "python retrain_scheduler.py"
 
 [[workflows.workflow]]
 name = "Generate Station Icon"
