@@ -18,12 +18,9 @@ def create_app():
     init_db(app)
     
     with app.app_context():
-        # Load model at startup
+        # Load model at startup only if cache doesn't exist
         from ml_models import load_cached_model
         model, feature_importance = load_cached_model()
-        if model is None:
-            from ml_models import train_model
-            model, feature_importance = train_model()
 
     login_manager = LoginManager()
     login_manager.init_app(app)

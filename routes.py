@@ -122,6 +122,10 @@ def init_routes(app):
     def dashboard():
         try:
             logging.info("Obteniendo datos para el panel de control")
+            cached_data = cache.get('dashboard_data')
+            if cached_data:
+                return render_template('dashboard.html', **cached_data)
+                
             incidents = get_incidents_for_map()
 
             thirty_days_ago = datetime.utcnow() - timedelta(days=30)

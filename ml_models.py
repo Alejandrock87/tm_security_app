@@ -87,8 +87,8 @@ def save_model_cache(model, feature_importance):
 def train_model():
     model, feature_importance = load_cached_model()
     if model is not None and feature_importance is not None:
+        logging.info("Using cached model")
         return model, feature_importance
-        return _cached_model, _cached_feature_importance
         
     data = prepare_data()
 
