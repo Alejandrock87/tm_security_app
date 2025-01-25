@@ -20,6 +20,11 @@ function initMap() {
 
 async function loadIncidentData(filters = {}) {
     try {
+        if (!map) {
+            console.error('Map not initialized');
+            return;
+        }
+
         // Validar y limpiar los filtros
         const cleanFilters = {
             troncal: filters.troncal && filters.troncal !== 'all' ? filters.troncal : undefined,
@@ -37,7 +42,8 @@ async function loadIncidentData(filters = {}) {
 
         const response = await fetch(`/incidents?${queryParams}`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
         const data = await response.json();
         
