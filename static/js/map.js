@@ -125,14 +125,23 @@ function processIncidentTypes(incidents) {
 }
 
 function createChart(data) {
-    const ctx = document.getElementById('incidentChart');
-    if (!ctx) return;
+    try {
+        const ctx = document.getElementById('incidentChart');
+        if (!ctx) {
+            console.warn('Canvas element not found');
+            return;
+        }
 
-    // Get existing chart instance using Chart.js API
-    const existingChart = Chart.getChart(ctx);
-    if (existingChart) {
-        existingChart.destroy();
-    }
+        // Obtener instancia existente del gráfico
+        let existingChart;
+        try {
+            existingChart = Chart.getChart(ctx);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+        } catch (e) {
+            console.warn('No existing chart found');
+        }
 
     const incidents = data.incidents_by_type || {};
     const labels = Object.keys(incidents);
@@ -179,23 +188,31 @@ function createChart(data) {
 }
 
 function populateFilters(incidents, stations) {
-    // Populate incident types
-    const incidentTypes = [...new Set(incidents.map(i => i.incident_type))];
-    const incidentTypeSelect = document.getElementById('incidentTypeFilter');
-    incidentTypeSelect.innerHTML = '<option value="all">Todos los tipos</option>';
-    incidentTypes.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        incidentTypeSelect.appendChild(option);
-    });
+    try {
+        // Populate incident types
+        const incidentTypeSelect = document.getElementById('incidentTypeFilter');
+        if (incidentTypeSelect) {
+            const incidentTypes = [...new Set(incidents.map(i => i.incident_type))];
+            incidentTypeSelect.innerHTML = '<option value="all">Todos los tipos</option>';
+            incidentTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                incidentTypeSelect.appendChild(option);
+            });
+        }
 
-    // Populate troncales and stations
-    const troncalSelect = document.getElementById('troncalFilter');
-    const stationSelect = document.getElementById('stationFilter');
+        // Populate troncales and stations
+        const troncalSelect = document.getElementById('troncalFilter');
+        const stationSelect = document.getElementById('stationFilter');
 
-    troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
-    stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+        if (troncalSelect) {
+            troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+        }
+        
+        if (stationSelect) {
+            stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+        }
 
     // Asegurarse de que las troncales se carguen correctamente
     const uniqueTroncales = new Set();
