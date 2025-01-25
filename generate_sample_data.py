@@ -67,3 +67,86 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     generate_sample_data(args.num_samples)
+import datetime
+from models import Incident, User, db
+from app import app
+import argparse
+from random import uniform
+
+def populate_real_incident_data():
+    with app.app_context():
+        # Ensure we have at least one user
+        user = User.query.first()
+        if not user:
+            user = User(username="sample_user", email="sample@example.com")
+            user.set_password("sample_password")
+            db.session.add(user)
+            db.session.commit()
+        
+        station_data = {
+            "Avenida Jiménez": {"lat": 4.598056, "lon": -74.074167},
+            "Universidades": {"lat": 4.634667, "lon": -74.065139},
+            "Portal Norte": {"lat": 4.754722, "lon": -74.045556},
+            "Banderas": {"lat": 4.616389, "lon": -74.135833},
+            "Calle 76": {"lat": 4.664722, "lon": -74.060556},
+            "Las Aguas": {"lat": 4.601944, "lon": -74.066944},
+            "Marly": {"lat": 4.627778, "lon": -74.066944},
+            "Calle 72": {"lat": 4.658333, "lon": -74.060556},
+            "Calle 26": {"lat": 4.616667, "lon": -74.071944},
+            "Portal Tunal": {"lat": 4.576389, "lon": -74.130833}
+        }
+
+        incident_counts = {
+            "Avenida Jiménez": {"Hurto": 150, "Cosquilleo": 100, "Acoso": 50, "Hurto a mano armada": 30, "Ataque": 20, "Apertura de puertas": 10, "Sospechoso": 40},
+            "Universidades": {"Hurto": 120, "Cosquilleo": 80, "Acoso": 40, "Hurto a mano armada": 25, "Ataque": 15, "Apertura de puertas": 5, "Sospechoso": 35},
+            "Portal Norte": {"Hurto": 130, "Cosquilleo": 90, "Acoso": 45, "Hurto a mano armada": 20, "Ataque": 25, "Apertura de puertas": 8, "Sospechoso": 30},
+            "Banderas": {"Hurto": 140, "Cosquilleo": 85, "Acoso": 35, "Hurto a mano armada": 25, "Ataque": 20, "Apertura de puertas": 12, "Sospechoso": 45},
+            "Calle 76": {"Hurto": 110, "Cosquilleo": 70, "Acoso": 30, "Hurto a mano armada": 15, "Ataque": 10, "Apertura de puertas": 5, "Sospechoso": 25},
+            "Las Aguas": {"Hurto": 125, "Cosquilleo": 95, "Acoso": 40, "Hurto a mano armada": 20, "Ataque": 15, "Apertura de puertas": 10, "Sospechoso": 35},
+            "Marly": {"Hurto": 115, "Cosquilleo": 75, "Acoso": 35, "Hurto a mano armada": 18, "Ataque": 12, "Apertura de puertas": 7, "Sospechoso": 28},
+            "Calle 72": {"Hurto": 135, "Cosquilleo": 85, "Acoso": 45, "Hurto a mano armada": 22, "Ataque": 18, "Apertura de puertas": 9, "Sospechoso": 32},
+            "Calle 26": {"Hurto": 105, "Cosquilleo": 65, "Acoso": 30, "Hurto a mano armada": 15, "Ataque": 10, "Apertura de puertas": 5, "Sospechoso": 20},
+            "Portal Tunal": {"Hurto": 140, "Cosquilleo": 90, "Acoso": 50, "Hurto a mano armada": 25, "Ataque": 20, "Apertura de puertas": 10, "Sospechoso": 40}
+        }
+
+        # Generate incidents for the last 30 days
+        start_date = datetime.datetime.now() - datetime.timedelta(days=30)
+        
+        for station, incidents in incident_counts.items():
+            for incident_type, count in incidents.items():
+                for _ in range(count):
+                    # Random time within peak hours
+                    hour = 7 if uniform(0, 1) < 0.5 else 17  # Peak hours
+                    minute = int(uniform(0, 59))
+                    
+                    # Random day within last 30 days
+                    random_days = int(uniform(0, 30))
+                    timestamp = start_date + datetime.timedelta(days=random_days, hours=hour, minutes=minute)
+                    
+                    # Add some random variation to coordinates
+                    lat = station_data[station]["lat"] + uniform(-0.0001, 0.0001)
+                    lon = station_data[station]["lon"] + uniform(-0.0001, 0.0001)
+                    
+                    incident = Incident(
+                        incident_type=incident_type,
+                        description=f"Incidente reportado en {station}",
+                        latitude=lat,
+                        longitude=lon,
+                        timestamp=timestamp,
+                        user_id=user.id,
+                        nearest_station=station
+                    )
+                    db.session.add(incident)
+        
+        db.session.commit()
+        print("Real incident data has been populated successfully.")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate sample incident data")
+    parser.add_argument("--populate-real", action="store_true", help="Populate with real incident data")
+    args = parser.parse_args()
+    
+    if args.populate_real:
+        populate_real_incident_data()
+    else:
+        print("Please use --populate-real to populate the database with real incident data")
