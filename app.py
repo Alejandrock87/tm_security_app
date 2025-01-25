@@ -15,12 +15,15 @@ def create_app():
         "pool_pre_ping": True,
     }
 
-    # Load model at startup
-    from ml_models import load_cached_model
-    model, feature_importance = load_cached_model()
-    if model is None:
-        from ml_models import train_model
-        model, feature_importance = train_model()
+    init_db(app)
+    
+    with app.app_context():
+        # Load model at startup
+        from ml_models import load_cached_model
+        model, feature_importance = load_cached_model()
+        if model is None:
+            from ml_models import train_model
+            model, feature_importance = train_model()
 
     init_db(app)
 
