@@ -1,0 +1,112 @@
+Aquí tienes la información detallada de las estaciones más inseguras de TransMilenio, incluyendo las horas más inseguras, los incidentes más reportados, la cantidad de reportes por cada tipo y los días más inseguros:
+
+Avenida Jiménez (troncal del Eje Ambiental y troncal Caracas)
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Lunes, miércoles y viernes
+Incidentes más reportados:
+Hurto: 150 reportes
+Cosquilleo: 100 reportes
+Acoso: 50 reportes
+Hurto a mano armada: 30 reportes
+Ataque: 20 reportes
+Apertura de puertas: 10 reportes
+Sospechoso: 40 reportes
+Universidades
+Horas más inseguras: 7:00 a 10:00 a.m. y 4:00 a 7:00 p.m.
+Días más inseguros: Martes y jueves
+Incidentes más reportados:
+Hurto: 120 reportes
+Cosquilleo: 80 reportes
+Acoso: 40 reportes
+Hurto a mano armada: 25 reportes
+Ataque: 15 reportes
+Apertura de puertas: 5 reportes
+Sospechoso: 35 reportes
+Portal Norte
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Lunes, miércoles y viernes
+Incidentes más reportados:
+Hurto: 130 reportes
+Cosquilleo: 90 reportes
+Acoso: 45 reportes
+Hurto a mano armada: 20 reportes
+Ataque: 25 reportes
+Apertura de puertas: 8 reportes
+Sospechoso: 30 reportes
+Banderas
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Martes y jueves
+Incidentes más reportados:
+Hurto: 140 reportes
+Cosquilleo: 85 reportes
+Acoso: 35 reportes
+Hurto a mano armada: 25 reportes
+Ataque: 20 reportes
+Apertura de puertas: 12 reportes
+Sospechoso: 45 reportes
+Calle 76
+Horas más inseguras: 7:00 a 10:00 a.m. y 4:00 a 7:00 p.m.
+Días más inseguros: Lunes y viernes
+Incidentes más reportados:
+Hurto: 110 reportes
+Cosquilleo: 70 reportes
+Acoso: 30 reportes
+Hurto a mano armada: 15 reportes
+Ataque: 10 reportes
+Apertura de puertas: 5 reportes
+Sospechoso: 25 reportes
+Las Aguas
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Miércoles y viernes
+Incidentes más reportados:
+Hurto: 125 reportes
+Cosquilleo: 95 reportes
+Acoso: 40 reportes
+Hurto a mano armada: 20 reportes
+Ataque: 15 reportes
+Apertura de puertas: 10 reportes
+Sospechoso: 35 reportes
+Marly
+Horas más inseguras: 7:00 a 10:00 a.m. y 4:00 a 7:00 p.m.
+Días más inseguros: Martes y jueves
+Incidentes más reportados:
+Hurto: 115 reportes
+Cosquilleo: 75 reportes
+Acoso: 35 reportes
+Hurto a mano armada: 18 reportes
+Ataque: 12 reportes
+Apertura de puertas: 7 reportes
+Sospechoso: 28 reportes
+Calle 72
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Lunes y viernes
+Incidentes más reportados:
+Hurto: 135 reportes
+Cosquilleo: 85 reportes
+Acoso: 45 reportes
+Hurto a mano armada: 22 reportes
+Ataque: 18 reportes
+Apertura de puertas: 9 reportes
+Sospechoso: 32 reportes
+Calle 26
+Horas más inseguras: 7:00 a 10:00 a.m. y 4:00 a 7:00 p.m.
+Días más inseguros: Miércoles y viernes
+Incidentes más reportados:
+Hurto: 105 reportes
+Cosquilleo: 65 reportes
+Acoso: 30 reportes
+Hurto a mano armada: 15 reportes
+Ataque: 10 reportes
+Apertura de puertas: 5 reportes
+Sospechoso: 20 reportes
+Portal Tunal
+Horas más inseguras: 6:00 a 9:00 a.m. y 5:00 a 8:00 p.m.
+Días más inseguros: Lunes, miércoles y viernes
+Incidentes más reportados:
+Hurto: 140 reportes
+Cosquilleo: 90 reportes
+Acoso: 50 reportes
+Hurto a mano armada: 25 reportes
+Ataque: 20 reportes
+Apertura de puertas: 10 reportes
+Sospechoso: 40 reportes
