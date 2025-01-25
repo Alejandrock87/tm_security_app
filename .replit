@@ -3,7 +3,7 @@ modules = ["python-3.11"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Project"
+runButton = "Start Flask App"
 
 [[workflows.workflow]]
 name = "Project"
@@ -32,7 +32,6 @@ agentRequireRestartOnSave = false
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
-waitForPort = 3000
 
 [[workflows.workflow]]
 name = "Retrain Model"

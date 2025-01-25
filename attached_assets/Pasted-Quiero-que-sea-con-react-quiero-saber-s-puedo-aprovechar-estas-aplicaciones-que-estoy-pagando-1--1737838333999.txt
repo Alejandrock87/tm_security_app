@@ -1,0 +1,50 @@
+Quiero que sea con react, quiero saber sí puedo aprovechar estas aplicaciones que estoy pagando:
+1. v0
+2. ChatGPT versión Team
+3. Github Copilot
+4. Claude
+5. Replit
+
+- Cómo puedo sacar provecho a estas herramientas para crear la app para android?
+- Qué tecnología sugieres para la red neuronal?
+- En dónde se alojaría la red neuronal?
+
+Este es el MVP:
+Aplicación móvil que permita a los usuarios del sistema de transporte público de la ciudad de Bogotá llamado Transmilenio, reportar incidentes de seguridad que sucedan en este medio de transporte, para ello se define el siguiente alcance:
+1. Que tenga una pantalla inicial para que el usuario se registre y/o inicie sesión, este registro por usuario debe quedar almacenado en una base de datos.
+2. Cuando el usuario inicia sesión se le pedirá que active la ubicación del dispositivo, se le mostrará una ventana emergente para que la active.
+3. Después de activada la ubicación, al usuario se le mostrará el home o pantalla principal, donde podrá ver las opciones que tiene, las cuales son las siguientes:
+a. Reportar Incidente:
+- El usuario podrá reportar un incidente en cualquier momento y a cualquier hora.
+- Tendrá la opción de seleccionar el "Tipo de Incidente": Hurto, Hurto a mano armada, cosquilleo, ataque, apertura de puertas, sospechoso, acoso.
+- Descripción.
+- Fecha de incidente: (se seleccionará automáticamente con la información del dispositivo, pero se podrá modificar).
+- Hora del incidente: (se seleccionará automáticamente con la información del dispositivo, pero se podrá modificar).
+- Estación: (se seleccionará automáticamente la estación más cercana a la ubicación del usuario, (basado en la geolocalización del dispositivo, pero también se podrá modificar).
+- Se mostrará un mapa con todas las estaciones de transmilenio y las troncales, se centrará el foco en la estación que se seleccionó automáticamente o que el usuario seleccionó.
+- Se mostrará un mensaje que diga "Ubicación obtenida correctamente", cuando automáticamente se seleccione la estación.
+- Se debe mostrar también este mensaje: "La estación más cercana se selecciona automáticamente según tu ubicación, pero puedes cambiarla si el incidente ocurrió en otra estación. La fecha y hora actual se establecen por defecto, pero pueden modificarse para reportar incidentes pasados."
+- Se mostrará un widget con esta información: Niveles de Inseguridad: usando un cuadrito rojo seguido de un texto que diga "Alto (>5 incidentes/mes)". Debajo irá otro cuadro naranja seguido de un texto que diga "Medio (2-5 incidentes/mes)". Y otro cuadro debajo de color verde seguide de un texto que diga "Bajo (<2 incidentes/mes)"
+- Se mostrará otro widget que diga: "Información
+Los niveles de inseguridad se calculan basándose en la cantidad de incidentes reportados en el último mes."
+- Se mostrará un botón que diga "Reportar Incidente", este permitirá registrar los datos seleccionados automáticamente y/o por el usuario.
+- Mostrar mensaje al usuario, que indique "Incidente Reportado".
+- Después de mostrar el mensaje, se redirigirá al usuario a la pantalla principal o al home.
+- El registro del incidente se almacenará en una base de datos que tendrá la siguiente estructura: una tabla por cada estación de transmilenio, esta tendrá esta información: tipo de incidentes, cantidad de reportes por cada incidente, fecha de cada incidente, hora de cada incidente, descripción del incidente.
+b. Mapa de Incidentes:
+- En esta pantalla, se mostrará un mapa en el que se centrará la vista para visualizar todas las estaciones y troncales del sistema transmilenio.
+- Cada estación mostrada en el mapa, tendrá su ícono de un color que represente el nivel de inseguridad basado en la cantidad de reportes, verde (bajo), naranja (medio) y rojo (alto), esos serán los 3 colores.
+- Habrá varios filtros que se podrán aplicar al mapa, filtrar por estaciones, filtrar por tipo de incidente, filtrar por troncal, filtrar por nivel de inseguridad. Cada uno de estos filtros, se podrán combinar para actualizar la información del mapa.
+c. Estadísticas:
+- Se debe mostrar las estadísticas de reportes del sistema, habrá unos gráficos que permitirán visualizar las estadísticas.
+- Habrá un gráfico que muestre los horarios críticos de todo el sistema.
+- Habrá otro gráfico que muestre los incidentes más reportados en el sistema.
+- Habrá otro gráfico que muestre los incidentes más reportados en el sistema.
+- Habrá un filtro que permitirá seleccionar fecha, hora, tipo de incidente, nivel de inseguridad, troncal, estación, cantidad de incidentes reportados. estos filtros se podrán combinar, para actualizar una tabla o gráfico para visualizar dichas estadísticas.
+d. Notificaciones:
+- Esta pantalla mostrará las notificaciones en tiempo real, de cada reporte que hagan los usuarios, también el usuario podrá seleccionar qué notificaciones recibir, sí por troncales, por estación, por tipo de incidente o no recibir notificaciones.
+- Además de mostrarse en una pantalla, todas las notificaciones, también el usuario recibirá las notificaciones que seleccione, mediante un mensaje flotante en la parte superior de la pantalla y que no entorpecerá el uso de la app.
+4. También habrá otra pantalla que mostrará predicciones de posibles sucesos de inseguridad, ya sea por hora, por estación, por fecha, también se podrá enviar notificaciones al usuario, sí así es usuario lo decide, para cuando haya una predicción.
+- La información de esta pantalla que mostrará las predicciones, se alimentará de una red neuronal que irá aprendiendo de los datos alojados en la base de datos de los reportes hechos por los usuarios.
+
+Arma también un plan para poder desarrollar en orden y de manera efectiva esta aplicación, desde el inicio hasta el final o exportación al apk.
