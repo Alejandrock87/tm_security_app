@@ -296,19 +296,24 @@ function applyFilters() {
 }
 
 function updateMap(filteredIncidents) {
+    if (!map) return;
     clearMap();
 
-    if (selectedStation) {
-        const stationIncidents = filteredIncidents.filter(
-            incident => incident.nearest_station === selectedStation
-        );
-        stationIncidents.forEach(addIncidentToMap);
-    } else {
-        filteredIncidents.forEach(addIncidentToMap);
-    }
+    if (Array.isArray(filteredIncidents) && filteredIncidents.length > 0) {
+        if (selectedStation) {
+            const stationIncidents = filteredIncidents.filter(
+                incident => incident.nearest_station === selectedStation
+            );
+            stationIncidents.forEach(addIncidentToMap);
+        } else {
+            filteredIncidents.forEach(addIncidentToMap);
+        }
 
-    if (filteredIncidents.length === 1) {
-        map.setView([filteredIncidents[0].latitude, filteredIncidents[0].longitude], 15);
+        if (filteredIncidents.length === 1) {
+            map.setView([filteredIncidents[0].latitude, filteredIncidents[0].longitude], 15);
+        } else {
+            map.setView([4.6097, -74.0817], 11);
+        }
     }
 }
 
@@ -409,4 +414,29 @@ function getSecurityLevel(stationName) {
     return 'Bajo';
 }
 
-document.addEventListener('DOMContentLoaded', initMap);
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        await initMap();
+        const [statsResponse, incidentsResponse, stationsResponse] = await Promise.all([
+            fetch('/station_statistics'),
+            fetch('/incidents'),
+            fetch('/api/stations')
+        ]);
+        
+        const [stationStats, incidentsData, stationsData] = await Promise.all([
+            statsResponse.json(),
+            incidentsResponse.json(),
+            stationsResponse.json()
+        ]);
+        
+        stationSecurityLevels = stationStats;
+        incidents = incidentsData;
+        
+        updateStatistics(incidents);
+        populateFilters(incidents, stationsData);
+        updateMap(incidents);
+        updateIncidentsList(incidents);
+    } catch (error) {
+        console.error('Error loading map data:', error);
+    }
+});
