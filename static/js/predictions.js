@@ -21,44 +21,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     socket.on('prediction_alert', function(data) {
-        addPredictionToList(data);
+        checkAndAddPrediction(data);
         if (notificationPermission) {
             showNotification(data);
         }
     });
 
-    // Cargar predicciones iniciales
+    // Iniciar el checker de predicciones
+    loadAndCheckPredictions();
+    // Actualizar cada minuto
+    setInterval(loadAndCheckPredictions, 60000);
+});
+
+function loadAndCheckPredictions() {
     fetch('/api/predictions')
         .then(response => response.json())
         .then(predictions => {
-            predictions.forEach(addPredictionToList);
+            // Limpiar lista actual
+            const predictionsList = document.getElementById('predictionsList');
+            predictionsList.innerHTML = '';
+            
+            // Revisar cada predicción
+            predictions.forEach(checkAndAddPrediction);
         });
-});
+}
 
-function addPredictionToList(prediction) {
-    const predictionsList = document.getElementById('predictionsList');
-    const item = document.createElement('div');
-    item.className = `list-group-item list-group-item-${getRiskClass(prediction.risk_score)}`;
+function checkAndAddPrediction(prediction) {
+    const predTime = new Date(prediction.predicted_time);
+    const now = new Date();
+    const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
     
-    const timeUntil = getTimeUntilIncident(prediction.predicted_time);
-    
-    item.innerHTML = `
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">${prediction.station}</h5>
-            <small>${timeUntil}</small>
-        </div>
-        <p class="mb-1">Posible ${prediction.incident_type}</p>
-        <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%</small>
-    `;
-    
-    predictionsList.prepend(item);
+    // Solo mostrar si falta entre 60 y 0 minutos
+    if (diffMinutes <= 60 && diffMinutes >= 0) {
+        const predictionsList = document.getElementById('predictionsList');
+        const item = document.createElement('div');
+        item.className = `list-group-item list-group-item-${getRiskClass(prediction.risk_score)}`;
+        
+        item.innerHTML = `
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">${prediction.station}</h5>
+                <small>${getTimeUntilIncident(prediction.predicted_time)}</small>
+            </div>
+            <p class="mb-1">Posible ${prediction.incident_type}</p>
+            <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%</small>
+        `;
+        
+        predictionsList.prepend(item);
+    }
 }
 
 function showNotification(prediction) {
-    new Notification('Alerta de Seguridad', {
-        body: `Posible ${prediction.incident_type} en ${prediction.station} en 1 hora.\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%`,
-        icon: '/static/images/alert-icon.png'
-    });
+    const predTime = new Date(prediction.predicted_time);
+    const now = new Date();
+    const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
+    
+    if (diffMinutes <= 60 && diffMinutes >= 0) {
+        new Notification('Alerta de Seguridad', {
+            body: `Posible ${prediction.incident_type} en ${prediction.station} en ${diffMinutes} minutos.\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%`,
+            icon: '/static/images/alert-icon.png'
+        });
+    }
 }
 
 function getRiskClass(risk_score) {
@@ -75,5 +97,5 @@ function getTimeUntilIncident(predicted_time) {
     if (diffMinutes < 60) {
         return `En ${diffMinutes} minutos`;
     }
-    return `En ${Math.floor(diffMinutes / 60)} horas`;
+    return `En 1 hora`;
 }
