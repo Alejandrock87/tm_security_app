@@ -124,8 +124,18 @@ def init_routes(app):
         try:
             logging.info("Obteniendo datos para el panel de control")
             cached_data = cache.get('dashboard_data')
-            if not cached_data:
-                cached_data = {}
+            if cached_data:
+                return render_template('dashboard.html', **cached_data)
+                
+            # Si no hay datos en caché, crear nuevo caché
+            cached_data = {
+                'incidents': get_incidents_for_map(),
+                'statistics': get_incident_statistics() or {},
+                'trends': get_incident_trends() or [],
+                'model_insights': get_model_insights() or {}
+            }
+            # Guardar en caché por 1 hora
+            cache.set('dashboard_data', cached_data, timeout=3600)
             if cached_data:
                 return render_template('dashboard.html', **cached_data)
                 

@@ -66,11 +66,14 @@ FEATURE_CACHE_FILE = 'feature_cache.pkl'
 def load_cached_model():
     try:
         if os.path.exists(MODEL_CACHE_FILE) and os.path.exists(FEATURE_CACHE_FILE):
-            with open(MODEL_CACHE_FILE, 'rb') as f:
-                model = pickle.load(f)
-            with open(FEATURE_CACHE_FILE, 'rb') as f:
-                feature_importance = pickle.load(f)
-            return model, feature_importance
+            # Check if cache is less than 24 hours old
+            cache_time = os.path.getmtime(MODEL_CACHE_FILE)
+            if time.time() - cache_time < 24 * 3600:  # 24 hours in seconds
+                with open(MODEL_CACHE_FILE, 'rb') as f:
+                    model = pickle.load(f)
+                with open(FEATURE_CACHE_FILE, 'rb') as f:
+                    feature_importance = pickle.load(f)
+                return model, feature_importance
     except Exception as e:
         logging.error(f"Error loading cached model: {e}")
     return None, None
