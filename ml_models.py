@@ -247,6 +247,83 @@ def get_model_insights():
         cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         cv_scores = cross_val_score(model, X, y, cv=cv)
         
+
+def create_rnn_model():
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import LSTM, Dense, Dropout
+    from tensorflow.keras.optimizers import Adam
+    
+    model = Sequential([
+        LSTM(64, return_sequences=True, input_shape=(24, 7)),  # 24 horas, 7 características
+        Dropout(0.2),
+        LSTM(32),
+        Dropout(0.2),
+        Dense(16, activation='relu'),
+        Dense(1, activation='sigmoid')
+    ])
+    
+    model.compile(optimizer=Adam(learning_rate=0.001),
+                 loss='binary_crossentropy',
+                 metrics=['accuracy'])
+    return model
+
+def prepare_rnn_data():
+    incidents = Incident.query.all()
+    if not incidents:
+        return None, None
+        
+    df = pd.DataFrame([{
+        'hour': incident.timestamp.hour,
+        'day_of_week': incident.timestamp.weekday(),
+        'month': incident.timestamp.month,
+        'station': incident.nearest_station,
+        'latitude': incident.latitude,
+        'longitude': incident.longitude,
+        'incident_type': incident.incident_type
+    } for incident in incidents])
+    
+    # Crear características temporales
+    df['is_peak_hour'] = df['hour'].apply(lambda x: 1 if x in [6,7,8,17,18,19] else 0)
+    
+    # Codificar variables categóricas
+    df_encoded = pd.get_dummies(df, columns=['station', 'incident_type'])
+    
+    # Preparar secuencias de 24 horas
+    sequences = []
+    labels = []
+    for station in df['station'].unique():
+        station_data = df_encoded[df_encoded[f'station_{station}'] == 1]
+        for day in station_data['day_of_week'].unique():
+            day_data = station_data[station_data['day_of_week'] == day]
+            if len(day_data) >= 24:
+                sequences.append(day_data.iloc[:24].values)
+                labels.append(1 if len(day_data) > 24 else 0)
+    
+    return np.array(sequences), np.array(labels)
+
+def train_rnn_model():
+    X, y = prepare_rnn_data()
+    if X is None:
+        return None
+        
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
+    model = create_rnn_model()
+    model.fit(X_train, y_train, epochs=50, batch_size=32, validation_split=0.2)
+    
+    return model
+
+def predict_station_risk(station, hour):
+    model = train_rnn_model()
+    if model is None:
+        return None
+        
+    # Preparar datos de entrada para la predicción
+    input_data = prepare_prediction_data(station, hour)
+    risk_score = model.predict(input_data)
+    
+    return float(risk_score[0])
+
         insights = {
             "feature_importance": feature_importance,
             "model_parameters": model.named_steps['classifier'].get_params(),
