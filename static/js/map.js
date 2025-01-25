@@ -373,15 +373,17 @@ function createChart(data) {
     const ctx = document.getElementById('incidentChart');
     if (!ctx) return;
     
-    if (window.incidentChart) {
-        window.incidentChart.destroy();
+    // Obtener el gráfico existente usando Chart.js API
+    const existingChart = Chart.getChart(ctx);
+    if (existingChart) {
+        existingChart.destroy();
     }
 
     const incidents = data.incidents_by_type || {};
     const labels = Object.keys(incidents);
     const values = Object.values(incidents);
 
-    window.incidentChart = new Chart(ctx, {
+    const chart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
