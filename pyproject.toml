@@ -25,4 +25,5 @@ dependencies = [
     "schedule>=1.2.2",
     "cachetools>=5.5.1",
     "pytz>=2024.2",
+    "flask-caching>=2.3.0",
 ]
