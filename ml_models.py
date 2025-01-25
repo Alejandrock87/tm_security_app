@@ -56,17 +56,38 @@ def prepare_data():
 
     return data
 
-_cached_model = None
-_cached_feature_importance = None
-_last_train_time = None
+import pickle
+import os
+from pathlib import Path
+
+MODEL_CACHE_FILE = 'model_cache.pkl'
+FEATURE_CACHE_FILE = 'feature_cache.pkl'
+
+def load_cached_model():
+    try:
+        if os.path.exists(MODEL_CACHE_FILE) and os.path.exists(FEATURE_CACHE_FILE):
+            with open(MODEL_CACHE_FILE, 'rb') as f:
+                model = pickle.load(f)
+            with open(FEATURE_CACHE_FILE, 'rb') as f:
+                feature_importance = pickle.load(f)
+            return model, feature_importance
+    except Exception as e:
+        logging.error(f"Error loading cached model: {e}")
+    return None, None
+
+def save_model_cache(model, feature_importance):
+    try:
+        with open(MODEL_CACHE_FILE, 'wb') as f:
+            pickle.dump(model, f)
+        with open(FEATURE_CACHE_FILE, 'wb') as f:
+            pickle.dump(feature_importance, f)
+    except Exception as e:
+        logging.error(f"Error saving model cache: {e}")
 
 def train_model():
-    global _cached_model, _cached_feature_importance, _last_train_time
-    current_time = datetime.now()
-    
-    # Return cached model if less than 1 hour old
-    if (_cached_model is not None and _last_train_time is not None and 
-        (current_time - _last_train_time).total_seconds() < 3600):
+    model, feature_importance = load_cached_model()
+    if model is not None and feature_importance is not None:
+        return model, feature_importance
         return _cached_model, _cached_feature_importance
         
     data = prepare_data()
