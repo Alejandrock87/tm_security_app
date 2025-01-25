@@ -1,6 +1,6 @@
-
 let map;
 let markers = [];
+let currentChart = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     initMap();
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMap() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
-    
+
     map = L.map('map').setView([4.6097, -74.0817], 11);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -26,7 +26,7 @@ async function loadIncidentData(filters = {}) {
             incident_type: filters.incidentType || 'all',
             security_level: filters.securityLevel || 'all'
         });
-        
+
         const response = await fetch(`/incidents?${queryParams}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -43,7 +43,7 @@ async function loadIncidentData(filters = {}) {
 
 function updateMap(incidents) {
     if (!map) return;
-    
+
     // Limpiar marcadores existentes
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
@@ -64,12 +64,17 @@ function createChart(data) {
     const ctx = document.getElementById('incidentChart');
     if (!ctx) return;
 
+    // Destruir el gráfico existente si hay uno
+    if (currentChart) {
+        currentChart.destroy();
+    }
+
     const incidents = {};
     data.forEach(incident => {
         incidents[incident.incident_type] = (incidents[incident.incident_type] || 0) + 1;
     });
 
-    new Chart(ctx, {
+    currentChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: Object.keys(incidents),
@@ -99,16 +104,16 @@ async function loadFilters() {
     try {
         const response = await fetch('/api/stations');
         const stations = await response.json();
-        
+
         const troncalSelect = document.getElementById('troncalFilter');
         const stationSelect = document.getElementById('stationFilter');
-        
+
         if (troncalSelect && stations.length > 0) {
             const troncales = [...new Set(stations.map(station => station.troncal))];
             troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>' +
                 troncales.map(troncal => `<option value="${troncal}">${troncal}</option>`).join('');
         }
-        
+
         if (stationSelect && stations.length > 0) {
             stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>' +
                 stations.map(station => `<option value="${station.nombre}">${station.nombre}</option>`).join('');
@@ -125,6 +130,6 @@ function applyFilters() {
         incidentType: document.getElementById('incidentTypeFilter').value,
         securityLevel: document.getElementById('securityLevelFilter').value
     };
-    
+
     loadIncidentData(filters);
 }
