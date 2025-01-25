@@ -139,24 +139,38 @@ function createChart(data) {
     const values = Object.values(incidents);
 
     const chart = new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Número de Incidentes',
                 data: values,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)'
+                ],
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Distribución de Incidentes por Tipo',
+                    font: {
+                        size: 16
                     }
                 }
             }
@@ -183,14 +197,23 @@ function populateFilters(incidents, stations) {
     troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
     stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
 
+    // Asegurarse de que las troncales se carguen correctamente
+    const uniqueTroncales = new Set();
     stations.forEach(station => {
-        if (station.troncal && !troncales.has(station.troncal)) {
-            troncales.add(station.troncal);
-            const option = document.createElement('option');
-            option.value = station.troncal;
-            option.textContent = station.troncal;
-            troncalSelect.appendChild(option);
+        if (station.troncal && station.troncal.trim() !== '') {
+            uniqueTroncales.add(station.troncal.trim());
         }
+    });
+
+    // Ordenar troncales alfabéticamente
+    const sortedTroncales = Array.from(uniqueTroncales).sort();
+    
+    sortedTroncales.forEach(troncal => {
+        const option = document.createElement('option');
+        option.value = troncal;
+        option.textContent = troncal;
+        troncalSelect.appendChild(option);
+    });
 
         const stationOption = document.createElement('option');
         stationOption.value = station.nombre;
