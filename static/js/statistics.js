@@ -74,8 +74,9 @@ async function applyQuickFilter(period) {
 
     switch(period) {
         case 'today':
-            filters.dateFrom = now.toISOString().split('T')[0];
-            filters.dateTo = filters.dateFrom;
+            const today = now.toISOString().split('T')[0];
+            filters.dateFrom = today;
+            filters.dateTo = today;
             break;
         case 'week':
             const weekStart = new Date(now);

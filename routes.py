@@ -140,9 +140,12 @@ def init_routes(app):
             
             # Aplicar filtros de fecha si existen
             if date_from:
-                query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+                date_from_obj = datetime.strptime(date_from, '%Y-%m-%d')
+                query = query.filter(Incident.timestamp >= date_from_obj)
             if date_to:
-                query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d') + timedelta(days=1))
+                date_to_obj = datetime.strptime(date_to, '%Y-%m-%d')
+                date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
+                query = query.filter(Incident.timestamp <= date_to_end)
             
             incidents = query.all()
             total_incidents = len(incidents)
