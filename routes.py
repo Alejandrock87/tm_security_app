@@ -16,9 +16,8 @@ import os
 
 def init_routes(app):
     @app.route('/')
-    @app.route('/index')
-    @app.route('/incident-map')
-    def index():
+    @app.route('/<path:path>')
+    def catch_all(path=''):
         return app.send_static_file('index.html')
 
     @app.route('/login', methods=['GET', 'POST'])
