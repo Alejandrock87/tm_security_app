@@ -17,6 +17,7 @@ import os
 def init_routes(app):
     @app.route('/')
     @app.route('/index')
+    @app.route('/incident-map')
     def index():
         if not current_user.is_authenticated:
             return render_template('index.html', title='Inicio')

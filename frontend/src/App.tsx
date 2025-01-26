@@ -10,8 +10,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/statistics" element={<Statistics />} />
           <Route path="/incident-map" element={<IncidentMap />} />
+          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/report_incident" element={<IncidentMap />} />
         </Route>
       </Routes>
     </BrowserRouter>
