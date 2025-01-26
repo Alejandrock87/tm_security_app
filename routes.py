@@ -184,7 +184,7 @@ def init_routes(app):
             if incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
 
-        incidents = query.all()
+            incidents = query.all()
 
         # Process data for charts and summary
         hourly_stats = {}
