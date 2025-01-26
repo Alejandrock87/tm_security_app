@@ -298,6 +298,13 @@ export default function IncidentMap() {
       <Grid container spacing={2}>
         {/* Panel de Filtros */}
         <Grid item xs={12} md={3}>
+          <Box className="filter-sidebar">
+            <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+              <Typography variant="h6" gutterBottom>
+                Filtros del Mapa
+              </Typography>
+              <Grid container spacing={2}>
+        <Grid item xs={12} md={3}>
           <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Filtros del Mapa
@@ -392,6 +399,24 @@ export default function IncidentMap() {
         <Grid item xs={12} md={9}>
           <Grid container spacing={2}>
             {/* Mapa */}
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Box sx={{ height: '600px', position: 'relative' }}>
+                  {loading && (
+                    <Box sx={{ 
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 1000
+                    }}>
+                      <CircularProgress />
+                    </Box>
+                  )}
+                  <div id="map" style={{ height: '100%', width: '100%' }}></div>
+                </Box>
+              </Paper>
+            </Grid>
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2, position: 'relative' }}>
                 {loading && (
