@@ -1,4 +1,3 @@
-
 // Variables globales para los gráficos
 let charts = {
     typeChart: null,
@@ -10,7 +9,7 @@ async function loadStations() {
         const response = await fetch('/api/stations');
         if (!response.ok) throw new Error('Error cargando estaciones');
         const stations = await response.json();
-        
+
         // Procesar troncales
         const troncales = [...new Set(stations.map(s => s.troncal))].filter(Boolean).sort();
         const troncalSelect = document.getElementById('troncalFilter');
@@ -43,65 +42,83 @@ function createFilterCard(title, content) {
     `;
 }
 
-function createDetailedView(data, activeFilters) {
-    const container = document.getElementById('detailedView');
-    if (!data.incidents || data.incidents.length === 0) {
-        container.innerHTML = '<p class="text-muted">No se encontraron resultados para los filtros seleccionados.</p>';
-        return;
-    }
+function createDetailedView(data, activeFilters = {}) {
+    try {
+        const container = document.getElementById('detailedView');
+        if (!data || !data.incident_types || Object.keys(data.incident_types).length === 0) {
+            container.innerHTML = '<p class="text-muted">No se encontraron resultados para los filtros seleccionados.</p>';
+            return;
+        }
 
-    let html = '<div class="row">';
+        let html = '<div class="row">';
 
-    // Resumen por tipo de incidente
-    if (!activeFilters.incident_type) {
-        const typeStats = data.incident_types;
-        html += `
-            <div class="col-md-6 mb-4">
-                <h6>Distribución por Tipo</h6>
-                <ul class="list-group">
-                    ${Object.entries(typeStats)
-                        .sort(([,a], [,b]) => b - a)
-                        .map(([type, count]) => 
-                            `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${type}
-                                <span class="badge bg-primary rounded-pill">${count}</span>
-                            </li>`
-                        ).join('')}
-                </ul>
-            </div>
-        `;
-    }
+        // Resumen por tipo de incidente
+        if (!activeFilters.incident_type) {
+            const typeStats = data.incident_types;
+            if (Object.keys(typeStats).length > 0) {
+                html += `
+                    <div class="col-md-6 mb-4">
+                        <h6>Distribución por Tipo</h6>
+                        <ul class="list-group">
+                            ${Object.entries(typeStats)
+                                .sort(([,a], [,b]) => b - a)
+                                .map(([type, count]) => 
+                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                        ${type}
+                                        <span class="badge bg-primary rounded-pill">${count}</span>
+                                    </li>`
+                                ).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+        }
 
-    // Resumen por estación
-    if (!activeFilters.station) {
-        const stationStats = data.top_stations;
-        html += `
-            <div class="col-md-6 mb-4">
-                <h6>Distribución por Estación</h6>
-                <ul class="list-group">
-                    ${Object.entries(stationStats)
-                        .sort(([,a], [,b]) => b - a)
-                        .map(([station, count]) => 
-                            `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${station}
-                                <span class="badge bg-primary rounded-pill">${count}</span>
-                            </li>`
-                        ).join('')}
-                </ul>
-            </div>
-        `;
-    }
+        // Resumen por estación
+        if (!activeFilters.station) {
+            const stationStats = data.top_stations;
+            if (Object.keys(stationStats).length > 0) {
+                html += `
+                    <div class="col-md-6 mb-4">
+                        <h6>Distribución por Estación</h6>
+                        <ul class="list-group">
+                            ${Object.entries(stationStats)
+                                .sort(([,a], [,b]) => b - a)
+                                .map(([station, count]) => 
+                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                        ${station}
+                                        <span class="badge bg-primary rounded-pill">${count}</span>
+                                    </li>`
+                                ).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+        }
 
-    html += '</div>';
-
-    // Timeline de incidentes si hay filtros de fecha/hora
-    if (activeFilters.date_from || activeFilters.date_to || activeFilters.time_from || activeFilters.time_to) {
-        html += '<div class="timeline mt-4">';
-        // Aquí iría la implementación del timeline
         html += '</div>';
-    }
 
-    container.innerHTML = html;
+        // Mostrar estadísticas generales
+        html += `
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h6>Resumen General</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item">Total de incidentes: ${data.total_incidents}</li>
+                        <li class="list-group-item">Hora más peligrosa: ${data.most_dangerous_hour}</li>
+                        <li class="list-group-item">Tipo más común: ${data.most_common_type}</li>
+                        <li class="list-group-item">Estación más afectada: ${data.most_affected_station}</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error al crear vista detallada:', error);
+        document.getElementById('detailedView').innerHTML = 
+            '<p class="text-danger">Error al procesar los datos. Por favor, intente nuevamente.</p>';
+    }
 }
 
 async function loadStatistics() {
@@ -118,7 +135,7 @@ async function loadStatistics() {
         updateSummaryCards(data);
         createCharts(data);
         await loadIncidentTypes();
-        
+
         // Mostrar vista inicial sin filtros
         createDetailedView(data, {});
     } catch (error) {
@@ -257,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Agregar event listeners para los filtros
         document.getElementById('applyFilters').addEventListener('click', loadFilteredData);
         document.getElementById('resetFilters').addEventListener('click', resetFilters);
-        
+
         // Event listener para actualizar estaciones cuando cambia la troncal
         document.getElementById('troncalFilter').addEventListener('change', async function() {
             if (document.getElementById('enabletroncalFilter').checked) {
