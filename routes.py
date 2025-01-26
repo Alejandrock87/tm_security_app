@@ -132,7 +132,19 @@ def init_routes(app):
     @login_required
     def api_statistics():
         try:
-            incidents = Incident.query.all()
+            query = Incident.query
+            
+            # Obtener parámetros de fecha
+            date_from = request.args.get('dateFrom')
+            date_to = request.args.get('dateTo')
+            
+            # Aplicar filtros de fecha si existen
+            if date_from:
+                query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+            if date_to:
+                query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d') + timedelta(days=1))
+            
+            incidents = query.all()
             total_incidents = len(incidents)
             
             # Calcular estadísticas
