@@ -214,11 +214,20 @@ async function loadFilteredData() {
         }
 
         const data = await response.json();
-        createDetailedView(data, filters);
-        updateCharts(data);
+        if (data) {
+            // Actualizar las tarjetas de resumen con los datos filtrados
+            document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+            document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
+            document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
+            document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
+            
+            // Crear vista detallada con los datos filtrados
+            createDetailedView(data, filters);
+        }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
-        showError('Error al cargar datos filtrados');
+        document.getElementById('detailedView').innerHTML = 
+            '<div class="alert alert-danger">Error al cargar los datos filtrados. Por favor, intente nuevamente.</div>';
     }
 }
 
