@@ -1,10 +1,11 @@
+
 let map;
 let markers = [];
 let currentChart = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     initMap();
-    loadStations();
+    loadMapData();
 });
 
 function initMap() {
@@ -17,74 +18,104 @@ function initMap() {
     }).addTo(map);
 }
 
-let stationsData = null;
-let incidentsData = null;
-
-async function loadStations() {
+async function loadMapData() {
     try {
-        if (!stationsData) {
-            const stationsResponse = await fetch('/api/stations');
-            stationsData = await stationsResponse.json();
-        }
-        
-        const incidentsResponse = await fetch('/incidents');
-        incidentsData = await incidentsResponse.json();
+        const [stationsResponse, incidentsResponse] = await Promise.all([
+            fetch('/api/stations'),
+            fetch('/incidents')
+        ]);
 
         const stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
 
-        // Agrupar incidentes por estación
-        const incidentsByStation = {};
-        incidents.forEach(incident => {
-            if (!incidentsByStation[incident.nearest_station]) {
-                incidentsByStation[incident.nearest_station] = {
-                    total: 0,
-                    types: {},
-                    hourCount: Array(24).fill(0)
-                };
-            }
-            incidentsByStation[incident.nearest_station].total++;
+        // Limpiar marcadores existentes
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
 
-            // Contar por tipo de incidente
-            if (!incidentsByStation[incident.nearest_station].types[incident.incident_type]) {
-                incidentsByStation[incident.nearest_station].types[incident.incident_type] = 0;
-            }
-            incidentsByStation[incident.nearest_station].types[incident.incident_type]++;
+        // Inicializar filtros
+        initializeFilters(stations, incidents);
 
-            // Contar por hora
-            const hour = new Date(incident.timestamp).getHours();
-            incidentsByStation[incident.nearest_station].hourCount[hour]++;
-        });
+        // Mostrar incidentes en el mapa
+        displayIncidents(incidents);
 
-        // Crear marcadores de estaciones
-        stations.forEach(station => {
-            const stationStats = incidentsByStation[station.nombre] || { total: 0, types: {}, hourCount: Array(24).fill(0) };
-            const mostDangerousHour = stationStats.hourCount.indexOf(Math.max(...stationStats.hourCount));
-
-            const marker = L.marker([station.latitude, station.longitude])
-                .bindPopup(createPopupContent(station.nombre, stationStats, mostDangerousHour))
-                .addTo(map);
-
-            markers.push(marker);
-        });
+        // Actualizar gráfico
+        updateChart(incidents);
     } catch (error) {
         console.error('Error loading map data:', error);
     }
 }
 
-function createPopupContent(stationName, stats, mostDangerousHour) {
-    const typesHtml = Object.entries(stats.types)
-        .sort(([,a], [,b]) => b - a)
-        .map(([type, count]) => `<li>${type}: ${count} reportes</li>`)
-        .join('');
+function initializeFilters(stations, incidents) {
+    const troncalFilter = document.getElementById('troncalFilter');
+    const stationFilter = document.getElementById('stationFilter');
+    
+    if (!troncalFilter || !stationFilter) return;
 
-    return `
-        <div class="station-popup">
-            <h3>${stationName}</h3>
-            <p><strong>Total de reportes:</strong> ${stats.total}</p>
-            <p><strong>Hora más insegura:</strong> ${mostDangerousHour}:00</p>
-            <h4>Tipos de incidentes:</h4>
-            <ul>${typesHtml}</ul>
-        </div>
-    `;
+    // Obtener troncales únicas
+    const troncales = [...new Set(stations.map(station => station.troncal))];
+    
+    // Poblar filtro de troncales
+    troncalFilter.innerHTML = '<option value="all">Todas las Troncales</option>';
+    troncales.forEach(troncal => {
+        if (troncal) {
+            troncalFilter.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+        }
+    });
+
+    // Manejar cambio en filtros
+    troncalFilter.addEventListener('change', () => filterIncidents());
+    stationFilter.addEventListener('change', () => filterIncidents());
+}
+
+function displayIncidents(incidents) {
+    incidents.forEach(incident => {
+        const marker = L.marker([incident.latitude, incident.longitude])
+            .bindPopup(`
+                <strong>${incident.incident_type}</strong><br>
+                Estación: ${incident.nearest_station}<br>
+                Fecha: ${new Date(incident.timestamp).toLocaleString()}
+            `)
+            .addTo(map);
+        markers.push(marker);
+    });
+}
+
+function updateChart(incidents) {
+    const ctx = document.getElementById('incidentChart');
+    if (!ctx) return;
+
+    // Agrupar incidentes por tipo
+    const incidentTypes = {};
+    incidents.forEach(incident => {
+        incidentTypes[incident.incident_type] = (incidentTypes[incident.incident_type] || 0) + 1;
+    });
+
+    if (currentChart) {
+        currentChart.destroy();
+    }
+
+    currentChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(incidentTypes),
+            datasets: [{
+                label: 'Número de Incidentes',
+                data: Object.values(incidentTypes),
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function filterIncidents() {
+    loadMapData();
 }
