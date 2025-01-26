@@ -15,6 +15,14 @@ async function loadStatistics() {
         // Mostrar indicador de carga
         document.querySelectorAll('.card-title').forEach(el => el.textContent = 'Cargando...');
         
+        // Limpiar gráficos existentes
+        Object.keys(charts).forEach(key => {
+            if (charts[key]) {
+                charts[key].destroy();
+                charts[key] = null;
+            }
+        });
+        
         // Destruir gráficos existentes antes de crear nuevos
         Object.keys(charts).forEach(key => {
             if (charts[key]) {
@@ -48,6 +56,12 @@ async function loadStatistics() {
         if (!data || data.error) {
             throw new Error(data.error || 'No se recibieron datos del servidor');
         }
+        
+        // Actualizar los elementos de la interfaz
+        document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+        document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
+        document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
+        document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
         
         // Actualizar las estadísticas solo si hay datos válidos
         if (data && !data.error) {
@@ -326,7 +340,9 @@ function resetFilters() {
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        console.log('Inicializando página de estadísticas...');
         await loadFilters();
+        await loadStatistics(); // Cargar estadísticas iniciales
         
         // Agregar eventos a los botones de filtros
         const applyButton = document.getElementById('applyFilters');
