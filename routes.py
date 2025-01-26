@@ -181,8 +181,8 @@ def init_routes(app):
             if time_to:
                 hour_to = int(time_to.split(':')[0])
                 query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
-        if incident_type != 'all':
-            query = query.filter(Incident.incident_type == incident_type)
+            if incident_type != 'all':
+                query = query.filter(Incident.incident_type == incident_type)
 
         incidents = query.all()
 
