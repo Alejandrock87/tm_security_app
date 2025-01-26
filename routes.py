@@ -170,8 +170,8 @@ def init_routes(app):
             # Base query
             query = Incident.query
 
-        # Apply filters
-        if date_from:
+            # Apply filters
+            if date_from:
             query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
         if date_to:
             query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d'))
@@ -224,6 +224,8 @@ def init_routes(app):
             'most_dangerous_hour': f"{most_dangerous_hour}:00",
             'most_common_type': most_common_type
         })
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/api/predictions')
     @login_required
