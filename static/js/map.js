@@ -146,9 +146,13 @@ function updateChart(incidents) {
 
     if (currentChart) {
         currentChart.destroy();
+        currentChart = null;
+    }
+    if (Chart.getChart(ctx)) {
+        Chart.getChart(ctx).destroy();
     }
 
-    currentChart = new Chart(ctx, {
+    const config = {
         type: 'doughnut',
         data: {
             labels: data.map(item => `${item.type} (${item.percentage}%)`),
