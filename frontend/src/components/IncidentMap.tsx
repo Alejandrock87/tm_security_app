@@ -262,30 +262,70 @@ export default function IncidentMap() {
   };
 
   useEffect(() => {
-    const initializeData = async () => {
-      await Promise.all([
-        loadIncidents(),
-        loadStations()
-      ]);
+    const initializeMap = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        if (!mapRef.current) {
+          mapRef.current = L.map('map').setView([4.6097, -74.0817], 11);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(mapRef.current);
+        }
+
+        const [stationsData, incidentsData] = await Promise.all([
+          fetch('/api/stations').then(res => res.json()),
+          fetch('/incidents').then(res => res.json())
+        ]);
+
+        setStations(stationsData);
+        setIncidents(incidentsData);
+        setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
+        
+        updateMapMarkers(stationsData, incidentsData);
+        updateChart(incidentsData);
+      } catch (err) {
+        console.error('Error loading map:', err);
+        setError('Error al cargar el mapa');
+      } finally {
+        setLoading(false);
+      }
     };
-    initializeData();
+
+    initializeMap();
   }, []);
 
   const applyFilters = () => {
-    const activeFilters = {};
+    let filteredStations = [...stations];
+    let filteredIncidents = [...incidents];
+
     if (enableFilters.troncal && filters.troncal) {
-      activeFilters.troncal = filters.troncal;
+      filteredStations = filteredStations.filter(station => station.troncal === filters.troncal);
     }
     if (enableFilters.station && filters.station) {
-      activeFilters.station = filters.station;
+      filteredStations = filteredStations.filter(station => station.nombre === filters.station);
+      filteredIncidents = filteredIncidents.filter(incident => incident.nearest_station === filters.station);
     }
     if (enableFilters.incidentType && filters.incidentType) {
-      activeFilters.incidentType = filters.incidentType;
+      filteredIncidents = filteredIncidents.filter(incident => incident.incident_type === filters.incidentType);
     }
     if (enableFilters.securityLevel && filters.securityLevel) {
-      activeFilters.securityLevel = filters.securityLevel;
+      // Apply security level filter based on incident count
+      const stationIncidentCount = filteredIncidents.reduce((acc, incident) => {
+        acc[incident.nearest_station] = (acc[incident.nearest_station] || 0) + 1;
+        return acc;
+      }, {} as {[key: string]: number});
+
+      filteredStations = filteredStations.filter(station => {
+        const count = stationIncidentCount[station.nombre] || 0;
+        const level = count >= 50 ? 'Alto' : count >= 20 ? 'Medio' : 'Bajo';
+        return level === filters.securityLevel;
+      });
     }
-    loadIncidents(activeFilters);
+
+    updateMapMarkers(filteredStations, filteredIncidents);
+    updateChart(filteredIncidents);
   };
 
   const resetFilters = () => {
@@ -296,7 +336,8 @@ export default function IncidentMap() {
       incidentType: false,
       securityLevel: false
     });
-    loadIncidents();
+    updateMapMarkers(stations, incidents);
+    updateChart(incidents);
   };
 
   return (
