@@ -5,13 +5,16 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useNavigate } from 'react-router-dom';
+
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('login')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [locationEnabled, setLocationEnabled] = useState(false)
-  const [notifications, setNotifications] = useState([])
-  const [map, setMap] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [locationEnabled, setLocationEnabled] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState('login');
+  const [notifications, setNotifications] = useState([]);
+  const [map, setMap] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentScreen === 'incidentMap' && !map) {
@@ -35,54 +38,24 @@ export default function App() {
   }, [currentScreen, map])
 
   const handleAuth = () => {
-    setIsAuthenticated(true)
-    setCurrentScreen('enableLocation')
+    setIsAuthenticated(true);
+    setCurrentScreen('enableLocation');
   }
 
   const handleEnableLocation = () => {
-    setLocationEnabled(true)
-    setCurrentScreen('main')
+    setLocationEnabled(true);
+    setCurrentScreen('main');
   }
 
   const handleLogout = () => {
-    setIsAuthenticated(false)
-    setLocationEnabled(false)
-    setCurrentScreen('login')
+    setIsAuthenticated(false);
+    setLocationEnabled(false);
+    setCurrentScreen('login');
+    navigate('/login');
   }
 
   const renderScreen = () => {
     switch (currentScreen) {
-      case 'login':
-        return (
-          <Card className="w-full max-w-sm mx-auto">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">Transmilenio Seguridad</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
-                  <TabsTrigger value="register">Registrarse</TabsTrigger>
-                </TabsList>
-                <TabsContent value="login">
-                  <form className="space-y-4">
-                    <Input type="email" placeholder="Correo electrónico" />
-                    <Input type="password" placeholder="Contraseña" />
-                    <Button onClick={handleAuth} className="w-full">Iniciar Sesión</Button>
-                  </form>
-                </TabsContent>
-                <TabsContent value="register">
-                  <form className="space-y-4">
-                    <Input type="email" placeholder="Correo electrónico" />
-                    <Input type="password" placeholder="Contraseña" />
-                    <Input type="password" placeholder="Confirmar contraseña" />
-                    <Button onClick={handleAuth} className="w-full">Registrarse</Button>
-                  </form>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        )
       case 'enableLocation':
         return (
           <Card className="w-full max-w-sm mx-auto">
