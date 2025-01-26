@@ -570,8 +570,9 @@
 /* Contenedor para el switch de notificaciones */
 .notification-toggle {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
