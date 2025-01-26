@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block content %}
@@ -10,28 +9,36 @@
         </div>
         <h2>Bienvenido</h2>
         <p class="auth-subtitle">Ingresa tus credenciales para acceder al sistema</p>
-        
+
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}
             <div class="form-group">
-                {{ form.username(class="auth-input", placeholder="Correo Electrónico") }}
+                <label for="email">Correo Electrónico</label>
+                <div class="input-icon">
+                    <i class="fas fa-envelope"></i>
+                    {{ form.username(class="auth-input", placeholder="nombre@empresa.com") }}
+                </div>
                 {% for error in form.username.errors %}
                 <span class="error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            
+
             <div class="form-group">
-                {{ form.password(class="auth-input", placeholder="Contraseña") }}
+                <label for="password">Contraseña</label>
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    {{ form.password(class="auth-input", placeholder="********") }}
+                </div>
                 {% for error in form.password.errors %}
                 <span class="error-text">{{ error }}</span>
                 {% endfor %}
             </div>
-            
+
             <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-            
-            {{ form.submit(class="auth-button") }}
+
+            <button type="submit" class="auth-button">Iniciar Sesión</button>
         </form>
-        
+
         <p class="register-text">
             ¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a>
         </p>
