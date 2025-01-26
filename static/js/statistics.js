@@ -149,20 +149,78 @@ async function applyQuickFilter(period) {
     await loadFilteredData(filters);
 }
 
-async function loadFilteredData(filters = {}) {
+async function loadFilteredData(filters = null) {
     try {
-        const queryString = new URLSearchParams(filters).toString();
+        let queryParams = {};
+        
+        if (!filters) {
+            // Obtener filtros del modal
+            const enabledFilters = document.querySelectorAll('[id^="enable"]:checked');
+            enabledFilters.forEach(checkbox => {
+                const filterId = checkbox.id.replace('enable', '').replace('Filter', '');
+                const filterInput = document.getElementById(`${filterId}Filter`);
+                if (filterInput && filterInput.value && filterInput.value !== 'all') {
+                    queryParams[filterId.toLowerCase()] = filterInput.value;
+                }
+            });
+        } else {
+            queryParams = filters;
+        }
+
+        const queryString = new URLSearchParams(queryParams).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
         const data = await response.json();
+        if (Object.keys(data).length === 0) {
+            showError('No se encontraron datos con los filtros seleccionados');
+            return;
+        }
         updateSummaryCards(data);
+        
+        // Cerrar modal si existe
+        const modal = bootstrap.Modal.getInstance(document.getElementById('filterModal'));
+        if (modal) modal.hide();
+        
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
         showError('Error al cargar los datos filtrados');
     }
 }
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+    errorDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    document.querySelector('.statistics-container').prepend(errorDiv);
+    
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
+}
+
+// Mejorar funcionalidad de botones de expansión
+document.querySelectorAll('.btn-expand').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const card = this.closest('.detail-card');
+        const list = card.querySelector('.scrollable-list');
+        const icon = this.querySelector('i');
+        
+        if (card.classList.contains('expanded')) {
+            list.style.maxHeight = '300px';
+            card.classList.remove('expanded');
+            icon.className = 'fas fa-chevron-down';
+        } else {
+            list.style.maxHeight = list.scrollHeight + 'px';
+            card.classList.add('expanded');
+            icon.className = 'fas fa-chevron-up';
+        }
+    });
+});
 
 function showError(message) {
     const container = document.getElementById('detailedView');
