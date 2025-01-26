@@ -1,6 +1,5 @@
 
-import { Card, Icon } from '@mui/material';
-import { IconType } from 'react-icons';
+import { Card } from '@mui/material';
 
 interface StatCardProps {
   title: string;
