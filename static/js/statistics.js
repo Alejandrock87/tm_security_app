@@ -45,14 +45,31 @@ function createFilterCard(title, content) {
 function createDetailedView(data, activeFilters = {}) {
     try {
         const container = document.getElementById('detailedView');
-        if (!data || !data.incident_types || Object.keys(data.incident_types).length === 0) {
-            container.innerHTML = '<p class="text-muted">No se encontraron resultados para los filtros seleccionados.</p>';
+        if (!container) {
+            console.error('No se encontró el contenedor de vista detallada');
             return;
         }
 
-        // Si no hay filtros activos, no mostrar nada en la vista detallada
+        // Verificar si los datos son válidos
+        if (!data) {
+            container.innerHTML = '<div class="alert alert-warning">No hay datos disponibles.</div>';
+            return;
+        }
+
+        // Si no hay filtros activos, mostrar resumen general
         if (Object.keys(activeFilters).length === 0) {
-            container.innerHTML = '<p class="text-muted">Seleccione filtros para ver información detallada.</p>';
+            container.innerHTML = `
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <h6>Resumen General</h6>
+                            <p>Total de incidentes: ${data.total_incidents}</p>
+                            <p>Estación más afectada: ${data.most_affected_station}</p>
+                            <p>Tipo más común: ${data.most_common_type}</p>
+                            <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
+                        </div>
+                    </div>
+                </div>`;
             return;
         }
 
@@ -154,7 +171,16 @@ async function loadStatistics() {
         const data = await response.json();
         console.log("Datos recibidos:", data);
 
-        if (data && typeof data === 'object') {
+        if (!data || typeof data !== 'object') {
+            throw new Error('Datos inválidos recibidos del servidor');
+        }
+
+        // Actualizar la interfaz con los datos recibidos
+        updateSummaryCards(data);
+        createDetailedView(data, {});
+
+        // Actualizar gráficos solo si hay datos válidos
+        if (data.incident_types && data.top_stations) {
             // Asegurarse de que los gráficos existentes se destruyan antes de crear nuevos
             if (charts.typeChart) charts.typeChart.destroy();
             if (charts.stationChart) charts.stationChart.destroy();
