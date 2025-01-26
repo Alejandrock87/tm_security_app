@@ -25,6 +25,15 @@
   width: 100%;
   height: 100%;
   z-index: 1;
+  background: #f8f9fa;
+}
+
+.leaflet-tile {
+  filter: none !important;
+}
+
+.leaflet-container {
+  background: #f8f9fa !important;
 }
 
 .leaflet-container {

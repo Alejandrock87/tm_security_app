@@ -59,10 +59,23 @@ const IncidentMap: React.FC = () => {
   useEffect(() => {
     if (!mapRef.current) return;
 
-    const newMap = L.map(mapRef.current).setView([4.6097, -74.0817], 11);
+    const newMap = L.map(mapRef.current, {
+      center: [4.6097, -74.0817],
+      zoom: 11,
+      zoomControl: true,
+      maxZoom: 18,
+      minZoom: 8,
+      preferCanvas: true
+    });
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 18,
+      tileSize: 512,
+      zoomOffset: -1,
+      crossOrigin: true
     }).addTo(newMap);
+    
     setMap(newMap);
 
     const loadInitialData = async () => {
