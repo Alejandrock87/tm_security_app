@@ -17,12 +17,21 @@ function initMap() {
     }).addTo(map);
 }
 
-async function loadMapData() {
+async function loadMapData(filters = {}) {
     try {
         const [stationsResponse, incidentsResponse] = await Promise.all([
             fetch('/api/stations'),
-            fetch('/incidents')
+            fetch(`/incidents${buildQueryString(filters)}`)
         ]);
+
+        function buildQueryString(filters) {
+            if (!filters || Object.keys(filters).length === 0) return '';
+            const params = new URLSearchParams();
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value && value !== 'all') params.append(key, value);
+            });
+            return params.toString() ? `?${params.toString()}` : '';
+        }
 
         const stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
@@ -195,8 +204,51 @@ function updateChart(incidents) {
     });
 }
 
+async function loadTroncales() {
+    try {
+        const response = await fetch('/api/stations');
+        const stations = await response.json();
+        const troncales = [...new Set(stations.map(station => station.troncal))].filter(Boolean).sort();
+        
+        const troncalSelect = document.getElementById('troncalFilter');
+        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+        troncales.forEach(troncal => {
+            troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+        });
+    } catch (error) {
+        console.error('Error loading troncales:', error);
+    }
+}
+
+async function loadStations(troncal = 'all') {
+    try {
+        const response = await fetch('/api/stations');
+        const stations = await response.json();
+        let filteredStations = stations;
+        
+        if (troncal !== 'all') {
+            filteredStations = stations.filter(station => station.troncal === troncal);
+        }
+        
+        const stationSelect = document.getElementById('stationFilter');
+        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+        filteredStations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
+            stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
+        });
+    } catch (error) {
+        console.error('Error loading stations:', error);
+    }
+}
+
 function applyFilters() {
-    loadMapData();
+    const filters = {
+        troncal: document.getElementById('troncalFilter').value,
+        station: document.getElementById('stationFilter').value,
+        incidentType: document.getElementById('incidentTypeFilter').value,
+        securityLevel: document.getElementById('securityLevelFilter').value
+    };
+    
+    loadMapData(filters);
 }
 
 function resetFilters() {
@@ -206,3 +258,12 @@ function resetFilters() {
     document.getElementById('securityLevelFilter').value = 'all';
     loadMapData();
 }
+
+// Event listeners for filters
+document.addEventListener('DOMContentLoaded', function() {
+    loadTroncales();
+    
+    document.getElementById('troncalFilter').addEventListener('change', function() {
+        loadStations(this.value);
+    });
+});

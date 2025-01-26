@@ -35,13 +35,16 @@
                         <div class="col-md-3 mb-3">
                             <label for="incidentTypeFilter">Tipo de Incidente</label>
                             <select id="incidentTypeFilter" class="form-select">
-                                <option value="all">Todos los tipos</option>
+                                <option value="all">Todos los Tipos</option>
+                                <option value="Hurto">Hurto</option>
+                                <option value="Acoso">Acoso</option>
+                                <option value="Cosquilleo">Cosquilleo</option>
                             </select>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="securityLevelFilter">Nivel de Inseguridad</label>
+                            <label for="securityLevelFilter">Nivel de Seguridad</label>
                             <select id="securityLevelFilter" class="form-select">
-                                <option value="all">Todos los niveles</option>
+                                <option value="all">Todos los Niveles</option>
                                 <option value="Alto">Alto</option>
                                 <option value="Medio">Medio</option>
                                 <option value="Bajo">Bajo</option>
@@ -49,9 +52,9 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col">
+                        <div class="col-12 text-end">
+                            <button onclick="resetFilters()" class="btn btn-secondary me-2">Reiniciar Filtros</button>
                             <button onclick="applyFilters()" class="btn btn-primary">Aplicar Filtros</button>
-                            <button onclick="resetFilters()" class="btn btn-secondary">Restablecer</button>
                         </div>
                     </div>
                 </div>
