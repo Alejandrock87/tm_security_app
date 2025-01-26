@@ -1,13 +1,13 @@
 // Establecer conexión con Socket.IO
 let socket = io();
-let notificationPermission = false;
+let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
 
 document.addEventListener('DOMContentLoaded', function() {
     const notificationToggle = document.getElementById('notificationToggle');
     const predictionsList = document.getElementById('predictionsList');
 
-    // Inicializar el estado del toggle basado en permisos existentes
-    if (Notification.permission === 'granted') {
+    // Inicializar el estado del toggle basado en localStorage y permisos existentes
+    if (notificationPermission || Notification.permission === 'granted') {
         notificationToggle.checked = true;
         notificationPermission = true;
     } else {
@@ -23,19 +23,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Permiso de notificación:', permission);
                 if (permission === 'granted') {
                     notificationPermission = true;
+                    localStorage.setItem('notificationPermission', 'true');
                     console.log('Notificaciones activadas.');
                 } else {
                     // Mantener el toggle activado pero mostrar el mensaje
                     notificationPermission = true;
+                    localStorage.setItem('notificationPermission', 'true');
                     alert('Para recibir notificaciones, necesitas permitirlas en la configuración de tu navegador');
                 }
             } catch (error) {
                 console.error('Error al solicitar permisos:', error);
                 // Mantener el toggle activado en caso de error
                 notificationPermission = true;
+                localStorage.setItem('notificationPermission', 'true');
             }
         } else {
             notificationPermission = false;
+            localStorage.setItem('notificationPermission', 'false');
             console.log('Notificaciones desactivadas.');
         }
     });
