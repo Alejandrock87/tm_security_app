@@ -1,56 +1,27 @@
-
 {% extends "base.html" %}
 
 {% block content %}
 <div class="mobile-container">
     <header class="dark-header">
-        <button class="menu-button">
-            <i class="fas fa-bars"></i>
-        </button>
         <h1>Transmilenio Security</h1>
     </header>
 
     <main class="dark-main">
         <h2 class="welcome-title">Bienvenido a Transmilenio Security</h2>
-        
-        {% if current_user.is_authenticated %}
+
         <div class="dark-menu">
             <a href="{{ url_for('dashboard') }}" class="dark-card">
                 <i class="fas fa-map-marked-alt"></i>
                 <h3>Mapa de Incidentes</h3>
                 <p>Visualiza los incidentes reportados</p>
             </a>
-            
+
             <a href="{{ url_for('report_incident') }}" class="dark-card">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h3>Reportar Incidente</h3>
                 <p>Reporta un nuevo incidente</p>
             </a>
-            
-            <a href="{{ url_for('statistics') }}" class="dark-card">
-                <i class="fas fa-chart-bar"></i>
-                <h3>Estadísticas</h3>
-                <p>Ver estadísticas de incidentes</p>
-            </a>
-            
-            <a href="{{ url_for('notifications') }}" class="dark-card">
-                <i class="fas fa-bell"></i>
-                <h3>Notificaciones</h3>
-                <p>Ver alertas y notificaciones</p>
-            </a>
         </div>
-        {% else %}
-        <div class="dark-auth">
-            <a href="{{ url_for('login') }}" class="dark-button">
-                <i class="fas fa-sign-in-alt"></i>
-                Iniciar Sesión
-            </a>
-            <a href="{{ url_for('register') }}" class="dark-button">
-                <i class="fas fa-user-plus"></i>
-                Registrarse
-            </a>
-        </div>
-        {% endif %}
     </main>
 
     <nav class="dark-nav">
