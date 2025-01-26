@@ -1,87 +1,90 @@
-
 // Variables globales para los gráficos
 let charts = {
-    hourlyHeatmap: null,
-    incidentTypes: null,
-    topStations: null
+    hourlyChart: null,
+    typeChart: null,
+    stationChart: null
 };
 
 async function loadStatistics() {
     try {
         console.log("Cargando estadísticas...");
-        const filters = getFilters();
-        console.log("Filtros:", filters);
-        
-        // Mostrar indicador de carga
-        document.querySelectorAll('.card-title').forEach(el => el.textContent = 'Cargando...');
-        
         // Limpiar gráficos existentes
-        Object.keys(charts).forEach(key => {
-            if (charts[key]) {
-                charts[key].destroy();
-                charts[key] = null;
+        Object.values(charts).forEach(chart => {
+            if (chart) {
+                chart.destroy();
             }
         });
-        
-        // Destruir gráficos existentes antes de crear nuevos
-        Object.keys(charts).forEach(key => {
-            if (charts[key]) {
-                charts[key].destroy();
-                charts[key] = null;
-            }
-        });
-        
-        // Construir URL con parámetros de filtro
-        const params = new URLSearchParams();
-        Object.entries(filters).forEach(([key, value]) => {
-            if (value && value !== 'all') {
-                params.append(key, value);
-            }
-        });
-        
-        const queryParams = new URLSearchParams(filters);
-        const response = await fetch('/api/statistics?' + params.toString(), {
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-            }
-        });
+
+        const response = await fetch('/api/statistics');
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
+
         const data = await response.json();
         console.log("Datos recibidos:", data);
-        
-        // Verificar si hay datos
-        if (!data || data.error) {
-            throw new Error(data.error || 'No se recibieron datos del servidor');
-        }
-        
-        // Actualizar los elementos de la interfaz
-        document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
-        document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
-        document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
-        document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
-        
-        // Actualizar las estadísticas solo si hay datos válidos
-        if (data && !data.error) {
-            if (data.hourly_stats || data.incident_types || data.top_stations) {
-                updateCharts(data);
-                updateSummaryCards(data);
-            } else {
-                console.warn('No hay datos disponibles para mostrar');
-                // Mostrar mensaje al usuario
-                document.getElementById('totalIncidents').textContent = '0';
-                document.getElementById('mostAffectedStation').textContent = 'No hay datos';
-                document.getElementById('mostDangerousHour').textContent = 'No hay datos';
-                document.getElementById('mostCommonType').textContent = 'No hay datos';
-            }
-        } else {
-            console.error('Error from server:', data?.error);
-        }
+
+        updateSummaryCards(data);
+        createCharts(data);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
+        showError('Error al cargar las estadísticas');
     }
+}
+
+function updateSummaryCards(data) {
+    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
+    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
+    document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
+}
+
+function createCharts(data) {
+    // Gráfico de tipos de incidentes
+    const typeCtx = document.getElementById('incidentTypesChart').getContext('2d');
+    charts.typeChart = new Chart(typeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(data.incident_types || {}),
+            datasets: [{
+                data: Object.values(data.incident_types || {}),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Gráfico de estaciones más afectadas
+    const stationCtx = document.getElementById('topStationsChart').getContext('2d');
+    charts.stationChart = new Chart(stationCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(data.top_stations || {}),
+            datasets: [{
+                label: 'Incidentes',
+                data: Object.values(data.top_stations || {}),
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function showError(message) {
+    const cards = document.querySelectorAll('.card-title');
+    cards.forEach(card => {
+        card.textContent = 'Error al cargar datos';
+    });
 }
 
 async function loadFilters() {
@@ -107,7 +110,7 @@ async function loadFilters() {
             option.textContent = troncal;
             troncalSelect.appendChild(option);
         });
-
+        
         // Cargar estaciones
         const stations = [...new Set(data.features
             .map(f => f.properties.nombre_estacion)
@@ -121,7 +124,7 @@ async function loadFilters() {
             option.textContent = station;
             stationSelect.appendChild(option);
         });
-
+        
         // Cargar tipos de incidentes
         const response2 = await fetch('/incidents');
         const incidents = await response2.json();
@@ -135,7 +138,7 @@ async function loadFilters() {
             option.textContent = type;
             incidentSelect.appendChild(option);
         });
-
+        
         // Evento para actualizar estaciones cuando cambia la troncal
         troncalSelect.addEventListener('change', () => {
             const selectedTroncal = troncalSelect.value;
@@ -162,7 +165,7 @@ async function loadFilters() {
                 });
             }
         });
-
+        
         // Cargar estadísticas iniciales
         await loadStatistics();
     } catch (error) {
@@ -184,148 +187,6 @@ function getFilters() {
     return filters;
 }
 
-function updateSummaryCards(data) {
-    document.getElementById('totalIncidents').textContent = data.total_incidents || 0;
-    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
-    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
-    document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
-}
-
-function updateCharts(data) {
-    console.log("Actualizando gráficos con datos:", data);
-    try {
-        updateHourlyHeatmap(data.hourly_stats || {});
-        updateIncidentTypesChart(data.incident_types || {});
-        updateTopStationsChart(data.top_stations || {});
-    } catch (error) {
-        console.error("Error actualizando gráficos:", error);
-        // Reinicializar gráficos si hay error
-        charts.hourlyHeatmap?.destroy();
-        charts.incidentTypes?.destroy();
-        charts.topStations?.destroy();
-        charts = {
-            hourlyHeatmap: null,
-            incidentTypes: null,
-            topStations: null
-        };
-    }
-}
-
-function updateHourlyHeatmap(hourlyData) {
-    const ctx = document.getElementById('hourlyHeatmap').getContext('2d');
-    
-    if (charts.hourlyHeatmap) {
-        charts.hourlyHeatmap.destroy();
-    }
-
-    const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
-    const datasets = Object.entries(hourlyData).map(([day, values]) => ({
-        label: day,
-        data: hours.map(hour => values[parseInt(hour)] || 0),
-        borderWidth: 1
-    }));
-
-    charts.hourlyHeatmap = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: hours,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: window.innerWidth > 768
-                }
-            }
-        }
-    });
-}
-
-function updateIncidentTypesChart(typeData) {
-    const ctx = document.getElementById('incidentTypesChart').getContext('2d');
-    
-    if (charts.incidentTypes) {
-        charts.incidentTypes.destroy();
-    }
-
-    charts.incidentTypes = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(typeData),
-            datasets: [{
-                data: Object.values(typeData),
-                backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56',
-                    '#4BC0C0',
-                    '#9966FF'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: window.innerWidth > 768 ? 'right' : 'bottom',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 10
-                    }
-                }
-            }
-        }
-    });
-}
-
-function updateTopStationsChart(stationData) {
-    const ctx = document.getElementById('topStationsChart').getContext('2d');
-    
-    if (charts.topStations) {
-        charts.topStations.destroy();
-    }
-
-    charts.topStations = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(stationData),
-            datasets: [{
-                label: 'Incidentes',
-                data: Object.values(stationData),
-                backgroundColor: '#36A2EB'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-}
-
 function resetFilters() {
     document.getElementById('dateFromFilter').value = '';
     document.getElementById('dateToFilter').value = '';
@@ -337,12 +198,13 @@ function resetFilters() {
     loadStatistics();
 }
 
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Inicializando página de estadísticas...');
         await loadFilters();
-        await loadStatistics(); // Cargar estadísticas iniciales
+        //await loadStatistics(); // Cargar estadísticas iniciales
         
         // Agregar eventos a los botones de filtros
         const applyButton = document.getElementById('applyFilters');
@@ -359,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             resetButton.addEventListener('click', async (e) => {
                 e.preventDefault();
                 await resetFilters();
-                await loadStatistics();
+                
             });
         }
     } catch (error) {
@@ -369,9 +231,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Actualizar posición de leyendas en cambio de tamaño de ventana
 window.addEventListener('resize', () => {
-    if (charts.incidentTypes) {
-        charts.incidentTypes.options.plugins.legend.position = 
-            window.innerWidth > 768 ? 'right' : 'bottom';
-        charts.incidentTypes.update();
+    if (charts.typeChart) {
+        //charts.incidentTypes.options.plugins.legend.position = 
+        //    window.innerWidth > 768 ? 'right' : 'bottom';
+        //charts.incidentTypes.update();
     }
 });
