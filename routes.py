@@ -186,24 +186,24 @@ def init_routes(app):
 
             incidents = query.all()
 
-        # Process data for charts and summary
-        hourly_stats = {}
-        incident_types = {}
-        station_counts = {}
+            # Process data for charts and summary
+            hourly_stats = {}
+            incident_types = {}
+            station_counts = {}
 
-        for incident in incidents:
-            # Hourly statistics
-            hour = incident.timestamp.hour
-            day = incident.timestamp.strftime('%A')
-            if day not in hourly_stats:
-                hourly_stats[day] = {}
-            hourly_stats[day][hour] = hourly_stats[day].get(hour, 0) + 1
+            for incident in incidents:
+                # Hourly statistics
+                hour = incident.timestamp.hour
+                day = incident.timestamp.strftime('%A')
+                if day not in hourly_stats:
+                    hourly_stats[day] = {}
+                hourly_stats[day][hour] = hourly_stats[day].get(hour, 0) + 1
 
-            # Incident types
-            incident_types[incident.incident_type] = incident_types.get(incident.incident_type, 0) + 1
+                # Incident types
+                incident_types[incident.incident_type] = incident_types.get(incident.incident_type, 0) + 1
 
-            # Station counts
-            station_counts[incident.nearest_station] = station_counts.get(incident.nearest_station, 0) + 1
+                # Station counts
+                station_counts[incident.nearest_station] = station_counts.get(incident.nearest_station, 0) + 1
 
         # Get top 5 stations
         top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
