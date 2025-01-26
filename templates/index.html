@@ -1,21 +1,40 @@
+
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container mobile-container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="mb-4 text-center">Bienvenido al Sistema de Reporte de Incidentes de Seguridad Transmilenio</h1>
-            <p class="lead text-center">Esta aplicación te permite reportar y visualizar incidentes de seguridad en el sistema Transmilenio.</p>
+        <div class="col-12">
+            <div class="mobile-header">
+                <h1 class="text-center mb-3">Sistema de Reporte de Incidentes</h1>
+                <p class="lead text-center mb-4">Reporta y visualiza incidentes de seguridad en Transmilenio</p>
+            </div>
+            
             {% if current_user.is_authenticated %}
-            <div class="d-grid gap-3 col-md-8 mx-auto">
-                <a href="{{ url_for('report_incident') }}" class="btn btn-primary btn-lg">Reportar un Incidente</a>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg">Ver Mapa de Incidentes</a>
-                <a href="{{ url_for('real_time_map') }}" class="btn btn-info btn-lg">Mapa en Tiempo Real</a>
+            <div class="mobile-menu">
+                <a href="{{ url_for('report_incident') }}" class="mobile-btn report">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Reportar Incidente
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="mobile-btn map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    Ver Mapa
+                </a>
+                <a href="{{ url_for('real_time_map') }}" class="mobile-btn realtime">
+                    <i class="fas fa-clock"></i>
+                    Tiempo Real
+                </a>
             </div>
             {% else %}
-            <div class="d-grid gap-3 col-md-8 mx-auto">
-                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
-                <a href="{{ url_for('register') }}" class="btn btn-secondary btn-lg">Registrarse</a>
+            <div class="mobile-auth">
+                <a href="{{ url_for('login') }}" class="mobile-btn login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </a>
+                <a href="{{ url_for('register') }}" class="mobile-btn register">
+                    <i class="fas fa-user-plus"></i>
+                    Registrarse
+                </a>
             </div>
             {% endif %}
         </div>
