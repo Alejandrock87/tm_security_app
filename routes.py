@@ -215,6 +215,12 @@ def init_routes(app):
                                      for h in range(24)], key=lambda x: x[1])[0] if hourly_stats else "-"
             most_common_type = max(incident_types.items(), key=lambda x: x[1])[0] if incident_types else "-"
 
+            total_incidents = len(incidents)
+            most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0] if station_counts else "-"
+            most_dangerous_hour = max([(h, sum(d.get(h, 0) for d in hourly_stats.values())) 
+                                     for h in range(24)], key=lambda x: x[1])[0] if hourly_stats else "-"
+            most_common_type = max(incident_types.items(), key=lambda x: x[1])[0] if incident_types else "-"
+
             return jsonify({
                 'hourly_stats': hourly_stats,
                 'incident_types': incident_types,
@@ -224,25 +230,6 @@ def init_routes(app):
                 'most_dangerous_hour': f"{most_dangerous_hour}:00",
                 'most_common_type': most_common_type
             })
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-
-        # Get summary data
-        total_incidents = len(incidents)
-        most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0] if station_counts else "-"
-        most_dangerous_hour = max([(h, sum(d.get(h, 0) for d in hourly_stats.values())) 
-                                 for h in range(24)], key=lambda x: x[1])[0] if hourly_stats else "-"
-        most_common_type = max(incident_types.items(), key=lambda x: x[1])[0] if incident_types else "-"
-
-        return jsonify({
-            'hourly_stats': hourly_stats,
-            'incident_types': incident_types,
-            'top_stations': top_stations,
-            'total_incidents': total_incidents,
-            'most_affected_station': most_affected_station,
-            'most_dangerous_hour': f"{most_dangerous_hour}:00",
-            'most_common_type': most_common_type
-        })
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
