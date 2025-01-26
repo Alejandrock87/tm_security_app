@@ -46,50 +46,36 @@ function createDetailedView(data, activeFilters = {}) {
             return;
         }
 
-        // Si no hay filtros activos, mostrar mensaje
-        if (Object.keys(activeFilters).length === 0) {
-            container.innerHTML = '<div class="alert alert-info">Seleccione filtros para ver información detallada.</div>';
-            return;
-        }
-
         let html = '<div class="row">';
 
         // Sección de filtros activos
-        html += `
-            <div class="col-12 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Filtros Activos</h6>
-                        ${Object.entries(activeFilters).map(([key, value]) => {
-                            const labelMap = {
-                                'dateFrom': 'Fecha desde',
-                                'dateTo': 'Fecha hasta',
-                                'timeFrom': 'Hora desde',
-                                'timeTo': 'Hora hasta',
-                                'troncal': 'Troncal',
-                                'station': 'Estación',
-                                'incidentType': 'Tipo de incidente'
-                            };
-                            return `<span class="badge bg-primary me-2">${labelMap[key] || key}: ${value}</span>`;
-                        }).join('')}
-                    </div>
-                </div>
-            </div>`;
-
-        // Mostrar estadísticas filtradas solo si hay datos
-        if (data.total_incidents > 0) {
+        if (Object.keys(activeFilters).length > 0) {
             html += `
-                <div class="col-md-6">
-                    <div class="card mb-3">
+                <div class="col-12 mb-3">
+                    <div class="card">
                         <div class="card-body">
-                            <h6 class="card-title">Resumen de Incidentes Filtrados</h6>
-                            <p>Total de incidentes: ${data.total_incidents}</p>
-                            <p>Estación más afectada: ${data.most_affected_station}</p>
-                            <p>Tipo más común: ${data.most_common_type}</p>
-                            <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
+                            <h6 class="card-title">Filtros Activos</h6>
+                            ${Object.entries(activeFilters).map(([key, value]) => 
+                                `<span class="badge bg-primary me-2">${key}: ${value}</span>`
+                            ).join('')}
                         </div>
                     </div>
                 </div>`;
+        }
+
+        // Mostrar estadísticas filtradas
+        html += `
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Resumen de Incidentes</h6>
+                        <p>Total de incidentes: ${data.total_incidents || 0}</p>
+                        <p>Estación más afectada: ${data.most_affected_station || 'N/A'}</p>
+                        <p>Tipo más común: ${data.most_common_type || 'N/A'}</p>
+                        <p>Hora más peligrosa: ${data.most_dangerous_hour || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>`;
 
         // Mostrar distribución de tipos de incidentes
         if (data.incident_types) {
@@ -211,14 +197,6 @@ async function loadStatistics() {
 async function loadFilteredData() {
     try {
         const filters = getFilters();
-        
-        // Si no hay filtros activos, limpiar la vista detallada
-        if (Object.keys(filters).length === 0) {
-            document.getElementById('detailedView').innerHTML = 
-                '<div class="alert alert-info">Seleccione filtros para ver información detallada.</div>';
-            return;
-        }
-
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
 
@@ -228,8 +206,9 @@ async function loadFilteredData() {
 
         const data = await response.json();
         if (data) {
-            // Solo actualizar la vista detallada con los datos filtrados
+            updateSummaryCards(data);
             createDetailedView(data, filters);
+            createCharts(data);
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
