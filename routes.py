@@ -232,6 +232,37 @@ def init_routes(app):
     def predictions():
         return render_template('predictions.html', title='Predicciones')
 
+    @app.route('/api/predictions')
+    @login_required
+    def api_predictions():
+        try:
+            # Obtener predicciones del modelo ML
+            from ml_models import get_model_insights
+            insights = get_model_insights()
+
+            # Generar predicciones de ejemplo para demostración
+            from datetime import datetime, timedelta
+            current_time = datetime.now()
+            
+            predictions = [
+                {
+                    'station': 'Portal Norte',
+                    'incident_type': 'Hurto',
+                    'predicted_time': (current_time + timedelta(minutes=30)).isoformat(),
+                    'risk_score': 0.85
+                },
+                {
+                    'station': 'Calle 76',
+                    'incident_type': 'Acoso',
+                    'predicted_time': (current_time + timedelta(minutes=45)).isoformat(),
+                    'risk_score': 0.75
+                }
+            ]
+            
+            return jsonify(predictions)
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
     @app.route('/real_time_map')
     @login_required
     def real_time_map():
