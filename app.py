@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask, send_from_directory
 from flask_login import LoginManager
@@ -17,6 +18,7 @@ def create_app():
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
+        raise ValueError("DATABASE_URL environment variable is not set")
 
     # Serve React App
     @app.route('/', defaults={'path': ''})
@@ -25,8 +27,6 @@ def create_app():
         if path != "" and os.path.exists(os.path.join('frontend', 'build', path)):
             return send_from_directory(os.path.join('frontend', 'build'), path)
         return send_from_directory(os.path.join('frontend', 'build'), 'index.html')
-
-        raise ValueError("DATABASE_URL environment variable is not set")
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
