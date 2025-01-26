@@ -1,4 +1,3 @@
-
 let map;
 let markers = [];
 let currentChart = null;
@@ -28,21 +27,13 @@ async function loadMapData() {
         const stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
 
-        // Limpiar marcadores existentes
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
-        // Agrupar incidentes por estación
         const incidentsByStation = groupIncidentsByStation(incidents);
-
-        // Mostrar estaciones en el mapa
         displayStations(stations, incidentsByStation);
-
-        // Inicializar filtros
-        initializeFilters(stations, incidents);
-
-        // Actualizar gráfico
         updateChart(incidents);
+
     } catch (error) {
         console.error('Error loading map data:', error);
     }
@@ -60,7 +51,7 @@ function groupIncidentsByStation(incidents) {
         }
         grouped[incident.nearest_station].total++;
         grouped[incident.nearest_station].incidents.push(incident);
-        
+
         if (!grouped[incident.nearest_station].types[incident.incident_type]) {
             grouped[incident.nearest_station].types[incident.incident_type] = 0;
         }
@@ -73,15 +64,15 @@ function displayStations(stations, incidentsByStation) {
     stations.forEach(station => {
         const stationData = incidentsByStation[station.nombre] || { total: 0, types: {} };
         const securityLevel = calculateSecurityLevel(stationData.total);
-        
+
         const marker = L.marker([station.latitude, station.longitude])
             .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
             .addTo(map);
-            
+
         marker.on('click', () => {
             updateChart(stationData.incidents || []);
         });
-        
+
         markers.push(marker);
     });
 }
@@ -108,51 +99,30 @@ function createStationPopup(stationName, data, securityLevel) {
     `;
 }
 
-function initializeFilters(stations, incidents) {
-    // Poblar filtro de estaciones
-    const stationFilter = document.getElementById('stationFilter');
-    const uniqueStations = [...new Set(stations.map(s => s.nombre))].sort();
-    stationFilter.innerHTML = '<option value="all">Todas las Estaciones</option>' +
-        uniqueStations.map(station => `<option value="${station}">${station}</option>`).join('');
-
-    // Poblar filtro de tipos de incidentes
-    const typeFilter = document.getElementById('incidentTypeFilter');
-    const uniqueTypes = [...new Set(incidents.map(i => i.incident_type))].sort();
-    typeFilter.innerHTML = '<option value="all">Todos los tipos</option>' +
-        uniqueTypes.map(type => `<option value="${type}">${type}</option>`).join('');
-}
-
 function updateChart(incidents) {
     const ctx = document.getElementById('incidentChart');
     if (!ctx) return;
 
-    // Agrupar por tipo de incidente
     const typeStats = {};
     incidents.forEach(incident => {
         typeStats[incident.incident_type] = (typeStats[incident.incident_type] || 0) + 1;
     });
 
-    // Ordenar por cantidad y obtener el total
-    const sortedStats = Object.entries(typeStats)
-        .sort(([,a], [,b]) => b - a);
+    const sortedStats = Object.entries(typeStats).sort(([,a], [,b]) => b - a);
     const total = sortedStats.reduce((sum, [,count]) => sum + count, 0);
 
-    // Calcular porcentajes y preparar datos
     const data = sortedStats.map(([type, count]) => ({
         type,
         count,
         percentage: ((count / total) * 100).toFixed(1)
     }));
 
-    if (currentChart) {
-        currentChart.destroy();
-        currentChart = null;
-    }
-    if (Chart.getChart(ctx)) {
-        Chart.getChart(ctx).destroy();
+    if (window.currentChart) {
+        window.currentChart.destroy();
+        window.currentChart = null;
     }
 
-    const config = {
+    window.currentChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: data.map(item => `${item.type} (${item.percentage}%)`),
@@ -180,26 +150,8 @@ function updateChart(incidents) {
                         padding: 20,
                         font: {
                             size: 11
-                        },
-                        boxWidth: 15,
-                        generateLabels: function(chart) {
-                            const data = chart.data;
-                            return data.labels.map((label, i) => ({
-                                text: label,
-                                fillStyle: data.datasets[0].backgroundColor[i],
-                                hidden: false,
-                                lineCap: 'butt',
-                                lineDash: [],
-                                lineDashOffset: 0,
-                                lineJoin: 'miter',
-                                lineWidth: 1,
-                                strokeStyle: data.datasets[0].borderColor,
-                                pointStyle: 'circle',
-                                rotation: 0
-                            }));
                         }
-                    },
-                    maxWidth: '50%'
+                    }
                 },
                 title: {
                     display: true,
