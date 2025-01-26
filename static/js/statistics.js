@@ -93,16 +93,24 @@ async function loadFilters() {
         // Cargar datos de estaciones y troncales
         const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
         if (!response.ok) {
-            throw new Error('Error al cargar datos de estaciones');
+            throw new Error(`Error al cargar datos de estaciones: ${response.status}`);
         }
         const data = await response.json();
         
+        if (!data || !data.features) {
+            throw new Error('Datos de estaciones inválidos');
+        }
+        
         // Cargar troncales únicas
         const troncales = [...new Set(data.features
-            .map(f => f.properties.troncal_estacion)
+            .map(f => f.properties && f.properties.troncal_estacion)
             .filter(Boolean))].sort();
         
         const troncalSelect = document.getElementById('troncalFilter');
+        if (!troncalSelect) {
+            throw new Error('Elemento troncalFilter no encontrado');
+        }
+        
         troncalSelect.innerHTML = '<option value="all">Todas</option>';
         troncales.forEach(troncal => {
             const option = document.createElement('option');
@@ -204,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Inicializando página de estadísticas...');
         await loadFilters();
-        //await loadStatistics(); // Cargar estadísticas iniciales
+        await loadStatistics(); // Cargar estadísticas iniciales
         
         // Agregar eventos a los botones de filtros
         const applyButton = document.getElementById('applyFilters');
