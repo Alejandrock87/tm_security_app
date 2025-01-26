@@ -233,9 +233,9 @@ export default function IncidentMap() {
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 3 }}>
       <Grid container spacing={2}>
-        {/* Filtros */}
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+        {/* Filtros - Lateral en pantallas grandes, Superior en móviles */}
+        <Grid item xs={12} md={3} order={{ xs: 1, md: 1 }}>
+          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
         <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
@@ -301,8 +301,23 @@ export default function IncidentMap() {
       </Paper>
       </Grid>
 
-      {/* Contenedor para el mapa y las estadísticas */}
-      <Grid item xs={12}>
+      {/* Mapa */}
+      <Grid item xs={12} md={9} order={{ xs: 2, md: 2 }}>
+        <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+          {loading && (
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {error && (
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'error.main', zIndex: 1000 }}>
+              {error}
+            </Box>
+          )}
+          <div id="map" style={{ height: '500px', width: '100%', borderRadius: '4px' }}></div>
+        </Paper>
+
+        {/* Estadísticas */}
         <Paper elevation={3} sx={{ p: 2 }}>
           <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
           <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
