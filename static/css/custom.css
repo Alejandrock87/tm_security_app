@@ -1,4 +1,3 @@
-/* Estilos de la página de autenticación */
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -37,13 +36,6 @@
     margin: 0;
 }
 
-.auth-card h2 {
-    color: #ffffff;
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
 .auth-subtitle {
     color: #94a3b8;
     font-size: 0.95rem;
@@ -53,14 +45,6 @@
 .form-group {
     text-align: left;
     margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #ffffff;
-    display: block;
-    margin-bottom: 0.5rem;
 }
 
 .input-icon {
@@ -88,15 +72,6 @@
 
 .auth-input::placeholder {
     color: #64748b;
-}
-
-.forgot-password {
-    display: block;
-    color: #3b82f6;
-    text-decoration: none;
-    font-size: 0.9rem;
-    text-align: right;
-    margin: 1rem 0;
 }
 
 .auth-button {
@@ -133,4 +108,62 @@
     font-size: 0.85rem;
     margin-top: 0.5rem;
     display: block;
+}
+
+/* Estilos para alertas flotantes */
+#flash-messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 400px;
+}
+
+.floating-alert {
+    background-color: rgba(59, 130, 246, 0.9);
+    color: #ffffff;
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 0.5s ease-out;
+}
+
+.floating-alert .btn-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Ocultar automáticamente la alerta después de 5 segundos */
+.floating-alert.hide {
+    animation: slideOut 0.5s ease-out forwards;
 }

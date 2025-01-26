@@ -6,8 +6,10 @@
     <title>{{ title if title else 'Transmilenio Security' }}</title>
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     {% block styles %}{% endblock %}
 </head>
+
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
@@ -40,22 +42,24 @@
                     </li>
                 </ul>
             {% endif %}
-            </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <!-- Contenedor de alertas flotantes -->
+    <div id="flash-messages-container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
+            {% for message in messages %}
+            <div class="floating-alert alert alert-info alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         {% endif %}
         {% endwith %}
+    </div>
 
+    <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
 
@@ -85,8 +89,22 @@
         </div>
     </nav>
     {% endif %}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const alerts = document.querySelectorAll('.floating-alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.add('hide');
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 500);
+                }, 5000); // Desaparece después de 5 segundos
+            });
+        });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

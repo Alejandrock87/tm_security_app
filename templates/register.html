@@ -1,48 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="mb-4 text-center">Registro</h1>
-                    <form action="" method="post" novalidate>
-                        {{ form.hidden_tag() }}
-                        <div class="mb-3">
-                            {{ form.username.label(class="form-label") }}
-                            {{ form.username(size=32, class="form-control", placeholder="Nombre de usuario") }}
-                            {% for error in form.username.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.email.label(class="form-label") }}
-                            {{ form.email(size=64, class="form-control", placeholder="Correo electrónico") }}
-                            {% for error in form.email.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.password.label(class="form-label") }}
-                            {{ form.password(size=32, class="form-control", placeholder="Contraseña") }}
-                            {% for error in form.password.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.password2.label(class="form-label") }}
-                            {{ form.password2(size=32, class="form-control", placeholder="Confirmar contraseña") }}
-                            {% for error in form.password2.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {{ form.submit(class="btn btn-primary w-100") }}
-                    </form>
-                    <p class="mt-3 text-center">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión aquí</a></p>
-                </div>
-            </div>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-user-plus"></i>
+            <h1>Transmilenio Security</h1>
         </div>
+        <h2>Registro</h2>
+        <p class="auth-subtitle">Crea una cuenta para acceder al sistema</p>
+
+        <form action="{{ url_for('register') }}" method="post" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                    {{ form.username(class="auth-input", placeholder="Nombre de usuario") }}
+                </div>
+                {% for error in form.username.errors %}
+                <span class="error-text">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fas fa-envelope"></i>
+                    {{ form.email(class="auth-input", placeholder="Correo electrónico") }}
+                </div>
+                {% for error in form.email.errors %}
+                <span class="error-text">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    {{ form.password(class="auth-input", placeholder="Contraseña") }}
+                </div>
+                {% for error in form.password.errors %}
+                <span class="error-text">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    {{ form.password2(class="auth-input", placeholder="Confirmar contraseña") }}
+                </div>
+                {% for error in form.password2.errors %}
+                <span class="error-text">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="auth-button") }}
+        </form>
+
+        <p class="register-text">
+            ¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión aquí</a>
+        </p>
     </div>
 </div>
 {% endblock %}
