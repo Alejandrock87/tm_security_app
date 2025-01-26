@@ -35,6 +35,7 @@ async function loadMapData(filters = {}) {
 
         let stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
+        const incidentsByStation = groupIncidentsByStation(incidents);
 
         // Filter stations based on selected filters
         if (filters.troncal && filters.troncal !== 'all') {
@@ -43,12 +44,26 @@ async function loadMapData(filters = {}) {
         if (filters.station && filters.station !== 'all') {
             stations = stations.filter(station => station.nombre === filters.station);
         }
+        if (filters.incidentType && filters.incidentType !== 'all') {
+            stations = stations.filter(station => 
+                incidentsByStation[station.nombre]?.incidents?.some(
+                    incident => incident.incident_type === filters.incidentType
+                )
+            );
+        }
+        if (filters.securityLevel && filters.securityLevel !== 'all') {
+            stations = stations.filter(station => {
+                const stationData = incidentsByStation[station.nombre];
+                if (!stationData) return false;
+                const securityLevel = calculateSecurityLevel(stationData.total);
+                return securityLevel === filters.securityLevel;
+            });
+        }
 
         // Clear existing markers
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
-        const incidentsByStation = groupIncidentsByStation(incidents);
         displayStations(stations, incidentsByStation);
         updateChart(incidents);
 
