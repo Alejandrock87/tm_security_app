@@ -16,19 +16,23 @@ async function loadStatistics() {
         document.querySelectorAll('.card-title').forEach(el => el.textContent = 'Cargando...');
         
         // Destruir gráficos existentes antes de crear nuevos
-        if (charts.hourlyHeatmap) charts.hourlyHeatmap.destroy();
-        if (charts.incidentTypes) charts.incidentTypes.destroy();
-        if (charts.topStations) charts.topStations.destroy();
+        Object.keys(charts).forEach(key => {
+            if (charts[key]) {
+                charts[key].destroy();
+                charts[key] = null;
+            }
+        });
         
-        // Resetear los objetos de gráficos
-        charts = {
-            hourlyHeatmap: null,
-            incidentTypes: null,
-            topStations: null
-        };
+        // Construir URL con parámetros de filtro
+        const params = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== 'all') {
+                params.append(key, value);
+            }
+        });
         
         const queryParams = new URLSearchParams(filters);
-        const response = await fetch('/api/statistics?' + queryParams.toString(), {
+        const response = await fetch('/api/statistics?' + params.toString(), {
             headers: {
                 'Cache-Control': 'no-cache',
                 'Pragma': 'no-cache'
@@ -39,6 +43,11 @@ async function loadStatistics() {
         }
         const data = await response.json();
         console.log("Datos recibidos:", data);
+        
+        // Verificar si hay datos
+        if (!data || data.error) {
+            throw new Error(data.error || 'No se recibieron datos del servidor');
+        }
         
         // Actualizar las estadísticas solo si hay datos válidos
         if (data && !data.error) {
@@ -320,13 +329,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadFilters();
         
         // Agregar eventos a los botones de filtros
-        document.querySelectorAll('#applyFilters').forEach(button => {
-            button.addEventListener('click', loadStatistics);
-        });
+        const applyButton = document.getElementById('applyFilters');
+        const resetButton = document.getElementById('resetFilters');
         
-        document.querySelectorAll('#resetFilters').forEach(button => {
-            button.addEventListener('click', resetFilters);
-        });
+        if (applyButton) {
+            applyButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await loadStatistics();
+            });
+        }
+        
+        if (resetButton) {
+            resetButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await resetFilters();
+                await loadStatistics();
+            });
+        }
     } catch (error) {
         console.error('Error initializing page:', error);
     }
