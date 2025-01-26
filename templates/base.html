@@ -18,13 +18,29 @@
         </a>
         {% if current_user.is_authenticated %}
         <div class="nav-icons">
-            <a class="nav-link text-white" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">
+            <div class="nav-link" data-bs-toggle="modal" data-bs-target="#notificationsModal" style="cursor: pointer;">
                 <i class="fas fa-bell"></i>
                 <span class="badge bg-danger" id="notificationBadge" style="display: none;">0</span>
-            </a>
+            </div>
             <a class="nav-link text-white" href="{{ url_for('logout') }}">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
+        </div>
+        <!-- Modal de Notificaciones -->
+        <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="notificationsModalLabel">Notificaciones en vivo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="notifications-list" class="list-group">
+                  <!-- Las notificaciones se insertarán aquí dinámicamente -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {% endif %}
     </nav>
@@ -86,6 +102,21 @@
                     }, 500);
                 }, 5000);
             });
+            //Example Socket.IO connection (replace with your actual implementation)
+            const socket = io();
+            socket.on('newNotification', (notification) => {
+                const notificationList = document.getElementById('notifications-list');
+                const newNotificationItem = document.createElement('li');
+                newNotificationItem.classList.add('list-group-item');
+                newNotificationItem.textContent = notification;
+                notificationList.appendChild(newNotificationItem);
+                const notificationBadge = document.getElementById('notificationBadge');
+                let count = parseInt(notificationBadge.textContent) || 0;
+                count++;
+                notificationBadge.textContent = count;
+                notificationBadge.style.display = 'inline-block';
+            });
+
         });
     </script>
     {% block scripts %}{% endblock %}

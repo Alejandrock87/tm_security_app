@@ -1,6 +1,11 @@
-
 // Connect to the SocketIO server
 const socket = io();
+let notificationCount = 0;
+
+// Elemento del contador de notificaciones
+const notificationBadge = document.getElementById('notification-badge');
+const notificationsList = document.getElementById('notifications-list');
+
 let notificationFilters = {
     troncal: 'all',
     station: 'all',
@@ -24,7 +29,7 @@ function saveNotificationPreferences() {
         station: Array.from(document.getElementById('stationPreference').selectedOptions).map(opt => opt.value),
         incidentType: Array.from(document.getElementById('typePreference').selectedOptions).map(opt => opt.value)
     };
-    
+
     localStorage.setItem('notificationSettings', JSON.stringify(settings));
     showToast({ type: 'success', message: 'Preferencias guardadas exitosamente' });
 }
@@ -33,7 +38,7 @@ function saveNotificationPreferences() {
 document.addEventListener('DOMContentLoaded', () => {
     const settings = getNotificationSettings();
     document.getElementById('notificationsEnabled').checked = settings.enabled;
-    
+
     // Populate troncal options from the API
     fetch('/api/stations')
         .then(response => response.json())
@@ -62,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 stationSelect.appendChild(option);
             });
         });
-    
+
     // Set incident type preferences
     const typeSelect = document.getElementById('typePreference');
     Array.from(typeSelect.options).forEach(option => {
@@ -78,19 +83,52 @@ socket.on('disconnect', () => {
     console.log('Disconnected from SocketIO server');
 });
 
+// Escuchar nuevos reportes de incidentes
 socket.on('new_incident', (data) => {
-    const settings = getNotificationSettings();
-    if (settings.enabled && shouldShowNotification(data)) {
-        showToast(data);
-        updateNotificationsList(data);
-    }
+    addNotification(data);
+    updateNotificationBadge(++notificationCount);
 });
+
+// Función para agregar una nueva notificación
+function addNotification(incident) {
+    const notificationElement = document.createElement('div');
+    notificationElement.className = 'list-group-item';
+
+    const timestamp = new Date(incident.timestamp).toLocaleString();
+
+    notificationElement.innerHTML = `
+        <div class="d-flex w-100 justify-content-between">
+            <h6 class="mb-1">${incident.incident_type}</h6>
+            <small>${timestamp}</small>
+        </div>
+        <p class="mb-1">Estación: ${incident.nearest_station}</p>
+    `;
+
+    if (notificationsList) {
+        notificationsList.insertBefore(notificationElement, notificationsList.firstChild);
+    }
+}
+
+// Función para actualizar el contador de notificaciones
+function updateNotificationBadge(count) {
+    if (notificationBadge) {
+        notificationBadge.textContent = count;
+        notificationBadge.style.display = count > 0 ? 'inline' : 'none';
+    }
+}
+
+// Limpiar el contador cuando se abre el modal
+document.getElementById('notificationsModal')?.addEventListener('show.bs.modal', () => {
+    notificationCount = 0;
+    updateNotificationBadge(0);
+});
+
 
 function shouldShowNotification(incident) {
     const settings = getNotificationSettings();
-    return (settings.troncal === 'all' || incident.troncal === settings.troncal) &&
-           (settings.station === 'all' || incident.nearest_station === settings.station) &&
-           (settings.incidentType === 'all' || incident.incident_type === settings.incidentType);
+    return (settings.troncal === 'all' || settings.troncal.includes(incident.troncal)) &&
+           (settings.station === 'all' || settings.station.includes(incident.nearest_station)) &&
+           (settings.incidentType === 'all' || settings.incidentType.includes(incident.incident_type));
 }
 
 function showToast(data) {
@@ -112,42 +150,12 @@ function showToast(data) {
             ${data.message || 'Nueva notificación'}
         </div>
     `;
-    
+
     container.appendChild(toast);
     setTimeout(() => {
         toast.classList.add('fade-out');
         setTimeout(() => toast.remove(), 500);
     }, 5000);
-}
-
-function updateNotificationsList(newIncident) {
-    const notificationList = document.getElementById('notificationList');
-    if (!notificationList) return;
-
-    const listItem = document.createElement('div');
-    listItem.className = 'notification-item';
-    listItem.innerHTML = `
-        <div class="notification-header">
-            <span class="incident-type">${newIncident.incident_type}</span>
-            <span class="timestamp">${new Date(newIncident.timestamp).toLocaleString()}</span>
-        </div>
-        <div class="notification-body">
-            <span class="station">Estación: ${newIncident.nearest_station}</span>
-            <span class="troncal">Troncal: ${newIncident.troncal}</span>
-        </div>
-    `;
-    
-    notificationList.insertBefore(listItem, notificationList.firstChild);
-    updateNotificationBadge();
-}
-
-function updateNotificationBadge() {
-    const badge = document.getElementById('notificationBadge');
-    if (badge) {
-        const count = parseInt(badge.textContent || '0') + 1;
-        badge.textContent = count;
-        badge.style.display = count > 0 ? 'block' : 'none';
-    }
 }
 
 function applyNotificationFilters() {
