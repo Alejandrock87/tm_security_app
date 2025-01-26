@@ -1,76 +1,108 @@
 
-import { Container, Grid, Card, CardContent, Typography, Button, Box } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography, Box, useTheme, useMediaQuery } from '@mui/material';
 import { MapOutlined, WarningAmber, QueryStats } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const menuItems = [
     {
       title: 'Mapa de Incidentes',
-      description: 'Visualiza los incidentes reportados en el sistema Transmilenio',
-      icon: <MapOutlined sx={{ fontSize: 40 }} />,
-      route: '/dashboard'
+      description: 'Visualiza los incidentes reportados',
+      icon: <MapOutlined sx={{ fontSize: isMobile ? 48 : 40 }} />,
+      route: '/dashboard',
+      color: 'primary.main'
     },
     {
       title: 'Reportar Incidente',
-      description: 'Reporta un nuevo incidente de seguridad en el sistema',
-      icon: <WarningAmber sx={{ fontSize: 40 }} />,
-      route: '/report_incident'
+      description: 'Reporta un nuevo incidente',
+      icon: <WarningAmber sx={{ fontSize: isMobile ? 48 : 40 }} />,
+      route: '/report_incident',
+      color: 'error.main'
     },
     {
       title: 'Estadísticas',
-      description: 'Analiza las estadísticas de seguridad del sistema',
-      icon: <QueryStats sx={{ fontSize: 40 }} />,
-      route: '/statistics'
+      description: 'Analiza las estadísticas',
+      icon: <QueryStats sx={{ fontSize: isMobile ? 48 : 40 }} />,
+      route: '/statistics',
+      color: 'success.main'
     }
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box textAlign="center" mb={6}>
-        <Typography variant="h3" component="h1" gutterBottom>
+    <Container maxWidth="lg" sx={{ py: isMobile ? 2 : 4 }}>
+      <Box textAlign="center" mb={isMobile ? 3 : 6}>
+        <Typography 
+          variant={isMobile ? "h4" : "h3"} 
+          component="h1" 
+          gutterBottom
+          sx={{ fontWeight: 'bold' }}
+        >
           Transmilenio Security
         </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph>
-          Sistema de Reporte de Incidentes de Seguridad
+        <Typography 
+          variant={isMobile ? "body1" : "h6"} 
+          color="text.secondary" 
+          paragraph
+        >
+          Sistema de Reporte de Incidentes
         </Typography>
       </Box>
 
-      <Grid container spacing={4} justifyContent="center">
+      <Grid container spacing={isMobile ? 2 : 4} justifyContent="center">
         {menuItems.map((item) => (
           <Grid item xs={12} sm={6} md={4} key={item.title}>
             <Card 
+              onClick={() => navigate(item.route)}
               sx={{ 
-                height: '100%', 
-                display: 'flex', 
-                flexDirection: 'column',
+                height: '100%',
+                cursor: 'pointer',
                 transition: '0.3s',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: 4
+                  transform: 'translateY(-8px)',
+                  boxShadow: 6
+                },
+                '&:active': {
+                  transform: 'scale(0.98)'
                 }
               }}
+              role="button"
+              aria-label={`Ir a ${item.title}`}
             >
-              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-                <Box sx={{ mb: 2, color: 'primary.main' }}>
+              <CardContent sx={{ 
+                p: isMobile ? 2 : 3,
+                display: 'flex', 
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2
+              }}>
+                <Box sx={{ 
+                  color: item.color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  p: 2,
+                  borderRadius: '50%',
+                  bgcolor: `${item.color}15`
+                }}>
                   {item.icon}
                 </Box>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography 
+                  variant={isMobile ? "h6" : "h5"}
+                  component="h2"
+                  sx={{ fontWeight: 'bold' }}
+                >
                   {item.title}
                 </Typography>
-                <Typography color="text.secondary" paragraph>
+                <Typography 
+                  color="text.secondary"
+                  sx={{ fontSize: isMobile ? '0.9rem' : '1rem' }}
+                >
                   {item.description}
                 </Typography>
-                <Button 
-                  variant="contained" 
-                  color="primary"
-                  onClick={() => navigate(item.route)}
-                  sx={{ mt: 2 }}
-                >
-                  Acceder
-                </Button>
               </CardContent>
             </Card>
           </Grid>
