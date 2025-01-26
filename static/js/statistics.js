@@ -150,14 +150,6 @@ async function loadStatistics() {
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
-        
-        // Inicializar el objeto charts si no existe
-        if (!window.charts) {
-            window.charts = {
-                typeChart: null,
-                stationChart: null
-            };
-        }
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
@@ -257,65 +249,46 @@ function updateSummaryCards(data) {
 }
 
 function createCharts(data) {
-    try {
-        // Destruir gráficos existentes si existen
-        if (window.charts && window.charts.typeChart) {
-            window.charts.typeChart.destroy();
-        }
-        if (window.charts && window.charts.stationChart) {
-            window.charts.stationChart.destroy();
-        }
+    if (charts.typeChart) charts.typeChart.destroy();
+    if (charts.stationChart) charts.stationChart.destroy();
 
-        // Asegurarse de que los elementos canvas existen
-        const typeCtx = document.getElementById('incidentTypesChart');
-        const stationCtx = document.getElementById('topStationsChart');
-        
-        if (!typeCtx || !stationCtx) {
-            console.error('No se encontraron los elementos canvas');
-            return;
+    const typeCtx = document.getElementById('incidentTypesChart').getContext('2d');
+    charts.typeChart = new Chart(typeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(data.incident_types || {}),
+            datasets: [{
+                data: Object.values(data.incident_types || {}),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
         }
+    });
 
-        const typeCtx2D = typeCtx.getContext('2d');
-        charts.typeChart = new Chart(typeCtx2D, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(data.incident_types || {}),
-                datasets: [{
-                    data: Object.values(data.incident_types || {}),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        const stationCtx2D = stationCtx.getContext('2d');
-        charts.stationChart = new Chart(stationCtx2D, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(data.top_stations || {}),
-                datasets: [{
-                    label: 'Incidentes',
-                    data: Object.values(data.top_stations || {}),
-                    backgroundColor: '#36A2EB'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    const stationCtx = document.getElementById('topStationsChart').getContext('2d');
+    charts.stationChart = new Chart(stationCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(data.top_stations || {}),
+            datasets: [{
+                label: 'Incidentes',
+                data: Object.values(data.top_stations || {}),
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-    } catch (error) {
-        console.error('Error al crear los gráficos:', error);
-    }
-}
+        }
+    });
 }
 
 function showError(message) {
