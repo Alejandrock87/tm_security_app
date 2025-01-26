@@ -127,8 +127,16 @@ const IncidentMap: React.FC = () => {
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    stationsToShow.forEach(station => {
-      const stationIncidents = incidentsToShow.filter(i => i.nearest_station === station.nombre);
+    const filteredIncidents = [...incidentsToShow];
+    const filteredStations = stationsToShow.filter(station => {
+      const hasIncidents = filteredIncidents.some(
+        incident => incident.nearest_station === station.nombre
+      );
+      return hasIncidents;
+    });
+
+    filteredStations.forEach(station => {
+      const stationIncidents = filteredIncidents.filter(i => i.nearest_station === station.nombre);
       const marker = L.marker([station.latitude, station.longitude])
         .bindPopup(`
           <b>${station.nombre}</b><br>
