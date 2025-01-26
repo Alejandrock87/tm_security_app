@@ -7,28 +7,16 @@
     </header>
 
     <main class="dark-main">
-        <h2 class="welcome-title">Bienvenido a Transmilenio Security</h2>
-
-        <div class="dark-menu">
-            <a href="{{ url_for('dashboard') }}" class="dark-card">
-                <i class="fas fa-map-marked-alt"></i>
-                <h3>Mapa de Incidentes</h3>
-                <p>Visualiza los incidentes reportados</p>
+        <div class="dark-auth">
+            <a href="{{ url_for('login') }}" class="dark-button">
+                <i class="fas fa-sign-in-alt"></i>
+                Iniciar Sesión
             </a>
-
-            <a href="{{ url_for('report_incident') }}" class="dark-card">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>Reportar Incidente</h3>
-                <p>Reporta un nuevo incidente</p>
+            <a href="{{ url_for('register') }}" class="dark-button">
+                <i class="fas fa-user-plus"></i>
+                Registrarse
             </a>
         </div>
     </main>
-
-    <nav class="dark-nav">
-        <a href="{{ url_for('dashboard') }}"><i class="fas fa-map-marked-alt"></i></a>
-        <a href="{{ url_for('report_incident') }}"><i class="fas fa-exclamation-triangle"></i></a>
-        <a href="{{ url_for('statistics') }}"><i class="fas fa-chart-bar"></i></a>
-        <a href="{{ url_for('notifications') }}"><i class="fas fa-bell"></i></a>
-    </nav>
 </div>
 {% endblock %}
