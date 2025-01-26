@@ -52,7 +52,6 @@
             <div class="detail-card">
                 <div class="card-header">
                     <h5>Tipos de Incidentes</h5>
-                    <button class="btn-expand"><i class="fas fa-expand"></i></button>
                 </div>
                 <div id="incidentTypesList" class="scrollable-list"></div>
             </div>
@@ -61,119 +60,8 @@
             <div class="detail-card">
                 <div class="card-header">
                     <h5>Estaciones más Afectadas</h5>
-                    <button class="btn-expand"><i class="fas fa-expand"></i></button>
                 </div>
                 <div id="stationsList" class="scrollable-list"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Floating Filter Button -->
-<button id="showFilters" class="btn-float">
-    <i class="fas fa-filter"></i>
-</button>
-
-<!-- Filter Modal -->
-<div class="modal fade" id="filterModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Filtros Avanzados</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Filtros de Búsqueda</h5>
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="dateFromFilter">Fecha Desde</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enableDateFromFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enableDateFromFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <input type="date" id="dateFromFilter" class="form-control">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="dateToFilter">Fecha Hasta</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enableDateToFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enableDateToFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <input type="date" id="dateToFilter" class="form-control">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="timeFromFilter">Hora Desde</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enableTimeFromFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enableTimeFromFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <input type="time" id="timeFromFilter" class="form-control">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="timeToFilter">Hora Hasta</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enableTimeToFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enableTimeToFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <input type="time" id="timeToFilter" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="troncalFilter">Troncal</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enabletroncalFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enabletroncalFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <select id="troncalFilter" class="form-select">
-                                    <option value="all">Todas las Troncales</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="stationFilter">Estación</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enablestationFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enablestationFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <select id="stationFilter" class="form-select">
-                                    <option value="all">Todas las Estaciones</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="incidentTypeFilter">Tipo de Incidente</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="enableincidentTypeFilter" class="form-check-input">
-                                        <label class="form-check-label" for="enableincidentTypeFilter">Activar</label>
-                                    </div>
-                                </div>
-                                <select id="incidentTypeFilter" class="form-select">
-                                    <option value="all">Todos los Tipos</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-end">
-                                <button id="resetFilters" class="btn btn-secondary me-2">Reiniciar</button>
-                                <button id="applyFilters" class="btn btn-primary">Aplicar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -3,7 +3,6 @@ let currentFilters = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Inicializando página de estadísticas...');
-    await loadStations();
     await loadStatistics();
     setupEventListeners();
 });
@@ -17,50 +16,20 @@ function setupEventListeners() {
             applyQuickFilter(chip.dataset.period);
         });
     });
-
-    // Floating filter button
-    document.getElementById('showFilters')?.addEventListener('click', () => {
-        const modal = new bootstrap.Modal(document.getElementById('filterModal'));
-        modal.show();
-    });
-
-    // Expand buttons
-    document.querySelectorAll('.btn-expand').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = this.closest('.detail-card');
-            card.classList.toggle('expanded');
-        });
-    });
-    //Event Listeners from original code.
-    document.getElementById('applyFilters')?.addEventListener('click', loadFilteredData);
-    document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
-    document.getElementById('troncalFilter')?.addEventListener('change', loadStations);
-
 }
 
-async function loadStations() {
+async function loadStatistics() {
     try {
-        const response = await fetch('/api/stations');
-        if (!response.ok) throw new Error('Error cargando estaciones');
-        const stations = await response.json();
+        console.log("Cargando estadísticas...");
+        const response = await fetch('/api/statistics');
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-        // Procesar troncales
-        const troncales = [...new Set(stations.map(s => s.troncal))].filter(Boolean).sort();
-        const troncalSelect = document.getElementById('troncalFilter');
-        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
-        troncales.forEach(troncal => {
-            troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
-        });
-
-        // Procesar estaciones
-        const stationSelect = document.getElementById('stationFilter');
-        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-        stations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
-            stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
-        });
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
+        updateSummaryCards(data);
     } catch (error) {
-        console.error('Error cargando estaciones:', error);
-        showError('Error al cargar las estaciones');
+        console.error('Error al cargar estadísticas:', error);
+        showError('Error al cargar las estadísticas');
     }
 }
 
@@ -99,21 +68,6 @@ function updateSummaryCards(data) {
     }
 }
 
-async function loadStatistics() {
-    try {
-        console.log("Cargando estadísticas...");
-        const response = await fetch('/api/statistics');
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-
-        const data = await response.json();
-        console.log("Datos recibidos:", data);
-        updateSummaryCards(data);
-    } catch (error) {
-        console.error('Error al cargar estadísticas:', error);
-        showError('Error al cargar las estadísticas');
-    }
-}
-
 async function applyQuickFilter(period) {
     const now = new Date();
     let filters = {};
@@ -137,16 +91,10 @@ async function applyQuickFilter(period) {
             break;
     }
 
-    await loadFilteredData(filters);
-}
-
-async function loadFilteredData(filters = {}) {
     try {
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
-
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-
         const data = await response.json();
         updateSummaryCards(data);
     } catch (error) {
@@ -156,43 +104,5 @@ async function loadFilteredData(filters = {}) {
 }
 
 function showError(message) {
-    const container = document.getElementById('detailedView');
-    if (container) {
-        container.innerHTML = `<div class="alert alert-danger">${message}</div>`;
-    }
     console.error(message);
-}
-
-function getFilters() {
-    const filters = {};
-    const addFilter = (id, key) => {
-        const checkbox = document.getElementById(`enable${id}`);
-        const input = document.getElementById(id);
-        if (checkbox && checkbox.checked && input && input.value !== 'all') {
-            filters[key] = input.value;
-        }
-    };
-
-    addFilter('troncalFilter', 'troncal');
-    addFilter('stationFilter', 'station');
-    addFilter('incidentTypeFilter', 'incidentType');
-    addFilter('dateFromFilter', 'dateFrom');
-    addFilter('dateToFilter', 'dateTo');
-    addFilter('timeFromFilter', 'timeFrom');
-    addFilter('timeToFilter', 'timeTo');
-
-    return filters;
-}
-
-function resetFilters() {
-    const filterIds = ['DateFrom', 'DateTo', 'TimeFrom', 'TimeTo', 'troncal', 'station', 'incidentType'];
-
-    filterIds.forEach(id => {
-        const checkbox = document.getElementById(`enable${id}Filter`);
-        const input = document.getElementById(`${id}Filter`);
-        if (checkbox) checkbox.checked = false;
-        if (input) input.value = input.tagName === 'SELECT' ? 'all' : '';
-    });
-
-    loadStatistics();
 }
