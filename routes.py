@@ -19,7 +19,8 @@ def init_routes(app):
     @app.route('/index')
     def index():
         if not current_user.is_authenticated:
-            return render_template('index.html', title='Inicio')
+            form = LoginForm()
+            return render_template('index.html', title='Inicio', form=form)
         return render_template('home.html', title='Inicio')
 
     @app.route('/login', methods=['GET', 'POST'])
