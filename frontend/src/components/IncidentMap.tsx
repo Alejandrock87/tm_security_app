@@ -179,32 +179,114 @@ export default function IncidentMap() {
   };
 
 
-  useEffect(() => {
-    const initializeMap = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const loadIncidents = async (currentFilters = {}) => {
+    try {
+      setLoading(true);
+      const queryParams = new URLSearchParams();
 
-        if (!mapRef.current) {
-          mapRef.current = L.map('map').setView([4.6097, -74.0817], 11);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(mapRef.current);
-        }
-
-        await fetchData();
-      } catch (err) {
-        console.error('Error loading map:', err);
-        setError('Error al cargar el mapa');
+      if (currentFilters.troncal) {
+        queryParams.append('troncal', currentFilters.troncal);
       }
-    };
+      if (currentFilters.station) {
+        queryParams.append('station', currentFilters.station);
+      }
+      if (currentFilters.incidentType) {
+        queryParams.append('incident_type', currentFilters.incidentType);
+      }
+      if (currentFilters.securityLevel) {
+        queryParams.append('security_level', currentFilters.securityLevel);
+      }
 
-    initializeMap();
+      const response = await fetch(`/incidents?${queryParams}`);
+      const data = await response.json();
+      setIncidents(data);
+      updateIncidentChart(data);
+    } catch (error) {
+      setError('Error loading incidents');
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateIncidentChart = (incidents) => {
+    const ctx = document.getElementById('incidentChart');
+    if (!ctx) return;
+
+    if (window.incidentChart) {
+      window.incidentChart.destroy();
+    }
+
+    const incidentCounts = {};
+    incidents.forEach(incident => {
+      incidentCounts[incident.incident_type] = (incidentCounts[incident.incident_type] || 0) + 1;
+    });
+
+    window.incidentChart = new ChartJS(ctx, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(incidentCounts),
+        datasets: [{
+          data: Object.values(incidentCounts),
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF',
+            '#FF9F40',
+            '#FF6384'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  };
+
+  const loadStations = async () => {
+    try {
+      const response = await fetch('/api/stations');
+      const data = await response.json();
+      setStations(data);
+    } catch (error) {
+      setError('Error loading stations');
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    const initializeData = async () => {
+      await Promise.all([
+        loadIncidents(),
+        loadStations()
+      ]);
+    };
+    initializeData();
   }, []);
 
-  useEffect(() => {
-    filterData();
-  }, [filters, enableFilters, stations, incidents]);
+  const applyFilters = () => {
+    const activeFilters = {};
+    if (enableFilters.troncal && filters.troncal) {
+      activeFilters.troncal = filters.troncal;
+    }
+    if (enableFilters.station && filters.station) {
+      activeFilters.station = filters.station;
+    }
+    if (enableFilters.incidentType && filters.incidentType) {
+      activeFilters.incidentType = filters.incidentType;
+    }
+    if (enableFilters.securityLevel && filters.securityLevel) {
+      activeFilters.securityLevel = filters.securityLevel;
+    }
+    loadIncidents(activeFilters);
+  };
 
   const resetFilters = () => {
     setFilters({});
@@ -214,6 +296,7 @@ export default function IncidentMap() {
       incidentType: false,
       securityLevel: false
     });
+    loadIncidents();
   };
 
   return (
@@ -321,7 +404,7 @@ export default function IncidentMap() {
               <Button onClick={resetFilters} variant="outlined" sx={{ mr: 1 }}>
                 Reiniciar Filtros
               </Button>
-              <Button onClick={filterData} variant="contained">
+              <Button onClick={applyFilters} variant="contained">
                 Aplicar Filtros
               </Button>
             </Box>
