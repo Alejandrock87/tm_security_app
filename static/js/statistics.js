@@ -7,8 +7,14 @@ let charts = {
 
 async function loadStatistics() {
     try {
-        const response = await fetch('/api/statistics');
+        const filters = getFilters();
+        const queryParams = new URLSearchParams(filters);
+        const response = await fetch('/api/statistics?' + queryParams.toString());
         const data = await response.json();
+        if (data.error) {
+            console.error('Error from server:', data.error);
+            return;
+        }
         updateCharts(data);
         updateSummaryCards(data);
     } catch (error) {

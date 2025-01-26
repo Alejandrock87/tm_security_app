@@ -181,8 +181,19 @@ def init_routes(app):
             if time_to:
                 hour_to = int(time_to.split(':')[0])
                 query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
-            if incident_type != 'all':
+            if incident_type and incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
+            
+            if troncal and troncal != 'all':
+                # Obtener estaciones de la troncal seleccionada
+                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                    geojson_data = json.load(f)
+                    stations_in_troncal = [
+                        feature['properties']['nombre_estacion']
+                        for feature in geojson_data['features']
+                        if feature['properties'].get('troncal_estacion') == troncal
+                    ]
+                    query = query.filter(Incident.nearest_station.in_(stations_in_troncal))
 
             incidents = query.all()
 
