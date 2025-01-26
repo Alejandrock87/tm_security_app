@@ -232,7 +232,6 @@ export default function IncidentMap() {
       incidentType: false,
       securityLevel: false
     });
-    filterData();
   };
 
   useEffect(() => {
@@ -297,9 +296,9 @@ export default function IncidentMap() {
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 3 }}>
       <Grid container spacing={2}>
-        {/* Filtros */}
+        {/* Panel de Filtros */}
         <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+          <Paper elevation={3} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -377,6 +376,7 @@ export default function IncidentMap() {
                   color="secondary" 
                   fullWidth 
                   onClick={resetFilters}
+                  sx={{ mt: 2 }}
                 >
                   Limpiar Filtros
                 </Button>
@@ -385,32 +385,45 @@ export default function IncidentMap() {
           </Paper>
         </Grid>
 
-        {/* Contenedor principal para mapa y estadísticas */}
+        {/* Panel Principal */}
         <Grid item xs={12} md={9}>
           <Grid container spacing={2}>
             {/* Mapa */}
             <Grid item xs={12}>
-              <Paper elevation={3} sx={{ position: 'relative' }}>
+              <Paper elevation={3} sx={{ p: 2, position: 'relative' }}>
                 {loading && (
-                  <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    top: '50%', 
+                    left: '50%', 
+                    transform: 'translate(-50%, -50%)', 
+                    zIndex: 1000 
+                  }}>
                     <CircularProgress />
                   </Box>
                 )}
                 {error && (
-                  <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'error.main', zIndex: 1000 }}>
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    top: '50%', 
+                    left: '50%', 
+                    transform: 'translate(-50%, -50%)', 
+                    color: 'error.main',
+                    zIndex: 1000 
+                  }}>
                     {error}
                   </Box>
                 )}
-                <div id="map" style={{ height: '500px', width: '100%', borderRadius: '4px' }}></div>
+                <div id="map"></div>
               </Paper>
             </Grid>
 
-            {/* Estadísticas */}
+            {/* Gráfico de Estadísticas */}
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
                 <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <canvas id="incidentChart" style={{ maxWidth: '100%', height: '100%' }}></canvas>
+                  <canvas id="incidentChart"></canvas>
                 </Box>
               </Paper>
             </Grid>

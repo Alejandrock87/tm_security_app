@@ -33,3 +33,18 @@
 .custom-div-icon {
   text-align: center;
 }
+
+.security-level-alto {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.security-level-medio {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.security-level-bajo {
+  color: #008000;
+  font-weight: bold;
+}
