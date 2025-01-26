@@ -33,15 +33,30 @@ async function loadMapData(filters = {}) {
             return params.toString() ? `?${params.toString()}` : '';
         }
 
-        const stations = await stationsResponse.json();
+        let stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
 
+        // Filter stations based on selected filters
+        if (filters.troncal && filters.troncal !== 'all') {
+            stations = stations.filter(station => station.troncal === filters.troncal);
+        }
+        if (filters.station && filters.station !== 'all') {
+            stations = stations.filter(station => station.nombre === filters.station);
+        }
+
+        // Clear existing markers
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
         const incidentsByStation = groupIncidentsByStation(incidents);
         displayStations(stations, incidentsByStation);
         updateChart(incidents);
+
+        // Adjust map view to show all filtered stations
+        if (stations.length > 0) {
+            const bounds = L.latLngBounds(stations.map(station => [station.latitude, station.longitude]));
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
 
     } catch (error) {
         console.error('Error loading map data:', error);
