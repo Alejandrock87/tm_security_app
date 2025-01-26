@@ -167,8 +167,8 @@ def init_routes(app):
             incident_type = request.args.get('incidentType')
             troncal = request.args.get('troncal')
 
-        # Base query
-        query = Incident.query
+            # Base query
+            query = Incident.query
 
         # Apply filters
         if date_from:
