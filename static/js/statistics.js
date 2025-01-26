@@ -24,27 +24,29 @@ function setupEventListeners() {
         modal.show();
     });
 
-    // Expand buttons
+    // Botones de expansión
     document.querySelectorAll('.btn-expand').forEach(btn => {
         btn.addEventListener('click', function() {
             const card = this.closest('.detail-card');
             const list = card.querySelector('.scrollable-list');
+            const icon = this.querySelector('i');
+
             if (card.classList.contains('expanded')) {
                 list.style.maxHeight = '300px';
                 card.classList.remove('expanded');
-                this.innerHTML = '<i class="fas fa-expand"></i>';
+                icon.className = 'fas fa-chevron-down';
             } else {
-                list.style.maxHeight = 'none';
+                list.style.maxHeight = list.scrollHeight + 'px';
                 card.classList.add('expanded');
-                this.innerHTML = '<i class="fas fa-compress"></i>';
+                icon.className = 'fas fa-chevron-up';
             }
         });
     });
-    //Event Listeners from original code.
+
+    // Filtros
     document.getElementById('applyFilters')?.addEventListener('click', loadFilteredData);
     document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
     document.getElementById('troncalFilter')?.addEventListener('change', loadStations);
-
 }
 
 async function loadStations() {
@@ -53,20 +55,22 @@ async function loadStations() {
         if (!response.ok) throw new Error('Error cargando estaciones');
         const stations = await response.json();
 
-        // Procesar troncales
         const troncales = [...new Set(stations.map(s => s.troncal))].filter(Boolean).sort();
         const troncalSelect = document.getElementById('troncalFilter');
-        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
-        troncales.forEach(troncal => {
-            troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
-        });
+        if (troncalSelect) {
+            troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+            troncales.forEach(troncal => {
+                troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+            });
+        }
 
-        // Procesar estaciones
         const stationSelect = document.getElementById('stationFilter');
-        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-        stations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
-            stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
-        });
+        if (stationSelect) {
+            stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+            stations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
+                stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
+            });
+        }
     } catch (error) {
         console.error('Error cargando estaciones:', error);
         showError('Error al cargar las estaciones');
@@ -76,25 +80,26 @@ async function loadStations() {
 function updateSummaryCards(data, isFiltered = false) {
     if (!data) return;
 
-    const filteredSection = document.getElementById('filteredStatsSection');
-    
+    const container = isFiltered ? document.getElementById('filteredStatsSection') : document.querySelector('.statistics-container');
+    if (!container) return;
+
+    // Actualizar estadísticas generales
     if (!isFiltered) {
-        // Actualizar estadísticas generales
         document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
         document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
         document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
         document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
+    }
 
-        // Actualizar listas generales
-        updateList('incidentTypesList', data.incident_types);
-        updateList('stationsList', data.top_stations);
-    } else {
-        // Mostrar sección filtrada
-        filteredSection.classList.remove('d-none');
-        
-        // Actualizar listas filtradas
-        updateList('filteredIncidentTypesList', data.incident_types);
-        updateList('filteredStationsList', data.top_stations);
+    // Actualizar listas
+    const typesList = isFiltered ? 'filteredIncidentTypesList' : 'incidentTypesList';
+    const stationsList = isFiltered ? 'filteredStationsList' : 'stationsList';
+
+    updateList(typesList, data.incident_types);
+    updateList(stationsList, data.top_stations);
+
+    if (isFiltered) {
+        container.classList.remove('d-none');
     }
 }
 
@@ -112,41 +117,6 @@ function updateList(elementId, data) {
         `).join('');
 }
 
-// Agregar event listener para cerrar la sección filtrada
-document.getElementById('closeFilteredStats')?.addEventListener('click', () => {
-    document.getElementById('filteredStatsSection').classList.add('d-none');
-});
-    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
-    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
-    document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
-
-    // Update incident types list
-    const incidentTypesList = document.getElementById('incidentTypesList');
-    if (data.incident_types && incidentTypesList) {
-        incidentTypesList.innerHTML = Object.entries(data.incident_types)
-            .sort(([,a], [,b]) => b - a)
-            .map(([type, count]) => `
-                <div class="list-item">
-                    <span class="item-name">${type}</span>
-                    <span class="item-count">${count}</span>
-                </div>
-            `).join('');
-    }
-
-    // Update stations list
-    const stationsList = document.getElementById('stationsList');
-    if (data.top_stations && stationsList) {
-        stationsList.innerHTML = Object.entries(data.top_stations)
-            .sort(([,a], [,b]) => b - a)
-            .map(([station, count]) => `
-                <div class="list-item">
-                    <span class="item-name">${station}</span>
-                    <span class="item-count">${count}</span>
-                </div>
-            `).join('');
-    }
-}
-
 async function loadStatistics() {
     try {
         console.log("Cargando estadísticas...");
@@ -155,7 +125,7 @@ async function loadStatistics() {
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
-        updateSummaryCards(data);
+        updateSummaryCards(data, false);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
         showError('Error al cargar las estadísticas');
@@ -188,23 +158,11 @@ async function applyQuickFilter(period) {
     await loadFilteredData(filters);
 }
 
-// Variable para almacenar las estadísticas generales
-let generalStats = null;
-
 async function loadFilteredData(filters = null) {
     try {
         let queryParams = {};
-        
-        // Cargar estadísticas generales si no existen
-        if (!generalStats) {
-            const generalResponse = await fetch('/api/statistics');
-            if (!generalResponse.ok) throw new Error('Error cargando estadísticas generales');
-            generalStats = await generalResponse.json();
-            updateSummaryCards(generalStats, false);
-        }
-        
+
         if (!filters) {
-            // Obtener filtros del modal
             const enabledFilters = document.querySelectorAll('[id^="enable"]:checked');
             enabledFilters.forEach(checkbox => {
                 const filterId = checkbox.id.replace('enable', '').replace('Filter', '');
@@ -227,12 +185,12 @@ async function loadFilteredData(filters = null) {
             showError('No se encontraron datos con los filtros seleccionados');
             return;
         }
-        updateSummaryCards(data);
-        
-        // Cerrar modal si existe
+
+        updateSummaryCards(data, true);
+
         const modal = bootstrap.Modal.getInstance(document.getElementById('filterModal'));
         if (modal) modal.hide();
-        
+
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
         showError('Error al cargar los datos filtrados');
@@ -247,58 +205,10 @@ function showError(message) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
     document.querySelector('.statistics-container').prepend(errorDiv);
-    
+
     setTimeout(() => {
         errorDiv.remove();
     }, 5000);
-}
-
-// Mejorar funcionalidad de botones de expansión
-document.querySelectorAll('.btn-expand').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const card = this.closest('.detail-card');
-        const list = card.querySelector('.scrollable-list');
-        const icon = this.querySelector('i');
-        
-        if (card.classList.contains('expanded')) {
-            list.style.maxHeight = '300px';
-            card.classList.remove('expanded');
-            icon.className = 'fas fa-chevron-down';
-        } else {
-            list.style.maxHeight = list.scrollHeight + 'px';
-            card.classList.add('expanded');
-            icon.className = 'fas fa-chevron-up';
-        }
-    });
-});
-
-function showError(message) {
-    const container = document.getElementById('detailedView');
-    if (container) {
-        container.innerHTML = `<div class="alert alert-danger">${message}</div>`;
-    }
-    console.error(message);
-}
-
-function getFilters() {
-    const filters = {};
-    const addFilter = (id, key) => {
-        const checkbox = document.getElementById(`enable${id}`);
-        const input = document.getElementById(id);
-        if (checkbox && checkbox.checked && input && input.value !== 'all') {
-            filters[key] = input.value;
-        }
-    };
-
-    addFilter('troncalFilter', 'troncal');
-    addFilter('stationFilter', 'station');
-    addFilter('incidentTypeFilter', 'incidentType');
-    addFilter('dateFromFilter', 'dateFrom');
-    addFilter('dateToFilter', 'dateTo');
-    addFilter('timeFromFilter', 'timeFrom');
-    addFilter('timeToFilter', 'timeTo');
-
-    return filters;
 }
 
 function resetFilters() {
@@ -312,4 +222,9 @@ function resetFilters() {
     });
 
     loadStatistics();
+
+    const filteredSection = document.getElementById('filteredStatsSection');
+    if (filteredSection) {
+        filteredSection.classList.add('d-none');
+    }
 }
