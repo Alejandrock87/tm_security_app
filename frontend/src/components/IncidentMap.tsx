@@ -548,7 +548,7 @@ export default function IncidentMap() {
             {/* Mapa */}
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2 }}>
-                <Box sx={{ height: '500px', position: 'relative' }}>
+                <Box sx={{ height: '400px', position: 'relative' }}>
                   {loading && (
                     <Box sx={{ 
                       position: 'absolute',
@@ -592,6 +592,59 @@ export default function IncidentMap() {
                   <Grid item xs={12} md={6}>
                     <Box sx={{ height: '300px' }}>
                       <canvas id="stationsChart"></canvas>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+            {/* Nueva sección de estadísticas generales */}
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  Estadísticas Generales
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={3}>
+                    <Box sx={{ textAlign: 'center', p: 2 }}>
+                      <Typography variant="h4" color="primary">
+                        {incidents.length}
+                      </Typography>
+                      <Typography variant="body1">
+                        Total Incidentes
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <Box sx={{ textAlign: 'center', p: 2 }}>
+                      <Typography variant="h4" color="primary">
+                        {stations.length}
+                      </Typography>
+                      <Typography variant="body1">
+                        Estaciones Monitoreadas
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <Box sx={{ textAlign: 'center', p: 2 }}>
+                      <Typography variant="h4" color="error">
+                        {incidents.filter(inc => calculateSecurityLevel(
+                          incidents.filter(i => i.nearest_station === inc.nearest_station).length
+                        ) === 'Alto').length}
+                      </Typography>
+                      <Typography variant="body1">
+                        Incidentes de Alto Riesgo
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <Box sx={{ textAlign: 'center', p: 2 }}>
+                      <Typography variant="h4" color="warning">
+                        {troncales.length}
+                      </Typography>
+                      <Typography variant="body1">
+                        Troncales Activas
+                      </Typography>
                     </Box>
                   </Grid>
                 </Grid>
