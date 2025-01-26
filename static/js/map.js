@@ -241,15 +241,91 @@ async function loadStations(troncal = 'all') {
 }
 
 function applyFilters() {
-    const filters = {
-        troncal: document.getElementById('troncalFilter').value,
-        station: document.getElementById('stationFilter').value,
-        incidentType: document.getElementById('incidentTypeFilter').value,
-        securityLevel: document.getElementById('securityLevelFilter').value
-    };
+    const filters = {};
+    
+    if (document.getElementById('enableTroncalFilter').checked) {
+        filters.troncal = document.getElementById('troncalFilter').value;
+    }
+    if (document.getElementById('enableStationFilter').checked) {
+        filters.station = document.getElementById('stationFilter').value;
+    }
+    if (document.getElementById('enableIncidentTypeFilter').checked) {
+        filters.incidentType = document.getElementById('incidentTypeFilter').value;
+    }
+    if (document.getElementById('enableSecurityLevelFilter').checked) {
+        filters.securityLevel = document.getElementById('securityLevelFilter').value;
+    }
     
     loadMapData(filters);
 }
+
+async function loadStations(troncal = 'all') {
+    try {
+        const response = await fetch('/api/stations');
+        const stations = await response.json();
+        let filteredStations = stations;
+        
+        if (troncal !== 'all') {
+            filteredStations = stations.filter(station => station.troncal === troncal);
+        }
+        
+        const stationSelect = document.getElementById('stationFilter');
+        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+        filteredStations
+            .sort((a, b) => a.nombre.localeCompare(b.nombre))
+            .forEach(station => {
+                if (station.nombre) {
+                    stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
+                }
+            });
+    } catch (error) {
+        console.error('Error loading stations:', error);
+    }
+}
+
+async function loadTroncales() {
+    try {
+        const response = await fetch('/api/stations');
+        const stations = await response.json();
+        const troncales = [...new Set(stations.map(station => station.troncal))]
+            .filter(Boolean)
+            .sort();
+        
+        const troncalSelect = document.getElementById('troncalFilter');
+        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+        troncales.forEach(troncal => {
+            if (troncal && troncal !== 'N/A') {
+                troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+            }
+        });
+
+        // Load all stations initially
+        await loadStations();
+    } catch (error) {
+        console.error('Error loading troncales:', error);
+    }
+}
+
+// Initialize checkboxes on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadTroncales();
+    
+    // Add event listener for troncal changes
+    document.getElementById('troncalFilter').addEventListener('change', function() {
+        if (document.getElementById('enableTroncalFilter').checked) {
+            loadStations(this.value);
+        }
+    });
+
+    // Add event listeners for filter checkboxes
+    document.getElementById('enableTroncalFilter').addEventListener('change', function() {
+        if (!this.checked) {
+            loadStations('all');
+        } else if (document.getElementById('troncalFilter').value !== 'all') {
+            loadStations(document.getElementById('troncalFilter').value);
+        }
+    });
+});
 
 function resetFilters() {
     document.getElementById('troncalFilter').value = 'all';
