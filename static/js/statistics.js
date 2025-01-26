@@ -242,6 +242,12 @@ function updateDetailedView(data, filters) {
     const container = document.getElementById('detailedView');
     if (!container) return;
 
+    // Si no hay filtros activos, mostrar mensaje
+    if (Object.keys(filters).length === 0) {
+        container.innerHTML = '<div class="alert alert-info">Seleccione filtros para ver información detallada.</div>';
+        return;
+    }
+
     let html = '<div class="row">';
 
     // Mostrar filtros activos
@@ -257,46 +263,52 @@ function updateDetailedView(data, filters) {
             </div>
         </div>`;
 
-    // Mostrar estadísticas filtradas
+    // Mostrar estadísticas específicas según los filtros aplicados
     if (data.total_incidents > 0) {
         html += `
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h6 class="card-title">Resultados Filtrados</h6>
-                        <p>Total de incidentes: ${data.total_incidents}</p>
-                        <p>Estación más afectada: ${data.most_affected_station}</p>
-                        <p>Tipo más común: ${data.most_common_type}</p>
-                        <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
-                    </div>
-                </div>
-            </div>`;
+                        <h6 class="card-title">Estadísticas Filtradas</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="alert alert-info">
+                                    <h6>Total de Incidentes</h6>
+                                    <h4>${data.total_incidents}</h4>
+                                </div>
+                            </div>`;
 
-        // Mostrar distribución de tipos si hay datos
-        if (data.incident_types && Object.keys(data.incident_types).length > 0) {
+        // Mostrar estadísticas específicas por tipo si está filtrado
+        if (filters.incidentType) {
             html += `
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h6 class="card-title">Distribución por Tipo</h6>
-                            <ul class="list-group">
-                                ${Object.entries(data.incident_types)
-                                    .sort(([,a], [,b]) => b - a)
-                                    .map(([type, count]) => 
-                                        `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                            ${type}
-                                            <span class="badge bg-primary rounded-pill">${count}</span>
-                                        </li>`
-                                    ).join('')}
-                            </ul>
-                        </div>
+                <div class="col-md-4">
+                    <div class="alert alert-warning">
+                        <h6>Incidentes de tipo ${filters.incidentType}</h6>
+                        <h4>${data.incident_types[filters.incidentType] || 0}</h4>
                     </div>
                 </div>`;
         }
+
+        // Mostrar estadísticas específicas por estación si está filtrada
+        if (filters.station) {
+            html += `
+                <div class="col-md-4">
+                    <div class="alert alert-success">
+                        <h6>Incidentes en ${filters.station}</h6>
+                        <h4>${data.top_stations[filters.station] || 0}</h4>
+                    </div>
+                </div>`;
+        }
+
+        html += `
+                        </div>
+                    </div>
+                </div>
+            </div>`;
     } else {
         html += `
             <div class="col-12">
-                <div class="alert alert-info">
+                <div class="alert alert-warning">
                     No se encontraron incidentes con los filtros seleccionados.
                 </div>
             </div>`;
