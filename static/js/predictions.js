@@ -16,27 +16,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Manejar cambios en el toggle de notificaciones
-    notificationToggle.addEventListener('change', function() {
+    notificationToggle.addEventListener('change', async function() {
         if (this.checked) {
-            Notification.requestPermission().then(function(permission) {
+            try {
+                const permission = await Notification.requestPermission();
                 console.log('Permiso de notificación:', permission);
                 if (permission === 'granted') {
                     notificationPermission = true;
                     console.log('Notificaciones activadas.');
                 } else {
-                    notificationPermission = false;
-                    notificationToggle.checked = false;
-                    alert('Necesitamos permisos para mostrar notificaciones');
+                    // Mantener el toggle activado pero mostrar el mensaje
+                    notificationPermission = true;
+                    alert('Para recibir notificaciones, necesitas permitirlas en la configuración de tu navegador');
                 }
-            }).catch(function(error) {
+            } catch (error) {
                 console.error('Error al solicitar permisos:', error);
-                notificationPermission = false;
-                notificationToggle.checked = false;
-            });
+                // Mantener el toggle activado en caso de error
+                notificationPermission = true;
+            }
         } else {
             notificationPermission = false;
             console.log('Notificaciones desactivadas.');
-            // Aquí puedes agregar lógica para desactivar las notificaciones si es necesario
         }
     });
 
