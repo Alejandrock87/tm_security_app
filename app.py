@@ -1,32 +1,20 @@
-
 import os
-from flask import Flask, send_from_directory
+from flask import Flask
 from flask_login import LoginManager
-from flask_cors import CORS
-import os
 from database import init_db, db
 from flask_socketio import SocketIO
 from utils import socketio, send_notification
-from cache_config import cache
+from flask_caching import Cache
+
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
     cache.init_app(app)
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
         raise ValueError("DATABASE_URL environment variable is not set")
-
-    # Serve React App
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve(path):
-        if path.startswith('api/'):
-            return app.send_static_file('index.html')
-        if path != "" and os.path.exists(os.path.join('frontend', 'build', path)):
-            return send_from_directory(os.path.join('frontend', 'build'), path)
-        return send_from_directory(os.path.join('frontend', 'build'), 'index.html')
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {

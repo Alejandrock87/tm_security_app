@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify, json
 from flask_login import login_user, logout_user, current_user, login_required
-from cache_config import cache
+from app import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
@@ -16,9 +16,11 @@ import os
 
 def init_routes(app):
     @app.route('/')
-    @app.route('/<path:path>')
-    def catch_all(path=''):
-        return app.send_static_file('index.html')
+    @app.route('/index')
+    def index():
+        if not current_user.is_authenticated:
+            return render_template('index.html', title='Inicio')
+        return render_template('home.html', title='Inicio')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -153,7 +155,7 @@ def init_routes(app):
     def statistics():
         return render_template('statistics.html')
 
-    @app.route('/api/v1/statistics')
+    @app.route('/api/statistics')
     @login_required
     def get_statistics():
         print("Procesando solicitud de estadísticas...")
@@ -222,7 +224,7 @@ def init_routes(app):
 
             # Procesar solo los datos relacionados con los filtros aplicados
             print(f"Procesando {len(incidents)} incidentes con los filtros aplicados")
-
+                
             # Get filter parameters
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
@@ -250,7 +252,7 @@ def init_routes(app):
                 query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
             if incident_type and incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
-
+            
             if troncal and troncal != 'all':
                 # Obtener estaciones de la troncal seleccionada
                 with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
