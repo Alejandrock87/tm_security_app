@@ -182,6 +182,16 @@ async function loadFilters() {
         await loadStatistics();
     } catch (error) {
         console.error('Error cargando filtros:', error);
+        // Mostrar mensaje de error al usuario
+        const troncalSelect = document.getElementById('troncalFilter');
+        const stationSelect = document.getElementById('stationFilter');
+        const incidentSelect = document.getElementById('incidentTypeFilter');
+        
+        if (troncalSelect) troncalSelect.innerHTML = '<option value="all">Error al cargar troncales</option>';
+        if (stationSelect) stationSelect.innerHTML = '<option value="all">Error al cargar estaciones</option>';
+        if (incidentSelect) incidentSelect.innerHTML = '<option value="all">Error al cargar tipos</option>';
+        
+        throw new Error(`Error cargando filtros: ${error.message || 'Error desconocido'}`);
     }
 }
 
@@ -215,8 +225,13 @@ function resetFilters() {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Inicializando página de estadísticas...');
-        await loadFilters();
-        await loadStatistics(); // Cargar estadísticas iniciales
+        await Promise.all([
+            loadFilters().catch(error => {
+                console.error('Error en filtros:', error);
+                // Continuar con la carga de estadísticas incluso si los filtros fallan
+            }),
+            loadStatistics() // Cargar estadísticas iniciales
+        ]);
         
         // Agregar eventos a los botones de filtros
         const applyButton = document.getElementById('applyFilters');
