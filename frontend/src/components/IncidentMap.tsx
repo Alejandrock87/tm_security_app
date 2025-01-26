@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { Box, Paper, CircularProgress, Grid, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Typography, Container, Button } from '@mui/material';
 import L from 'leaflet';
@@ -63,18 +62,21 @@ export default function IncidentMap() {
         fetch('/api/stations'),
         fetch('/incidents')
       ]);
-      
+
       const stationsData = await stationsResponse.json();
       const incidentsData = await incidentsResponse.json();
-      
+
       setStations(stationsData);
       setIncidents(incidentsData);
       setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))] as string[]);
-      
+
+      updateMapMarkers(stationsData, incidentsData); //Update markers immediately after fetching data
       updateChart(incidentsData);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Error al cargar los datos');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,19 +141,19 @@ export default function IncidentMap() {
         incident.incident_type === filters.incidentType);
     }
 
-    updateMarkers(filteredStations, filteredIncidents);
+    updateMapMarkers(filteredStations, filteredIncidents);
     updateChart(filteredIncidents);
   };
 
-  const updateMarkers = (filteredStations: Station[], filteredIncidents: Incident[]) => {
+  const updateMapMarkers = (filteredStations: Station[], filteredIncidents: Incident[]) => {
     if (!mapRef.current) return;
-    
+
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
 
     filteredStations.forEach(station => {
       const stationIncidents = filteredIncidents.filter(i => i.nearest_station === station.nombre);
-      
+
       const marker = L.marker([station.latitude, station.longitude], {
         icon: L.divIcon({
           className: 'custom-div-icon',
@@ -176,6 +178,7 @@ export default function IncidentMap() {
     });
   };
 
+
   useEffect(() => {
     const initializeMap = async () => {
       try {
@@ -190,11 +193,9 @@ export default function IncidentMap() {
         }
 
         await fetchData();
-        setLoading(false);
       } catch (err) {
         console.error('Error loading map:', err);
         setError('Error al cargar el mapa');
-        setLoading(false);
       }
     };
 
@@ -203,7 +204,7 @@ export default function IncidentMap() {
 
   useEffect(() => {
     filterData();
-  }, [filters, enableFilters]);
+  }, [filters, enableFilters, stations, incidents]);
 
   const resetFilters = () => {
     setFilters({});
@@ -326,7 +327,7 @@ export default function IncidentMap() {
             </Box>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={8}>
           <Paper elevation={3} className="map-panel">
             {loading && (
