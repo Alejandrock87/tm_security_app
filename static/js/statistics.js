@@ -155,23 +155,13 @@ async function loadStatistics() {
         console.log("Datos recibidos:", data);
 
         if (data && typeof data === 'object') {
-            // Inicializar el objeto charts si no existe
-            if (typeof charts === 'undefined') {
-                window.charts = {
-                    typeChart: null,
-                    stationChart: null
-                };
-            }
-            
             // Asegurarse de que los gráficos existentes se destruyan antes de crear nuevos
-            if (window.charts.typeChart) window.charts.typeChart.destroy();
-            if (window.charts.stationChart) window.charts.stationChart.destroy();
+            if (charts.typeChart) charts.typeChart.destroy();
+            if (charts.stationChart) charts.stationChart.destroy();
             
             updateSummaryCards(data);
             createCharts(data);
-            if (typeof loadIncidentTypes === 'function') {
-                await loadIncidentTypes();
-            }
+            await loadIncidentTypes();
 
             // Mostrar vista inicial sin filtros
             createDetailedView(data, {});
