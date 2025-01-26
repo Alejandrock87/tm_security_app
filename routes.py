@@ -20,8 +20,7 @@ def init_routes(app):
     def index():
         if current_user.is_authenticated:
             return redirect(url_for('dashboard'))
-        form = LoginForm()
-        return render_template('index.html', title='Inicio', form=form)
+        return redirect(url_for('login'))
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
