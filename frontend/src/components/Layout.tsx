@@ -34,7 +34,7 @@ export default function Layout() {
 
   const menuItems = [
     { text: 'Inicio', icon: <Home />, path: '/' },
-    { text: 'Dashboard', icon: <Map />, path: '/dashboard' },
+    { text: 'Mapa de Incidentes', icon: <Map />, path: '/incident-map' },
     { text: 'Estadísticas', icon: <Assessment />, path: '/statistics' },
     { text: 'Reportar', icon: <Warning />, path: '/report_incident' },
   ];

@@ -13,7 +13,7 @@ export default function Home() {
       title: 'Mapa de Incidentes',
       description: 'Visualiza los incidentes reportados',
       icon: <MapOutlined sx={{ fontSize: isMobile ? 48 : 40 }} />,
-      route: '/dashboard',
+      route: '/incident-map',
       color: 'primary.main'
     },
     {
