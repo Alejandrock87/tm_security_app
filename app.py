@@ -24,6 +24,8 @@ def create_app():
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve(path):
+        if path.startswith('api/'):
+            return app.send_static_file('index.html')
         if path != "" and os.path.exists(os.path.join('frontend', 'build', path)):
             return send_from_directory(os.path.join('frontend', 'build'), path)
         return send_from_directory(os.path.join('frontend', 'build'), 'index.html')
