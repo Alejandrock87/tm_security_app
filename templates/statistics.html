@@ -2,6 +2,56 @@
 
 {% block content %}
 <div class="container-fluid py-4">
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Filtros</h5>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="dateFromFilter">Fecha Desde</label>
+                    <input type="date" id="dateFromFilter" class="form-control">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="dateToFilter">Fecha Hasta</label>
+                    <input type="date" id="dateToFilter" class="form-control">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="timeFromFilter">Hora Desde</label>
+                    <input type="time" id="timeFromFilter" class="form-control">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="timeToFilter">Hora Hasta</label>
+                    <input type="time" id="timeToFilter" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="troncalFilter">Troncal</label>
+                    <select id="troncalFilter" class="form-select">
+                        <option value="all">Todas</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="stationFilter">Estación</label>
+                    <select id="stationFilter" class="form-select">
+                        <option value="all">Todas</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="incidentTypeFilter">Tipo de Incidente</label>
+                    <select id="incidentTypeFilter" class="form-select">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button id="resetFilters" class="btn btn-secondary me-2">Reiniciar</button>
+                    <button id="applyFilters" class="btn btn-primary">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Cards de resumen -->
     <div class="row mb-4">
         <div class="col-md-3">
