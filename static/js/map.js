@@ -132,49 +132,72 @@ function updateChart(incidents) {
         typeStats[incident.incident_type] = (typeStats[incident.incident_type] || 0) + 1;
     });
 
-    // Ordenar por cantidad
+    // Ordenar por cantidad y obtener el total
     const sortedStats = Object.entries(typeStats)
-        .sort(([,a], [,b]) => b - a)
-        .slice(0, 5); // Mostrar solo los 5 tipos más comunes
+        .sort(([,a], [,b]) => b - a);
+    const total = sortedStats.reduce((sum, [,count]) => sum + count, 0);
+
+    // Calcular porcentajes y preparar datos
+    const data = sortedStats.map(([type, count]) => ({
+        type,
+        count,
+        percentage: ((count / total) * 100).toFixed(1)
+    }));
 
     if (currentChart) {
         currentChart.destroy();
     }
 
     currentChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
-            labels: sortedStats.map(([type]) => type),
+            labels: data.map(item => `${item.type} (${item.percentage}%)`),
             datasets: [{
-                label: 'Número de Incidentes',
-                data: sortedStats.map(([,count]) => count),
+                data: data.map(item => item.count),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.8)',
                     'rgba(54, 162, 235, 0.8)',
                     'rgba(255, 206, 86, 0.8)',
                     'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)'
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)'
                 ],
-                borderWidth: 1
+                borderColor: 'white',
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false
+                    position: 'right',
+                    labels: {
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 title: {
                     display: true,
-                    text: 'Top 5 Tipos de Incidentes'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Cantidad de Reportes'
+                    text: 'Distribución de Incidentes',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            return `${label}: ${value} incidentes`;
+                        }
                     }
                 }
             }
