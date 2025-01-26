@@ -156,6 +156,46 @@
     background-color: #f8f9fa;
 }
 
+.filtered-stats-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid #e9ecef;
+}
+
+.filtered-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.filtered-stats-header h4 {
+    margin: 0;
+    color: #495057;
+}
+
+.comparison-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+.comparison-value {
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.comparison-value:last-child {
+    border-bottom: none;
+}
+
 .btn-expand {
     background-color: #e9ecef;
     border-radius: 6px;

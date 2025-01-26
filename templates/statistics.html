@@ -46,12 +46,12 @@
         </div>
     </div>
 
-    <!-- Interactive Cards -->
-    <div class="row mb-4">
+    <!-- General Statistics -->
+    <div class="row mb-4" id="generalStats">
         <div class="col-12 col-md-6">
             <div class="detail-card">
                 <div class="card-header">
-                    <h5>Tipos de Incidentes</h5>
+                    <h5>Tipos de Incidentes (General)</h5>
                     <button class="btn-expand" title="Expandir/Contraer"><i class="fas fa-chevron-down"></i></button>
                 </div>
                 <div id="incidentTypesList" class="scrollable-list"></div>
@@ -60,10 +60,40 @@
         <div class="col-12 col-md-6">
             <div class="detail-card">
                 <div class="card-header">
-                    <h5>Estaciones más Afectadas</h5>
+                    <h5>Estaciones más Afectadas (General)</h5>
                     <button class="btn-expand" title="Expandir/Contraer"><i class="fas fa-chevron-down"></i></button>
                 </div>
                 <div id="stationsList" class="scrollable-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtered Statistics -->
+    <div id="filteredStatsSection" class="filtered-stats-section d-none">
+        <div class="filtered-stats-header">
+            <h4>Resultados Filtrados</h4>
+            <button class="btn btn-sm btn-outline-secondary" id="closeFilteredStats">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h5>Tipos de Incidentes (Filtrado)</h5>
+                        <button class="btn-expand" title="Expandir/Contraer"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="filteredIncidentTypesList" class="scrollable-list"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h5>Estaciones más Afectadas (Filtrado)</h5>
+                        <button class="btn-expand" title="Expandir/Contraer"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="filteredStationsList" class="scrollable-list"></div>
+                </div>
             </div>
         </div>
     </div>

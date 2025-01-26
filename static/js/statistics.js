@@ -73,10 +73,49 @@ async function loadStations() {
     }
 }
 
-function updateSummaryCards(data) {
+function updateSummaryCards(data, isFiltered = false) {
     if (!data) return;
 
-    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+    const filteredSection = document.getElementById('filteredStatsSection');
+    
+    if (!isFiltered) {
+        // Actualizar estadísticas generales
+        document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+        document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
+        document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
+        document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
+
+        // Actualizar listas generales
+        updateList('incidentTypesList', data.incident_types);
+        updateList('stationsList', data.top_stations);
+    } else {
+        // Mostrar sección filtrada
+        filteredSection.classList.remove('d-none');
+        
+        // Actualizar listas filtradas
+        updateList('filteredIncidentTypesList', data.incident_types);
+        updateList('filteredStationsList', data.top_stations);
+    }
+}
+
+function updateList(elementId, data) {
+    const list = document.getElementById(elementId);
+    if (!list || !data) return;
+
+    list.innerHTML = Object.entries(data)
+        .sort(([,a], [,b]) => b - a)
+        .map(([name, count]) => `
+            <div class="list-item">
+                <span class="item-name">${name}</span>
+                <span class="item-count">${count}</span>
+            </div>
+        `).join('');
+}
+
+// Agregar event listener para cerrar la sección filtrada
+document.getElementById('closeFilteredStats')?.addEventListener('click', () => {
+    document.getElementById('filteredStatsSection').classList.add('d-none');
+});
     document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
     document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
     document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
@@ -149,9 +188,20 @@ async function applyQuickFilter(period) {
     await loadFilteredData(filters);
 }
 
+// Variable para almacenar las estadísticas generales
+let generalStats = null;
+
 async function loadFilteredData(filters = null) {
     try {
         let queryParams = {};
+        
+        // Cargar estadísticas generales si no existen
+        if (!generalStats) {
+            const generalResponse = await fetch('/api/statistics');
+            if (!generalResponse.ok) throw new Error('Error cargando estadísticas generales');
+            generalStats = await generalResponse.json();
+            updateSummaryCards(generalStats, false);
+        }
         
         if (!filters) {
             // Obtener filtros del modal
