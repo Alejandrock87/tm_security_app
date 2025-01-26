@@ -167,6 +167,9 @@ def init_routes(app):
             time_to = request.args.get('timeTo')
             incident_type = request.args.get('incidentType')
             troncal = request.args.get('troncal')
+            station = request.args.get('station')
+
+            print(f"Filtros recibidos: fecha_desde={date_from}, fecha_hasta={date_to}, hora_desde={time_from}, hora_hasta={time_to}, tipo={incident_type}, troncal={troncal}, estacion={station}")
 
             # Base query
             query = Incident.query

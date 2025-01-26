@@ -18,19 +18,25 @@ async function loadStatistics() {
         }
         const data = await response.json();
         console.log("Datos recibidos:", data);
-        if (data.error) {
-            console.error('Error from server:', data.error);
-            return;
+        
+        // Actualizar las estadísticas solo si hay datos válidos
+        if (data && !data.error) {
+            if (data.hourly_stats || data.incident_types || data.top_stations) {
+                updateCharts(data);
+                updateSummaryCards(data);
+            } else {
+                console.warn('No hay datos disponibles para mostrar');
+                // Mostrar mensaje al usuario
+                document.getElementById('totalIncidents').textContent = '0';
+                document.getElementById('mostAffectedStation').textContent = 'No hay datos';
+                document.getElementById('mostDangerousHour').textContent = 'No hay datos';
+                document.getElementById('mostCommonType').textContent = 'No hay datos';
+            }
+        } else {
+            console.error('Error from server:', data?.error);
         }
-        if (!data.hourly_stats || !data.incident_types || !data.top_stations) {
-            console.error('Datos incompletos recibidos del servidor');
-            return;
-        }
-        updateCharts(data);
-        updateSummaryCards(data);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
-        console.error('Error loading statistics:', error);
     }
 }
 
