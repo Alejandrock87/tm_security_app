@@ -184,8 +184,11 @@ async function loadStatistics() {
         }
 
         updateSummaryCards(data);
-        createDetailedView(data, {});
         createCharts(data);
+        
+        // Mostrar mensaje inicial en vista detallada
+        document.getElementById('detailedView').innerHTML = 
+            '<div class="alert alert-info">Seleccione filtros para ver información detallada.</div>';
 
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
@@ -215,13 +218,80 @@ async function loadFilteredData() {
         const data = await response.json();
         if (data) {
             // Solo actualizar la vista detallada con los datos filtrados
-            createDetailedView(data, filters);
+            updateDetailedView(data, filters);
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
-        document.getElementById('detailedView').innerHTML = 
-            '<div class="alert alert-danger">Error al cargar los datos filtrados. Por favor, intente nuevamente.</div>';
+        container.innerHTML = '<div class="alert alert-danger">Error al cargar los datos filtrados. Por favor, intente nuevamente.</div>';
     }
+}
+
+function updateDetailedView(data, filters) {
+    const container = document.getElementById('detailedView');
+    if (!container) return;
+
+    let html = '<div class="row">';
+
+    // Mostrar filtros activos
+    html += `
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Filtros Activos</h6>
+                    ${Object.entries(filters).map(([key, value]) => 
+                        `<span class="badge bg-primary me-2">${key}: ${value}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        </div>`;
+
+    // Mostrar estadísticas filtradas
+    if (data.total_incidents > 0) {
+        html += `
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Resultados Filtrados</h6>
+                        <p>Total de incidentes: ${data.total_incidents}</p>
+                        <p>Estación más afectada: ${data.most_affected_station}</p>
+                        <p>Tipo más común: ${data.most_common_type}</p>
+                        <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
+                    </div>
+                </div>
+            </div>`;
+
+        // Mostrar distribución de tipos si hay datos
+        if (data.incident_types && Object.keys(data.incident_types).length > 0) {
+            html += `
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Distribución por Tipo</h6>
+                            <ul class="list-group">
+                                ${Object.entries(data.incident_types)
+                                    .sort(([,a], [,b]) => b - a)
+                                    .map(([type, count]) => 
+                                        `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                            ${type}
+                                            <span class="badge bg-primary rounded-pill">${count}</span>
+                                        </li>`
+                                    ).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>`;
+        }
+    } else {
+        html += `
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No se encontraron incidentes con los filtros seleccionados.
+                </div>
+            </div>`;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
 }
 
 function getFilters() {
