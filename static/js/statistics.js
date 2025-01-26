@@ -6,32 +6,82 @@ let charts = {
 };
 
 async function loadFilters() {
-    const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
-    const data = await response.json();
-    
-    const troncales = [...new Set(data.features
-        .map(f => f.properties.troncal_estacion)
-        .filter(t => t))];
-    
-    const troncalSelect = document.getElementById('troncalFilter');
-    troncales.forEach(troncal => {
-        const option = document.createElement('option');
-        option.value = troncal;
-        option.textContent = troncal;
-        troncalSelect.appendChild(option);
-    });
+    try {
+        // Cargar datos de estaciones y troncales
+        const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
+        const data = await response.json();
+        
+        // Cargar troncales
+        const troncales = [...new Set(data.features
+            .map(f => f.properties.troncal_estacion)
+            .filter(t => t))].sort();
+        
+        const troncalSelect = document.getElementById('troncalFilter');
+        troncalSelect.innerHTML = '<option value="all">Todas</option>';
+        troncales.forEach(troncal => {
+            const option = document.createElement('option');
+            option.value = troncal;
+            option.textContent = troncal;
+            troncalSelect.appendChild(option);
+        });
 
-    const incidents = await fetch('/incidents');
-    const incidentData = await incidents.json();
-    const incidentTypes = [...new Set(incidentData.map(i => i.incident_type))];
-    
-    const incidentSelect = document.getElementById('incidentTypeFilter');
-    incidentTypes.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        incidentSelect.appendChild(option);
-    });
+        // Cargar estaciones
+        const stations = [...new Set(data.features
+            .map(f => f.properties.nombre_estacion)
+            .filter(s => s))].sort();
+        
+        const stationSelect = document.getElementById('stationFilter');
+        stationSelect.innerHTML = '<option value="all">Todas</option>';
+        stations.forEach(station => {
+            const option = document.createElement('option');
+            option.value = station;
+            option.textContent = station;
+            stationSelect.appendChild(option);
+        });
+
+        // Cargar tipos de incidentes desde el backend
+        const incidents = await fetch('/incidents');
+        const incidentData = await incidents.json();
+        const incidentTypes = [...new Set(incidentData.map(i => i.incident_type))].sort();
+        
+        const incidentSelect = document.getElementById('incidentTypeFilter');
+        incidentSelect.innerHTML = '<option value="all">Todos</option>';
+        incidentTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            incidentSelect.appendChild(option);
+        });
+
+        // Evento para actualizar estaciones cuando cambia la troncal
+        troncalSelect.addEventListener('change', () => {
+            const selectedTroncal = troncalSelect.value;
+            stationSelect.innerHTML = '<option value="all">Todas</option>';
+            
+            if (selectedTroncal !== 'all') {
+                const filteredStations = data.features
+                    .filter(f => f.properties.troncal_estacion === selectedTroncal)
+                    .map(f => f.properties.nombre_estacion)
+                    .sort();
+                
+                filteredStations.forEach(station => {
+                    const option = document.createElement('option');
+                    option.value = station;
+                    option.textContent = station;
+                    stationSelect.appendChild(option);
+                });
+            } else {
+                stations.forEach(station => {
+                    const option = document.createElement('option');
+                    option.value = station;
+                    option.textContent = station;
+                    stationSelect.appendChild(option);
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Error cargando filtros:', error);
+    }
 }
 
 function getFilters() {
