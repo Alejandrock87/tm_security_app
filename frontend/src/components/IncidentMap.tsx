@@ -1,5 +1,6 @@
+
 import { useEffect, useRef, useState } from 'react';
-import { Box, Paper, CircularProgress, Grid, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Typography, Container } from '@mui/material';
+import { Box, Paper, CircularProgress, Grid, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Typography, Container, Button } from '@mui/material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
@@ -27,6 +28,16 @@ interface Filters {
   securityLevel?: string;
 }
 
+const incidentTypes = [
+  'Hurto',
+  'Hurto a mano armada',
+  'Cosquilleo',
+  'Ataque',
+  'Apertura de Puertas',
+  'Sospechoso',
+  'Acoso'
+];
+
 export default function IncidentMap() {
   const mapRef = useRef<L.Map | null>(null);
   const chartRef = useRef<ChartJS | null>(null);
@@ -44,36 +55,31 @@ export default function IncidentMap() {
     securityLevel: false
   });
 
-  const incidentTypes = [
-    'Hurto',
-    'Hurto a mano armada',
-    'Cosquilleo',
-    'Ataque',
-    'Apertura de Puertas',
-    'Sospechoso',
-    'Acoso'
-  ];
-
   const getMarkerColor = (totalIncidents: number) => {
     if (totalIncidents >= 50) return '#ff0000';
     if (totalIncidents >= 20) return '#ffa500';
     return '#008000';
   };
 
-  const createPopupContent = (stationName: string, stationData: { total: number; types: Record<string, number> }) => {
-    const securityLevel = stationData.total >= 50 ? 'Alto' : stationData.total >= 20 ? 'Medio' : 'Bajo';
-    
-    const incidentsList = Object.entries(stationData.types)
-      .map(([type, count]) => `<li>${type}: ${count}</li>`)
+  const calculateSecurityLevel = (totalIncidents: number) => {
+    if (totalIncidents >= 50) return 'Alto';
+    if (totalIncidents >= 20) return 'Medio';
+    return 'Bajo';
+  };
+
+  const createPopupContent = (stationName: string, data: { total: number; types: Record<string, number> }) => {
+    const securityLevel = calculateSecurityLevel(data.total);
+    const typesHtml = Object.entries(data.types)
+      .map(([type, count]) => `<li>${type}: ${count} reportes</li>`)
       .join('');
 
     return `
       <div class="station-popup">
         <h3>${stationName}</h3>
-        <p>Nivel de seguridad: <strong>${securityLevel}</strong></p>
-        <p>Total incidentes: ${stationData.total}</p>
+        <p><strong>Total de reportes:</strong> ${data.total}</p>
+        <p><strong>Nivel de inseguridad:</strong> <span class="security-level-${securityLevel.toLowerCase()}">${securityLevel}</span></p>
         <h4>Tipos de incidentes:</h4>
-        <ul>${incidentsList}</ul>
+        <ul>${typesHtml}</ul>
       </div>
     `;
   };
@@ -87,53 +93,59 @@ export default function IncidentMap() {
       typeStats[incident.incident_type] = (typeStats[incident.incident_type] || 0) + 1;
     });
 
+    const sortedStats = Object.entries(typeStats).sort(([,a], [,b]) => b - a);
+    const total = sortedStats.reduce((sum, [,count]) => sum + count, 0);
+
     if (chartRef.current) {
       chartRef.current.destroy();
     }
 
     chartRef.current = new ChartJS(ctx, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
-        labels: Object.keys(typeStats),
+        labels: sortedStats.map(([type, count]) => 
+          `${type} (${((count / total) * 100).toFixed(1)}%)`
+        ),
         datasets: [{
-          label: 'Número de Incidentes',
-          data: Object.values(typeStats),
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
+          data: sortedStats.map(([, count]) => count),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)'
+          ],
+          borderColor: 'white',
+          borderWidth: 2
         }]
       },
       options: {
         responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              padding: 20,
+              font: { size: 11 }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Distribución de Incidentes',
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            padding: {
+              top: 10,
+              bottom: 20
+            }
           }
         }
       }
     });
-  };
-
-  const filterData = () => {
-    let filteredStations = [...stations];
-    let filteredIncidents = [...incidents];
-
-    if (enableFilters.troncal && filters.troncal) {
-      filteredStations = filteredStations.filter(station => station.troncal === filters.troncal);
-    }
-
-    if (enableFilters.station && filters.station) {
-      filteredStations = filteredStations.filter(station => station.nombre === filters.station);
-    }
-
-    if (enableFilters.incidentType && filters.incidentType) {
-      filteredIncidents = filteredIncidents.filter(incident => 
-        incident.incident_type === filters.incidentType
-      );
-    }
-
-    updateMarkers(filteredStations, filteredIncidents);
-    updateChart(filteredIncidents);
   };
 
   const updateMarkers = (filteredStations: Station[], filteredIncidents: Incident[]) => {
@@ -171,6 +183,58 @@ export default function IncidentMap() {
     });
   };
 
+  const filterData = () => {
+    let filteredStations = [...stations];
+    let filteredIncidents = [...incidents];
+
+    if (enableFilters.troncal && filters.troncal) {
+      filteredStations = filteredStations.filter(station => station.troncal === filters.troncal);
+    }
+
+    if (enableFilters.station && filters.station) {
+      filteredStations = filteredStations.filter(station => station.nombre === filters.station);
+    }
+
+    if (enableFilters.incidentType && filters.incidentType) {
+      filteredIncidents = filteredIncidents.filter(incident => 
+        incident.incident_type === filters.incidentType
+      );
+    }
+
+    if (enableFilters.securityLevel && filters.securityLevel) {
+      const stationIncidents = filteredIncidents.reduce((acc, incident) => {
+        acc[incident.nearest_station] = (acc[incident.nearest_station] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      filteredStations = filteredStations.filter(station => {
+        const total = stationIncidents[station.nombre] || 0;
+        return calculateSecurityLevel(total) === filters.securityLevel;
+      });
+    }
+
+    updateMarkers(filteredStations, filteredIncidents);
+    updateChart(filteredIncidents);
+
+    if (filteredStations.length > 0) {
+      const bounds = L.latLngBounds(
+        filteredStations.map(station => [station.latitude, station.longitude])
+      );
+      mapRef.current?.fitBounds(bounds, { padding: [50, 50] });
+    }
+  };
+
+  const resetFilters = () => {
+    setFilters({});
+    setEnableFilters({
+      troncal: false,
+      station: false,
+      incidentType: false,
+      securityLevel: false
+    });
+    filterData();
+  };
+
   useEffect(() => {
     const initializeMap = async () => {
       try {
@@ -193,14 +257,14 @@ export default function IncidentMap() {
           throw new Error('Error fetching map data');
         }
 
-        const stationsData: Station[] = await stationsResponse.json();
-        const incidentsData: Incident[] = await incidentsResponse.json();
+        const stationsData = await stationsResponse.json();
+        const incidentsData = await incidentsResponse.json();
 
         setStations(stationsData);
         setIncidents(incidentsData);
 
-        const uniqueTroncales = [...new Set(stationsData.map(station => station.troncal))];
-        setTroncales(uniqueTroncales);
+        const uniqueTroncales = [...new Set(stationsData.map((station: Station) => station.troncal))];
+        setTroncales(uniqueTroncales.filter(Boolean).sort());
 
         updateMarkers(stationsData, incidentsData);
         updateChart(incidentsData);
@@ -235,7 +299,7 @@ export default function IncidentMap() {
       <Grid container spacing={2}>
         {/* Filtros */}
         <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ p: 2, mb: { xs: 2, md: 0 } }}>
+          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -260,6 +324,7 @@ export default function IncidentMap() {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -282,6 +347,40 @@ export default function IncidentMap() {
                   </Select>
                 </FormControl>
               </Grid>
+
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={enableFilters.securityLevel}
+                      onChange={(e) => setEnableFilters({ ...enableFilters, securityLevel: e.target.checked })}
+                    />
+                  }
+                  label="Filtrar por Nivel de Seguridad"
+                />
+                <FormControl fullWidth disabled={!enableFilters.securityLevel}>
+                  <InputLabel>Nivel de Seguridad</InputLabel>
+                  <Select
+                    value={filters.securityLevel || ''}
+                    onChange={(e) => setFilters({ ...filters, securityLevel: e.target.value })}
+                  >
+                    <MenuItem value="Alto">Alto</MenuItem>
+                    <MenuItem value="Medio">Medio</MenuItem>
+                    <MenuItem value="Bajo">Bajo</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button 
+                  variant="contained" 
+                  color="secondary" 
+                  fullWidth 
+                  onClick={resetFilters}
+                >
+                  Limpiar Filtros
+                </Button>
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
@@ -302,7 +401,7 @@ export default function IncidentMap() {
                     {error}
                   </Box>
                 )}
-                <div id="map" style={{ height: '400px', width: '100%', borderRadius: '4px' }}></div>
+                <div id="map" style={{ height: '500px', width: '100%', borderRadius: '4px' }}></div>
               </Paper>
             </Grid>
 
