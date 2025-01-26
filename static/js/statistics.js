@@ -197,6 +197,14 @@ async function loadStatistics() {
 async function loadFilteredData() {
     try {
         const filters = getFilters();
+        const container = document.getElementById('detailedView');
+        
+        // Si no hay filtros activos, mostrar mensaje
+        if (Object.keys(filters).length === 0) {
+            container.innerHTML = '<div class="alert alert-info">Seleccione filtros para ver información detallada.</div>';
+            return;
+        }
+
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
 
@@ -206,9 +214,8 @@ async function loadFilteredData() {
 
         const data = await response.json();
         if (data) {
-            updateSummaryCards(data);
+            // Solo actualizar la vista detallada con los datos filtrados
             createDetailedView(data, filters);
-            createCharts(data);
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
