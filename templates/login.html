@@ -35,6 +35,11 @@
                 {% endfor %}
             </div>
 
+            <div class="form-group remember-me">
+                {{ form.remember_me(class="remember-checkbox") }}
+                <label for="remember_me">Recordarme</label>
+            </div>
+
             <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
 
             <button type="submit" class="auth-button">Iniciar Sesión</button>
