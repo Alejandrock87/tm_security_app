@@ -1,4 +1,5 @@
 
+// Variables globales para los gráficos
 let charts = {
     hourlyHeatmap: null,
     incidentTypes: null,
@@ -28,10 +29,10 @@ async function loadFilters() {
         const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
         const data = await response.json();
         
-        // Cargar troncales
+        // Cargar troncales únicas
         const troncales = [...new Set(data.features
             .map(f => f.properties.troncal_estacion)
-            .filter(t => t))].sort();
+            .filter(Boolean))].sort();
         
         const troncalSelect = document.getElementById('troncalFilter');
         troncalSelect.innerHTML = '<option value="all">Todas</option>';
@@ -45,7 +46,7 @@ async function loadFilters() {
         // Cargar estaciones
         const stations = [...new Set(data.features
             .map(f => f.properties.nombre_estacion)
-            .filter(s => s))].sort();
+            .filter(Boolean))].sort();
         
         const stationSelect = document.getElementById('stationFilter');
         stationSelect.innerHTML = '<option value="all">Todas</option>';
@@ -56,10 +57,10 @@ async function loadFilters() {
             stationSelect.appendChild(option);
         });
 
-        // Cargar tipos de incidentes desde el backend
-        const incidents = await fetch('/incidents');
-        const incidentData = await incidents.json();
-        const incidentTypes = [...new Set(incidentData.map(i => i.incident_type))].sort();
+        // Cargar tipos de incidentes
+        const response2 = await fetch('/incidents');
+        const incidents = await response2.json();
+        const incidentTypes = [...new Set(incidents.map(i => i.incident_type))].sort();
         
         const incidentSelect = document.getElementById('incidentTypeFilter');
         incidentSelect.innerHTML = '<option value="all">Todos</option>';
@@ -96,6 +97,9 @@ async function loadFilters() {
                 });
             }
         });
+
+        // Cargar estadísticas iniciales
+        await loadStatistics();
     } catch (error) {
         console.error('Error cargando filtros:', error);
     }
@@ -108,29 +112,22 @@ function getFilters() {
         timeFrom: document.getElementById('timeFromFilter').value,
         timeTo: document.getElementById('timeToFilter').value,
         incidentType: document.getElementById('incidentTypeFilter').value,
-        troncal: document.getElementById('troncalFilter').value
+        troncal: document.getElementById('troncalFilter').value,
+        station: document.getElementById('stationFilter').value
     };
 }
 
-async function loadStatistics() {
-    const filters = getFilters();
-    const response = await fetch('/api/statistics?' + new URLSearchParams(filters));
-    const data = await response.json();
-    updateCharts(data);
-    updateSummaryCards(data);
-}
-
 function updateSummaryCards(data) {
-    document.getElementById('totalIncidents').textContent = data.total_incidents;
-    document.getElementById('mostAffectedStation').textContent = data.most_affected_station;
-    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour;
-    document.getElementById('mostCommonType').textContent = data.most_common_type;
+    document.getElementById('totalIncidents').textContent = data.total_incidents || 0;
+    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
+    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
+    document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
 }
 
 function updateCharts(data) {
-    updateHourlyHeatmap(data.hourly_stats);
-    updateIncidentTypesChart(data.incident_types);
-    updateTopStationsChart(data.top_stations);
+    updateHourlyHeatmap(data.hourly_stats || {});
+    updateIncidentTypesChart(data.incident_types || {});
+    updateTopStationsChart(data.top_stations || {});
 }
 
 function updateHourlyHeatmap(hourlyData) {
@@ -143,7 +140,8 @@ function updateHourlyHeatmap(hourlyData) {
     const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
     const datasets = Object.entries(hourlyData).map(([day, values]) => ({
         label: day,
-        data: hours.map(hour => values[hour] || 0)
+        data: hours.map(hour => values[parseInt(hour)] || 0),
+        borderWidth: 1
     }));
 
     charts.hourlyHeatmap = new Chart(ctx, {
@@ -159,7 +157,7 @@ function updateHourlyHeatmap(hourlyData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        maxTicksLimit: 6
+                        stepSize: 1
                     }
                 }
             },
@@ -234,7 +232,7 @@ function updateTopStationsChart(stationData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        maxTicksLimit: 6
+                        stepSize: 1
                     }
                 }
             },
@@ -254,36 +252,33 @@ function resetFilters() {
     document.getElementById('timeToFilter').value = '';
     document.getElementById('incidentTypeFilter').value = 'all';
     document.getElementById('troncalFilter').value = 'all';
+    document.getElementById('stationFilter').value = 'all';
     loadStatistics();
 }
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        await Promise.all([
-            loadFilters(),
-            loadStatistics()
-        ]);
+        await loadFilters();
         
-        const applyFiltersButtons = document.querySelectorAll('#applyFilters');
-        applyFiltersButtons.forEach(button => {
+        // Agregar eventos a los botones de filtros
+        document.querySelectorAll('#applyFilters').forEach(button => {
             button.addEventListener('click', loadStatistics);
         });
         
-        const resetFiltersButtons = document.querySelectorAll('#resetFilters');
-        resetFiltersButtons.forEach(button => {
+        document.querySelectorAll('#resetFilters').forEach(button => {
             button.addEventListener('click', resetFilters);
         });
-        
     } catch (error) {
         console.error('Error initializing page:', error);
     }
-    
-    window.addEventListener('resize', () => {
-        if (charts.incidentTypes) {
-            charts.incidentTypes.options.plugins.legend.position = 
-                window.innerWidth > 768 ? 'right' : 'bottom';
-            charts.incidentTypes.update();
-        }
-    });
+});
+
+// Actualizar posición de leyendas en cambio de tamaño de ventana
+window.addEventListener('resize', () => {
+    if (charts.incidentTypes) {
+        charts.incidentTypes.options.plugins.legend.position = 
+            window.innerWidth > 768 ? 'right' : 'bottom';
+        charts.incidentTypes.update();
+    }
 });
