@@ -1,11 +1,73 @@
+
 {% extends "base.html" %}
 
 {% block content %}
 <div class="container-fluid py-4">
+    <!-- Información General -->
+    <h4 class="mb-4">Información General</h4>
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Total Incidentes</h6>
+                    <h3 class="card-title" id="totalIncidents">Cargando...</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Estación más Afectada</h6>
+                    <h3 class="card-title" id="mostAffectedStation">Cargando...</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Hora más Insegura</h6>
+                    <h3 class="card-title" id="mostDangerousHour">Cargando...</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Tipo más Común</h6>
+                    <h3 class="card-title" id="mostCommonType">Cargando...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tipos de Incidentes</h5>
+                    <div style="height: 300px">
+                        <canvas id="incidentTypesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Estaciones más Inseguras</h5>
+                    <div style="height: 300px">
+                        <canvas id="topStationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Filtros -->
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Filtros</h5>
+            <h5 class="card-title">Filtros de Búsqueda</h5>
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="dateFromFilter">Fecha Desde</label>
@@ -52,85 +114,27 @@
             </div>
         </div>
     </div>
-    <!-- Información General -->
-    <h4 class="mb-4">Información General</h4>
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Total Incidentes</h6>
-                    <h3 class="card-title" id="totalIncidents">Cargando...</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Estación más Afectada</h6>
-                    <h3 class="card-title" id="mostAffectedStation">Cargando...</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Hora más Insegura</h6>
-                    <h3 class="card-title" id="mostDangerousHour">Cargando...</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Tipo más Común</h6>
-                    <h3 class="card-title" id="mostCommonType">Cargando...</h3>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Gráficos -->
+    <!-- Tabla de Datos Filtrados -->
     <div class="row">
-        <div class="col-md-6 mb-4">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Tipos de Incidentes</h5>
-                    <div style="height: 300px">
-                        <canvas id="incidentTypesChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 5 Estaciones más Inseguras</h5>
-                    <div style="height: 300px">
-                        <canvas id="topStationsChart"></canvas>
-
-    <!-- Datos Filtrados -->
-    <h4 class="mb-4">Datos Filtrados</h4>
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table" id="filteredDataTable">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Tipo de Incidente</th>
-                            <th>Estación</th>
-                            <th>Troncal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
+                    <h5 class="card-title">Resultados de la Búsqueda</h5>
+                    <div class="table-responsive">
+                        <table class="table" id="filteredDataTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Tipo de Incidente</th>
+                                    <th>Estación</th>
+                                    <th>Troncal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

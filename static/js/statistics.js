@@ -8,11 +8,8 @@ async function loadStatistics() {
     try {
         console.log("Cargando estadísticas...");
         // Limpiar gráficos existentes
-        Object.values(charts).forEach(chart => {
-            if (chart) {
-                chart.destroy();
-            }
-        });
+        if (charts.typeChart) charts.typeChart.destroy();
+        if (charts.stationChart) charts.stationChart.destroy();
 
         const response = await fetch('/api/statistics');
         if (!response.ok) {
