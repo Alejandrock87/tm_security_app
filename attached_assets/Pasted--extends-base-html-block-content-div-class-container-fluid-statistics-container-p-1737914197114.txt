@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid statistics-container py-4">
+    <!-- Encabezado de Estadísticas -->
+    <div class="statistics-header">
+        <h2>Estadísticas</h2>
+        <p>Análisis detallado de los incidentes de seguridad para mejorar la prevención y respuesta.</p>
+    </div>
+
+    <div id="emptyDataMessage" style="display: none; text-align: center; padding: 10px; color: #666;" class="alert alert-info">
+        <!-- Mensaje de datos vacíos -->
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-section mb-4">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-card total">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3 id="totalIncidents">-</h3>
+                    <p>Total Incidentes</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3 id="mostAffectedStation">-</h3>
+                    <p>Estación más Afectada</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card warning">
+                    <i class="fas fa-clock"></i>
+                    <h3 id="mostDangerousHour">-</h3>
+                    <p>Hora más Insegura</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card info">
+                    <i class="fas fa-tag"></i>
+                    <h3 id="mostCommonType">-</h3>
+                    <p>Tipo más Común</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Filters -->
+    <div class="quick-filters mb-4">
+        <div class="scroll-container">
+            <button class="filter-chip active" data-period="all">Todos</button>
+            <button class="filter-chip" data-period="today">Hoy</button>
+            <button class="filter-chip" data-period="week">Esta Semana</button>
+            <button class="filter-chip" data-period="month">Este Mes</button>
+        </div>
+    </div>
+
+    <!-- Interactive Cards -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-6">
+            <div class="detail-card">
+                <div class="card-header">
+                    <h5>Tipos de Incidentes</h5>
+                </div>
+                <div id="incidentTypesList" class="scrollable-list">
+                    <!-- Lista de tipos de incidentes -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="detail-card">
+                <div class="card-header">
+                    <h5>Estaciones más Afectadas</h5>
+                </div>
+                <div id="stationsList" class="scrollable-list">
+                    <!-- Lista de estaciones más afectadas -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- JavaScript de Estadísticas -->
+<script src="{{ url_for('static', filename='js/statistics.js') }}"></script>
+{% endblock %}

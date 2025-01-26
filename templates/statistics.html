@@ -2,8 +2,16 @@
 
 {% block content %}
 <div class="container-fluid statistics-container py-4">
-    <div id="emptyDataMessage" style="display: none; text-align: center; padding: 10px; color: #666;" class="alert alert-info">
+    <!-- Encabezado de Estadísticas -->
+    <div class="statistics-header">
+        <h2>Estadísticas</h2>
+        <p>Análisis detallado de los incidentes de seguridad para mejorar la prevención y respuesta.</p>
     </div>
+
+    <div id="emptyDataMessage" style="display: none; text-align: center; padding: 10px; color: #666;" class="alert alert-info">
+        <!-- Mensaje de datos vacíos -->
+    </div>
+
     <!-- Summary Cards -->
     <div class="summary-section mb-4">
         <div class="row g-3">
@@ -55,7 +63,9 @@
                 <div class="card-header">
                     <h5>Tipos de Incidentes</h5>
                 </div>
-                <div id="incidentTypesList" class="scrollable-list"></div>
+                <div id="incidentTypesList" class="scrollable-list">
+                    <!-- Lista de tipos de incidentes -->
+                </div>
             </div>
         </div>
         <div class="col-12 col-md-6">
@@ -63,13 +73,18 @@
                 <div class="card-header">
                     <h5>Estaciones más Afectadas</h5>
                 </div>
-                <div id="stationsList" class="scrollable-list"></div>
+                <div id="stationsList" class="scrollable-list">
+                    <!-- Lista de estaciones más afectadas -->
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Font Awesome Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- Chart.js Library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- JavaScript de Estadísticas -->
 <script src="{{ url_for('static', filename='js/statistics.js') }}"></script>
 {% endblock %}
