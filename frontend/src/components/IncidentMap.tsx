@@ -145,14 +145,17 @@ export default function IncidentMap() {
     updateChart(filteredIncidents);
   };
 
-  const updateMapMarkers = (filteredStations: Station[], filteredIncidents: Incident[]) => {
+  const updateMapMarkers = (filteredStations: Station[], filteredIncidents: Incident[], applyFilters = true) => {
     if (!mapRef.current) return;
 
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
 
-    filteredStations.forEach(station => {
-      const stationIncidents = filteredIncidents.filter(i => i.nearest_station === station.nombre);
+    const stationsToUse = applyFilters ? filteredStations : stations;
+    const incidentsToUse = applyFilters ? filteredIncidents : incidents;
+
+    stationsToUse.forEach(station => {
+      const stationIncidents = incidentsToUse.filter(i => i.nearest_station === station.nombre);
 
       const marker = L.marker([station.latitude, station.longitude], {
         icon: L.divIcon({
@@ -279,13 +282,13 @@ export default function IncidentMap() {
           fetch('/incidents').then(res => res.json())
         ]);
 
-        // Guardar los datos completos
+        // Guardar los datos originales completos
         setStations(stationsData);
         setIncidents(incidentsData);
         setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
-        
+
         // Mostrar todos los datos sin filtros inicialmente
-        updateMapMarkers(stationsData, incidentsData);
+        updateMapMarkers(stationsData, incidentsData, false);
         updateChart(incidentsData);
       } catch (err) {
         console.error('Error loading map:', err);
@@ -299,11 +302,19 @@ export default function IncidentMap() {
   }, []);
 
   const applyFilters = () => {
-    // Solo aplicar filtros cuando se presiona el botón
+    // Solo aplicar filtros si hay checkboxes activos
+    const anyFilterEnabled = Object.values(enableFilters).some(value => value);
+
+    if (!anyFilterEnabled) {
+      // Si no hay filtros activos, mostrar todos los datos
+      updateMapMarkers(stations, incidents, false);
+      updateChart(incidents);
+      return;
+    }
+
     let filteredStations = [...stations];
     let filteredIncidents = [...incidents];
 
-    // Aplicar filtros solo si están habilitados
     if (enableFilters.troncal && filters.troncal) {
       filteredStations = filteredStations.filter(station => station.troncal === filters.troncal);
     }
@@ -332,7 +343,7 @@ export default function IncidentMap() {
   };
 
   const resetFilters = () => {
-    // Restablecer filtros y checkboxes
+    // Restablecer todos los filtros y checkboxes
     setFilters({});
     setEnableFilters({
       troncal: false,
@@ -340,8 +351,8 @@ export default function IncidentMap() {
       incidentType: false,
       securityLevel: false
     });
-    // Mostrar todos los datos sin filtros
-    updateMapMarkers(stations, incidents);
+    // Mostrar todos los datos originales
+    updateMapMarkers(stations, incidents, false);
     updateChart(incidents);
   };
 
