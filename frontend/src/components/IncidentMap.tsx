@@ -231,9 +231,11 @@ export default function IncidentMap() {
   }, [filters, enableFilters]);
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 3, mb: 3, minHeight: '100vh' }}>
-      {/* Filtros */}
-      <Paper elevation={3} sx={{ p: 2, mb: 3 }}>
+    <Container maxWidth="xl" sx={{ mt: 3, mb: 3 }}>
+      <Grid container spacing={2}>
+        {/* Filtros */}
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
         <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
@@ -295,16 +297,20 @@ export default function IncidentMap() {
             {error}
           </Box>
         )}
-        <div id="map" style={{ height: '500px', width: '100%', minHeight: '300px' }}></div>
+        <div id="map" style={{ height: '400px', width: '100%' }}></div>
       </Paper>
+      </Grid>
 
-      {/* Gráfico de Estadísticas */}
-      <Paper elevation={3} sx={{ p: 2 }}>
-        <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
-        <Box sx={{ height: '400px', minHeight: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <canvas id="incidentChart" style={{ maxWidth: '100%', height: '100%' }}></canvas>
-        </Box>
-      </Paper>
+      {/* Contenedor para el mapa y las estadísticas */}
+      <Grid item xs={12}>
+        <Paper elevation={3} sx={{ p: 2 }}>
+          <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
+          <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <canvas id="incidentChart" style={{ maxWidth: '100%', height: '100%' }}></canvas>
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
     </Container>
   );
 }
