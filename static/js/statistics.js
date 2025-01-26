@@ -30,20 +30,78 @@ async function loadStations() {
     }
 }
 
-async function loadIncidentTypes() {
-    try {
-        const response = await fetch('/api/statistics');
-        if (!response.ok) throw new Error('Error cargando tipos de incidentes');
-        const data = await response.json();
-        
-        const incidentSelect = document.getElementById('incidentTypeFilter');
-        incidentSelect.innerHTML = '<option value="all">Todos los Tipos</option>';
-        Object.keys(data.incident_types).sort().forEach(type => {
-            incidentSelect.innerHTML += `<option value="${type}">${type}</option>`;
-        });
-    } catch (error) {
-        console.error('Error cargando tipos de incidentes:', error);
+function createFilterCard(title, content) {
+    return `
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${title}</h5>
+                    <div class="card-content">${content}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function createDetailedView(data, activeFilters) {
+    const container = document.getElementById('detailedView');
+    if (!data.incidents || data.incidents.length === 0) {
+        container.innerHTML = '<p class="text-muted">No se encontraron resultados para los filtros seleccionados.</p>';
+        return;
     }
+
+    let html = '<div class="row">';
+
+    // Resumen por tipo de incidente
+    if (!activeFilters.incident_type) {
+        const typeStats = data.incident_types;
+        html += `
+            <div class="col-md-6 mb-4">
+                <h6>Distribución por Tipo</h6>
+                <ul class="list-group">
+                    ${Object.entries(typeStats)
+                        .sort(([,a], [,b]) => b - a)
+                        .map(([type, count]) => 
+                            `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${type}
+                                <span class="badge bg-primary rounded-pill">${count}</span>
+                            </li>`
+                        ).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    // Resumen por estación
+    if (!activeFilters.station) {
+        const stationStats = data.top_stations;
+        html += `
+            <div class="col-md-6 mb-4">
+                <h6>Distribución por Estación</h6>
+                <ul class="list-group">
+                    ${Object.entries(stationStats)
+                        .sort(([,a], [,b]) => b - a)
+                        .map(([station, count]) => 
+                            `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${station}
+                                <span class="badge bg-primary rounded-pill">${count}</span>
+                            </li>`
+                        ).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    html += '</div>';
+
+    // Timeline de incidentes si hay filtros de fecha/hora
+    if (activeFilters.date_from || activeFilters.date_to || activeFilters.time_from || activeFilters.time_to) {
+        html += '<div class="timeline mt-4">';
+        // Aquí iría la implementación del timeline
+        html += '</div>';
+    }
+
+    container.innerHTML = html;
 }
 
 async function loadStatistics() {
@@ -60,6 +118,9 @@ async function loadStatistics() {
         updateSummaryCards(data);
         createCharts(data);
         await loadIncidentTypes();
+        
+        // Mostrar vista inicial sin filtros
+        createDetailedView(data, {});
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
         showError('Error al cargar las estadísticas');
@@ -105,7 +166,8 @@ async function loadFilteredData() {
         }
 
         const data = await response.json();
-        updateFilteredDataTable(data);
+        createDetailedView(data, filters);
+        updateCharts(data);
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
         showError('Error al cargar datos filtrados');
@@ -129,27 +191,6 @@ function resetFilters() {
     document.getElementById('incidentTypeFilter').value = 'all';
 
     loadFilteredData();
-}
-
-function updateFilteredDataTable(data) {
-    const tbody = document.querySelector('#filteredDataTable tbody');
-    tbody.innerHTML = '';
-
-    if (!data.incidents || !Array.isArray(data.incidents)) {
-        return;
-    }
-
-    data.incidents.forEach(incident => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${new Date(incident.timestamp).toLocaleDateString()}</td>
-            <td>${new Date(incident.timestamp).toLocaleTimeString()}</td>
-            <td>${incident.incident_type}</td>
-            <td>${incident.nearest_station}</td>
-            <td>${incident.troncal || 'N/A'}</td>
-        `;
-        tbody.appendChild(row);
-    });
 }
 
 function updateSummaryCards(data) {
@@ -212,7 +253,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Inicializando página de estadísticas...');
         await loadStations();
         await loadStatistics();
-        await loadFilteredData();
 
         // Agregar event listeners para los filtros
         document.getElementById('applyFilters').addEventListener('click', loadFilteredData);

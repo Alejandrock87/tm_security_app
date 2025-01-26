@@ -162,6 +162,7 @@ def init_routes(app):
         try:
             # Base query
             query = Incident.query
+            active_filters = {}
 
             # Get filter parameters
             date_from = request.args.get('dateFrom')
@@ -172,15 +173,41 @@ def init_routes(app):
             troncal = request.args.get('troncal')
             station = request.args.get('station')
 
-            # Apply filters
+            # Get stations for troncal filtering
+            stations_in_troncal = []
+            if troncal and troncal != 'all':
+                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                    geojson_data = json.load(f)
+                    stations_in_troncal = [
+                        feature['properties']['nombre_estacion']
+                        for feature in geojson_data['features']
+                        if feature['properties'].get('troncal_estacion') == troncal
+                    ]
+                active_filters['troncal'] = {'value': troncal, 'stations': stations_in_troncal}
+
+            # Apply filters and track active ones
             if date_from:
                 query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+                active_filters['date_from'] = date_from
             if date_to:
                 query = query.filter(Incident.timestamp <= datetime.strptime(date_to + ' 23:59:59', '%Y-%m-%d %H:%M:%S'))
+                active_filters['date_to'] = date_to
+            if time_from:
+                hour_from = int(time_from.split(':')[0])
+                query = query.filter(func.extract('hour', Incident.timestamp) >= hour_from)
+                active_filters['time_from'] = time_from
+            if time_to:
+                hour_to = int(time_to.split(':')[0])
+                query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
+                active_filters['time_to'] = time_to
             if incident_type and incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
-            if station and station != 'all':
+                active_filters['incident_type'] = incident_type
+            if stations_in_troncal:
+                query = query.filter(Incident.nearest_station.in_(stations_in_troncal))
+            elif station and station != 'all':
                 query = query.filter(Incident.nearest_station == station)
+                active_filters['station'] = station
 
             incidents = query.all()
             if not incidents:
