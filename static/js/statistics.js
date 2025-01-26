@@ -50,70 +50,92 @@ function createDetailedView(data, activeFilters = {}) {
             return;
         }
 
-        let html = '<div class="row">';
-
-        // Resumen por tipo de incidente
-        if (!activeFilters.incident_type) {
-            const typeStats = data.incident_types;
-            if (Object.keys(typeStats).length > 0) {
-                html += `
-                    <div class="col-md-6 mb-4">
-                        <h6>Distribución por Tipo</h6>
-                        <ul class="list-group">
-                            ${Object.entries(typeStats)
-                                .sort(([,a], [,b]) => b - a)
-                                .map(([type, count]) => 
-                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                        ${type}
-                                        <span class="badge bg-primary rounded-pill">${count}</span>
-                                    </li>`
-                                ).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
+        // Si no hay filtros activos, no mostrar nada en la vista detallada
+        if (Object.keys(activeFilters).length === 0) {
+            container.innerHTML = '<p class="text-muted">Seleccione filtros para ver información detallada.</p>';
+            return;
         }
 
-        // Resumen por estación
-        if (!activeFilters.station) {
+        let html = '<div class="row">';
+        let hasContent = false;
+
+        // Mostrar información específica según los filtros aplicados
+        if (activeFilters.station) {
+            hasContent = true;
+            const stationIncidents = data.incident_types;
+            html += `
+                <div class="col-12 mb-4">
+                    <h6>Incidentes en ${activeFilters.station}</h6>
+                    <ul class="list-group">
+                        ${Object.entries(stationIncidents)
+                            .sort(([,a], [,b]) => b - a)
+                            .map(([type, count]) => 
+                                `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${type}
+                                    <span class="badge bg-primary rounded-pill">${count}</span>
+                                </li>`
+                            ).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        if (activeFilters.troncal) {
+            hasContent = true;
             const stationStats = data.top_stations;
-            if (Object.keys(stationStats).length > 0) {
-                html += `
-                    <div class="col-md-6 mb-4">
-                        <h6>Distribución por Estación</h6>
-                        <ul class="list-group">
-                            ${Object.entries(stationStats)
-                                .sort(([,a], [,b]) => b - a)
-                                .map(([station, count]) => 
-                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                        ${station}
-                                        <span class="badge bg-primary rounded-pill">${count}</span>
-                                    </li>`
-                                ).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
+            html += `
+                <div class="col-12 mb-4">
+                    <h6>Estaciones más afectadas en Troncal ${activeFilters.troncal}</h6>
+                    <ul class="list-group">
+                        ${Object.entries(stationStats)
+                            .sort(([,a], [,b]) => b - a)
+                            .map(([station, count]) => 
+                                `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${station}
+                                    <span class="badge bg-primary rounded-pill">${count}</span>
+                                </li>`
+                            ).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        if (activeFilters.incidentType) {
+            hasContent = true;
+            const stationStats = data.top_stations;
+            html += `
+                <div class="col-12 mb-4">
+                    <h6>Estaciones más afectadas por ${activeFilters.incidentType}</h6>
+                    <ul class="list-group">
+                        ${Object.entries(stationStats)
+                            .sort(([,a], [,b]) => b - a)
+                            .map(([station, count]) => 
+                                `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${station}
+                                    <span class="badge bg-primary rounded-pill">${count}</span>
+                                </li>`
+                            ).join('')}
+                    </ul>
+                </div>
+            `;
         }
 
         html += '</div>';
 
-        // Mostrar estadísticas generales
-        html += `
-            <div class="row mt-4">
-                <div class="col-12">
-                    <h6>Resumen General</h6>
-                    <ul class="list-group">
-                        <li class="list-group-item">Total de incidentes: ${data.total_incidents}</li>
-                        <li class="list-group-item">Hora más peligrosa: ${data.most_dangerous_hour}</li>
-                        <li class="list-group-item">Tipo más común: ${data.most_common_type}</li>
-                        <li class="list-group-item">Estación más afectada: ${data.most_affected_station}</li>
-                    </ul>
+        // Solo mostrar total de incidentes filtrados
+        if (hasContent) {
+            html += `
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            Total de incidentes encontrados: ${data.total_incidents}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
 
-        container.innerHTML = html;
+        container.innerHTML = hasContent ? html : '<p class="text-muted">Seleccione filtros para ver información detallada.</p>';
     } catch (error) {
         console.error('Error al crear vista detallada:', error);
         document.getElementById('detailedView').innerHTML = 
