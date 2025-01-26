@@ -64,10 +64,20 @@ function displayStations(stations, incidentsByStation) {
     stations.forEach(station => {
         const stationData = incidentsByStation[station.nombre] || { total: 0, types: {} };
         const securityLevel = calculateSecurityLevel(stationData.total);
+        const markerColor = getMarkerColor(stationData.total);
 
-        const marker = L.marker([station.latitude, station.longitude])
-            .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
-            .addTo(map);
+        const marker = L.marker([station.latitude, station.longitude], {
+            icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color: ${markerColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center;">
+                        <span style="color: white; font-weight: bold;">T</span>
+                      </div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            })
+        })
+        .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
+        .addTo(map);
 
         marker.on('click', () => {
             updateChart(stationData.incidents || []);
@@ -75,6 +85,12 @@ function displayStations(stations, incidentsByStation) {
 
         markers.push(marker);
     });
+
+    function getMarkerColor(totalIncidents) {
+        if (totalIncidents >= 50) return '#ff0000'; // Alto - Rojo
+        if (totalIncidents >= 20) return '#ffa500'; // Medio - Naranja
+        return '#008000'; // Bajo - Verde
+    }
 }
 
 function calculateSecurityLevel(totalIncidents) {
