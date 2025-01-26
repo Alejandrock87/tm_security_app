@@ -6,7 +6,7 @@ import L from 'leaflet';
 
 export default function IncidentMap() {
   const mapRef = useRef<L.Map | null>(null);
-  const [incidents, setIncidents] = useState([]);
+  const [_incidents, setIncidents] = useState([]);
 
   useEffect(() => {
     if (!mapRef.current) {

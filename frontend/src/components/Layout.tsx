@@ -14,7 +14,6 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  Tooltip,
   SwipeableDrawer
 } from '@mui/material';
 import {
