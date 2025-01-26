@@ -92,10 +92,16 @@ function updateCriticalHoursChart(hourlyData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 1
+                        maxTicksLimit: 10,
+                        precision: 0
+                    },
+                    grid: {
+                        drawBorder: false
                     }
                 }
-            }
+            },
+            maintainAspectRatio: true,
+            responsive: true
         }
     });
 }
