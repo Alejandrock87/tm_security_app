@@ -1,42 +1,46 @@
+
+/* Map container styles */
 .leaflet-container {
   width: 100%;
   height: 100%;
   border-radius: 4px;
 }
 
+#map {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  z-index: 1;
+  border-radius: 4px;
+}
+
+/* Filter panel styles */
 .filter-sidebar {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   overflow-y: auto;
+  padding: 1rem;
 }
 
+.filter-panel {
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+/* Statistics panel styles */
 .stats-container {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
-.chart-wrapper {
+.chart-container {
+  position: relative;
   height: 300px;
-  margin: 15px 0;
+  width: 100%;
 }
 
-.custom-div-icon {
-  text-align: center;
-}
-
-.security-level-alto {
-  color: #ff0000;
-  font-weight: bold;
-}
-
-.security-level-medio {
-  color: #ffa500;
-  font-weight: bold;
-}
-
-.security-level-bajo {
-  color: #008000;
-  font-weight: bold;
-}
-
+/* Station popup styles */
 .station-popup {
   padding: 12px;
   max-width: 250px;
@@ -64,33 +68,57 @@
   font-size: 13px;
 }
 
-#map {
-  width: 100%;
-  height: 400px;
-  position: relative;
-  z-index: 1;
+/* Security level indicators */
+.security-level-alto {
+  color: #ff0000;
+  font-weight: bold;
 }
 
-#map {
-  height: 500px;
-  width: 100%;
-  border-radius: 4px;
+.security-level-medio {
+  color: #ffa500;
+  font-weight: bold;
 }
 
-.filter-panel {
-  margin-bottom: 16px;
+.security-level-bajo {
+  color: #008000;
+  font-weight: bold;
 }
 
-.stats-panel {
-  margin-top: 16px;
+/* Custom marker icon */
+.custom-div-icon {
+  text-align: center;
 }
 
-.chart-container {
-  position: relative;
-  height: 300px;
-  width: 100%;
+/* Media queries for responsive design */
+@media screen and (max-width: 768px) {
+  .filter-sidebar {
+    height: auto;
+    max-height: 300px;
+  }
+
+  #map {
+    height: 400px;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .station-popup {
+    max-width: 200px;
+  }
 }
 
-.filter-group {
-  margin-bottom: 16px;
+@media screen and (max-width: 480px) {
+  #map {
+    height: 350px;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .filter-sidebar {
+    max-height: 250px;
+  }
 }
