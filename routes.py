@@ -12,6 +12,7 @@ from models import User, Incident
 from database import db
 from transmilenio_api import get_all_stations, get_route_information
 from sqlalchemy import func
+import os
 
 def init_routes(app):
     @app.route('/')
@@ -124,56 +125,16 @@ def init_routes(app):
         try:
             logging.info("Obteniendo datos para el panel de control")
             cached_data = cache.get('dashboard_data')
-            if cached_data:
-                return render_template('dashboard.html', **cached_data)
-                
-            # Si no hay datos en caché, crear nuevo caché
-            cached_data = {
-                'incidents': get_incidents_for_map(),
-                'statistics': get_incident_statistics() or {},
-                'trends': get_incident_trends() or [],
-                'model_insights': get_model_insights() or {}
-            }
-            # Guardar en caché por 1 hora
-            cache.set('dashboard_data', cached_data, timeout=3600)
-            if cached_data:
-                return render_template('dashboard.html', **cached_data)
-                
-            incidents = get_incidents_for_map()
+            if not cached_data:
+                # Si no hay caché, usar datos básicos sin predicciones
+                cached_data = {
+                    'incidents': get_incidents_for_map(),
+                    'statistics': get_incident_statistics() or {},
+                    'trends': [],
+                    'model_insights': {}
+                }
+            return render_template('dashboard.html', **cached_data)
 
-            thirty_days_ago = datetime.utcnow() - timedelta(days=30)
-            station_stats = db.session.query(
-                Incident.nearest_station,
-                func.count(Incident.id).label('incident_count')
-            ).filter(
-                Incident.timestamp >= thirty_days_ago
-            ).group_by(
-                Incident.nearest_station
-            ).all()
-
-            station_security_levels = {}
-            for station, count in station_stats:
-                if count > 5:
-                    level = 'high'
-                    color = '#ff0000'
-                elif count >= 2:
-                    level = 'medium'
-                    color = '#ffa500'
-                else:
-                    level = 'low'
-                    color = '#008000'
-                station_security_levels[station] = {'level': level, 'color': color, 'count': count}
-
-            statistics = get_incident_statistics()
-            trends = get_incident_trends()
-            model_insights = get_model_insights()
-
-            return render_template('dashboard.html',
-                                incidents=incidents,
-                                statistics=statistics if statistics else {},
-                                trends=trends if trends else [],
-                                model_insights=model_insights if model_insights else {},
-                                station_security_levels=station_security_levels)
         except Exception as e:
             logging.error(f"Error en la ruta del panel de control: {str(e)}")
             flash("Ocurrió un error al cargar el panel de control. Por favor, intente de nuevo más tarde.", "error")
