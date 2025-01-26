@@ -277,22 +277,22 @@ function createCharts(data) {
 
         const typeCtx2D = typeCtx.getContext('2d');
         charts.typeChart = new Chart(typeCtx2D, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(data.incident_types || {}),
-            datasets: [{
-                data: Object.values(data.incident_types || {}),
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data.incident_types || {}),
+                datasets: [{
+                    data: Object.values(data.incident_types || {}),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
 
-    const stationCtx = document.getElementById('topStationsChart').getContext('2d');
-    charts.stationChart = new Chart(stationCtx, {
+        const stationCtx2D = stationCtx.getContext('2d');
+    charts.stationChart = new Chart(stationCtx2D, {
         type: 'bar',
         data: {
             labels: Object.keys(data.top_stations || {}),
