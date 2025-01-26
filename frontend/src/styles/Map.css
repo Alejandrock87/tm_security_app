@@ -48,3 +48,40 @@
   color: #008000;
   font-weight: bold;
 }
+
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.filter-panel {
+  margin-bottom: 16px;
+}
+
+.stats-panel {
+  margin-top: 16px;
+}
+
+.chart-container {
+  height: 300px;
+  margin-top: 16px;
+}
+
+.filter-group {
+  margin-bottom: 16px;
+}
+
+.station-popup {
+  padding: 8px;
+}
+
+.station-popup h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.station-popup ul {
+  margin: 8px 0;
+  padding-left: 16px;
+}

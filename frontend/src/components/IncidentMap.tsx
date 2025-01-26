@@ -298,7 +298,10 @@ export default function IncidentMap() {
       <Grid container spacing={2}>
         {/* Panel de Filtros */}
         <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+            <Typography variant="h6" gutterBottom>
+              Filtros del Mapa
+            </Typography>
             <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -418,13 +421,34 @@ export default function IncidentMap() {
               </Paper>
             </Grid>
 
-            {/* Gráfico de Estadísticas */}
+            {/* Panel de Estadísticas */}
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2 }}>
-                <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
-                <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <canvas id="incidentChart"></canvas>
-                </Box>
+                <Typography variant="h6" gutterBottom>
+                  Estadísticas de Incidentes
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ p: 2, border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1 }}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Incidentes por Tipo
+                      </Typography>
+                      <Box sx={{ height: '300px' }}>
+                        <canvas id="incidentChart"></canvas>
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ p: 2, border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1 }}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Estaciones más Afectadas
+                      </Typography>
+                      <Box sx={{ height: '300px' }}>
+                        <canvas id="stationsChart"></canvas>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
               </Paper>
             </Grid>
           </Grid>
