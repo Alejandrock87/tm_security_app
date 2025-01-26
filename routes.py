@@ -172,15 +172,15 @@ def init_routes(app):
 
             # Apply filters
             if date_from:
-            query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
-        if date_to:
-            query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d'))
-        if time_from:
-            hour_from = int(time_from.split(':')[0])
-            query = query.filter(func.extract('hour', Incident.timestamp) >= hour_from)
-        if time_to:
-            hour_to = int(time_to.split(':')[0])
-            query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
+                query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+            if date_to:
+                query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d'))
+            if time_from:
+                hour_from = int(time_from.split(':')[0])
+                query = query.filter(func.extract('hour', Incident.timestamp) >= hour_from)
+            if time_to:
+                hour_to = int(time_to.split(':')[0])
+                query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
         if incident_type != 'all':
             query = query.filter(Incident.incident_type == incident_type)
 
