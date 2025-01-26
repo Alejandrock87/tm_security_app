@@ -282,12 +282,14 @@ export default function IncidentMap() {
           fetch('/incidents').then(res => res.json())
         ]);
 
+        console.log('Datos cargados:', { stations: stationsData.length, incidents: incidentsData.length });
+
         // Guardar los datos originales
         setStations(stationsData);
         setIncidents(incidentsData);
         setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
 
-        // Mostrar todos los datos inicialmente sin aplicar filtros
+        // Mostrar todos los datos inicialmente
         updateMapMarkers(stationsData, incidentsData);
         updateChart(incidentsData);
       } catch (err) {
@@ -302,10 +304,11 @@ export default function IncidentMap() {
   }, []);
 
   const applyFilters = () => {
-    // Si no hay filtros activos, mostrar todos los datos
+    console.log('Aplicando filtros:', { enableFilters, filters });
     const anyFilterEnabled = Object.values(enableFilters).some(value => value);
 
     if (!anyFilterEnabled) {
+      console.log('No hay filtros activos, mostrando todos los datos');
       updateMapMarkers(stations, incidents);
       updateChart(incidents);
       return;
