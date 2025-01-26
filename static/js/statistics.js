@@ -1,8 +1,50 @@
+
 // Variables globales para los gráficos
 let charts = {
     typeChart: null,
     stationChart: null
 };
+
+async function loadStations() {
+    try {
+        const response = await fetch('/api/stations');
+        if (!response.ok) throw new Error('Error cargando estaciones');
+        const stations = await response.json();
+        
+        // Procesar troncales
+        const troncales = [...new Set(stations.map(s => s.troncal))].filter(Boolean).sort();
+        const troncalSelect = document.getElementById('troncalFilter');
+        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+        troncales.forEach(troncal => {
+            troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+        });
+
+        // Procesar estaciones
+        const stationSelect = document.getElementById('stationFilter');
+        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+        stations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
+            stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
+        });
+    } catch (error) {
+        console.error('Error cargando estaciones:', error);
+    }
+}
+
+async function loadIncidentTypes() {
+    try {
+        const response = await fetch('/api/statistics');
+        if (!response.ok) throw new Error('Error cargando tipos de incidentes');
+        const data = await response.json();
+        
+        const incidentSelect = document.getElementById('incidentTypeFilter');
+        incidentSelect.innerHTML = '<option value="all">Todos los Tipos</option>';
+        Object.keys(data.incident_types).sort().forEach(type => {
+            incidentSelect.innerHTML += `<option value="${type}">${type}</option>`;
+        });
+    } catch (error) {
+        console.error('Error cargando tipos de incidentes:', error);
+    }
+}
 
 async function loadStatistics() {
     try {
@@ -17,10 +59,40 @@ async function loadStatistics() {
 
         updateSummaryCards(data);
         createCharts(data);
+        await loadIncidentTypes();
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
         showError('Error al cargar las estadísticas');
     }
+}
+
+function getFilters() {
+    const filters = {};
+    const addFilter = (id, key) => {
+        if (document.getElementById(`enable${id}`).checked && 
+            document.getElementById(id).value !== 'all') {
+            filters[key] = document.getElementById(id).value;
+        }
+    };
+
+    addFilter('troncalFilter', 'troncal');
+    addFilter('stationFilter', 'station');
+    addFilter('incidentTypeFilter', 'incidentType');
+
+    if (document.getElementById('enableDateFromFilter').checked) {
+        filters.dateFrom = document.getElementById('dateFromFilter').value;
+    }
+    if (document.getElementById('enableDateToFilter').checked) {
+        filters.dateTo = document.getElementById('dateToFilter').value;
+    }
+    if (document.getElementById('enableTimeFromFilter').checked) {
+        filters.timeFrom = document.getElementById('timeFromFilter').value;
+    }
+    if (document.getElementById('enableTimeToFilter').checked) {
+        filters.timeTo = document.getElementById('timeToFilter').value;
+    }
+
+    return filters;
 }
 
 async function loadFilteredData() {
@@ -38,6 +110,25 @@ async function loadFilteredData() {
         console.error('Error al cargar datos filtrados:', error);
         showError('Error al cargar datos filtrados');
     }
+}
+
+function resetFilters() {
+    // Reset checkboxes
+    ['DateFrom', 'DateTo', 'TimeFrom', 'TimeTo', 'troncal', 'station', 'incidentType'].forEach(filter => {
+        const checkbox = document.getElementById(`enable${filter}Filter`);
+        if (checkbox) checkbox.checked = false;
+    });
+
+    // Reset inputs
+    document.getElementById('dateFromFilter').value = '';
+    document.getElementById('dateToFilter').value = '';
+    document.getElementById('timeFromFilter').value = '';
+    document.getElementById('timeToFilter').value = '';
+    document.getElementById('troncalFilter').value = 'all';
+    document.getElementById('stationFilter').value = 'all';
+    document.getElementById('incidentTypeFilter').value = 'all';
+
+    loadFilteredData();
 }
 
 function updateFilteredDataTable(data) {
@@ -61,52 +152,6 @@ function updateFilteredDataTable(data) {
     });
 }
 
-function getFilters() {
-    const filters = {};
-
-    if (document.getElementById('enableDateFromFilter').checked) {
-        filters.dateFrom = document.getElementById('dateFromFilter').value;
-    }
-    if (document.getElementById('enableDateToFilter').checked) {
-        filters.dateTo = document.getElementById('dateToFilter').value;
-    }
-    if (document.getElementById('enableTimeFromFilter').checked) {
-        filters.timeFrom = document.getElementById('timeFromFilter').value;
-    }
-    if (document.getElementById('enableTimeToFilter').checked) {
-        filters.timeTo = document.getElementById('timeToFilter').value;
-    }
-    if (document.getElementById('troncalFilter').value !== 'all') {
-        filters.troncal = document.getElementById('troncalFilter').value;
-    }
-    if (document.getElementById('stationFilter').value !== 'all') {
-        filters.station = document.getElementById('stationFilter').value;
-    }
-    if (document.getElementById('incidentTypeFilter').value !== 'all') {
-        filters.incidentType = document.getElementById('incidentTypeFilter').value;
-    }
-
-    return filters;
-}
-
-function resetFilters() {
-    // Reset checkboxes
-    ['DateFrom', 'DateTo', 'TimeFrom', 'TimeTo'].forEach(filter => {
-        document.getElementById(`enable${filter}Filter`).checked = false;
-    });
-
-    // Reset inputs
-    document.getElementById('dateFromFilter').value = '';
-    document.getElementById('dateToFilter').value = '';
-    document.getElementById('timeFromFilter').value = '';
-    document.getElementById('timeToFilter').value = '';
-    document.getElementById('incidentTypeFilter').value = 'all';
-    document.getElementById('troncalFilter').value = 'all';
-    document.getElementById('stationFilter').value = 'all';
-
-    loadFilteredData();
-}
-
 function updateSummaryCards(data) {
     document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
     document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
@@ -114,13 +159,10 @@ function updateSummaryCards(data) {
     document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
 }
 
-
 function createCharts(data) {
-    // Limpiar gráficos existentes
     if (charts.typeChart) charts.typeChart.destroy();
     if (charts.stationChart) charts.stationChart.destroy();
 
-    // Gráfico de tipos de incidentes
     const typeCtx = document.getElementById('incidentTypesChart').getContext('2d');
     charts.typeChart = new Chart(typeCtx, {
         type: 'doughnut',
@@ -137,7 +179,6 @@ function createCharts(data) {
         }
     });
 
-    // Gráfico de estaciones más afectadas
     const stationCtx = document.getElementById('topStationsChart').getContext('2d');
     charts.stationChart = new Chart(stationCtx, {
         type: 'bar',
@@ -163,26 +204,26 @@ function createCharts(data) {
 
 function showError(message) {
     console.error(message);
-    // Aquí podrías agregar una alerta visual para el usuario
 }
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Inicializando página de estadísticas...');
+        await loadStations();
         await loadStatistics();
         await loadFilteredData();
 
-        const applyButton = document.getElementById('applyFilters');
-        const resetButton = document.getElementById('resetFilters');
-
-        if (applyButton) {
-            applyButton.addEventListener('click', loadFilteredData);
-        }
-
-        if (resetButton) {
-            resetButton.addEventListener('click', resetFilters);
-        }
+        // Agregar event listeners para los filtros
+        document.getElementById('applyFilters').addEventListener('click', loadFilteredData);
+        document.getElementById('resetFilters').addEventListener('click', resetFilters);
+        
+        // Event listener para actualizar estaciones cuando cambia la troncal
+        document.getElementById('troncalFilter').addEventListener('change', async function() {
+            if (document.getElementById('enabletroncalFilter').checked) {
+                await loadStations();
+            }
+        });
     } catch (error) {
         console.error('Error initializing page:', error);
         showError('Error al inicializar la página');
