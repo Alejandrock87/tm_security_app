@@ -26,137 +26,128 @@ async function loadStations() {
         });
     } catch (error) {
         console.error('Error cargando estaciones:', error);
+        showError('Error al cargar las estaciones');
     }
 }
 
-function createFilterCard(title, content) {
-    return `
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">${title}</h5>
-                    <div class="card-content">${content}</div>
-                </div>
-            </div>
-        </div>
-    `;
+function updateSummaryCards(data) {
+    if (!data) return;
+    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
+    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
+    document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
 }
 
 function createDetailedView(data, activeFilters = {}) {
     try {
         const container = document.getElementById('detailedView');
-        if (!container) {
-            console.error('No se encontró el contenedor de vista detallada');
-            return;
-        }
+        if (!container) return;
 
-        // Verificar si los datos son válidos
         if (!data) {
             container.innerHTML = '<div class="alert alert-warning">No hay datos disponibles.</div>';
             return;
         }
 
-        // Si no hay filtros activos, mostrar resumen general
+        let html = '<div class="row">';
+
+        // Mostrar resumen general si no hay filtros activos
         if (Object.keys(activeFilters).length === 0) {
-            container.innerHTML = `
-                <div class="row">
-                    <div class="col-12">
-                        <div class="alert alert-info">
-                            <h6>Resumen General</h6>
-                            <p>Total de incidentes: ${data.total_incidents}</p>
-                            <p>Estación más afectada: ${data.most_affected_station}</p>
-                            <p>Tipo más común: ${data.most_common_type}</p>
-                            <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
-                        </div>
+            html += `
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <h6>Resumen General</h6>
+                        <p>Total de incidentes: ${data.total_incidents}</p>
+                        <p>Estación más afectada: ${data.most_affected_station}</p>
+                        <p>Tipo más común: ${data.most_common_type}</p>
+                        <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
                     </div>
                 </div>`;
-            return;
-        }
-
-        let html = '<div class="row">';
-        let hasContent = false;
-
-        // Mostrar información específica según los filtros aplicados
-        if (activeFilters.station) {
-            hasContent = true;
-            const stationIncidents = data.incident_types;
-            html += `
-                <div class="col-12 mb-4">
-                    <h6>Incidentes en ${activeFilters.station}</h6>
-                    <ul class="list-group">
-                        ${Object.entries(stationIncidents)
-                            .sort(([,a], [,b]) => b - a)
-                            .map(([type, count]) => 
-                                `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                    ${type}
-                                    <span class="badge bg-primary rounded-pill">${count}</span>
-                                </li>`
-                            ).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-
-        if (activeFilters.troncal) {
-            hasContent = true;
-            const stationStats = data.top_stations;
-            html += `
-                <div class="col-12 mb-4">
-                    <h6>Estaciones más afectadas en Troncal ${activeFilters.troncal}</h6>
-                    <ul class="list-group">
-                        ${Object.entries(stationStats)
-                            .sort(([,a], [,b]) => b - a)
-                            .map(([station, count]) => 
-                                `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                    ${station}
-                                    <span class="badge bg-primary rounded-pill">${count}</span>
-                                </li>`
-                            ).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-
-        if (activeFilters.incidentType) {
-            hasContent = true;
-            const stationStats = data.top_stations;
-            html += `
-                <div class="col-12 mb-4">
-                    <h6>Estaciones más afectadas por ${activeFilters.incidentType}</h6>
-                    <ul class="list-group">
-                        ${Object.entries(stationStats)
-                            .sort(([,a], [,b]) => b - a)
-                            .map(([station, count]) => 
-                                `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                    ${station}
-                                    <span class="badge bg-primary rounded-pill">${count}</span>
-                                </li>`
-                            ).join('')}
-                    </ul>
-                </div>
-            `;
+        } else {
+            // Mostrar información filtrada
+            if (data.incident_types && Object.keys(data.incident_types).length > 0) {
+                html += `
+                    <div class="col-12 mb-4">
+                        <h6>Distribución de Incidentes</h6>
+                        <ul class="list-group">
+                            ${Object.entries(data.incident_types)
+                                .sort(([,a], [,b]) => b - a)
+                                .map(([type, count]) => 
+                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                        ${type}
+                                        <span class="badge bg-primary rounded-pill">${count}</span>
+                                    </li>`
+                                ).join('')}
+                        </ul>
+                    </div>`;
+            }
         }
 
         html += '</div>';
-
-        // Solo mostrar total de incidentes filtrados
-        if (hasContent) {
-            html += `
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="alert alert-info">
-                            Total de incidentes encontrados: ${data.total_incidents}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        container.innerHTML = hasContent ? html : '<p class="text-muted">Seleccione filtros para ver información detallada.</p>';
+        container.innerHTML = html;
     } catch (error) {
         console.error('Error al crear vista detallada:', error);
         document.getElementById('detailedView').innerHTML = 
-            '<p class="text-danger">Error al procesar los datos. Por favor, intente nuevamente.</p>';
+            '<div class="alert alert-danger">Error al procesar los datos. Por favor, intente nuevamente.</div>';
+    }
+}
+
+function createCharts(data) {
+    try {
+        // Destruir gráficos existentes si existen
+        if (charts.typeChart) {
+            charts.typeChart.destroy();
+            charts.typeChart = null;
+        }
+        if (charts.stationChart) {
+            charts.stationChart.destroy();
+            charts.stationChart = null;
+        }
+
+        // Crear gráfico de tipos de incidentes
+        const typeCtx = document.getElementById('incidentTypesChart');
+        if (typeCtx && data.incident_types) {
+            charts.typeChart = new Chart(typeCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.incident_types),
+                    datasets: [{
+                        data: Object.values(data.incident_types),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Crear gráfico de estaciones
+        const stationCtx = document.getElementById('topStationsChart');
+        if (stationCtx && data.top_stations) {
+            charts.stationChart = new Chart(stationCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.top_stations),
+                    datasets: [{
+                        label: 'Incidentes',
+                        data: Object.values(data.top_stations),
+                        backgroundColor: '#36A2EB'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al crear gráficos:', error);
     }
 }
 
@@ -175,25 +166,10 @@ async function loadStatistics() {
             throw new Error('Datos inválidos recibidos del servidor');
         }
 
-        // Actualizar la interfaz con los datos recibidos
         updateSummaryCards(data);
         createDetailedView(data, {});
+        createCharts(data);
 
-        // Actualizar gráficos solo si hay datos válidos
-        if (data.incident_types && data.top_stations) {
-            // Asegurarse de que los gráficos existentes se destruyan antes de crear nuevos
-            if (charts.typeChart) charts.typeChart.destroy();
-            if (charts.stationChart) charts.stationChart.destroy();
-            
-            updateSummaryCards(data);
-            createCharts(data);
-            await loadIncidentTypes();
-
-            // Mostrar vista inicial sin filtros
-            createDetailedView(data, {});
-        } else {
-            throw new Error('Datos inválidos recibidos del servidor');
-        }
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
         document.getElementById('detailedView').innerHTML = 
@@ -201,54 +177,21 @@ async function loadStatistics() {
     }
 }
 
-function getFilters() {
-    const filters = {};
-    const addFilter = (id, key) => {
-        if (document.getElementById(`enable${id}`).checked && 
-            document.getElementById(id).value !== 'all') {
-            filters[key] = document.getElementById(id).value;
-        }
-    };
-
-    addFilter('troncalFilter', 'troncal');
-    addFilter('stationFilter', 'station');
-    addFilter('incidentTypeFilter', 'incidentType');
-
-    if (document.getElementById('enableDateFromFilter').checked) {
-        filters.dateFrom = document.getElementById('dateFromFilter').value;
-    }
-    if (document.getElementById('enableDateToFilter').checked) {
-        filters.dateTo = document.getElementById('dateToFilter').value;
-    }
-    if (document.getElementById('enableTimeFromFilter').checked) {
-        filters.timeFrom = document.getElementById('timeFromFilter').value;
-    }
-    if (document.getElementById('enableTimeToFilter').checked) {
-        filters.timeTo = document.getElementById('timeToFilter').value;
-    }
-
-    return filters;
-}
-
 async function loadFilteredData() {
     try {
         const filters = getFilters();
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
+
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
 
         const data = await response.json();
         if (data) {
-            // Actualizar las tarjetas de resumen con los datos filtrados
-            document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
-            document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
-            document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
-            document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
-            
-            // Crear vista detallada con los datos filtrados
+            updateSummaryCards(data);
             createDetailedView(data, filters);
+            createCharts(data);
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);
@@ -257,77 +200,38 @@ async function loadFilteredData() {
     }
 }
 
+function getFilters() {
+    const filters = {};
+    const addFilter = (id, key) => {
+        const checkbox = document.getElementById(`enable${id}`);
+        const input = document.getElementById(id);
+        if (checkbox && checkbox.checked && input && input.value !== 'all') {
+            filters[key] = input.value;
+        }
+    };
+
+    addFilter('troncalFilter', 'troncal');
+    addFilter('stationFilter', 'station');
+    addFilter('incidentTypeFilter', 'incidentType');
+    addFilter('dateFromFilter', 'dateFrom');
+    addFilter('dateToFilter', 'dateTo');
+    addFilter('timeFromFilter', 'timeFrom');
+    addFilter('timeToFilter', 'timeTo');
+
+    return filters;
+}
+
 function resetFilters() {
-    // Reset checkboxes
-    ['DateFrom', 'DateTo', 'TimeFrom', 'TimeTo', 'troncal', 'station', 'incidentType'].forEach(filter => {
-        const checkbox = document.getElementById(`enable${filter}Filter`);
+    const filterIds = ['DateFrom', 'DateTo', 'TimeFrom', 'TimeTo', 'troncal', 'station', 'incidentType'];
+
+    filterIds.forEach(id => {
+        const checkbox = document.getElementById(`enable${id}Filter`);
+        const input = document.getElementById(`${id}Filter`);
         if (checkbox) checkbox.checked = false;
+        if (input) input.value = input.tagName === 'SELECT' ? 'all' : '';
     });
 
-    // Reset inputs
-    document.getElementById('dateFromFilter').value = '';
-    document.getElementById('dateToFilter').value = '';
-    document.getElementById('timeFromFilter').value = '';
-    document.getElementById('timeToFilter').value = '';
-    document.getElementById('troncalFilter').value = 'all';
-    document.getElementById('stationFilter').value = 'all';
-    document.getElementById('incidentTypeFilter').value = 'all';
-
-    loadFilteredData();
-}
-
-function updateSummaryCards(data) {
-    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
-    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || 'No hay datos';
-    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || 'No hay datos';
-    document.getElementById('mostCommonType').textContent = data.most_common_type || 'No hay datos';
-}
-
-function createCharts(data) {
-    if (charts.typeChart) charts.typeChart.destroy();
-    if (charts.stationChart) charts.stationChart.destroy();
-
-    const typeCtx = document.getElementById('incidentTypesChart').getContext('2d');
-    charts.typeChart = new Chart(typeCtx, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(data.incident_types || {}),
-            datasets: [{
-                data: Object.values(data.incident_types || {}),
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-    const stationCtx = document.getElementById('topStationsChart').getContext('2d');
-    charts.stationChart = new Chart(stationCtx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(data.top_stations || {}),
-            datasets: [{
-                label: 'Incidentes',
-                data: Object.values(data.top_stations || {}),
-                backgroundColor: '#36A2EB'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
-
-function showError(message) {
-    console.error(message);
+    loadStatistics();
 }
 
 // Event listeners
@@ -337,18 +241,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadStations();
         await loadStatistics();
 
-        // Agregar event listeners para los filtros
-        document.getElementById('applyFilters').addEventListener('click', loadFilteredData);
-        document.getElementById('resetFilters').addEventListener('click', resetFilters);
+        document.getElementById('applyFilters')?.addEventListener('click', loadFilteredData);
+        document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
 
-        // Event listener para actualizar estaciones cuando cambia la troncal
-        document.getElementById('troncalFilter').addEventListener('change', async function() {
-            if (document.getElementById('enabletroncalFilter').checked) {
-                await loadStations();
-            }
-        });
+        document.getElementById('troncalFilter')?.addEventListener('change', loadStations);
     } catch (error) {
-        console.error('Error initializing page:', error);
+        console.error('Error al inicializar la página:', error);
         showError('Error al inicializar la página');
     }
 });
+
+function showError(message) {
+    const container = document.getElementById('detailedView');
+    if (container) {
+        container.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+    }
+    console.error(message);
+}
