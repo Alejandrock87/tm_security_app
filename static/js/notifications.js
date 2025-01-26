@@ -41,31 +41,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate troncal options from the API
     fetch('/api/stations')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error cargando estaciones');
+            }
+            return response.json();
+        })
         .then(stations => {
-            const troncales = new Set(stations.map(station => station.troncal));
+            const troncales = new Set(stations.map(station => station.troncal_estacion));
             const troncalSelect = document.getElementById('troncalPreference');
-            troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
-            troncales.forEach(troncal => {
-                if (troncal && troncal !== 'N/A') {
-                    const option = document.createElement('option');
-                    option.value = troncal;
-                    option.textContent = troncal;
-                    option.selected = settings.troncal.includes(troncal);
-                    troncalSelect.appendChild(option);
-                }
-            });
+            if (troncalSelect) {
+                troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
+                troncales.forEach(troncal => {
+                    if (troncal && troncal !== 'N/A') {
+                        const option = document.createElement('option');
+                        option.value = troncal;
+                        option.textContent = troncal;
+                        option.selected = settings.troncal.includes(troncal);
+                        troncalSelect.appendChild(option);
+                    }
+                });
+            }
 
             // Populate station options
             const stationSelect = document.getElementById('stationPreference');
-            stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-            stations.forEach(station => {
-                const option = document.createElement('option');
-                option.value = station.nombre;
-                option.textContent = station.nombre;
-                option.selected = settings.station.includes(station.nombre);
-                stationSelect.appendChild(option);
-            });
+            if (stationSelect) {
+                stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+                stations.forEach(station => {
+                    const option = document.createElement('option');
+                    option.value = station.nombre_estacion;
+                    option.textContent = station.nombre_estacion;
+                    option.selected = settings.station.includes(station.nombre_estacion);
+                    stationSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading stations:', error);
         });
 
     // Set incident type preferences
