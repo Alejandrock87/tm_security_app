@@ -90,27 +90,26 @@ function showError(message) {
 async function loadFilters() {
     try {
         console.log("Iniciando carga de filtros...");
-        // Cargar datos de estaciones y troncales
         const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
         if (!response.ok) {
-            throw new Error(`Error al cargar datos de estaciones: ${response.status}`);
+            const message = `Error al cargar datos de estaciones: ${response.status} ${response.statusText}`;
+            throw new Error(message);
         }
         const data = await response.json();
-        
-        if (!data || !data.features) {
-            throw new Error('Datos de estaciones inválidos');
+        if (!data || !data.features || !Array.isArray(data.features)) {
+            throw new Error('Formato de datos inválido: GeoJSON no encontrado o mal formado');
         }
-        
+
         // Cargar troncales únicas
         const troncales = [...new Set(data.features
             .map(f => f.properties && f.properties.troncal_estacion)
             .filter(Boolean))].sort();
-        
+
         const troncalSelect = document.getElementById('troncalFilter');
         if (!troncalSelect) {
             throw new Error('Elemento troncalFilter no encontrado');
         }
-        
+
         troncalSelect.innerHTML = '<option value="all">Todas</option>';
         troncales.forEach(troncal => {
             const option = document.createElement('option');
@@ -118,12 +117,12 @@ async function loadFilters() {
             option.textContent = troncal;
             troncalSelect.appendChild(option);
         });
-        
+
         // Cargar estaciones
         const stations = [...new Set(data.features
             .map(f => f.properties.nombre_estacion)
             .filter(Boolean))].sort();
-        
+
         const stationSelect = document.getElementById('stationFilter');
         stationSelect.innerHTML = '<option value="all">Todas</option>';
         stations.forEach(station => {
@@ -132,17 +131,20 @@ async function loadFilters() {
             option.textContent = station;
             stationSelect.appendChild(option);
         });
-        
+
         // Cargar tipos de incidentes desde las estadísticas
         const statsResponse = await fetch('/api/statistics');
+        if (!statsResponse.ok) {
+            throw new Error(`Error al cargar estadísticas: ${statsResponse.status} ${statsResponse.statusText}`);
+        }
         const statsData = await statsResponse.json();
         const incidentTypes = Object.keys(statsData.incident_types || {}).sort();
-        
+
         const incidentSelect = document.getElementById('incidentTypeFilter');
         if (!incidentSelect) {
             throw new Error('Elemento incidentTypeFilter no encontrado');
         }
-        
+
         incidentSelect.innerHTML = '<option value="all">Todos</option>';
         incidentTypes.forEach(type => {
             const option = document.createElement('option');
@@ -150,18 +152,18 @@ async function loadFilters() {
             option.textContent = type;
             incidentSelect.appendChild(option);
         });
-        
+
         // Evento para actualizar estaciones cuando cambia la troncal
         troncalSelect.addEventListener('change', () => {
             const selectedTroncal = troncalSelect.value;
             stationSelect.innerHTML = '<option value="all">Todas</option>';
-            
+
             if (selectedTroncal !== 'all') {
                 const filteredStations = data.features
                     .filter(f => f.properties.troncal_estacion === selectedTroncal)
                     .map(f => f.properties.nombre_estacion)
                     .sort();
-                
+
                 filteredStations.forEach(station => {
                     const option = document.createElement('option');
                     option.value = station;
@@ -177,7 +179,7 @@ async function loadFilters() {
                 });
             }
         });
-        
+
         // Cargar estadísticas iniciales
         await loadStatistics();
     } catch (error) {
@@ -186,12 +188,12 @@ async function loadFilters() {
         const troncalSelect = document.getElementById('troncalFilter');
         const stationSelect = document.getElementById('stationFilter');
         const incidentSelect = document.getElementById('incidentTypeFilter');
-        
+
         if (troncalSelect) troncalSelect.innerHTML = '<option value="all">Error al cargar troncales</option>';
         if (stationSelect) stationSelect.innerHTML = '<option value="all">Error al cargar estaciones</option>';
         if (incidentSelect) incidentSelect.innerHTML = '<option value="all">Error al cargar tipos</option>';
-        
-        throw new Error(`Error cargando filtros: ${error.message || 'Error desconocido'}`);
+
+        showError(`Error cargando filtros: ${error.message || 'Error desconocido'}`);
     }
 }
 
@@ -232,27 +234,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             }),
             loadStatistics() // Cargar estadísticas iniciales
         ]);
-        
+
         // Agregar eventos a los botones de filtros
         const applyButton = document.getElementById('applyFilters');
         const resetButton = document.getElementById('resetFilters');
-        
+
         if (applyButton) {
             applyButton.addEventListener('click', async (e) => {
                 e.preventDefault();
                 await loadStatistics();
             });
         }
-        
+
         if (resetButton) {
             resetButton.addEventListener('click', async (e) => {
                 e.preventDefault();
                 await resetFilters();
-                
+
             });
         }
     } catch (error) {
         console.error('Error initializing page:', error);
+        showError('Error al inicializar la página');
     }
 });
 
