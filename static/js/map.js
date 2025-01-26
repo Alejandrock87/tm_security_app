@@ -75,6 +75,8 @@ async function loadMapData(filters = {}) {
 
     } catch (error) {
         console.error('Error loading map data:', error);
+        clearMarkers();
+        showError('No hay datos disponibles para los filtros seleccionados');
         //  Add more robust error handling here to check for specific HTTP status codes and provide more user-friendly messages.
     }
 }

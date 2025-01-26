@@ -94,7 +94,7 @@ def init_routes(app):
                 user_id=current_user.id,
                 nearest_station=form.station.data,
                 timestamp=datetime.combine(form.incident_date.data, form.incident_time.data)
-                
+
             )
             db.session.add(incident)
             db.session.commit()
@@ -133,11 +133,11 @@ def init_routes(app):
     def api_statistics():
         try:
             query = Incident.query
-            
+
             # Obtener parámetros de fecha
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
-            
+
             # Aplicar filtros de fecha si existen
             if date_from:
                 date_from_obj = datetime.strptime(date_from, '%Y-%m-%d')
@@ -146,9 +146,9 @@ def init_routes(app):
                 date_to_obj = datetime.strptime(date_to, '%Y-%m-%d')
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 query = query.filter(Incident.timestamp <= date_to_end)
-            
+
             incidents = query.all()
-            
+
             if not incidents:
                 return jsonify({
                     'total_incidents': 0,
@@ -159,23 +159,23 @@ def init_routes(app):
                     'hourly_stats': {},
                     'top_stations': {}
                 })
-            
+
             total_incidents = len(incidents)
             incident_types = {}
             station_counts = {}
             hourly_stats = {}
-            
+
             for incident in incidents:
                 # Contar tipos de incidentes
                 if incident.incident_type not in incident_types:
                     incident_types[incident.incident_type] = 0
                 incident_types[incident.incident_type] += 1
-                
+
                 # Contar incidentes por estación
                 if incident.nearest_station not in station_counts:
                     station_counts[incident.nearest_station] = 0
                 station_counts[incident.nearest_station] += 1
-                
+
                 # Estadísticas por hora y día
                 day = incident.timestamp.strftime('%A')
                 hour = incident.timestamp.strftime('%H')
@@ -187,10 +187,10 @@ def init_routes(app):
 
             # Encontrar la estación más afectada
             most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0]
-            
+
             # Encontrar el tipo más común
             most_common_type = max(incident_types.items(), key=lambda x: x[1])[0]
-            
+
             # Encontrar la hora más peligrosa
             most_dangerous_hour = None
             max_incidents = 0
@@ -212,7 +212,7 @@ def init_routes(app):
                 'hourly_stats': hourly_stats,
                 'top_stations': top_stations
             })
-            
+
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
@@ -284,14 +284,12 @@ def init_routes(app):
 
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
-            stations_by_troncal = {
-                feature['properties'].get('troncal_estacion'): feature['properties']['nombre_estacion']
-                for feature in geojson_data['features']
-                if 'troncal_estacion' in feature['properties']
-            }
-
+            
         if troncal:
-            query = query.filter(Incident.nearest_station.in_(stations_by_troncal.get(troncal, [])))
+            stations_for_troncal = [feature['properties']['nombre_estacion'] 
+                                   for feature in geojson_data['features']
+                                   if feature['properties'].get('troncal_estacion') == troncal]
+            query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
         if station:
             query = query.filter(Incident.nearest_station == station)
         if incident_type:
