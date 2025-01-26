@@ -75,6 +75,7 @@ async function loadMapData(filters = {}) {
 
     } catch (error) {
         console.error('Error loading map data:', error);
+        //  Add more robust error handling here to check for specific HTTP status codes and provide more user-friendly messages.
     }
 }
 
@@ -238,13 +239,20 @@ async function loadTroncales() {
     try {
         const response = await fetch('/api/stations');
         const stations = await response.json();
-        const troncales = [...new Set(stations.map(station => station.troncal))].filter(Boolean).sort();
-        
+        const troncales = [...new Set(stations.map(station => station.troncal))]
+            .filter(Boolean)
+            .sort();
+
         const troncalSelect = document.getElementById('troncalFilter');
         troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
         troncales.forEach(troncal => {
-            troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+            if (troncal && troncal !== 'N/A') {
+                troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
+            }
         });
+
+        // Load all stations initially
+        await loadStations();
     } catch (error) {
         console.error('Error loading troncales:', error);
     }
@@ -255,16 +263,20 @@ async function loadStations(troncal = 'all') {
         const response = await fetch('/api/stations');
         const stations = await response.json();
         let filteredStations = stations;
-        
+
         if (troncal !== 'all') {
             filteredStations = stations.filter(station => station.troncal === troncal);
         }
-        
+
         const stationSelect = document.getElementById('stationFilter');
         stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-        filteredStations.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(station => {
-            stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
-        });
+        filteredStations
+            .sort((a, b) => a.nombre.localeCompare(b.nombre))
+            .forEach(station => {
+                if (station.nombre) {
+                    stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
+                }
+            });
     } catch (error) {
         console.error('Error loading stations:', error);
     }
@@ -272,7 +284,7 @@ async function loadStations(troncal = 'all') {
 
 function applyFilters() {
     const filters = {};
-    
+
     if (document.getElementById('enableTroncalFilter').checked) {
         filters.troncal = document.getElementById('troncalFilter').value;
     }
@@ -291,61 +303,15 @@ function applyFilters() {
             filters.securityLevel = securityLevel;
         }
     }
-    
+
     loadMapData(filters);
 }
 
-async function loadStations(troncal = 'all') {
-    try {
-        const response = await fetch('/api/stations');
-        const stations = await response.json();
-        let filteredStations = stations;
-        
-        if (troncal !== 'all') {
-            filteredStations = stations.filter(station => station.troncal === troncal);
-        }
-        
-        const stationSelect = document.getElementById('stationFilter');
-        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-        filteredStations
-            .sort((a, b) => a.nombre.localeCompare(b.nombre))
-            .forEach(station => {
-                if (station.nombre) {
-                    stationSelect.innerHTML += `<option value="${station.nombre}">${station.nombre}</option>`;
-                }
-            });
-    } catch (error) {
-        console.error('Error loading stations:', error);
-    }
-}
-
-async function loadTroncales() {
-    try {
-        const response = await fetch('/api/stations');
-        const stations = await response.json();
-        const troncales = [...new Set(stations.map(station => station.troncal))]
-            .filter(Boolean)
-            .sort();
-        
-        const troncalSelect = document.getElementById('troncalFilter');
-        troncalSelect.innerHTML = '<option value="all">Todas las Troncales</option>';
-        troncales.forEach(troncal => {
-            if (troncal && troncal !== 'N/A') {
-                troncalSelect.innerHTML += `<option value="${troncal}">${troncal}</option>`;
-            }
-        });
-
-        // Load all stations initially
-        await loadStations();
-    } catch (error) {
-        console.error('Error loading troncales:', error);
-    }
-}
 
 // Initialize checkboxes on page load
 document.addEventListener('DOMContentLoaded', function() {
     loadTroncales();
-    
+
     // Add event listener for troncal changes
     document.getElementById('troncalFilter').addEventListener('change', function() {
         if (document.getElementById('enableTroncalFilter').checked) {
@@ -369,20 +335,20 @@ function resetFilters() {
     document.getElementById('stationFilter').value = 'all';
     document.getElementById('incidentTypeFilter').value = 'all';
     document.getElementById('securityLevelFilter').value = 'all';
-    
+
     // Reset checkboxes
     document.getElementById('enableTroncalFilter').checked = false;
     document.getElementById('enableStationFilter').checked = false;
     document.getElementById('enableIncidentTypeFilter').checked = false;
     document.getElementById('enableSecurityLevelFilter').checked = false;
-    
+
     loadMapData();
 }
 
 // Event listeners for filters
 document.addEventListener('DOMContentLoaded', function() {
     loadTroncales();
-    
+
     document.getElementById('troncalFilter').addEventListener('change', function() {
         loadStations(this.value);
     });

@@ -169,6 +169,23 @@ def init_routes(app):
         route_info = get_route_information(route_id)
         return render_template('route_information.html', route_info=route_info)
 
+    @app.route('/station_statistics')
+    @login_required
+    def station_statistics():
+        try:
+            incidents = Incident.query.all()
+            stats = {
+                'incident_count': len(incidents),
+                'stations': {}
+            }
+            for incident in incidents:
+                if incident.nearest_station not in stats['stations']:
+                    stats['stations'][incident.nearest_station] = 0
+                stats['stations'][incident.nearest_station] += 1
+            return jsonify(stats)
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
     @app.route('/incidents')
     @login_required
     def get_incidents():
