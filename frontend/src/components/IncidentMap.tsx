@@ -69,7 +69,7 @@ export default function IncidentMap() {
       
       setStations(stationsData);
       setIncidents(incidentsData);
-      setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
+      setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))] as string[]);
       
       updateChart(incidentsData);
     } catch (err) {
@@ -169,7 +169,9 @@ export default function IncidentMap() {
         Incidentes: ${stationIncidents.length}
       `);
 
-      marker.addTo(mapRef.current);
+      if (mapRef.current) {
+        marker.addTo(mapRef.current);
+      }
       markersRef.current.push(marker);
     });
   };
