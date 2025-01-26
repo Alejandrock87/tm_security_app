@@ -812,7 +812,8 @@ html, body {
 /* Print styles */
 @media print {
     .dark-nav, 
-    .dark-header {
+    .dark-header,
+    .bottom-nav {
         display: none;
     }
     
@@ -825,4 +826,34 @@ html, body {
         color: black;
         background: white;
     }
+}
+
+/* Estilos para la barra de navegación inferior */
+.bottom-nav {
+    padding: 0.5rem 0;
+}
+
+.bottom-nav .nav-link {
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+
+.bottom-nav .nav-link:hover,
+.bottom-nav .nav-link:focus {
+    color: rgba(255,255,255,1);
+}
+
+.bottom-nav .nav-link i {
+    font-size: 1.25rem;
+}
+
+/* Ajuste para el contenido principal */
+body {
+    padding-bottom: 4.5rem;
+}
+
+.container {
+    margin-bottom: 2rem;
 }
