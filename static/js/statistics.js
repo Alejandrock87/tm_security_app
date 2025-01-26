@@ -217,8 +217,20 @@ async function loadFilteredData() {
 
         const data = await response.json();
         if (data) {
-            // Solo actualizar la vista detallada con los datos filtrados
-            updateDetailedView(data, filters);
+            // Solo mostrar información relacionada con los filtros aplicados
+            const filteredData = {
+                total_incidents: data.total_incidents || 0,
+                most_affected_station: filters.station || data.most_affected_station,
+                most_dangerous_hour: data.most_dangerous_hour,
+                most_common_type: filters.incidentType || data.most_common_type,
+                incident_types: filters.incidentType ? 
+                    {[filters.incidentType]: data.incident_types[filters.incidentType]} : 
+                    data.incident_types,
+                top_stations: filters.station ? 
+                    {[filters.station]: data.top_stations[filters.station]} : 
+                    data.top_stations
+            };
+            updateDetailedView(filteredData, filters);
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);

@@ -217,10 +217,13 @@ def init_routes(app):
                     'incident_types': {},
                     'top_stations': {},
                     'total_incidents': 0,
-                    'most_affected_station': '-',
+                    'most_affected_station': station if station else '-',
                     'most_dangerous_hour': '-',
-                    'most_common_type': '-'
+                    'most_common_type': incident_type if incident_type else '-'
                 })
+
+            # Procesar solo los datos relacionados con los filtros aplicados
+            print(f"Procesando {len(incidents)} incidentes con los filtros aplicados")
                 
             # Get filter parameters
             date_from = request.args.get('dateFrom')
