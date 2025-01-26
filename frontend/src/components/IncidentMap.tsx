@@ -233,99 +233,91 @@ export default function IncidentMap() {
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 3 }}>
       <Grid container spacing={2}>
-        {/* Filtros - Lateral en pantallas grandes, Superior en móviles */}
-        <Grid item xs={12} md={3} order={{ xs: 1, md: 1 }}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
-        <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={enableFilters.troncal}
-                  onChange={(e) => setEnableFilters({ ...enableFilters, troncal: e.target.checked })}
+        {/* Filtros */}
+        <Grid item xs={12} md={3}>
+          <Paper elevation={3} sx={{ p: 2, mb: { xs: 2, md: 0 } }}>
+            <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={enableFilters.troncal}
+                      onChange={(e) => setEnableFilters({ ...enableFilters, troncal: e.target.checked })}
+                    />
+                  }
+                  label="Filtrar por Troncal"
                 />
-              }
-              label="Filtrar por Troncal"
-            />
-            <FormControl fullWidth disabled={!enableFilters.troncal}>
-              <InputLabel>Troncal</InputLabel>
-              <Select
-                value={filters.troncal || ''}
-                onChange={(e) => setFilters({ ...filters, troncal: e.target.value })}
-              >
-                {troncales.map((troncal) => (
-                  <MenuItem key={troncal} value={troncal}>{troncal}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={enableFilters.incidentType}
-                  onChange={(e) => setEnableFilters({ ...enableFilters, incidentType: e.target.checked })}
+                <FormControl fullWidth disabled={!enableFilters.troncal}>
+                  <InputLabel>Troncal</InputLabel>
+                  <Select
+                    value={filters.troncal || ''}
+                    onChange={(e) => setFilters({ ...filters, troncal: e.target.value })}
+                  >
+                    {troncales.map((troncal) => (
+                      <MenuItem key={troncal} value={troncal}>{troncal}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={enableFilters.incidentType}
+                      onChange={(e) => setEnableFilters({ ...enableFilters, incidentType: e.target.checked })}
+                    />
+                  }
+                  label="Filtrar por Tipo de Incidente"
                 />
-              }
-              label="Filtrar por Tipo de Incidente"
-            />
-            <FormControl fullWidth disabled={!enableFilters.incidentType}>
-              <InputLabel>Tipo de Incidente</InputLabel>
-              <Select
-                value={filters.incidentType || ''}
-                onChange={(e) => setFilters({ ...filters, incidentType: e.target.value })}
-              >
-                {incidentTypes.map((type) => (
-                  <MenuItem key={type} value={type}>{type}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                <FormControl fullWidth disabled={!enableFilters.incidentType}>
+                  <InputLabel>Tipo de Incidente</InputLabel>
+                  <Select
+                    value={filters.incidentType || ''}
+                    onChange={(e) => setFilters({ ...filters, incidentType: e.target.value })}
+                  >
+                    {incidentTypes.map((type) => (
+                      <MenuItem key={type} value={type}>{type}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
+        {/* Contenedor principal para mapa y estadísticas */}
+        <Grid item xs={12} md={9}>
+          <Grid container spacing={2}>
+            {/* Mapa */}
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ position: 'relative' }}>
+                {loading && (
+                  <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+                    <CircularProgress />
+                  </Box>
+                )}
+                {error && (
+                  <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'error.main', zIndex: 1000 }}>
+                    {error}
+                  </Box>
+                )}
+                <div id="map" style={{ height: '400px', width: '100%', borderRadius: '4px' }}></div>
+              </Paper>
+            </Grid>
+
+            {/* Estadísticas */}
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
+                <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <canvas id="incidentChart" style={{ maxWidth: '100%', height: '100%' }}></canvas>
+                </Box>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
-      </Paper>
-
-      {/* Mapa */}
-      <Paper elevation={3} sx={{ mb: 3, position: 'relative' }}>
-        {loading && (
-          <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
-            <CircularProgress />
-          </Box>
-        )}
-        {error && (
-          <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'error.main', zIndex: 1000 }}>
-            {error}
-          </Box>
-        )}
-        <div id="map" style={{ height: '400px', width: '100%' }}></div>
-      </Paper>
       </Grid>
-
-      {/* Mapa */}
-      <Grid item xs={12} md={9} order={{ xs: 2, md: 2 }}>
-        <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-          {loading && (
-            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
-              <CircularProgress />
-            </Box>
-          )}
-          {error && (
-            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'error.main', zIndex: 1000 }}>
-              {error}
-            </Box>
-          )}
-          <div id="map" style={{ height: '500px', width: '100%', borderRadius: '4px' }}></div>
-        </Paper>
-
-        {/* Estadísticas */}
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>Estadísticas de Incidentes</Typography>
-          <Box sx={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <canvas id="incidentChart" style={{ maxWidth: '100%', height: '100%' }}></canvas>
-          </Box>
-        </Paper>
-      </Grid>
-    </Grid>
     </Container>
   );
 }
