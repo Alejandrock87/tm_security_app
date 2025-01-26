@@ -11,8 +11,17 @@ async function loadStatistics() {
         console.log("Cargando estadísticas...");
         const filters = getFilters();
         console.log("Filtros:", filters);
+        
+        // Mostrar indicador de carga
+        document.querySelectorAll('.card-title').forEach(el => el.textContent = 'Cargando...');
+        
         const queryParams = new URLSearchParams(filters);
-        const response = await fetch('/api/statistics?' + queryParams.toString());
+        const response = await fetch('/api/statistics?' + queryParams.toString(), {
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
@@ -146,9 +155,23 @@ function updateSummaryCards(data) {
 }
 
 function updateCharts(data) {
-    updateHourlyHeatmap(data.hourly_stats || {});
-    updateIncidentTypesChart(data.incident_types || {});
-    updateTopStationsChart(data.top_stations || {});
+    console.log("Actualizando gráficos con datos:", data);
+    try {
+        updateHourlyHeatmap(data.hourly_stats || {});
+        updateIncidentTypesChart(data.incident_types || {});
+        updateTopStationsChart(data.top_stations || {});
+    } catch (error) {
+        console.error("Error actualizando gráficos:", error);
+        // Reinicializar gráficos si hay error
+        charts.hourlyHeatmap?.destroy();
+        charts.incidentTypes?.destroy();
+        charts.topStations?.destroy();
+        charts = {
+            hourlyHeatmap: null,
+            incidentTypes: null,
+            topStations: null
+        };
+    }
 }
 
 function updateHourlyHeatmap(hourlyData) {

@@ -160,6 +160,20 @@ def init_routes(app):
     def get_statistics():
         print("Procesando solicitud de estadísticas...")
         try:
+            # Obtener todos los incidentes primero para verificar que hay datos
+            incidents = Incident.query.all()
+            if not incidents:
+                print("No hay incidentes en la base de datos")
+                return jsonify({
+                    'hourly_stats': {},
+                    'incident_types': {},
+                    'top_stations': {},
+                    'total_incidents': 0,
+                    'most_affected_station': '-',
+                    'most_dangerous_hour': '-',
+                    'most_common_type': '-'
+                })
+                
             # Get filter parameters
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
