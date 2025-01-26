@@ -97,23 +97,15 @@ async function applyQuickFilter(period) {
     try {
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
-        
-        if (data.total_incidents === 0) {
-            showError('No hay datos para el período seleccionado');
-            // Mostrar datos vacíos en lugar de error
-            updateSummaryCards({
-                total_incidents: 0,
-                incident_types: {},
-                most_affected_station: 'N/A',
-                most_common_type: 'N/A',
-                most_dangerous_hour: 'N/A',
-                hourly_stats: {},
-                top_stations: {}
-            });
-        } else {
+        if (response.ok) {
             updateSummaryCards(data);
+            if (data.total_incidents === 0) {
+                document.getElementById('emptyDataMessage').textContent = 'No hay datos para el período seleccionado';
+                document.getElementById('emptyDataMessage').style.display = 'block';
+            } else {
+                document.getElementById('emptyDataMessage').style.display = 'none';
+            }
         }
     } catch (error) {
         console.error('Error al cargar datos filtrados:', error);

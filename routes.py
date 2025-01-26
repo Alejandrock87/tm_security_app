@@ -148,9 +148,19 @@ def init_routes(app):
                 query = query.filter(Incident.timestamp <= date_to_end)
             
             incidents = query.all()
-            total_incidents = len(incidents)
             
-            # Calcular estadísticas
+            if not incidents:
+                return jsonify({
+                    'total_incidents': 0,
+                    'incident_types': {},
+                    'most_affected_station': '-',
+                    'most_common_type': '-',
+                    'most_dangerous_hour': '-',
+                    'hourly_stats': {},
+                    'top_stations': {}
+                })
+            
+            total_incidents = len(incidents)
             incident_types = {}
             station_counts = {}
             hourly_stats = {}
