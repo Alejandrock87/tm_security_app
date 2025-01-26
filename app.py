@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask
 from flask_login import LoginManager
@@ -13,14 +12,23 @@ def create_app():
     app = Flask(__name__)
     cache.init_app(app)
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    database_url = os.environ.get("DATABASE_URL")
+    if not database_url:
+        raise ValueError("DATABASE_URL environment variable is not set")
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_recycle": 300,
         "pool_pre_ping": True,
+        "pool_size": 5,
+        "max_overflow": 10,
+        "connect_args": {
+            "connect_timeout": 10
+        }
     }
 
     init_db(app)
-    
+
     with app.app_context():
         # Load model at startup only if cache doesn't exist
         from ml_models import load_cached_model
