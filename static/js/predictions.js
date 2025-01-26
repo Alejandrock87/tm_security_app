@@ -1,4 +1,4 @@
-
+// Establecer conexión con Socket.IO
 let socket = io();
 let notificationPermission = false;
 
@@ -6,20 +6,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationToggle = document.getElementById('notificationToggle');
     const predictionsList = document.getElementById('predictionsList');
 
+    // Inicializar el estado del toggle basado en permisos existentes
+    if (Notification.permission === 'granted') {
+        notificationToggle.checked = true;
+        notificationPermission = true;
+    } else {
+        notificationToggle.checked = false;
+        notificationPermission = false;
+    }
+
+    // Manejar cambios en el toggle de notificaciones
     notificationToggle.addEventListener('change', function() {
         if (this.checked) {
             Notification.requestPermission().then(function(permission) {
-                notificationPermission = permission === 'granted';
-                if (!notificationPermission) {
+                console.log('Permiso de notificación:', permission);
+                if (permission === 'granted') {
+                    notificationPermission = true;
+                    console.log('Notificaciones activadas.');
+                } else {
+                    notificationPermission = false;
                     notificationToggle.checked = false;
                     alert('Necesitamos permisos para mostrar notificaciones');
                 }
+            }).catch(function(error) {
+                console.error('Error al solicitar permisos:', error);
+                notificationPermission = false;
+                notificationToggle.checked = false;
             });
         } else {
             notificationPermission = false;
+            console.log('Notificaciones desactivadas.');
+            // Aquí puedes agregar lógica para desactivar las notificaciones si es necesario
         }
     });
 
+    // Manejar eventos de Socket.IO
     socket.on('prediction_alert', function(data) {
         checkAndAddPrediction(data);
         if (notificationPermission) {
@@ -27,36 +48,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Iniciar el checker de predicciones
+    // Cargar predicciones al inicio
     loadAndCheckPredictions();
-    // Actualizar cada minuto
+    // Actualizar predicciones cada minuto
     setInterval(loadAndCheckPredictions, 60000);
 });
 
+// Función para cargar y verificar predicciones desde la API
 function loadAndCheckPredictions() {
     fetch('/api/predictions')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(predictions => {
             // Limpiar lista actual
             const predictionsList = document.getElementById('predictionsList');
             predictionsList.innerHTML = '';
-            
-            // Revisar cada predicción
+
+            // Agregar cada predicción válida
             predictions.forEach(checkAndAddPrediction);
+        })
+        .catch(error => {
+            console.error('Error al cargar predicciones:', error);
         });
 }
 
+// Función para agregar una predicción a la lista si está dentro del rango de tiempo
 function checkAndAddPrediction(prediction) {
     const predTime = new Date(prediction.predicted_time);
     const now = new Date();
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
-    
+
     // Solo mostrar si falta entre 60 y 0 minutos
     if (diffMinutes <= 60 && diffMinutes >= 0) {
         const predictionsList = document.getElementById('predictionsList');
         const item = document.createElement('div');
-        item.className = `list-group-item list-group-item-${getRiskClass(prediction.risk_score)}`;
-        
+        item.className = `prediction-item prediction-item-${getRiskClass(prediction.risk_score)}`;
+
         item.innerHTML = `
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">${prediction.station}</h5>
@@ -65,35 +96,44 @@ function checkAndAddPrediction(prediction) {
             <p class="mb-1">Posible ${prediction.incident_type}</p>
             <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%</small>
         `;
-        
+
         predictionsList.prepend(item);
     }
 }
 
+// Función para mostrar una notificación del navegador
 function showNotification(prediction) {
     const predTime = new Date(prediction.predicted_time);
     const now = new Date();
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
-    
+
     if (diffMinutes <= 60 && diffMinutes >= 0) {
-        new Notification('Alerta de Seguridad', {
+        const notification = new Notification('Alerta de Seguridad', {
             body: `Posible ${prediction.incident_type} en ${prediction.station} en ${diffMinutes} minutos.\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%`,
             icon: '/static/images/alert-icon.png'
         });
+
+        // Opcional: Manejar clic en la notificación
+        notification.onclick = function() {
+            window.focus();
+            // Puedes agregar lógica adicional aquí, como redireccionar a una página específica
+        };
     }
 }
 
+// Función para obtener la clase de riesgo basada en el score
 function getRiskClass(risk_score) {
     if (risk_score > 0.7) return 'danger';
     if (risk_score > 0.4) return 'warning';
     return 'info';
 }
 
+// Función para obtener el tiempo restante hasta el incidente
 function getTimeUntilIncident(predicted_time) {
     const now = new Date();
     const predTime = new Date(predicted_time);
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
-    
+
     if (diffMinutes < 60) {
         return `En ${diffMinutes} minutos`;
     }

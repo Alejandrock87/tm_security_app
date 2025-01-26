@@ -1,3 +1,4 @@
+/* Estilos de la pantalla de autenticación */
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -62,12 +63,31 @@
 }
 
 .auth-input {
-    background: none;
-    border: none;
-    outline: none;
-    color: #ffffff;
+    background-color: #0f172a; /* Fondo oscuro para el select */
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 8px;
+    padding: 0.875rem;
+    color: #ffffff; /* Texto blanco por defecto */
     font-size: 0.95rem;
-    flex: 1;
+    width: 100%;
+    appearance: none; /* Eliminar apariencia por defecto */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%239494b8' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 5px;
+    cursor: pointer;
+}
+
+.auth-input option {
+    color: #000000; /* Texto negro */
+    background-color: #ffffff; /* Fondo blanco */
+}
+
+.auth-input:focus {
+    border-color: #3b82f6; /* Borde azul al enfocar */
+    outline: none;
 }
 
 .auth-input::placeholder {
@@ -155,6 +175,7 @@
     cursor: pointer;
 }
 
+/* Animaciones */
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -179,4 +200,446 @@
 /* Ocultar automáticamente la alerta después de 5 segundos */
 .floating-alert.hide {
     animation: slideOut 0.5s ease-out forwards;
+}
+
+/* Estilos de la pantalla de inicio */
+.welcome-title {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.option-card {
+    background-color: #1e293b;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 0.5rem;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    color: #94a3b8;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.option-link {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: #3b82f6;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.option-link:hover {
+    background-color: #2563eb;
+}
+
+/* Contenedor principal con padding para evitar que la barra inferior cubra contenido */
+.main-content {
+    padding-bottom: 0px; /* Ajusta el espacio para la barra de navegación inferior */
+    overflow-y: auto;
+    -ms-overflow-style: none;  /* Eliminar scroll en IE y Edge */
+    scrollbar-width: none;  /* Eliminar scroll en Firefox */
+}
+
+/* Ocultar la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Ajuste de altura para la barra de navegación superior */
+.navbar {
+    background-color: #1e293b;
+    padding: 0.5rem 1.5rem;  /* Reducir el padding para disminuir la altura */
+    border-bo: 1px solid #334155;
+    height: 70px;  /* Ajusta según sea necesario */
+    display: flex;
+    align-items: center;
+}
+
+/* Ajuste del tamaño del logo y texto de la barra superior */
+.navbar-brand {
+    font-size: 1.1rem;  /* Reducir tamaño del texto */
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Espaciado para íconos en la barra de navegación */
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;  /* Asegura que los iconos no estén muy juntos */
+}
+
+/* Espaciado para los enlaces de navegación */
+.nav-link {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+/* Ajustes para la barra de navegación inferior */
+.bottom-nav {
+    background-color: #1e293b;
+    padding: 0.75rem 0;
+    border-top: 1px solid #334155;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.bottom-nav a {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.bottom-nav a:hover {
+    color: #ffffff;
+}
+
+.bottom-nav i {
+    font-size: 1.5rem;
+}
+
+/* Ajustes de responsividad */
+@media (max-width: 768px) {
+    .option-card {
+        padding: 1.5rem;
+    }
+    .card-icon {
+        font-size: 2.5rem;
+    }
+    .bottom-nav i {
+        font-size: 1.3rem;
+    }
+}
+
+/* --- Nuevos Estilos Añadidos para los Filtros en dashboard.html --- */
+
+/* Contenedor de filtros con bordes y separación */
+.filters-container {
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #0f172a; /* Fondo oscuro para resaltar los filtros */
+}
+
+/* Separación entre cada filtro */
+.filter-item {
+    border-bottom: 1px solid #334155; /* Línea separadora entre filtros */
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-item:last-child {
+    border-bottom: none; /* Eliminar la línea del último filtro */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Ajustes para los labels dentro de los filtros */
+.filters-container label {
+    color: #ffffff; /* Texto blanco para los labels */
+    font-weight: 500;
+}
+
+/* Asegurar que los selectores usen las clases personalizadas */
+.auth-input {
+    background-color: #0f172a; /* Fondo oscuro */
+    color: #ffffff; /* Texto blanco por defecto */
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 8px;
+    padding: 0.875rem;
+    appearance: none; /* Eliminar apariencia por defecto para personalizar */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%239494b8' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 5px;
+    cursor: pointer;
+}
+
+.auth-input option {
+    color: #000000; /* Texto negro */
+    background-color: #ffffff; /* Fondo blanco */
+}
+
+/* Estilos responsivos para los filtros */
+@media (max-width: 768px) {
+    .filters-container {
+        padding: 0.75rem;
+    }
+    .filter-item {
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .auth-input {
+        padding: 0.75rem;
+    }
+}
+
+/* --- Nuevos Estilos Añadidos para report_incident.html --- */
+
+/* Estilo para el mapa de reporte */
+#report-map {
+    height: 400px;
+    width: 100%;
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 8px; /* Bordes redondeados */
+    margin-bottom: 1rem;
+    background-color: #0f172a; /* Fondo oscuro */
+}
+
+/* Estilo para las tarjetas de leyenda */
+.legend-card {
+    background-color: #1e293b; /* Fondo oscuro consistente con option-card */
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 16px; /* Bordes redondeados */
+    padding: 1.5rem; /* Padding ajustado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.legend-card .card-header {
+    background-color: #0f172a; /* Fondo oscuro para el encabezado */
+    border-bottom: 1px solid #334155; /* Borde inferior gris oscuro */
+    color: #3b82f6; /* Texto azul para coherencia */
+    padding: 1rem;
+    border-radius: 16px 16px 0 0; /* Bordes redondeados solo en la parte superior */
+}
+
+.legend-card .card-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    color: #ffffff; /* Texto blanco para coherencia */
+    font-size: 0.95rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* Estilos para los marcadores de estación */
+.station-marker {
+    background: none;
+    border: none;
+}
+
+.station-marker-selected {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Estilo para los botones en report_incident.html */
+#submit-button {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#submit-button:hover {
+    background-color: #2563eb;
+}
+
+#submit-button:disabled {
+    background-color: #64748b;
+    cursor: not-allowed;
+}
+
+/* Estilo para las alertas en report_incident.html */
+.alert-info {
+    background-color: #1e293b;
+    color: #ffffff;
+    border: 1px solid #334155;
+}
+
+.alert-success {
+    background-color: #1e293b;
+    color: #d1fae5;
+    border: 1px solid #16a34a;
+}
+
+.alert-danger {
+    background-color: #1e293b;
+    color: #ef4444;
+    border: 1px solid #dc2626;
+}
+
+/* Estilo para los textos informativos */
+.card-subtitle {
+    color: #3b82f6;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+/* --- Nuevos Estilos Añadidos para predictions.html --- */
+
+/* Contenedor principal de predicciones */
+.predictions-container {
+    background-color: #1e293b; /* Fondo oscuro consistente */
+    border-radius: 16px; /* Bordes redondeados */
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #ffffff; /* Texto blanco por defecto */
+}
+
+/* Encabezado de predicciones */
+.predictions-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.predictions-header h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #ffffff; /* Texto blanco para el título */
+    margin-bottom: 0.5rem;
+}
+
+.predictions-header p {
+    font-size: 1rem;
+    color: #94a3b8; /* Texto gris para la descripción */
+}
+
+/* Contenedor para el switch de notificaciones */
+.notification-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilos específicos para el toggle en predictions.html */
+.predictions-toggle .form-check-input {
+    width: 2.5rem;
+    height: 1.25rem;
+    background-color: #6b7280; /* Gris cuando está inactivo */
+    border-radius: 1.5rem;
+    position: relative;
+    transition: background-color 0.3s ease;
+    border: none; /* Eliminar borde predeterminado */
+    cursor: pointer;
+}
+
+.predictions-toggle .form-check-input::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0.25rem;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+}
+
+.predictions-toggle .form-check-input:checked {
+    background-color: #3b82f6; /* Azul cuando está activo */
+}
+
+.predictions-toggle .form-check-input:checked::after {
+    transform: translate(1.25rem, -50%);
+}
+
+/* Estilo para la lista de predicciones */
+#predictionsList {
+    background-color: #0f172a; /* Fondo ligeramente más claro para la lista */
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+/* Elemento individual de predicción */
+.prediction-item {
+    background-color: #1e293b; /* Fondo oscuro para cada item */
+    border: 1px solid #334155; /* Borde gris oscuro */
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: background-color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+.prediction-item:hover {
+    background-color: #334155; /* Cambio de fondo al hover */
+    transform: translateY(-2px);
+}
+
+.prediction-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #3b82f6; /* Título en azul */
+}
+
+.prediction-details {
+    font-size: 0.95rem;
+    color: #94a3b8; /* Detalles en gris */
 }

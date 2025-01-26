@@ -1,163 +1,127 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-#report-map {
-    height: 400px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-}
-
-.legend-card {
-    background-color: var(--bs-dark);
-    border: 1px solid var(--bs-border-color);
-    border-radius: 8px;
-}
-
-.legend-card .card-header {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid var(--bs-border-color);
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.75rem;
-}
-
-.legend-color {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border-radius: 4px;
-}
-
-.station-marker {
-    background: none;
-    border: none;
-}
-
-.station-marker-selected {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-</style>
-
-<div class="container">
-    <h1 class="mb-4">Reportar Incidente</h1>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form method="post">
-                        {{ form.hidden_tag() }}
-                        <input type="hidden" id="latitude" name="latitude">
-                        <input type="hidden" id="longitude" name="longitude">
-                        <input type="hidden" id="nearest_station" name="nearest_station">
-                        
-                        <div class="mb-3">
-                            {{ form.incident_type.label(class="form-label") }}
-                            {{ form.incident_type(class="form-select") }}
-                        </div>
-                        
-                        <div class="mb-3">
-                            {{ form.description.label(class="form-label") }}
-                            {{ form.description(class="form-control", rows="4") }}
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                {{ form.incident_date.label(class="form-label") }}
-                                {{ form.incident_date(class="form-control", type="date") }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form.incident_time.label(class="form-label") }}
-                                {{ form.incident_time(class="form-control", type="time") }}
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form.station.label(class="form-label") }}
-                            {{ form.station(class="form-select", onchange="handleStationChange(this.value)") }}
-                        </div>
-                        
-                        <div id="location-status" class="alert alert-info mb-3" role="alert">
-                            <i class="fas fa-location-arrow"></i> Obteniendo tu ubicación...
-                        </div>
-                        
-                        <div id="nearest-station-info" class="alert alert-success mb-3">
-                            <i class="fas fa-info-circle"></i> La estación más cercana se selecciona automáticamente según tu ubicación, pero puedes cambiarla si el incidente ocurrió en otra estación. La fecha y hora actual se establecen por defecto, pero pueden modificarse para reportar incidentes pasados.
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div id="report-map"></div>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary" id="submit-button" disabled>
-                            <i class="fas fa-exclamation-triangle"></i> Reportar Incidente
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card legend-card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-chart-bar"></i> Niveles de Inseguridad
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #ff0000;"></div>
-                        <span>Alto (>5 incidentes/mes)</span>
+<div class="main-content mb-3">
+    <div class="container">
+        <h1 class="welcome-title text-center mb-4">Reportar Incidente</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="option-card mb-3">
+                    <div class="auth-header">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #ffa500;"></div>
-                        <span>Medio (2-5 incidentes/mes)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #008000;"></div>
-                        <span>Bajo (<2 incidentes/mes)</span>
+                    <div class="card-body">
+                        <form method="post">
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" id="latitude" name="latitude">
+                            <input type="hidden" id="longitude" name="longitude">
+                            <input type="hidden" id="nearest_station" name="nearest_station">
+                            
+                            <div class="form-group mb-3">
+                                {{ form.incident_type.label(class="form-label") }}
+                                {{ form.incident_type(class="form-select auth-input") }}
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                {{ form.description.label(class="form-label") }}
+                                {{ form.description(class="form-control auth-input", rows="4") }}
+                            </div>
+
+                            <style>
+                                /* Ocultar la flecha en campos de fecha y tiempo */
+                                input[type="date"]::-webkit-inner-spin-button,
+                                input[type="date"]::-webkit-clear-button,
+                                input[type="time"]::-webkit-inner-spin-button,
+                                input[type="time"]::-webkit-clear-button {
+                                    display: none;
+                                }
+
+                                /* Mantener visibles los íconos del calendario y reloj */
+                                input[type="date"]::-webkit-calendar-picker-indicator,
+                                input[type="time"]::-webkit-calendar-picker-indicator {
+                                    display: block;
+                                }
+                            </style>
+
+                            <div class="row mb-3 text-start">
+                                <div class="col-md-6">
+                                    {{ form.incident_date.label(class="form-label") }}
+                                    {{ form.incident_date(class="form-control auth-input", type="date") }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.incident_time.label(class="form-label") }}
+                                    {{ form.incident_time(class="form-control auth-input", type="time") }}
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                {{ form.station.label(class="form-label") }}
+                                {{ form.station(class="form-select auth-input", onchange="handleStationChange(this.value)") }}
+                            </div>
+                            
+                            <div id="location-status" class="alert alert-info mb-3" role="alert">
+                                <i class="fas fa-location-arrow"></i> Obteniendo tu ubicación...
+                            </div>
+                            
+                            <div id="nearest-station-info" class="alert alert-success mb-3">
+                                <i class="fas fa-info-circle"></i> La estación más cercana se selecciona automáticamente según tu ubicación, pero puedes cambiarla si el incidente ocurrió en otra estación. La fecha y hora actual se establecen por defecto, pero pueden modificarse para reportar incidentes pasados.
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div id="report-map"></div>
+                            </div>
+                            
+                            <button type="submit" class="auth-button" id="submit-button" disabled>
+                                <i class="fas fa-exclamation-triangle"></i> Reportar Incidente
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
+            
+            <div class="col-md-4">
+                <div class="legend-card">
+                    <div class="card-header mb-2">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-bar"></i> Niveles de Inseguridad
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #ff0000;"></div>
+                            <span>Alto (>5 incidentes/mes)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #ffa500;"></div>
+                            <span>Medio (2-5 incidentes/mes)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #008000;"></div>
+                            <span>Bajo (<2 incidentes/mes)</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="card legend-card mt-3">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2">
-                        <i class="fas fa-info-circle"></i> Información
-                    </h6>
-                    <p class="card-text">
-                        El sistema automáticamente seleccionará la estación más cercana a tu ubicación actual.
-                        Los niveles de inseguridad se calculan basándose en la cantidad de incidentes reportados
-                        en el último mes.
-                    </p>
+                <div class="legend-card mt-3 mb-3">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2">
+                            <i class="fas fa-info-circle"></i> Información
+                        </h6>
+                        <p class="card-text">
+                            Los niveles de inseguridad se calculan basándose en la cantidad de incidentes reportados
+                            en el último mes.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 

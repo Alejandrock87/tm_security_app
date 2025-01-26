@@ -1,21 +1,30 @@
-
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Predicciones de Seguridad</h3>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="notificationToggle">
-                        <label class="form-check-label" for="notificationToggle">Activar notificaciones</label>
+<div class="main-content">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="predictions-container">
+                    <div class="predictions-header">
+                        <h3>Predicciones de Seguridad</h3>
+                        <p>Recibe alertas sobre las áreas con mayor riesgo de incidentes para mantenerte informado y seguro.</p>
                     </div>
-                </div>
-                <div class="card-body">
+                    <div class="notification-toggle">
+                        <div class="form-check form-switch predictions-toggle">
+                            <input class="form-check-input" type="checkbox" id="notificationToggle">
+                            <label class="form-check-label" for="notificationToggle">Activar notificaciones</label>
+                        </div>
+                    </div>
                     <div id="predictionsList" class="list-group">
                         <!-- Las predicciones se cargarán aquí dinámicamente -->
+                        <!-- Ejemplo de predicción -->
+                        <!--
+                        <div class="prediction-item">
+                            <div class="prediction-title">Zona Norte</div>
+                            <div class="prediction-details">Predicción de alto nivel de inseguridad para el próximo mes.</div>
+                        </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -25,5 +34,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='js/predictions.js') }}"></script>
 {% endblock %}
