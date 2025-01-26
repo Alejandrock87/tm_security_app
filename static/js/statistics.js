@@ -150,6 +150,14 @@ async function loadStatistics() {
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
+        
+        // Inicializar el objeto charts si no existe
+        if (!window.charts) {
+            window.charts = {
+                typeChart: null,
+                stationChart: null
+            };
+        }
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
@@ -249,11 +257,26 @@ function updateSummaryCards(data) {
 }
 
 function createCharts(data) {
-    if (charts.typeChart) charts.typeChart.destroy();
-    if (charts.stationChart) charts.stationChart.destroy();
+    try {
+        // Destruir gráficos existentes si existen
+        if (window.charts && window.charts.typeChart) {
+            window.charts.typeChart.destroy();
+        }
+        if (window.charts && window.charts.stationChart) {
+            window.charts.stationChart.destroy();
+        }
 
-    const typeCtx = document.getElementById('incidentTypesChart').getContext('2d');
-    charts.typeChart = new Chart(typeCtx, {
+        // Asegurarse de que los elementos canvas existen
+        const typeCtx = document.getElementById('incidentTypesChart');
+        const stationCtx = document.getElementById('topStationsChart');
+        
+        if (!typeCtx || !stationCtx) {
+            console.error('No se encontraron los elementos canvas');
+            return;
+        }
+
+        const typeCtx2D = typeCtx.getContext('2d');
+        charts.typeChart = new Chart(typeCtx2D, {
         type: 'doughnut',
         data: {
             labels: Object.keys(data.incident_types || {}),
