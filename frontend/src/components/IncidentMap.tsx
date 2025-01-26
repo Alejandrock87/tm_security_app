@@ -356,7 +356,101 @@ export default function IncidentMap() {
       <Typography variant="h4" gutterBottom>
         Mapa de Incidentes
       </Typography>
-      <Grid container spacing={2}>
+      <Box className="map-container">
+        {/* Panel de Filtros */}
+        <Paper className="filters-panel">
+          <Typography variant="h6" gutterBottom>
+            Filtros
+          </Typography>
+          
+          <div className="filter-group">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableFilters.troncal}
+                  onChange={(e) => setEnableFilters({ ...enableFilters, troncal: e.target.checked })}
+                />
+              }
+              label="Filtrar por Troncal"
+            />
+            {enableFilters.troncal && (
+              <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+                <InputLabel>Troncal</InputLabel>
+                <Select
+                  value={filters.troncal || ''}
+                  onChange={(e) => setFilters({ ...filters, troncal: e.target.value })}
+                >
+                  {troncales.map((troncal) => (
+                    <MenuItem key={troncal} value={troncal}>{troncal}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </div>
+
+          <div className="filter-group">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableFilters.incidentType}
+                  onChange={(e) => setEnableFilters({ ...enableFilters, incidentType: e.target.checked })}
+                />
+              }
+              label="Filtrar por Tipo de Incidente"
+            />
+            {enableFilters.incidentType && (
+              <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+                <InputLabel>Tipo de Incidente</InputLabel>
+                <Select
+                  value={filters.incidentType || ''}
+                  onChange={(e) => setFilters({ ...filters, incidentType: e.target.value })}
+                >
+                  {incidentTypes.map((type) => (
+                    <MenuItem key={type} value={type}>{type}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </div>
+
+          <div className="filter-group">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableFilters.securityLevel}
+                  onChange={(e) => setEnableFilters({ ...enableFilters, securityLevel: e.target.checked })}
+                />
+              }
+              label="Filtrar por Nivel de Seguridad"
+            />
+            {enableFilters.securityLevel && (
+              <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+                <InputLabel>Nivel de Seguridad</InputLabel>
+                <Select
+                  value={filters.securityLevel || ''}
+                  onChange={(e) => setFilters({ ...filters, securityLevel: e.target.value })}
+                >
+                  <MenuItem value="Alto">Alto</MenuItem>
+                  <MenuItem value="Medio">Medio</MenuItem>
+                  <MenuItem value="Bajo">Bajo</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          </div>
+
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            fullWidth 
+            onClick={resetFilters}
+            sx={{ mt: 2 }}
+          >
+            Limpiar Filtros
+          </Button>
+        </Paper>
+
+        {/* Panel del Mapa y Estadísticas */}
+        <Box className="map-panel">
         {/* Panel de Filtros */}
         <Grid item xs={12} md={3}>
           <Paper elevation={3} sx={{ p: 2 }}>
@@ -504,8 +598,8 @@ export default function IncidentMap() {
               </Paper>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Container>
   );
 }
