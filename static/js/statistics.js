@@ -134,10 +134,14 @@ function updateIncidentTypesChart(typeData) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    position: 'right'
+                    position: 'right',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 10
+                    }
                 }
             }
         }
