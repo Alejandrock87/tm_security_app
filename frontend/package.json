@@ -1,0 +1,10 @@
+
+
+  "proxy": "http://localhost:3000",
+
+
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },

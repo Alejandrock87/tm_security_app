@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
+from flask_cors import CORS
 from database import init_db, db
 from flask_socketio import SocketIO
 from utils import socketio, send_notification
@@ -10,6 +11,7 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     cache.init_app(app)
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
     database_url = os.environ.get("DATABASE_URL")
