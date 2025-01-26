@@ -57,10 +57,12 @@ const IncidentMap: React.FC = () => {
   const markers = useRef<L.Marker[]>([]);
 
   useEffect(() => {
-    if (!mapRef.current || map) return;
+    if (!mapRef.current) return;
 
     const newMap = L.map(mapRef.current).setView([4.6097, -74.0817], 11);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(newMap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(newMap);
     setMap(newMap);
 
     const loadInitialData = async () => {
@@ -70,16 +72,26 @@ const IncidentMap: React.FC = () => {
           fetch('/incidents')
         ]);
 
+        if (!stationsRes.ok || !incidentsRes.ok) {
+          throw new Error('Error fetching data');
+        }
+
         const stationsData: Station[] = await stationsRes.json();
         const incidentsData: Incident[] = await incidentsRes.json();
 
         setStations(stationsData);
         setIncidents(incidentsData);
-        const uniqueTroncales = [...new Set(stationsData.map(s => s.troncal))];
-        setTroncales(uniqueTroncales);
-
-        updateMapMarkers(stationsData, incidentsData);
-        updateIncidentChart(incidentsData);
+        
+        if (stationsData.length > 0) {
+          const uniqueTroncales = [...new Set(stationsData.map(s => s.troncal))];
+          setTroncales(uniqueTroncales);
+          updateMapMarkers(stationsData, incidentsData);
+          updateIncidentChart(incidentsData);
+          
+          // Ajustar vista a los marcadores
+          const bounds = L.latLngBounds(stationsData.map(s => [s.latitude, s.longitude]));
+          newMap.fitBounds(bounds);
+        }
       } catch (err) {
         console.error('Error loading data:', err);
       }
@@ -88,7 +100,10 @@ const IncidentMap: React.FC = () => {
     loadInitialData();
 
     return () => {
-      newMap.remove();
+      if (newMap) {
+        markers.current.forEach(marker => marker.remove());
+        newMap.remove();
+      }
     };
   }, []);
 
