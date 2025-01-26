@@ -1,7 +1,6 @@
-
 .leaflet-container {
   width: 100%;
-  height: 600px;
+  height: 100%;
   border-radius: 4px;
 }
 
@@ -17,31 +16,6 @@
 .chart-wrapper {
   height: 300px;
   margin: 15px 0;
-}
-
-#map {
-  width: 100%;
-  height: 400px;
-  position: relative;
-  z-index: 1;
-}
-
-.station-popup {
-  padding: 10px;
-}
-
-.station-popup h3 {
-  margin: 0 0 10px 0;
-  color: #1976d2;
-}
-
-.station-popup p {
-  margin: 5px 0;
-}
-
-.station-popup ul {
-  margin: 5px 0;
-  padding-left: 20px;
 }
 
 .custom-div-icon {
@@ -63,6 +37,40 @@
   font-weight: bold;
 }
 
+.station-popup {
+  padding: 12px;
+  max-width: 250px;
+}
+
+.station-popup h3 {
+  margin: 0 0 8px 0;
+  color: #1976d2;
+  font-size: 16px;
+}
+
+.station-popup p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.station-popup h4 {
+  margin: 12px 0 4px 0;
+  font-size: 14px;
+}
+
+.station-popup ul {
+  margin: 4px 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  z-index: 1;
+}
+
 #map {
   height: 500px;
   width: 100%;
@@ -78,24 +86,11 @@
 }
 
 .chart-container {
+  position: relative;
   height: 300px;
-  margin-top: 16px;
+  width: 100%;
 }
 
 .filter-group {
   margin-bottom: 16px;
-}
-
-.station-popup {
-  padding: 8px;
-}
-
-.station-popup h3 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-}
-
-.station-popup ul {
-  margin: 8px 0;
-  padding-left: 16px;
 }

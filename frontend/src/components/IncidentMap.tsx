@@ -41,6 +41,7 @@ const incidentTypes = [
 export default function IncidentMap() {
   const mapRef = useRef<L.Map | null>(null);
   const chartRef = useRef<ChartJS | null>(null);
+  const stationsChartRef = useRef<ChartJS | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
@@ -84,9 +85,12 @@ export default function IncidentMap() {
     `;
   };
 
-  const updateChart = (filteredIncidents: Incident[]) => {
+  const updateCharts = (filteredIncidents: Incident[]) => {
+    // Actualizar gráfico de tipos de incidentes
     const ctx = document.getElementById('incidentChart') as HTMLCanvasElement;
-    if (!ctx) return;
+    if (ctx && chartRef.current) {
+      chartRef.current.destroy();
+    }
 
     const typeStats: Record<string, number> = {};
     filteredIncidents.forEach(incident => {
@@ -96,56 +100,107 @@ export default function IncidentMap() {
     const sortedStats = Object.entries(typeStats).sort(([,a], [,b]) => b - a);
     const total = sortedStats.reduce((sum, [,count]) => sum + count, 0);
 
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
-
-    chartRef.current = new ChartJS(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: sortedStats.map(([type, count]) => 
-          `${type} (${((count / total) * 100).toFixed(1)}%)`
-        ),
-        datasets: [{
-          data: sortedStats.map(([, count]) => count),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.8)',
-            'rgba(54, 162, 235, 0.8)',
-            'rgba(255, 206, 86, 0.8)',
-            'rgba(75, 192, 192, 0.8)',
-            'rgba(153, 102, 255, 0.8)',
-            'rgba(255, 159, 64, 0.8)'
-          ],
-          borderColor: 'white',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'right',
-            labels: {
-              padding: 20,
-              font: { size: 11 }
-            }
-          },
-          title: {
-            display: true,
-            text: 'Distribución de Incidentes',
-            font: {
-              size: 16,
-              weight: 'bold'
+    if (ctx) {
+      chartRef.current = new ChartJS(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: sortedStats.map(([type, count]) => 
+            `${type} (${((count / total) * 100).toFixed(1)}%)`
+          ),
+          datasets: [{
+            data: sortedStats.map(([, count]) => count),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.8)',
+              'rgba(54, 162, 235, 0.8)',
+              'rgba(255, 206, 86, 0.8)',
+              'rgba(75, 192, 192, 0.8)',
+              'rgba(153, 102, 255, 0.8)',
+              'rgba(255, 159, 64, 0.8)'
+            ],
+            borderColor: 'white',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                padding: 20,
+                font: { size: 11 }
+              }
             },
-            padding: {
-              top: 10,
-              bottom: 20
+            title: {
+              display: true,
+              text: 'Distribución de Incidentes',
+              font: {
+                size: 16,
+                weight: 'bold'
+              },
+              padding: {
+                top: 10,
+                bottom: 20
+              }
             }
           }
         }
-      }
+      });
+    }
+
+    // Actualizar gráfico de estaciones más afectadas
+    const stationsCtx = document.getElementById('stationsChart') as HTMLCanvasElement;
+    if (stationsCtx && stationsChartRef.current) {
+      stationsChartRef.current.destroy();
+    }
+
+    const stationStats: Record<string, number> = {};
+    filteredIncidents.forEach(incident => {
+      stationStats[incident.nearest_station] = (stationStats[incident.nearest_station] || 0) + 1;
     });
+
+    const sortedStationStats = Object.entries(stationStats)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5);
+
+    if (stationsCtx) {
+      stationsChartRef.current = new ChartJS(stationsCtx, {
+        type: 'bar',
+        data: {
+          labels: sortedStationStats.map(([station]) => station),
+          datasets: [{
+            label: 'Número de Incidentes',
+            data: sortedStationStats.map(([, count]) => count),
+            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Estaciones más Afectadas',
+              font: {
+                size: 16,
+                weight: 'bold'
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
   };
 
   const updateMarkers = (filteredStations: Station[], filteredIncidents: Incident[]) => {
@@ -181,6 +236,8 @@ export default function IncidentMap() {
       marker.addTo(mapRef.current!);
       markersRef.current.push(marker);
     });
+
+    updateCharts(filteredIncidents);
   };
 
   const filterData = () => {
@@ -214,7 +271,6 @@ export default function IncidentMap() {
     }
 
     updateMarkers(filteredStations, filteredIncidents);
-    updateChart(filteredIncidents);
 
     if (filteredStations.length > 0) {
       const bounds = L.latLngBounds(
@@ -266,7 +322,6 @@ export default function IncidentMap() {
         setTroncales(uniqueTroncales.filter(Boolean).sort());
 
         updateMarkers(stationsData, incidentsData);
-        updateChart(incidentsData);
 
         setLoading(false);
       } catch (err) {
@@ -286,6 +341,9 @@ export default function IncidentMap() {
       if (chartRef.current) {
         chartRef.current.destroy();
       }
+      if (stationsChartRef.current) {
+        stationsChartRef.current.destroy();
+      }
     };
   }, []);
 
@@ -295,21 +353,16 @@ export default function IncidentMap() {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Mapa de Incidentes
+      </Typography>
       <Grid container spacing={2}>
         {/* Panel de Filtros */}
         <Grid item xs={12} md={3}>
-          <Box className="filter-sidebar">
-            <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Filtros del Mapa
-              </Typography>
-              <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+          <Paper elevation={3} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
-              Filtros del Mapa
+              Filtros
             </Typography>
-            <Typography variant="h6" gutterBottom>Filtros de Búsqueda</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -401,7 +454,7 @@ export default function IncidentMap() {
             {/* Mapa */}
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2 }}>
-                <Box sx={{ height: '600px', position: 'relative' }}>
+                <Box sx={{ height: '500px', position: 'relative' }}>
                   {loading && (
                     <Box sx={{ 
                       position: 'absolute',
@@ -413,36 +466,20 @@ export default function IncidentMap() {
                       <CircularProgress />
                     </Box>
                   )}
+                  {error && (
+                    <Box sx={{ 
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      color: 'error.main',
+                      zIndex: 1000
+                    }}>
+                      {error}
+                    </Box>
+                  )}
                   <div id="map" style={{ height: '100%', width: '100%' }}></div>
                 </Box>
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={3} sx={{ p: 2, position: 'relative' }}>
-                {loading && (
-                  <Box sx={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    left: '50%', 
-                    transform: 'translate(-50%, -50%)', 
-                    zIndex: 1000 
-                  }}>
-                    <CircularProgress />
-                  </Box>
-                )}
-                {error && (
-                  <Box sx={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    left: '50%', 
-                    transform: 'translate(-50%, -50%)', 
-                    color: 'error.main',
-                    zIndex: 1000 
-                  }}>
-                    {error}
-                  </Box>
-                )}
-                <div id="map"></div>
               </Paper>
             </Grid>
 
@@ -450,27 +487,17 @@ export default function IncidentMap() {
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
-                  Estadísticas de Incidentes
+                  Estadísticas
                 </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
-                    <Box sx={{ p: 2, border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1 }}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Incidentes por Tipo
-                      </Typography>
-                      <Box sx={{ height: '300px' }}>
-                        <canvas id="incidentChart"></canvas>
-                      </Box>
+                    <Box sx={{ height: '300px' }}>
+                      <canvas id="incidentChart"></canvas>
                     </Box>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Box sx={{ p: 2, border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 1 }}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Estaciones más Afectadas
-                      </Typography>
-                      <Box sx={{ height: '300px' }}>
-                        <canvas id="stationsChart"></canvas>
-                      </Box>
+                    <Box sx={{ height: '300px' }}>
+                      <canvas id="stationsChart"></canvas>
                     </Box>
                   </Grid>
                 </Grid>
