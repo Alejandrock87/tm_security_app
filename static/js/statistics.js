@@ -8,25 +8,40 @@ let charts = {
 
 async function loadStatistics() {
     try {
+        console.log("Cargando estadísticas...");
         const filters = getFilters();
+        console.log("Filtros:", filters);
         const queryParams = new URLSearchParams(filters);
         const response = await fetch('/api/statistics?' + queryParams.toString());
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
         const data = await response.json();
+        console.log("Datos recibidos:", data);
         if (data.error) {
             console.error('Error from server:', data.error);
+            return;
+        }
+        if (!data.hourly_stats || !data.incident_types || !data.top_stations) {
+            console.error('Datos incompletos recibidos del servidor');
             return;
         }
         updateCharts(data);
         updateSummaryCards(data);
     } catch (error) {
+        console.error('Error al cargar estadísticas:', error);
         console.error('Error loading statistics:', error);
     }
 }
 
 async function loadFilters() {
     try {
+        console.log("Iniciando carga de filtros...");
         // Cargar datos de estaciones y troncales
         const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
+        if (!response.ok) {
+            throw new Error('Error al cargar datos de estaciones');
+        }
         const data = await response.json();
         
         // Cargar troncales únicas

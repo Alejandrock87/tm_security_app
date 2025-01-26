@@ -158,6 +158,7 @@ def init_routes(app):
     @app.route('/api/statistics')
     @login_required
     def get_statistics():
+        print("Procesando solicitud de estadísticas...")
         try:
             # Get filter parameters
             date_from = request.args.get('dateFrom')
