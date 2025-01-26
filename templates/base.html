@@ -39,6 +39,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <div class="mb-3">
+                  <a href="{{ url_for('notifications') }}" class="d-flex align-items-center text-decoration-none">
+                    <i class="fas fa-cog me-2"></i>
+                    <span>Configurar notificaciones</span>
+                  </a>
+                </div>
+                <hr>
                 <div id="notifications-list" class="list-group">
                   <!-- Las notificaciones se insertarán aquí dinámicamente -->
                 </div>
