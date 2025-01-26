@@ -265,10 +265,16 @@ function applyFilters() {
         filters.station = document.getElementById('stationFilter').value;
     }
     if (document.getElementById('enableIncidentTypeFilter').checked) {
-        filters.incidentType = document.getElementById('incidentTypeFilter').value;
+        const incidentType = document.getElementById('incidentTypeFilter').value;
+        if (incidentType !== 'all') {
+            filters.incidentType = incidentType;
+        }
     }
     if (document.getElementById('enableSecurityLevelFilter').checked) {
-        filters.securityLevel = document.getElementById('securityLevelFilter').value;
+        const securityLevel = document.getElementById('securityLevelFilter').value;
+        if (securityLevel !== 'all') {
+            filters.securityLevel = securityLevel;
+        }
     }
     
     loadMapData(filters);
@@ -343,10 +349,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function resetFilters() {
+    // Reset filter values
     document.getElementById('troncalFilter').value = 'all';
     document.getElementById('stationFilter').value = 'all';
     document.getElementById('incidentTypeFilter').value = 'all';
     document.getElementById('securityLevelFilter').value = 'all';
+    
+    // Reset checkboxes
+    document.getElementById('enableTroncalFilter').checked = false;
+    document.getElementById('enableStationFilter').checked = false;
+    document.getElementById('enableIncidentTypeFilter').checked = false;
+    document.getElementById('enableSecurityLevelFilter').checked = false;
+    
     loadMapData();
 }
 
