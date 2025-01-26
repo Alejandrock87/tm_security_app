@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify, json
 from flask_login import login_user, logout_user, current_user, login_required
-from app import cache
+from cache_config import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics

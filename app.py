@@ -7,9 +7,7 @@ import os
 from database import init_db, db
 from flask_socketio import SocketIO
 from utils import socketio, send_notification
-from flask_caching import Cache
-
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
+from cache_config import cache
 
 def create_app():
     app = Flask(__name__)
