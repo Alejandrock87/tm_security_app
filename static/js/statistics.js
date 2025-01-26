@@ -41,45 +41,62 @@ function updateSummaryCards(data) {
 function createDetailedView(data, activeFilters = {}) {
     try {
         const container = document.getElementById('detailedView');
-        if (!container) return;
-
-        if (!data) {
-            container.innerHTML = '<div class="alert alert-warning">No hay datos disponibles.</div>';
+        if (!container) {
+            console.error('No se encontró el contenedor de vista detallada');
             return;
         }
 
         let html = '<div class="row">';
 
-        // Mostrar resumen general si no hay filtros activos
-        if (Object.keys(activeFilters).length === 0) {
+        // Sección de filtros activos
+        if (Object.keys(activeFilters).length > 0) {
             html += `
-                <div class="col-12">
-                    <div class="alert alert-info">
-                        <h6>Resumen General</h6>
-                        <p>Total de incidentes: ${data.total_incidents}</p>
-                        <p>Estación más afectada: ${data.most_affected_station}</p>
-                        <p>Tipo más común: ${data.most_common_type}</p>
-                        <p>Hora más peligrosa: ${data.most_dangerous_hour}</p>
+                <div class="col-12 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Filtros Activos</h6>
+                            ${Object.entries(activeFilters).map(([key, value]) => 
+                                `<span class="badge bg-primary me-2">${key}: ${value}</span>`
+                            ).join('')}
+                        </div>
                     </div>
                 </div>`;
-        } else {
-            // Mostrar información filtrada
-            if (data.incident_types && Object.keys(data.incident_types).length > 0) {
-                html += `
-                    <div class="col-12 mb-4">
-                        <h6>Distribución de Incidentes</h6>
-                        <ul class="list-group">
-                            ${Object.entries(data.incident_types)
-                                .sort(([,a], [,b]) => b - a)
-                                .map(([type, count]) => 
-                                    `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                        ${type}
-                                        <span class="badge bg-primary rounded-pill">${count}</span>
-                                    </li>`
-                                ).join('')}
-                        </ul>
-                    </div>`;
-            }
+        }
+
+        // Mostrar estadísticas filtradas
+        html += `
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Resumen de Incidentes</h6>
+                        <p>Total de incidentes: ${data.total_incidents || 0}</p>
+                        <p>Estación más afectada: ${data.most_affected_station || 'N/A'}</p>
+                        <p>Tipo más común: ${data.most_common_type || 'N/A'}</p>
+                        <p>Hora más peligrosa: ${data.most_dangerous_hour || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>`;
+
+        // Mostrar distribución de tipos de incidentes
+        if (data.incident_types) {
+            html += `
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Distribución por Tipo</h6>
+                            <ul class="list-group">
+                                ${Object.entries(data.incident_types)
+                                    .sort(([,a], [,b]) => b - a)
+                                    .map(([type, count]) => 
+                                        `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                            ${type}
+                                            <span class="badge bg-primary rounded-pill">${count}</span>
+                                        </li>`
+                                    ).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>`;
         }
 
         html += '</div>';
