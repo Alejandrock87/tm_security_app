@@ -175,9 +175,27 @@ function updateChart(incidents) {
                     labels: {
                         padding: 20,
                         font: {
-                            size: 12
+                            size: 11
+                        },
+                        boxWidth: 15,
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            return data.labels.map((label, i) => ({
+                                text: label,
+                                fillStyle: data.datasets[0].backgroundColor[i],
+                                hidden: false,
+                                lineCap: 'butt',
+                                lineDash: [],
+                                lineDashOffset: 0,
+                                lineJoin: 'miter',
+                                lineWidth: 1,
+                                strokeStyle: data.datasets[0].borderColor,
+                                pointStyle: 'circle',
+                                rotation: 0
+                            }));
                         }
-                    }
+                    },
+                    maxWidth: '50%'
                 },
                 title: {
                     display: true,
