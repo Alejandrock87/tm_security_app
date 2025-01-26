@@ -139,6 +139,11 @@ def init_routes(app):
             flash("Ocurrió un error al cargar los insights del modelo. Intente de nuevo más tarde.", "error")
             return redirect(url_for('home'))
 
+    @app.route('/predictions')
+    @login_required
+    def predictions():
+        return render_template('predictions.html', title='Predicciones')
+
     @app.route('/real_time_map')
     @login_required
     def real_time_map():
