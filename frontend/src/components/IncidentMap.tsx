@@ -58,19 +58,31 @@ export default function IncidentMap() {
 
   const fetchData = async () => {
     try {
+      console.log('Fetching initial data...');
       const [stationsResponse, incidentsResponse] = await Promise.all([
         fetch('/api/stations'),
         fetch('/incidents')
       ]);
 
+      if (!stationsResponse.ok || !incidentsResponse.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+
       const stationsData = await stationsResponse.json();
       const incidentsData = await incidentsResponse.json();
 
+      console.log('Data loaded:', {
+        stations: stationsData.length,
+        incidents: incidentsData.length
+      });
+
+      // Guardar datos originales
       setStations(stationsData);
       setIncidents(incidentsData);
-      setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))] as string[]);
+      setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
 
-      updateMapMarkers(stationsData, incidentsData); //Update markers immediately after fetching data
+      // Mostrar todos los datos inicialmente
+      updateMapMarkers(stationsData, incidentsData, false);
       updateChart(incidentsData);
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -145,14 +157,18 @@ export default function IncidentMap() {
     updateChart(filteredIncidents);
   };
 
-  const updateMapMarkers = (filteredStations: Station[], filteredIncidents: Incident[], applyFilters = true) => {
+  const updateMapMarkers = (stationsToShow: Station[], incidentsToShow: Incident[], applyFilters = true) => {
     if (!mapRef.current) return;
 
+    console.log('Actualizando marcadores:', {
+      stations: stationsToShow.length,
+      incidents: incidentsToShow.length,
+      applyingFilters: applyFilters
+    });
+
+    // Limpiar marcadores existentes
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
-
-    const stationsToUse = applyFilters ? filteredStations : stations;
-    const incidentsToUse = applyFilters ? filteredIncidents : incidents;
 
     stationsToUse.forEach(station => {
       const stationIncidents = incidentsToUse.filter(i => i.nearest_station === station.nombre);
@@ -305,15 +321,17 @@ export default function IncidentMap() {
 
   const applyFilters = () => {
     console.log('Aplicando filtros:', { enableFilters, filters });
+    
+    // Si no hay filtros activos, mostrar todos los datos
     const anyFilterEnabled = Object.values(enableFilters).some(value => value);
-
     if (!anyFilterEnabled) {
       console.log('No hay filtros activos, mostrando todos los datos');
-      updateMapMarkers(stations, incidents);
+      updateMapMarkers(stations, incidents, false);
       updateChart(incidents);
       return;
     }
 
+    // Comenzar con todos los datos
     let filteredStations = [...stations];
     let filteredIncidents = [...incidents];
 
