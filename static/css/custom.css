@@ -1,4 +1,24 @@
 
+/* Statistics page styles */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-title {
+    color: #333;
+    font-weight: 500;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #555;
+}
+
+canvas {
+    min-height: 300px;
+}
+
+
 .station-popup {
     max-height: 300px;
     overflow-y: auto;

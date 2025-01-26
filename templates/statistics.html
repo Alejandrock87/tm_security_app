@@ -7,33 +7,48 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Filtros de Estadísticas</h5>
-                    <div class="row">
+                    <h5 class="card-title mb-4">Filtros de Estadísticas</h5>
+                    <div class="row g-3">
                         <div class="col-md-2">
+                            <label class="form-label">Fecha</label>
                             <input type="date" class="form-control" id="dateFilter">
                         </div>
                         <div class="col-md-2">
+                            <label class="form-label">Hora</label>
                             <input type="time" class="form-control" id="timeFilter">
                         </div>
                         <div class="col-md-2">
+                            <label class="form-label">Tipo de Incidente</label>
                             <select class="form-select" id="incidentTypeFilter">
-                                <option value="all">Tipo de incidente</option>
+                                <option value="all">Todos</option>
                             </select>
                         </div>
                         <div class="col-md-2">
+                            <label class="form-label">Nivel de Seguridad</label>
                             <select class="form-select" id="securityLevelFilter">
-                                <option value="all">Nivel de seguridad</option>
+                                <option value="all">Todos</option>
+                                <option value="Alto">Alto</option>
+                                <option value="Medio">Medio</option>
+                                <option value="Bajo">Bajo</option>
                             </select>
                         </div>
                         <div class="col-md-2">
+                            <label class="form-label">Troncal</label>
                             <select class="form-select" id="troncalFilter">
-                                <option value="all">Troncal</option>
+                                <option value="all">Todas</option>
                             </select>
                         </div>
                         <div class="col-md-2">
+                            <label class="form-label">Estación</label>
                             <select class="form-select" id="stationFilter">
-                                <option value="all">Estación</option>
+                                <option value="all">Todas</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-end">
+                            <button class="btn btn-secondary me-2" id="resetFilters">Reiniciar Filtros</button>
+                            <button class="btn btn-primary" id="applyFilters">Aplicar Filtros</button>
                         </div>
                     </div>
                 </div>
@@ -42,16 +57,16 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Horarios Críticos</h5>
                     <canvas id="criticalHoursChart"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Tipos de Incidentes Reportados</h5>
                     <canvas id="incidentTypesChart"></canvas>
