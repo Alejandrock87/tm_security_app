@@ -15,6 +15,18 @@ async function loadStatistics() {
         // Mostrar indicador de carga
         document.querySelectorAll('.card-title').forEach(el => el.textContent = 'Cargando...');
         
+        // Destruir gráficos existentes antes de crear nuevos
+        if (charts.hourlyHeatmap) charts.hourlyHeatmap.destroy();
+        if (charts.incidentTypes) charts.incidentTypes.destroy();
+        if (charts.topStations) charts.topStations.destroy();
+        
+        // Resetear los objetos de gráficos
+        charts = {
+            hourlyHeatmap: null,
+            incidentTypes: null,
+            topStations: null
+        };
+        
         const queryParams = new URLSearchParams(filters);
         const response = await fetch('/api/statistics?' + queryParams.toString(), {
             headers: {
@@ -136,15 +148,17 @@ async function loadFilters() {
 }
 
 function getFilters() {
-    return {
-        dateFrom: document.getElementById('dateFromFilter').value,
-        dateTo: document.getElementById('dateToFilter').value,
-        timeFrom: document.getElementById('timeFromFilter').value,
-        timeTo: document.getElementById('timeToFilter').value,
-        incidentType: document.getElementById('incidentTypeFilter').value,
-        troncal: document.getElementById('troncalFilter').value,
-        station: document.getElementById('stationFilter').value
+    const filters = {
+        dateFrom: document.getElementById('dateFromFilter').value || '',
+        dateTo: document.getElementById('dateToFilter').value || '',
+        timeFrom: document.getElementById('timeFromFilter').value || '',
+        timeTo: document.getElementById('timeToFilter').value || '',
+        incidentType: document.getElementById('incidentTypeFilter').value || 'all',
+        troncal: document.getElementById('troncalFilter').value || 'all',
+        station: document.getElementById('stationFilter').value || 'all'
     };
+    console.log('Filtros aplicados:', filters);
+    return filters;
 }
 
 function updateSummaryCards(data) {

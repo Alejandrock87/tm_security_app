@@ -160,10 +160,31 @@ def init_routes(app):
     def get_statistics():
         print("Procesando solicitud de estadísticas...")
         try:
-            # Obtener todos los incidentes primero para verificar que hay datos
-            incidents = Incident.query.all()
+            # Base query
+            query = Incident.query
+
+            # Get filter parameters
+            date_from = request.args.get('dateFrom')
+            date_to = request.args.get('dateTo')
+            time_from = request.args.get('timeFrom')
+            time_to = request.args.get('timeTo')
+            incident_type = request.args.get('incidentType')
+            troncal = request.args.get('troncal')
+            station = request.args.get('station')
+
+            # Apply filters
+            if date_from:
+                query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+            if date_to:
+                query = query.filter(Incident.timestamp <= datetime.strptime(date_to + ' 23:59:59', '%Y-%m-%d %H:%M:%S'))
+            if incident_type and incident_type != 'all':
+                query = query.filter(Incident.incident_type == incident_type)
+            if station and station != 'all':
+                query = query.filter(Incident.nearest_station == station)
+
+            incidents = query.all()
             if not incidents:
-                print("No hay incidentes en la base de datos")
+                print("No se encontraron incidentes con los filtros aplicados")
                 return jsonify({
                     'hourly_stats': {},
                     'incident_types': {},
