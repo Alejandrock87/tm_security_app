@@ -158,13 +158,14 @@ def init_routes(app):
     @app.route('/api/statistics')
     @login_required
     def get_statistics():
-        # Get filter parameters
-        date_from = request.args.get('dateFrom')
-        date_to = request.args.get('dateTo')
-        time_from = request.args.get('timeFrom')
-        time_to = request.args.get('timeTo')
-        incident_type = request.args.get('incidentType')
-        troncal = request.args.get('troncal')
+        try:
+            # Get filter parameters
+            date_from = request.args.get('dateFrom')
+            date_to = request.args.get('dateTo')
+            time_from = request.args.get('timeFrom')
+            time_to = request.args.get('timeTo')
+            incident_type = request.args.get('incidentType')
+            troncal = request.args.get('troncal')
 
         # Base query
         query = Incident.query

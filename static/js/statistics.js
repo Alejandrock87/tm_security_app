@@ -5,6 +5,17 @@ let charts = {
     topStations: null
 };
 
+async function loadStatistics() {
+    try {
+        const response = await fetch('/api/statistics');
+        const data = await response.json();
+        updateCharts(data);
+        updateSummaryCards(data);
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
 async function loadFilters() {
     try {
         // Cargar datos de estaciones y troncales
@@ -242,11 +253,25 @@ function resetFilters() {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadFilters();
-    await loadStatistics();
-    
-    document.getElementById('applyFilters').addEventListener('click', loadStatistics);
-    document.getElementById('resetFilters').addEventListener('click', resetFilters);
+    try {
+        await Promise.all([
+            loadFilters(),
+            loadStatistics()
+        ]);
+        
+        const applyFiltersButtons = document.querySelectorAll('#applyFilters');
+        applyFiltersButtons.forEach(button => {
+            button.addEventListener('click', loadStatistics);
+        });
+        
+        const resetFiltersButtons = document.querySelectorAll('#resetFilters');
+        resetFiltersButtons.forEach(button => {
+            button.addEventListener('click', resetFilters);
+        });
+        
+    } catch (error) {
+        console.error('Error initializing page:', error);
+    }
     
     window.addEventListener('resize', () => {
         if (charts.incidentTypes) {
