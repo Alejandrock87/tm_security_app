@@ -159,43 +159,69 @@ def init_routes(app):
     @login_required
     def get_statistics():
         # Get filter parameters
-        date = request.args.get('date')
-        time = request.args.get('time')
+        date_from = request.args.get('dateFrom')
+        date_to = request.args.get('dateTo')
+        time_from = request.args.get('timeFrom')
+        time_to = request.args.get('timeTo')
         incident_type = request.args.get('incidentType')
-        security_level = request.args.get('securityLevel')
         troncal = request.args.get('troncal')
-        station = request.args.get('station')
 
         # Base query
         query = Incident.query
 
         # Apply filters
-        if date:
-            query = query.filter(func.date(Incident.timestamp) == date)
-        if time:
-            query = query.filter(func.extract('hour', Incident.timestamp) == int(time.split(':')[0]))
+        if date_from:
+            query = query.filter(Incident.timestamp >= datetime.strptime(date_from, '%Y-%m-%d'))
+        if date_to:
+            query = query.filter(Incident.timestamp <= datetime.strptime(date_to, '%Y-%m-%d'))
+        if time_from:
+            hour_from = int(time_from.split(':')[0])
+            query = query.filter(func.extract('hour', Incident.timestamp) >= hour_from)
+        if time_to:
+            hour_to = int(time_to.split(':')[0])
+            query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
         if incident_type != 'all':
             query = query.filter(Incident.incident_type == incident_type)
-        if station != 'all':
-            query = query.filter(Incident.nearest_station == station)
 
         incidents = query.all()
 
-        # Process data for charts
+        # Process data for charts and summary
         hourly_stats = {}
         incident_types = {}
+        station_counts = {}
 
         for incident in incidents:
             # Hourly statistics
             hour = incident.timestamp.hour
-            hourly_stats[hour] = hourly_stats.get(hour, 0) + 1
+            day = incident.timestamp.strftime('%A')
+            if day not in hourly_stats:
+                hourly_stats[day] = {}
+            hourly_stats[day][hour] = hourly_stats[day].get(hour, 0) + 1
 
             # Incident types
             incident_types[incident.incident_type] = incident_types.get(incident.incident_type, 0) + 1
 
+            # Station counts
+            station_counts[incident.nearest_station] = station_counts.get(incident.nearest_station, 0) + 1
+
+        # Get top 5 stations
+        top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+
+        # Get summary data
+        total_incidents = len(incidents)
+        most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0] if station_counts else "-"
+        most_dangerous_hour = max([(h, sum(d.get(h, 0) for d in hourly_stats.values())) 
+                                 for h in range(24)], key=lambda x: x[1])[0] if hourly_stats else "-"
+        most_common_type = max(incident_types.items(), key=lambda x: x[1])[0] if incident_types else "-"
+
         return jsonify({
             'hourly_stats': hourly_stats,
-            'incident_types': incident_types
+            'incident_types': incident_types,
+            'top_stations': top_stations,
+            'total_incidents': total_incidents,
+            'most_affected_station': most_affected_station,
+            'most_dangerous_hour': f"{most_dangerous_hour}:00",
+            'most_common_type': most_common_type
         })
 
     @app.route('/api/predictions')

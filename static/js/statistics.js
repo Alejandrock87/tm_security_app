@@ -1,20 +1,18 @@
 
 let charts = {
-    criticalHours: null,
-    incidentTypes: null
+    hourlyHeatmap: null,
+    incidentTypes: null,
+    topStations: null
 };
 
 async function loadFilters() {
-    // Load troncales from geojson
     const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
     const data = await response.json();
     
-    // Get unique troncales
     const troncales = [...new Set(data.features
         .map(f => f.properties.troncal_estacion)
         .filter(t => t))];
     
-    // Populate troncal filter
     const troncalSelect = document.getElementById('troncalFilter');
     troncales.forEach(troncal => {
         const option = document.createElement('option');
@@ -23,12 +21,10 @@ async function loadFilters() {
         troncalSelect.appendChild(option);
     });
 
-    // Load incident types
     const incidents = await fetch('/incidents');
     const incidentData = await incidents.json();
     const incidentTypes = [...new Set(incidentData.map(i => i.incident_type))];
     
-    // Populate incident type filter
     const incidentSelect = document.getElementById('incidentTypeFilter');
     incidentTypes.forEach(type => {
         const option = document.createElement('option');
@@ -40,12 +36,12 @@ async function loadFilters() {
 
 function getFilters() {
     return {
-        date: document.getElementById('dateFilter').value,
-        time: document.getElementById('timeFilter').value,
+        dateFrom: document.getElementById('dateFromFilter').value,
+        dateTo: document.getElementById('dateToFilter').value,
+        timeFrom: document.getElementById('timeFromFilter').value,
+        timeTo: document.getElementById('timeToFilter').value,
         incidentType: document.getElementById('incidentTypeFilter').value,
-        securityLevel: document.getElementById('securityLevelFilter').value,
-        troncal: document.getElementById('troncalFilter').value,
-        station: document.getElementById('stationFilter').value
+        troncal: document.getElementById('troncalFilter').value
     };
 }
 
@@ -54,54 +50,57 @@ async function loadStatistics() {
     const response = await fetch('/api/statistics?' + new URLSearchParams(filters));
     const data = await response.json();
     updateCharts(data);
+    updateSummaryCards(data);
+}
+
+function updateSummaryCards(data) {
+    document.getElementById('totalIncidents').textContent = data.total_incidents;
+    document.getElementById('mostAffectedStation').textContent = data.most_affected_station;
+    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour;
+    document.getElementById('mostCommonType').textContent = data.most_common_type;
 }
 
 function updateCharts(data) {
-    updateCriticalHoursChart(data.hourly_stats);
+    updateHourlyHeatmap(data.hourly_stats);
     updateIncidentTypesChart(data.incident_types);
+    updateTopStationsChart(data.top_stations);
 }
 
-function updateCriticalHoursChart(hourlyData) {
-    const ctx = document.getElementById('criticalHoursChart').getContext('2d');
+function updateHourlyHeatmap(hourlyData) {
+    const ctx = document.getElementById('hourlyHeatmap').getContext('2d');
     
-    if (charts.criticalHours) {
-        charts.criticalHours.destroy();
+    if (charts.hourlyHeatmap) {
+        charts.hourlyHeatmap.destroy();
     }
 
-    charts.criticalHours = new Chart(ctx, {
+    const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
+    const datasets = Object.entries(hourlyData).map(([day, values]) => ({
+        label: day,
+        data: hours.map(hour => values[hour] || 0)
+    }));
+
+    charts.hourlyHeatmap = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: Object.keys(hourlyData).map(hour => `${hour}:00`),
-            datasets: [{
-                label: 'Incidentes por Hora',
-                data: Object.values(hourlyData),
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
+            labels: hours,
+            datasets: datasets
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            },
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        maxTicksLimit: 10,
-                        precision: 0
-                    },
-                    grid: {
-                        drawBorder: false
+                        maxTicksLimit: 6
                     }
                 }
             },
-            maintainAspectRatio: true,
-            responsive: true
+            plugins: {
+                legend: {
+                    display: window.innerWidth > 768
+                }
+            }
         }
     });
 }
@@ -113,33 +112,29 @@ function updateIncidentTypesChart(typeData) {
         charts.incidentTypes.destroy();
     }
 
-    const colors = [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)'
-    ];
-
     charts.incidentTypes = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: Object.keys(typeData),
             datasets: [{
                 data: Object.values(typeData),
-                backgroundColor: colors,
-                borderColor: colors.map(c => c.replace('0.5', '1')),
-                borderWidth: 1
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ]
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'right',
+                    position: window.innerWidth > 768 ? 'right' : 'bottom',
                     labels: {
-                        boxWidth: 20,
+                        boxWidth: 12,
                         padding: 10
                     }
                 }
@@ -148,13 +143,50 @@ function updateIncidentTypesChart(typeData) {
     });
 }
 
+function updateTopStationsChart(stationData) {
+    const ctx = document.getElementById('topStationsChart').getContext('2d');
+    
+    if (charts.topStations) {
+        charts.topStations.destroy();
+    }
+
+    charts.topStations = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(stationData),
+            datasets: [{
+                label: 'Incidentes',
+                data: Object.values(stationData),
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        maxTicksLimit: 6
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+}
+
 function resetFilters() {
-    document.getElementById('dateFilter').value = '';
-    document.getElementById('timeFilter').value = '';
+    document.getElementById('dateFromFilter').value = '';
+    document.getElementById('dateToFilter').value = '';
+    document.getElementById('timeFromFilter').value = '';
+    document.getElementById('timeToFilter').value = '';
     document.getElementById('incidentTypeFilter').value = 'all';
-    document.getElementById('securityLevelFilter').value = 'all';
     document.getElementById('troncalFilter').value = 'all';
-    document.getElementById('stationFilter').value = 'all';
     loadStatistics();
 }
 
@@ -165,25 +197,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     document.getElementById('applyFilters').addEventListener('click', loadStatistics);
     document.getElementById('resetFilters').addEventListener('click', resetFilters);
-    document.getElementById('troncalFilter').addEventListener('change', async (e) => {
-        const troncal = e.target.value;
-        const response = await fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson');
-        const data = await response.json();
-        
-        const stationSelect = document.getElementById('stationFilter');
-        stationSelect.innerHTML = '<option value="all">Todas</option>';
-        
-        if (troncal !== 'all') {
-            const stations = data.features
-                .filter(f => f.properties.troncal_estacion === troncal)
-                .map(f => f.properties.nombre_estacion);
-            
-            stations.forEach(station => {
-                const option = document.createElement('option');
-                option.value = station;
-                option.textContent = station;
-                stationSelect.appendChild(option);
-            });
+    
+    window.addEventListener('resize', () => {
+        if (charts.incidentTypes) {
+            charts.incidentTypes.options.plugins.legend.position = 
+                window.innerWidth > 768 ? 'right' : 'bottom';
+            charts.incidentTypes.update();
         }
     });
 });
