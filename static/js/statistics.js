@@ -292,26 +292,30 @@ function createCharts(data) {
         });
 
         const stationCtx2D = stationCtx.getContext('2d');
-    charts.stationChart = new Chart(stationCtx2D, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(data.top_stations || {}),
-            datasets: [{
-                label: 'Incidentes',
-                data: Object.values(data.top_stations || {}),
-                backgroundColor: '#36A2EB'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
+        charts.stationChart = new Chart(stationCtx2D, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data.top_stations || {}),
+                datasets: [{
+                    label: 'Incidentes',
+                    data: Object.values(data.top_stations || {}),
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error al crear los gráficos:', error);
+    }
+}
 }
 
 function showError(message) {
