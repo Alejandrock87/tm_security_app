@@ -133,12 +133,16 @@ async function loadFilters() {
             stationSelect.appendChild(option);
         });
         
-        // Cargar tipos de incidentes
-        const response2 = await fetch('/incidents');
-        const incidents = await response2.json();
-        const incidentTypes = [...new Set(incidents.map(i => i.incident_type))].sort();
+        // Cargar tipos de incidentes desde las estadísticas
+        const statsResponse = await fetch('/api/statistics');
+        const statsData = await statsResponse.json();
+        const incidentTypes = Object.keys(statsData.incident_types || {}).sort();
         
         const incidentSelect = document.getElementById('incidentTypeFilter');
+        if (!incidentSelect) {
+            throw new Error('Elemento incidentTypeFilter no encontrado');
+        }
+        
         incidentSelect.innerHTML = '<option value="all">Todos</option>';
         incidentTypes.forEach(type => {
             const option = document.createElement('option');
