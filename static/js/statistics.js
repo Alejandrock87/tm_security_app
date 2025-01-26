@@ -154,15 +154,24 @@ async function loadStatistics() {
         const data = await response.json();
         console.log("Datos recibidos:", data);
 
-        updateSummaryCards(data);
-        createCharts(data);
-        await loadIncidentTypes();
+        if (data && typeof data === 'object') {
+            // Asegurarse de que los gráficos existentes se destruyan antes de crear nuevos
+            if (charts.typeChart) charts.typeChart.destroy();
+            if (charts.stationChart) charts.stationChart.destroy();
+            
+            updateSummaryCards(data);
+            createCharts(data);
+            await loadIncidentTypes();
 
-        // Mostrar vista inicial sin filtros
-        createDetailedView(data, {});
+            // Mostrar vista inicial sin filtros
+            createDetailedView(data, {});
+        } else {
+            throw new Error('Datos inválidos recibidos del servidor');
+        }
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
-        showError('Error al cargar las estadísticas');
+        document.getElementById('detailedView').innerHTML = 
+            '<div class="alert alert-danger">Error al cargar las estadísticas. Por favor, intente nuevamente.</div>';
     }
 }
 
