@@ -28,7 +28,16 @@ function setupEventListeners() {
     document.querySelectorAll('.btn-expand').forEach(btn => {
         btn.addEventListener('click', function() {
             const card = this.closest('.detail-card');
-            card.classList.toggle('expanded');
+            const list = card.querySelector('.scrollable-list');
+            if (card.classList.contains('expanded')) {
+                list.style.maxHeight = '300px';
+                card.classList.remove('expanded');
+                this.innerHTML = '<i class="fas fa-expand"></i>';
+            } else {
+                list.style.maxHeight = 'none';
+                card.classList.add('expanded');
+                this.innerHTML = '<i class="fas fa-compress"></i>';
+            }
         });
     });
     //Event Listeners from original code.
