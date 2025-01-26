@@ -1,8 +1,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Box, Paper } from '@mui/material';
-import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import '../styles/Map.css';
 
 export default function IncidentMap() {
   const mapRef = useRef<L.Map | null>(null);
