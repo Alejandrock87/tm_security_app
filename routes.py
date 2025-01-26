@@ -19,9 +19,7 @@ def init_routes(app):
     @app.route('/index')
     @app.route('/incident-map')
     def index():
-        if not current_user.is_authenticated:
-            return render_template('index.html', title='Inicio')
-        return render_template('home.html', title='Inicio')
+        return app.send_static_file('index.html')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -225,7 +223,7 @@ def init_routes(app):
 
             # Procesar solo los datos relacionados con los filtros aplicados
             print(f"Procesando {len(incidents)} incidentes con los filtros aplicados")
-                
+
             # Get filter parameters
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
@@ -253,7 +251,7 @@ def init_routes(app):
                 query = query.filter(func.extract('hour', Incident.timestamp) <= hour_to)
             if incident_type and incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
-            
+
             if troncal and troncal != 'all':
                 # Obtener estaciones de la troncal seleccionada
                 with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
