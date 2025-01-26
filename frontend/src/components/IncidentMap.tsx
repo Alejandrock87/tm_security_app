@@ -279,10 +279,12 @@ export default function IncidentMap() {
           fetch('/incidents').then(res => res.json())
         ]);
 
+        // Guardar los datos completos
         setStations(stationsData);
         setIncidents(incidentsData);
         setTroncales([...new Set(stationsData.map((s: Station) => s.troncal))]);
         
+        // Mostrar todos los datos sin filtros inicialmente
         updateMapMarkers(stationsData, incidentsData);
         updateChart(incidentsData);
       } catch (err) {
@@ -297,9 +299,11 @@ export default function IncidentMap() {
   }, []);
 
   const applyFilters = () => {
+    // Solo aplicar filtros cuando se presiona el botón
     let filteredStations = [...stations];
     let filteredIncidents = [...incidents];
 
+    // Aplicar filtros solo si están habilitados
     if (enableFilters.troncal && filters.troncal) {
       filteredStations = filteredStations.filter(station => station.troncal === filters.troncal);
     }
@@ -311,7 +315,6 @@ export default function IncidentMap() {
       filteredIncidents = filteredIncidents.filter(incident => incident.incident_type === filters.incidentType);
     }
     if (enableFilters.securityLevel && filters.securityLevel) {
-      // Apply security level filter based on incident count
       const stationIncidentCount = filteredIncidents.reduce((acc, incident) => {
         acc[incident.nearest_station] = (acc[incident.nearest_station] || 0) + 1;
         return acc;
@@ -329,6 +332,7 @@ export default function IncidentMap() {
   };
 
   const resetFilters = () => {
+    // Restablecer filtros y checkboxes
     setFilters({});
     setEnableFilters({
       troncal: false,
@@ -336,6 +340,7 @@ export default function IncidentMap() {
       incidentType: false,
       securityLevel: false
     });
+    // Mostrar todos los datos sin filtros
     updateMapMarkers(stations, incidents);
     updateChart(incidents);
   };
