@@ -205,8 +205,27 @@ def init_routes(app):
                 # Station counts
                 station_counts[incident.nearest_station] = station_counts.get(incident.nearest_station, 0) + 1
 
-        # Get top 5 stations
-        top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+            # Get top 5 stations
+            top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+
+            # Get summary data
+            total_incidents = len(incidents)
+            most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0] if station_counts else "-"
+            most_dangerous_hour = max([(h, sum(d.get(h, 0) for d in hourly_stats.values())) 
+                                     for h in range(24)], key=lambda x: x[1])[0] if hourly_stats else "-"
+            most_common_type = max(incident_types.items(), key=lambda x: x[1])[0] if incident_types else "-"
+
+            return jsonify({
+                'hourly_stats': hourly_stats,
+                'incident_types': incident_types,
+                'top_stations': top_stations,
+                'total_incidents': total_incidents,
+                'most_affected_station': most_affected_station,
+                'most_dangerous_hour': f"{most_dangerous_hour}:00",
+                'most_common_type': most_common_type
+            })
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
         # Get summary data
         total_incidents = len(incidents)
