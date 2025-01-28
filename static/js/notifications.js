@@ -1,5 +1,10 @@
 // Connect to the SocketIO server
-const socket = io();
+let socket;
+try {
+    socket = io();
+} catch (e) {
+    console.error('Error conectando con Socket.IO:', e);
+}
 let notificationCount = 0;
 
 // Elemento del contador de notificaciones
