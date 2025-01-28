@@ -1,10 +1,23 @@
 // Connect to the SocketIO server
 let socket;
-try {
-    socket = io();
-} catch (e) {
-    console.error('Error conectando con Socket.IO:', e);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        socket = io(window.location.origin, {
+            transports: ['polling', 'websocket'],
+            reconnectionAttempts: 5
+        });
+        
+        socket.on('connect', () => {
+            console.log('Conectado a Socket.IO');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Error de conexión Socket.IO:', error);
+        });
+    } catch (e) {
+        console.error('Error conectando con Socket.IO:', e);
+    }
+});
 let notificationCount = 0;
 
 // Elemento del contador de notificaciones
