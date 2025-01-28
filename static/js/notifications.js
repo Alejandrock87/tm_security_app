@@ -10,7 +10,7 @@ let notificationFilters = {
     incidentType: []
 };
 
-// Función para cargar estaciones
+// Función para cargar estaciones y troncales
 async function loadStations() {
     try {
         const response = await fetch('/api/stations');
@@ -21,64 +21,100 @@ async function loadStations() {
         if (!Array.isArray(stations)) {
             throw new Error('Formato de datos inválido');
         }
-        populateStationOptions(stations);
-        loadTroncales(stations);
-    } catch (error) {
-        console.error('Error loading stations:', error);
-        showError('Error al cargar las estaciones');
-    }
-}
 
-// Función para cargar troncales
-function loadTroncales(stations) {
-    try {
+        // Cargar troncales primero
         const troncales = [...new Set(stations.map(station => station.troncal))]
             .filter(troncal => troncal && troncal !== 'N/A')
             .sort();
 
-        const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
+        const troncalGroup = document.getElementById('troncalPreference');
         if (troncalGroup) {
-            troncalGroup.innerHTML = '';
-            const allCheckbox = document.createElement('div');
-            allCheckbox.className = 'form-check';
-            allCheckbox.innerHTML = `
+            const preferencesGroup = troncalGroup.querySelector('.preferences-group');
+            preferencesGroup.innerHTML = '';
+
+            // Agregar opción "Todas las Troncales"
+            const allTroncalDiv = document.createElement('div');
+            allTroncalDiv.className = 'form-check';
+            allTroncalDiv.innerHTML = `
                 <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
                 <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
             `;
-            troncalGroup.appendChild(allCheckbox);
+            preferencesGroup.appendChild(allTroncalDiv);
 
+            // Agregar cada troncal
             troncales.forEach(troncal => {
-                const formCheck = createCheckboxElement(`troncal-${troncal}`, troncal, false);
-                troncalGroup.appendChild(formCheck);
+                const troncalDiv = document.createElement('div');
+                troncalDiv.className = 'form-check';
+                troncalDiv.innerHTML = `
+                    <input class="form-check-input" type="checkbox" value="${troncal}" id="troncal-${troncal}">
+                    <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
+                `;
+                preferencesGroup.appendChild(troncalDiv);
             });
         }
+
+        // Luego cargar estaciones
+        const stationGroup = document.getElementById('stationPreference');
+        if (stationGroup) {
+            const preferencesGroup = stationGroup.querySelector('.preferences-group');
+            preferencesGroup.innerHTML = '';
+
+            // Agregar opción "Todas las Estaciones"
+            const allStationsDiv = document.createElement('div');
+            allStationsDiv.className = 'form-check';
+            allStationsDiv.innerHTML = `
+                <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
+                <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
+            `;
+            preferencesGroup.appendChild(allStationsDiv);
+
+            // Agregar cada estación
+            stations
+                .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''))
+                .forEach(station => {
+                    if (station.nombre) {
+                        const stationDiv = document.createElement('div');
+                        stationDiv.className = 'form-check';
+                        stationDiv.innerHTML = `
+                            <input class="form-check-input" type="checkbox" value="${station.nombre}" id="station-${station.nombre}">
+                            <label class="form-check-label" for="station-${station.nombre}">${station.nombre}</label>
+                        `;
+                        preferencesGroup.appendChild(stationDiv);
+                    }
+                });
+        }
+
+        // Configurar los eventos de los checkboxes
+        setupCheckboxEvents();
     } catch (error) {
-        console.error('Error loading troncales:', error);
-        showError('Error al cargar las troncales');
+        console.error('Error loading stations and troncales:', error);
+        showError('Error al cargar las estaciones y troncales');
     }
 }
 
-// Función para poblar opciones de estaciones
-function populateStationOptions(stations) {
-    const stationGroup = document.querySelector('#stationPreference .preferences-group');
-    if (stationGroup) {
-        stationGroup.innerHTML = '';
-        const allCheckbox = document.createElement('div');
-        allCheckbox.className = 'form-check';
-        allCheckbox.innerHTML = `
-            <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
-            <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
-        `;
-        stationGroup.appendChild(allCheckbox);
+// Configurar eventos de los checkboxes
+function setupCheckboxEvents() {
+    const troncalAll = document.getElementById('troncalAll');
+    const stationAll = document.getElementById('stationAll');
 
-        stations
-            .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''))
-            .forEach(station => {
-                if (station.nombre) {
-                    const formCheck = createCheckboxElement(`station-${station.nombre}`, station.nombre, false);
-                    stationGroup.appendChild(formCheck);
-                }
+    if (troncalAll) {
+        troncalAll.addEventListener('change', function() {
+            const troncalCheckboxes = document.querySelectorAll('#troncalPreference .form-check-input:not(#troncalAll)');
+            troncalCheckboxes.forEach(cb => {
+                cb.checked = this.checked;
+                cb.disabled = this.checked;
             });
+        });
+    }
+
+    if (stationAll) {
+        stationAll.addEventListener('change', function() {
+            const stationCheckboxes = document.querySelectorAll('#stationPreference .form-check-input:not(#stationAll)');
+            stationCheckboxes.forEach(cb => {
+                cb.checked = this.checked;
+                cb.disabled = this.checked;
+            });
+        });
     }
 }
 
