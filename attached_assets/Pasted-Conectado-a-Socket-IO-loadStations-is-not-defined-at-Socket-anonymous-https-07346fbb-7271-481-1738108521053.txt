@@ -1,0 +1,25 @@
+Conectado a Socket.IO
+loadStations is not defined
+at Socket.<anonymous> (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/static/js/notifications.js:25:17)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Socket.emitReserved (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1567:88)
+at Socket.onconnect (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1219:12)
+at Socket.onpacket (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1076:18)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Manager.emitReserved (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1567:88)
+at Manager.ondecoded (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:526:12)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Decoder.add (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:5679:66)
+Desconectado del servidor Socket.IO
+Conectado a Socket.IO
+loadStations is not defined
+at Socket.<anonymous> (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:3000/static/js/notifications.js:25:17)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Socket.emitReserved (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1567:88)
+at Socket.onconnect (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1219:12)
+at Socket.onpacket (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1076:18)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Manager.emitReserved (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1567:88)
+at Manager.ondecoded (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:526:12)
+at ./node_modules/component-emitter/index.js.Emitter.emit (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:1915:20)
+at Decoder.add (https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js:5679:66)
