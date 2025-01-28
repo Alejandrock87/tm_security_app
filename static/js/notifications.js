@@ -1,4 +1,3 @@
-
 // Variables globales
 let socket = null;
 let notificationCount = 0;
@@ -23,11 +22,12 @@ function initializeSocketIO() {
             // Eventos de Socket.IO
             socket.on('connect', () => {
                 console.log('Conectado a Socket.IO');
-                setupSocketEvents();
+                loadStations();
             });
 
             socket.on('connect_error', (error) => {
                 console.error('Error de conexión Socket.IO:', error);
+                loadStations(); // Intentar cargar estaciones incluso si hay error de socket
             });
 
             socket.on('disconnect', () => {
@@ -36,6 +36,7 @@ function initializeSocketIO() {
 
         } catch (error) {
             console.error('Error inicializando Socket.IO:', error);
+            loadStations(); // Intentar cargar estaciones incluso si falla la inicialización
         }
     } else {
         console.error('Socket.IO no está disponible');
@@ -171,31 +172,57 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar Socket.IO
     initializeSocketIO();
 
-    // Cargar estaciones
-    fetch('/api/stations')
-        .then(response => {
-            if (!response.ok) throw new Error('Error cargando estaciones');
-            return response.json();
-        })
-        .then(stations => {
-            const settings = getNotificationSettings();
-            populateStationOptions(stations, settings);
-        })
-        .catch(error => {
-            console.error('Error loading stations:', error);
-            showToast({ type: 'error', message: 'Error cargando estaciones' });
-        });
 
+    function loadStations() {
+        fetch('/api/stations')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(stations => {
+                if (!Array.isArray(stations)) {
+                    throw new Error('Formato de datos inválido');
+                }
+                populateStationOptions(stations);
+            })
+            .catch(error => {
+                console.error('Error loading stations:', error);
+                showError('Error al cargar las estaciones. Por favor, intente nuevamente.');
+            });
+    }
+
+    function populateStationOptions(stations) {
+        const stationSelect = document.getElementById('stationFilter');
+        if (!stationSelect) return;
+
+        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
+
+        stations
+            .sort((a, b) => a.nombre.localeCompare(b.nombre))
+            .forEach(station => {
+                if (station.nombre) {
+                    const option = document.createElement('option');
+                    option.value = station.nombre;
+                    option.textContent = station.nombre;
+                    stationSelect.appendChild(option);
+                }
+            });
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById('error-message');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        } else {
+            console.error(message);
+        }
+    }
     // Configurar event listeners para filtros
     setupFilterEventListeners();
 });
-
-function populateStationOptions(stations, settings) {
-    const troncales = new Set(stations.map(station => station.troncal_estacion));
-    populateTroncalOptions(troncales, settings);
-    populateStationList(stations, settings);
-    populateIncidentTypeOptions(settings);
-}
 
 function populateTroncalOptions(troncales, settings) {
     const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
@@ -234,7 +261,7 @@ function populateStationList(stations, settings) {
 function createCheckboxElement(id, value, checked) {
     const formCheck = document.createElement('div');
     formCheck.className = 'form-check';
-    
+
     const checkbox = document.createElement('input');
     checkbox.className = 'form-check-input';
     checkbox.type = 'checkbox';
@@ -312,7 +339,7 @@ function updateNotificationFilters(activeFilters) {
 
 function fetchFilteredNotifications() {
     const queryParams = buildQueryParams();
-    
+
     fetch(`/api/notifications/history${queryParams}`)
         .then(response => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -331,7 +358,7 @@ function fetchFilteredNotifications() {
 
 function buildQueryParams() {
     const params = [];
-    
+
     if (!notificationFilters.troncal.includes('all') && notificationFilters.troncal.length > 0) {
         params.push(`troncal=${notificationFilters.troncal.join(',')}`);
     }
@@ -347,7 +374,7 @@ function buildQueryParams() {
 
 function updateNotificationsList(data) {
     if (!notificationsList) return;
-    
+
     notificationsList.innerHTML = '';
     if (data.notifications && data.notifications.length > 0) {
         data.notifications.forEach(notification => {
@@ -364,4 +391,23 @@ function updateNotificationsList(data) {
     } else {
         notificationsList.innerHTML = '<p>No hay notificaciones para mostrar.</p>';
     }
+}
+
+function populateIncidentTypeOptions(settings) {
+    const incidentTypeGroup = document.querySelector('#typePreference .preferences-group');
+    if (!incidentTypeGroup) return;
+
+    // Assuming you have an array of incident types available somewhere
+    const incidentTypes = ['Incendio', 'Accidente', 'Retraso']; // Replace with your actual incident types
+
+    incidentTypes.forEach(type => {
+        const formCheck = createCheckboxElement(
+            `type-${type}`,
+            type,
+            settings.incidentType.includes('all') || settings.incidentType.includes(type)
+        );
+        incidentTypeGroup.appendChild(formCheck);
+    });
+
+    setupAllCheckboxHandler('typeAll', '#typePreference');
 }
