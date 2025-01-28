@@ -281,6 +281,7 @@ async function loadStations(troncal = 'all') {
             });
     } catch (error) {
         console.error('Error loading stations:', error);
+        throw error;
     }
 }
 
