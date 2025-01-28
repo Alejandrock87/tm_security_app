@@ -1,33 +1,50 @@
-// Connect to the SocketIO server
 let socket = null;
+let notificationCount = 0;
 
-function initializeSocket() {
-    if (typeof io !== 'undefined' && !socket) {
-        try {
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        if (typeof io !== 'undefined') {
             socket = io(window.location.origin, {
                 transports: ['polling', 'websocket'],
                 reconnectionAttempts: 5
             });
-            
+
             socket.on('connect', () => {
                 console.log('Conectado a Socket.IO');
+                
+                // Solo configurar los event listeners después de una conexión exitosa
+                socket.on('new_incident', (data) => {
+                    const settings = getNotificationSettings();
+                    if (!settings.enabled) return;
+
+                    if (shouldShowNotification(data)) {
+                        addNotification(data);
+                        updateNotificationBadge(++notificationCount);
+
+                        if (Notification.permission === 'granted') {
+                            new Notification('Nuevo Incidente', {
+                                body: `${data.incident_type} en ${data.nearest_station}`,
+                                icon: '/static/icons/notification-icon.png'
+                            });
+                        }
+                    }
+                });
             });
 
             socket.on('connect_error', (error) => {
                 console.error('Error de conexión Socket.IO:', error);
             });
-        } catch (e) {
-            console.error('Error conectando con Socket.IO:', e);
-            return null;
-        }
-    }
-    return socket;
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    socket = initializeSocket();
+            socket.on('disconnect', () => {
+                console.log('Desconectado del servidor Socket.IO');
+            });
+        } else {
+            console.error('Socket.IO no está definido');
+        }
+    } catch (e) {
+        console.error('Error inicializando Socket.IO:', e);
+    }
 });
-let notificationCount = 0;
 
 // Elemento del contador de notificaciones
 const notificationBadge = document.getElementById('notification-badge');
