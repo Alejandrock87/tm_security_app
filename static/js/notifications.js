@@ -1,22 +1,31 @@
 // Connect to the SocketIO server
-let socket;
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        socket = io(window.location.origin, {
-            transports: ['polling', 'websocket'],
-            reconnectionAttempts: 5
-        });
-        
-        socket.on('connect', () => {
-            console.log('Conectado a Socket.IO');
-        });
+let socket = null;
 
-        socket.on('connect_error', (error) => {
-            console.error('Error de conexión Socket.IO:', error);
-        });
-    } catch (e) {
-        console.error('Error conectando con Socket.IO:', e);
+function initializeSocket() {
+    if (typeof io !== 'undefined' && !socket) {
+        try {
+            socket = io(window.location.origin, {
+                transports: ['polling', 'websocket'],
+                reconnectionAttempts: 5
+            });
+            
+            socket.on('connect', () => {
+                console.log('Conectado a Socket.IO');
+            });
+
+            socket.on('connect_error', (error) => {
+                console.error('Error de conexión Socket.IO:', error);
+            });
+        } catch (e) {
+            console.error('Error conectando con Socket.IO:', e);
+            return null;
+        }
     }
+    return socket;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    socket = initializeSocket();
 });
 let notificationCount = 0;
 
