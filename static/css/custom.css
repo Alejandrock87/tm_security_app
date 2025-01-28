@@ -845,10 +845,10 @@
     }
 }
 
-/* --- Nuevos Estilos Añadidos para notifications.html --- */
+/* --- Estilos Específicos para notifications.html --- */
 
-/* Contenedor principal de notificaciones */
-.container {
+.notifications-page {
+    /* Contenedor principal */
     background-color: #1e293b; /* Fondo oscuro consistente */
     border-radius: 16px; /* Bordes redondeados */
     padding: 2rem;
@@ -857,25 +857,25 @@
 }
 
 /* Encabezado de Notificaciones */
-.notifications-header {
+.notifications-page .notifications-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.notifications-header h2 {
+.notifications-page .notifications-header h2 {
     font-size: 2rem;
     font-weight: 700;
     color: #ffffff; /* Texto blanco para el título */
     margin-bottom: 0.5rem;
 }
 
-.notifications-header p {
+.notifications-page .notifications-header p {
     font-size: 1rem;
     color: #94a3b8; /* Texto gris para la descripción */
 }
 
 /* Tarjetas de Configuración y Historial */
-.card {
+.notifications-page .card {
     background-color: #1e293b; /* Fondo oscuro consistente */
     border-radius: 12px; /* Bordes redondeados */
     padding: 1.5rem;
@@ -884,13 +884,13 @@
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
-.card:hover {
+.notifications-page .card:hover {
     transform: translateY(-5px);
     background-color: #334155; /* Cambio de fondo al hover */
 }
 
 /* Títulos de Tarjetas */
-.card h5 {
+.notifications-page .card h5 {
     font-size: 1.25rem;
     font-weight: 600;
     color: #ffffff; /* Texto blanco para el encabezado */
@@ -898,27 +898,27 @@
 }
 
 /* Formulario de Preferencias */
-.form-check-label {
+.notifications-page .form-check-label {
     color: #ffffff; /* Texto blanco para las etiquetas */
 }
 
-.form-select {
-    background-color: #374151; /* Fondo gris oscuro para selects */
-    border: none; /* Eliminar borde */
+.notifications-page .preferences-group {
+    background-color: #374151; /* Fondo gris oscuro para el grupo de preferencias */
     border-radius: 8px; /* Bordes redondeados */
-    color: #ffffff; /* Texto blanco */
-    padding: 0.5rem;
-    transition: background-color 0.3s ease;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
 }
 
-.form-select:focus {
-    background-color: #4b5563; /* Fondo más claro al enfocar */
-    box-shadow: none; /* Eliminar sombra predeterminada */
-    color: #ffffff;
+.notifications-page .preferences-group .form-check {
+    margin-bottom: 0.5rem;
+}
+
+.notifications-page .preferences-group .form-check:last-child {
+    margin-bottom: 0;
 }
 
 /* Botones */
-.btn-primary {
+.notifications-page .btn-primary {
     background-color: #3b82f6; /* Azul para el botón */
     border: none;
     border-radius: 8px; /* Bordes redondeados */
@@ -927,19 +927,26 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
+.notifications-page .btn-primary:hover {
     background-color: #2563eb; /* Azul más oscuro al pasar el mouse */
 }
 
 /* Filtros de Historial */
-.notification-filters .scroll-container {
+.notifications-page .notification-filters h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.notifications-page .notification-filters .scroll-container {
     display: flex;
     gap: 0.5rem;
     overflow-x: auto;
     padding-bottom: 0.5rem;
 }
 
-.notification-filters .filter-chip {
+.notifications-page .notification-filters .filter-chip {
     background-color: #374151; /* Gris oscuro para los filtros */
     border: none;
     border-radius: 9999px; /* Forma de chip */
@@ -951,16 +958,16 @@
     white-space: nowrap;
 }
 
-.notification-filters .filter-chip:hover {
+.notifications-page .notification-filters .filter-chip:hover {
     background-color: #3b82f6; /* Azul al pasar el mouse */
 }
 
-.notification-filters .filter-chip.active {
+.notifications-page .notification-filters .filter-chip.active {
     background-color: #3b82f6; /* Azul para el filtro activo */
 }
 
 /* Lista de Notificaciones */
-.notification-list {
+.notifications-page .notification-list {
     max-height: 400px;
     overflow-y: auto;
     padding: 1rem;
@@ -968,22 +975,22 @@
     border-radius: 8px;
 }
 
-.notification-list::-webkit-scrollbar {
+.notifications-page .notification-list::-webkit-scrollbar {
     width: 8px;
 }
 
-.notification-list::-webkit-scrollbar-thumb {
+.notifications-page .notification-list::-webkit-scrollbar-thumb {
     background-color: #4b5563; /* Gris oscuro para la barra de desplazamiento */
     border-radius: 4px;
 }
 
-.notification-list::-webkit-scrollbar-track {
+.notifications-page .notification-list::-webkit-scrollbar-track {
     background-color: #374151; /* Fondo de la barra de desplazamiento */
     border-radius: 4px;
 }
 
 /* Elemento Individual de Notificación */
-.notification-item {
+.notifications-page .notification-item {
     background-color: #374151; /* Fondo gris oscuro para cada notificación */
     border-radius: 8px;
     padding: 1rem;
@@ -992,56 +999,84 @@
     cursor: pointer;
 }
 
-.notification-item:hover {
+.notifications-page .notification-item:hover {
     background-color: #4b5563; /* Cambio de fondo al hover */
 }
 
 /* Títulos y Detalles de Notificaciones */
-.notification-item h6 {
+.notifications-page .notification-item h6 {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: #ffffff; /* Texto blanco */
 }
 
-.notification-item p {
+.notifications-page .notification-item p {
     font-size: 0.9rem;
     color: #94a3b8; /* Texto gris para detalles */
 }
 
-.notification-item small {
+.notifications-page .notification-item small {
     color: #94a3b8; /* Texto gris para información adicional */
+}
+
+/* Estilos para los checkboxes de preferencias */
+.notifications-page .preferences-group .form-check-input {
+    cursor: pointer;
+}
+
+.notifications-page .preferences-group .form-check-label {
+    cursor: pointer;
 }
 
 /* Estilos Responsivos */
 @media (max-width: 768px) {
-    .container {
+    .notifications-page {
         padding: 1rem;
     }
 
-    .notifications-header h2 {
+    .notifications-page .notifications-header h2 {
         font-size: 1.75rem;
     }
 
-    .notifications-header p {
+    .notifications-page .notifications-header p {
         font-size: 0.9rem;
     }
 
-    .card {
+    .notifications-page .card {
         padding: 1rem;
     }
 
-    .form-select {
+    .notifications-page .form-select {
         padding: 0.4rem;
         font-size: 0.8rem;
     }
 
-    .btn-primary {
+    .notifications-page .btn-primary {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
     }
 
-    .notification-list {
+    .notifications-page .notification-list {
         max-height: 300px;
     }
+
+    .notifications-page .preferences-group {
+        padding: 0.5rem;
+    }
+
+    .notifications-page .preferences-group .form-check {
+        margin-bottom: 0.4rem;
+    }
+
+    .notifications-page .notification-filters h5 {
+        font-size: 1.1rem;
+    }
+
+    .notifications-page .notification-filters .filter-chip {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
 }
+
+

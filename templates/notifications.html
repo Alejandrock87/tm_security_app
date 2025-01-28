@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container notifications-page">
     <!-- Encabezado de Notificaciones -->
     <div class="notifications-header">
         <h2>Notificaciones</h2>
@@ -19,32 +19,86 @@
                         <label class="form-check-label" for="notificationsEnabled">Recibir notificaciones</label>
                     </div>
                     <div class="row">
+                        <!-- Troncales -->
                         <div class="col-md-4">
                             <label for="troncalPreference">Troncales:</label>
-                            <select class="form-select" id="troncalPreference" multiple>
-                                <option value="all" selected>Todas las Troncales</option>
-                                <!-- Opciones dinámicas -->
-                            </select>
+                            <div class="preferences-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
+                                    <label class="form-check-label" for="troncalAll">
+                                        Todas las Troncales
+                                    </label>
+                                </div>
+                                <!-- Opciones dinámicas se añadirán aquí -->
+                            </div>
                         </div>
+                        <!-- Estaciones -->
                         <div class="col-md-4">
                             <label for="stationPreference">Estaciones:</label>
-                            <select class="form-select" id="stationPreference" multiple>
-                                <option value="all" selected>Todas las Estaciones</option>
-                                <!-- Opciones dinámicas -->
-                            </select>
+                            <div class="preferences-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
+                                    <label class="form-check-label" for="stationAll">
+                                        Todas las Estaciones
+                                    </label>
+                                </div>
+                                <!-- Opciones dinámicas se añadirán aquí -->
+                            </div>
                         </div>
+                        <!-- Tipos de Incidente -->
                         <div class="col-md-4">
                             <label for="typePreference">Tipos de Incidente:</label>
-                            <select class="form-select" id="typePreference" multiple>
-                                <option value="all" selected>Todos los tipos</option>
-                                <option value="Hurto">Hurto</option>
-                                <option value="Hurto a mano armada">Hurto a mano armada</option>
-                                <option value="Cosquilleo">Cosquilleo</option>
-                                <option value="Ataque">Ataque</option>
-                                <option value="Apertura de puertas">Apertura de puertas</option>
-                                <option value="Sospechoso">Sospechoso</option>
-                                <option value="Acoso">Acoso</option>
-                            </select>
+                            <div class="preferences-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="all" id="typeAll" checked>
+                                    <label class="form-check-label" for="typeAll">
+                                        Todos los tipos
+                                    </label>
+                                </div>
+                                <!-- Opciones estáticas ya definidas -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Hurto" id="typeHurto">
+                                    <label class="form-check-label" for="typeHurto">
+                                        Hurto
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Hurto a mano armada" id="typeHurtoArmada">
+                                    <label class="form-check-label" for="typeHurtoArmada">
+                                        Hurto a mano armada
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Cosquilleo" id="typeCosquilleo">
+                                    <label class="form-check-label" for="typeCosquilleo">
+                                        Cosquilleo
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Ataque" id="typeAtaque">
+                                    <label class="form-check-label" for="typeAtaque">
+                                        Ataque
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Apertura de puertas" id="typeApertura">
+                                    <label class="form-check-label" for="typeApertura">
+                                        Apertura de puertas
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Sospechoso" id="typeSospechoso">
+                                    <label class="form-check-label" for="typeSospechoso">
+                                        Sospechoso
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Acoso" id="typeAcoso">
+                                    <label class="form-check-label" for="typeAcoso">
+                                        Acoso
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button class="btn btn-primary mt-3" onclick="saveNotificationPreferences()">Guardar Preferencias</button>
@@ -70,14 +124,6 @@
                     </div>
                     <div id="notificationList" class="notification-list">
                         <!-- Notificaciones se cargarán aquí dinámicamente -->
-                        <!-- Ejemplo de notificación -->
-                        <!--
-                        <div class="notification-item">
-                            <h6>Hurto en Estación Central</h6>
-                            <p>Un hurto ocurrió en la Estación Central a las 14:30.</p>
-                            <small>Hace 2 horas</small>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
