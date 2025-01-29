@@ -14,7 +14,7 @@ def create_app():
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
-        raise ValueError("DATABASE_URL environment variable is not set")
+        database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
@@ -50,7 +50,7 @@ def create_app():
     from routes import init_routes
     init_routes(app)
 
-    socketio.init_app(app, cors_allowed_origins="*")
+    socketio.init_app(app, cors_allowed_origins="*", async_mode='polling')
 
     return app
 
