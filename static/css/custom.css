@@ -1097,6 +1097,16 @@
     cursor: pointer;
 }
 
+/* Estilos para el badge de notificaciones */
+#notification-badge {
+    background-color: #ef4444; /* Rojo para destacar */
+    color: #ffffff;
+    padding: 0.5em 0.75em;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 /* Estilos Responsivos */
 @media (max-width: 768px) {
     .notifications-page {
@@ -1115,14 +1125,10 @@
         padding: 1rem;
     }
 
-    .notifications-page .form-select {
-        padding: 0.4rem;
-        font-size: 0.8rem;
-    }
-
     .notifications-page .btn-primary {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
+        width: 100%; /* Botón ocupa todo el ancho en móviles */
     }
 
     .notifications-page .notification-list {
@@ -1144,6 +1150,19 @@
     .notifications-page .notification-filters .filter-chip {
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
+    }
+
+    /* Ajustes adicionales para móviles */
+    .preferences-group .form-check-label {
+        font-size: 0.9rem;
+    }
+
+    .notification-filters .scroll-container {
+        flex-wrap: wrap;
+    }
+
+    .notification-filters .filter-chip {
+        flex: 1 1 auto;
     }
 }
 

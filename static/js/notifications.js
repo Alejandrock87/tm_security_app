@@ -2,273 +2,16 @@
 let socket = null;
 let notificationCount = 0;
 const notificationBadge = document.getElementById('notification-badge');
-const notificationsList = document.getElementById('notifications-list');
+const notificationsList = document.getElementById('notificationList');
 
+// Objeto para almacenar los filtros activos
 let notificationFilters = {
-    troncal: [],
-    station: [],
-    incidentType: []
+    troncal: ['all'],
+    station: ['all'],
+    incidentType: ['all']
 };
 
-// Función para cargar estaciones y troncales
-async function loadStations() {
-    try {
-        const response = await fetch('/api/stations');
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        const stations = await response.json();
-        if (!Array.isArray(stations)) {
-            throw new Error('Formato de datos inválido');
-        }
-
-        // Cargar troncales primero
-        const troncales = [...new Set(stations.map(station => station.troncal))]
-            .filter(troncal => troncal && troncal !== 'N/A')
-            .sort();
-
-        const troncalGroup = document.getElementById('troncalPreference');
-        if (troncalGroup) {
-            const preferencesGroup = troncalGroup.querySelector('.preferences-group');
-            preferencesGroup.innerHTML = '';
-
-            // Agregar opción "Todas las Troncales"
-            const allTroncalDiv = document.createElement('div');
-            allTroncalDiv.className = 'form-check';
-            allTroncalDiv.innerHTML = `
-                <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
-                <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
-            `;
-            preferencesGroup.appendChild(allTroncalDiv);
-
-            // Agregar cada troncal
-            troncales.forEach(troncal => {
-                const troncalDiv = document.createElement('div');
-                troncalDiv.className = 'form-check';
-                troncalDiv.innerHTML = `
-                    <input class="form-check-input" type="checkbox" value="${troncal}" id="troncal-${troncal}">
-                    <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
-                `;
-                preferencesGroup.appendChild(troncalDiv);
-            });
-        }
-
-        // Luego cargar estaciones
-        const stationGroup = document.getElementById('stationPreference');
-        if (stationGroup) {
-            const preferencesGroup = stationGroup.querySelector('.preferences-group');
-            preferencesGroup.innerHTML = '';
-
-            // Agregar opción "Todas las Estaciones"
-            const allStationsDiv = document.createElement('div');
-            allStationsDiv.className = 'form-check';
-            allStationsDiv.innerHTML = `
-                <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
-                <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
-            `;
-            preferencesGroup.appendChild(allStationsDiv);
-
-            // Agregar cada estación
-            stations
-                .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''))
-                .forEach(station => {
-                    if (station.nombre) {
-                        const stationDiv = document.createElement('div');
-                        stationDiv.className = 'form-check';
-                        stationDiv.innerHTML = `
-                            <input class="form-check-input" type="checkbox" value="${station.nombre}" id="station-${station.nombre}">
-                            <label class="form-check-label" for="station-${station.nombre}">${station.nombre}</label>
-                        `;
-                        preferencesGroup.appendChild(stationDiv);
-                    }
-                });
-        }
-
-        // Configurar los eventos de los checkboxes
-        setupCheckboxEvents();
-    } catch (error) {
-        console.error('Error loading stations and troncales:', error);
-        showError('Error al cargar las estaciones y troncales');
-    }
-}
-
-// Configurar eventos de los checkboxes
-function setupCheckboxEvents() {
-    const troncalAll = document.getElementById('troncalAll');
-    const stationAll = document.getElementById('stationAll');
-
-    if (troncalAll) {
-        troncalAll.addEventListener('change', function() {
-            const troncalCheckboxes = document.querySelectorAll('#troncalPreference .form-check-input:not(#troncalAll)');
-            troncalCheckboxes.forEach(cb => {
-                cb.checked = this.checked;
-                cb.disabled = this.checked;
-            });
-        });
-    }
-
-    if (stationAll) {
-        stationAll.addEventListener('change', function() {
-            const stationCheckboxes = document.querySelectorAll('#stationPreference .form-check-input:not(#stationAll)');
-            stationCheckboxes.forEach(cb => {
-                cb.checked = this.checked;
-                cb.disabled = this.checked;
-            });
-        });
-    }
-}
-
-// Función para cargar troncales y estaciones
-async function loadPreferences() {
-    try {
-        const response = await fetch('/api/stations');
-        if (!response.ok) {
-            throw new Error('Error al obtener las estaciones');
-        }
-        const stations = await response.json();
-        
-        // Cargar troncales
-        const troncales = [...new Set(stations.map(station => station.troncal))]
-            .filter(troncal => troncal && troncal !== 'N/A' && troncal !== '')
-            .sort();
-        
-        const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
-        if (troncalGroup) {
-            // Limpiar contenido existente
-            troncalGroup.innerHTML = '';
-            
-            // Crear contenedor de lista para troncales
-            const troncalList = document.createElement('div');
-            troncalList.className = 'preferences-list';
-            
-            // Agregar opción "Todas las Troncales"
-            const allTroncalDiv = document.createElement('div');
-            allTroncalDiv.className = 'form-check preference-item';
-            allTroncalDiv.innerHTML = `
-                <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
-                <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
-            `;
-            troncalList.appendChild(allTroncalDiv);
-            
-            // Agregar cada troncal individual
-            troncales.forEach(troncal => {
-                if (troncal) {
-                    const div = document.createElement('div');
-                    div.className = 'form-check preference-item';
-                    div.innerHTML = `
-                        <input class="form-check-input troncal-checkbox" type="checkbox" value="${troncal}" id="troncal-${troncal}">
-                        <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
-                    `;
-                    troncalList.appendChild(div);
-                }
-            });
-            
-            troncalGroup.appendChild(troncalList);
-        }
-        
-        // Cargar estaciones
-        const stationGroup = document.querySelector('#stationPreference .preferences-group');
-        if (stationGroup) {
-            // Limpiar contenido existente
-            stationGroup.innerHTML = '';
-            
-            // Crear contenedor de lista para estaciones
-            const stationList = document.createElement('div');
-            stationList.className = 'preferences-list';
-            
-            // Agregar opción "Todas las Estaciones"
-            const allStationsDiv = document.createElement('div');
-            allStationsDiv.className = 'form-check preference-item';
-            allStationsDiv.innerHTML = `
-                <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
-                <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
-            `;
-            stationList.appendChild(allStationsDiv);
-            
-            // Filtrar y ordenar estaciones válidas
-            const validStations = stations
-                .filter(station => station.nombre && station.nombre.trim() !== '')
-                .sort((a, b) => a.nombre.localeCompare(b.nombre));
-            
-            // Agregar cada estación individual
-            validStations.forEach(station => {
-                const div = document.createElement('div');
-                div.className = 'form-check preference-item';
-                const stationId = `station-${station.nombre.replace(/\s+/g, '-')}`;
-                div.innerHTML = `
-                    <input class="form-check-input station-checkbox" type="checkbox" value="${station.nombre}" id="${stationId}">
-                    <label class="form-check-label" for="${stationId}">${station.nombre}</label>
-                `;
-                stationList.appendChild(div);
-            });
-            
-            stationGroup.appendChild(stationList);
-        }
-
-        setupCheckboxEvents();
-    } catch (error) {
-        console.error('Error loading preferences:', error);
-        showToast({ type: 'error', message: 'Error al cargar las preferencias' });
-    }
-}
-
-// Inicialización de Socket.IO
-function initializeSocketIO() {
-    loadPreferences(); // Cargar preferencias al inicializar
-    if (typeof io !== 'undefined') {
-        try {
-            socket = io(window.location.origin, {
-                transports: ['polling', 'websocket'],
-                reconnectionAttempts: 5
-            });
-
-            // Eventos de Socket.IO
-            socket.on('connect', () => {
-                console.log('Conectado a Socket.IO');
-                loadStations();
-            });
-
-            socket.on('connect_error', (error) => {
-                console.error('Error de conexión Socket.IO:', error);
-                loadStations(); // Intentar cargar estaciones incluso si hay error de socket
-            });
-
-            socket.on('disconnect', () => {
-                console.log('Desconectado del servidor Socket.IO');
-            });
-
-        } catch (error) {
-            console.error('Error inicializando Socket.IO:', error);
-            loadStations(); // Intentar cargar estaciones incluso si falla la inicialización
-        }
-    } else {
-        console.error('Socket.IO no está disponible');
-    }
-}
-
-// Configurar eventos de Socket.IO
-function setupSocketEvents() {
-    if (!socket) return;
-
-    socket.on('new_incident', (data) => {
-        const settings = getNotificationSettings();
-        if (!settings.enabled) return;
-
-        if (shouldShowNotification(data)) {
-            addNotification(data);
-            updateNotificationBadge(++notificationCount);
-
-            if (Notification.permission === 'granted') {
-                new Notification('Nuevo Incidente', {
-                    body: `${data.incident_type} en ${data.nearest_station}`,
-                    icon: '/static/icons/notification-icon.png'
-                });
-            }
-        }
-    });
-}
-
-// Funciones de utilidad
+// Función para obtener las preferencias almacenadas en localStorage
 function getNotificationSettings() {
     return JSON.parse(localStorage.getItem('notificationSettings')) || {
         troncal: ['all'],
@@ -278,6 +21,7 @@ function getNotificationSettings() {
     };
 }
 
+// Función para guardar las preferencias en localStorage
 function saveNotificationPreferences() {
     const settings = {
         enabled: document.getElementById('notificationsEnabled').checked,
@@ -290,22 +34,163 @@ function saveNotificationPreferences() {
     showToast({ type: 'success', message: 'Preferencias guardadas exitosamente' });
 }
 
-function getSelectedPreferences(selectId, allId) {
+// Helper function para obtener las preferencias seleccionadas
+function getSelectedPreferences(prefGroupId, allId) {
     const allCheckbox = document.getElementById(allId);
     const selected = [];
+
     if (allCheckbox && allCheckbox.checked) {
         selected.push('all');
     } else {
-        const checkboxes = document.querySelectorAll(`#${selectId} .form-check-input:not(#${allId})`);
+        const checkboxes = document.querySelectorAll(`#${prefGroupId} .form-check-input:not(#${allId})`);
         checkboxes.forEach(cb => {
             if (cb.checked) {
                 selected.push(cb.value);
             }
         });
     }
+
     return selected.length > 0 ? selected : ['all'];
 }
 
+// Función para cargar Troncales y Estaciones desde la API
+async function loadPreferences() {
+    try {
+        const response = await fetch('/api/stations');
+        if (!response.ok) {
+            throw new Error('Error al obtener las estaciones');
+        }
+        const stations = await response.json();
+        console.log('Datos de estaciones recibidos:', stations);
+
+        // Extraer Troncales únicas
+        const troncales = [...new Set(stations.map(station => station.troncal))]
+            .filter(troncal => troncal && troncal !== 'N/A')
+            .sort();
+        console.log('Troncales extraídas:', troncales);
+
+        // Extraer Estaciones únicas usando el campo correcto 'nombre'
+        const estaciones = [...new Set(stations.map(station => station.nombre))]
+            .filter(nombre => nombre && nombre.trim() !== '')
+            .sort();
+        console.log('Estaciones extraídas:', estaciones);
+
+        const settings = getNotificationSettings();
+
+        // Poblar Troncales
+        populateCheckboxGroup('troncalPreference', troncales, 'troncalAll', settings.troncal);
+
+        // Poblar Estaciones
+        populateCheckboxGroup('stationPreference', estaciones, 'stationAll', settings.station);
+
+        // Establecer preferencias para Tipos de Incidente (ya está estático en HTML)
+        setIncidentTypePreferences(settings.incidentType);
+
+    } catch (error) {
+        console.error('Error loading preferences:', error);
+        showToast({ type: 'error', message: 'Error al cargar las preferencias' });
+    }
+}
+
+// Función para poblar un grupo de checkboxes (Troncales o Estaciones)
+function populateCheckboxGroup(groupId, items, allId, selectedItems) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+
+    // Limpiar contenido existente
+    group.innerHTML = '';
+
+    // Crear checkbox "Todas"
+    const allDiv = document.createElement('div');
+    allDiv.className = 'form-check';
+    allDiv.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="all" id="${allId}" ${selectedItems.includes('all') ? 'checked' : ''}>
+        <label class="form-check-label" for="${allId}">Todas las ${groupId.includes('troncal') ? 'Troncales' : 'Estaciones'}</label>
+    `;
+    group.appendChild(allDiv);
+
+    // Crear checkboxes individuales
+    items.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'form-check';
+        const itemId = `${groupId}-${sanitizeId(item)}`;
+        const isChecked = selectedItems.includes('all') || selectedItems.includes(item);
+        const isDisabled = selectedItems.includes('all') ? 'disabled' : '';
+
+        itemDiv.innerHTML = `
+            <input class="form-check-input" type="checkbox" value="${item}" id="${itemId}" ${isChecked ? 'checked' : ''} ${isDisabled}>
+            <label class="form-check-label" for="${itemId}">${item}</label>
+        `;
+        group.appendChild(itemDiv);
+    });
+
+    // Configurar eventos para el checkbox "Todas"
+    const allCheckbox = document.getElementById(allId);
+    if (allCheckbox) {
+        allCheckbox.addEventListener('change', function() {
+            const checkboxes = group.querySelectorAll(`.form-check-input:not(#${allId})`);
+            checkboxes.forEach(cb => {
+                cb.checked = this.checked;
+                cb.disabled = this.checked;
+            });
+        });
+    }
+}
+
+// Función para establecer las preferencias de Tipos de Incidente
+function setIncidentTypePreferences(selectedTypes) {
+    const typeAllCheckbox = document.getElementById('typeAll');
+    const typeCheckboxes = document.querySelectorAll('#typePreference .form-check-input:not(#typeAll)');
+
+    // Establecer estado del checkbox "Todos los tipos"
+    typeAllCheckbox.checked = selectedTypes.includes('all');
+
+    // Establecer estado de los checkboxes individuales
+    typeCheckboxes.forEach(cb => {
+        cb.checked = selectedTypes.includes('all') || selectedTypes.includes(cb.value);
+    });
+
+    // Configurar evento para el checkbox "Todos los tipos"
+    typeAllCheckbox.addEventListener('change', function() {
+        typeCheckboxes.forEach(cb => {
+            cb.checked = this.checked;
+        });
+    });
+}
+
+// Inicialización de Socket.IO y carga de preferencias
+function initializeSocketIO() {
+    try {
+        socket = io();
+
+        // Eventos de Socket.IO
+        socket.on('connect', () => {
+            console.log('Conectado a Socket.IO');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Desconectado del servidor Socket.IO');
+        });
+
+        // Escuchar nuevos incidentes
+        socket.on('new_incident', (data) => {
+            const settings = getNotificationSettings();
+            if (!settings.enabled) return;
+
+            if (shouldShowNotification(data)) {
+                addNotification(data);
+                updateNotificationBadge(++notificationCount);
+                showBrowserNotification(data);
+            }
+        });
+
+    } catch (error) {
+        console.error('Error inicializando Socket.IO:', error);
+        showToast({ type: 'error', message: 'Error al inicializar Socket.IO' });
+    }
+}
+
+// Función para agregar una nueva notificación al historial
 function addNotification(incident) {
     if (!notificationsList) return;
 
@@ -314,7 +199,7 @@ function addNotification(incident) {
     const timestamp = new Date(incident.timestamp).toLocaleString();
 
     notificationElement.innerHTML = `
-        <h6>${incident.incident_type}</h6>
+        <h6>${capitalizeFirstLetter(incident.incident_type)}</h6>
         <p>Estación: ${incident.nearest_station}</p>
         <small>${timestamp}</small>
     `;
@@ -322,200 +207,101 @@ function addNotification(incident) {
     notificationsList.insertBefore(notificationElement, notificationsList.firstChild);
 }
 
+// Función para actualizar el contador de notificaciones
 function updateNotificationBadge(count) {
     if (notificationBadge) {
         notificationBadge.textContent = count;
-        notificationBadge.style.display = count > 0 ? 'inline' : 'none';
+        notificationBadge.style.display = count > 0 ? 'inline-block' : 'none';
     }
 }
 
+// Función para determinar si una notificación debe mostrarse según las preferencias
 function shouldShowNotification(incident) {
     const settings = getNotificationSettings();
-    const troncalMatch = settings.troncal.includes('all') || settings.troncal.includes(incident.troncal_estacion);
+
+    // Troncal
+    const troncalMatch = settings.troncal.includes('all') || settings.troncal.includes(incident.troncal);
+
+    // Estación
     const stationMatch = settings.station.includes('all') || settings.station.includes(incident.nearest_station);
+
+    // Tipo de Incidente
     const typeMatch = settings.incidentType.includes('all') || settings.incidentType.includes(incident.incident_type);
+
     return troncalMatch && stationMatch && typeMatch;
 }
 
+// Función para mostrar notificaciones del navegador
+function showBrowserNotification(incident) {
+    if (shouldShowBrowserNotifications()) {
+        new Notification('Nuevo Incidente', {
+            body: `${capitalizeFirstLetter(incident.incident_type)} en ${incident.nearest_station}`,
+            icon: '/static/icons/notification-icon.png' // Asegúrate de tener un ícono adecuado
+        });
+    }
+}
+
+// Función para mostrar toasts
 function showToast(data) {
     let container = document.getElementById('toastContainer');
     if (!container) {
         container = document.createElement('div');
         container.id = 'toastContainer';
-        container.style.position = 'fixed';
-        container.style.top = '20px';
-        container.style.right = '20px';
-        container.style.zIndex = '1050';
         document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    toast.className = `floating-alert ${data.type === 'error' ? 'alert-danger' : (data.type === 'success' ? 'alert-success' : 'alert-info')}`;
+    // Asignar clases según el tipo de alerta
+    let alertClass = 'alert-info'; // Predeterminado
+    if (data.type === 'error') {
+        alertClass = 'alert-error';
+    } else if (data.type === 'success') {
+        alertClass = 'alert-success';
+    }
+
+    toast.className = `floating-alert ${alertClass}`;
     toast.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center">
-            <div>${data.message}</div>
-            <button type="button" class="btn-close" aria-label="Close"></button>
-        </div>
+        <div>${data.message}</div>
+        <button type="button" class="btn-close" aria-label="Close">&times;</button>
     `;
 
     container.appendChild(toast);
+
+    // Auto-remove after 5 seconds
     setTimeout(() => {
         toast.classList.add('hide');
-        setTimeout(() => toast.remove(), 500);
+        // Remover el toast después de la animación de salida
+        toast.addEventListener('animationend', () => toast.remove());
     }, 5000);
 
+    // Remove on close button click
     toast.querySelector('.btn-close').addEventListener('click', () => {
         toast.classList.add('hide');
-        setTimeout(() => toast.remove(), 500);
+        toast.addEventListener('animationend', () => toast.remove());
     });
 }
 
-// Inicialización cuando el DOM está listo
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Socket.IO
-    initializeSocketIO();
-
-
-    function loadStations() {
-        fetch('/api/stations')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-                return response.json();
-            })
-            .then(stations => {
-                if (!Array.isArray(stations)) {
-                    throw new Error('Formato de datos inválido');
-                }
-                populateStationOptions(stations);
-            })
-            .catch(error => {
-                console.error('Error loading stations:', error);
-                showError('Error al cargar las estaciones. Por favor, intente nuevamente.');
-            });
-    }
-
-    function populateStationOptions(stations) {
-        const stationSelect = document.getElementById('stationFilter');
-        if (!stationSelect) return;
-
-        stationSelect.innerHTML = '<option value="all">Todas las Estaciones</option>';
-
-        stations
-            .sort((a, b) => a.nombre.localeCompare(b.nombre))
-            .forEach(station => {
-                if (station.nombre) {
-                    const option = document.createElement('option');
-                    option.value = station.nombre;
-                    option.textContent = station.nombre;
-                    stationSelect.appendChild(option);
-                }
-            });
-    }
-
-    function showError(message) {
-        const errorDiv = document.getElementById('error-message');
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        } else {
-            console.error(message);
-        }
-    }
-    // Configurar event listeners para filtros
-    setupFilterEventListeners();
-});
-
-function populateTroncalOptions(troncales, settings) {
-    const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
-    if (!troncalGroup) return;
-
-    troncales.forEach(troncal => {
-        if (troncal && troncal !== 'N/A') {
-            const formCheck = createCheckboxElement(
-                `troncal-${troncal}`,
-                troncal,
-                settings.troncal.includes('all') || settings.troncal.includes(troncal)
-            );
-            troncalGroup.appendChild(formCheck);
-        }
-    });
-
-    setupAllCheckboxHandler('troncalAll', '#troncalPreference');
-}
-
-function populateStationList(stations, settings) {
-    const stationGroup = document.querySelector('#stationPreference .preferences-group');
-    if (!stationGroup) return;
-
-    stations.forEach(station => {
-        const formCheck = createCheckboxElement(
-            `station-${station.nombre_estacion}`,
-            station.nombre_estacion,
-            settings.station.includes('all') || settings.station.includes(station.nombre_estacion)
-        );
-        stationGroup.appendChild(formCheck);
-    });
-
-    setupAllCheckboxHandler('stationAll', '#stationPreference');
-}
-
-function createCheckboxElement(id, value, checked) {
-    const formCheck = document.createElement('div');
-    formCheck.className = 'form-check';
-
-    const checkbox = document.createElement('input');
-    checkbox.className = 'form-check-input';
-    checkbox.type = 'checkbox';
-    checkbox.value = value;
-    checkbox.id = id;
-    checkbox.checked = checked;
-
-    const label = document.createElement('label');
-    label.className = 'form-check-label';
-    label.htmlFor = id;
-    label.textContent = value;
-
-    formCheck.appendChild(checkbox);
-    formCheck.appendChild(label);
-    return formCheck;
-}
-
-function setupAllCheckboxHandler(allCheckboxId, groupSelector) {
-    const allCheckbox = document.getElementById(allCheckboxId);
-    if (!allCheckbox) return;
-
-    allCheckbox.addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll(`${groupSelector} .form-check-input:not(#${allCheckboxId})`);
-        checkboxes.forEach(cb => {
-            cb.checked = allCheckbox.checked;
+// Solicitar permiso para notificaciones del navegador
+function requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('Permiso para notificaciones concedido');
+            }
         });
-    });
+    }
 }
 
-function setupFilterEventListeners() {
-    document.querySelectorAll('.notification-filters .filter-chip').forEach(chip => {
-        chip.addEventListener('click', function() {
-            this.classList.toggle('active');
-            applyNotificationFilters();
-        });
-    });
-}
-
+// Función para aplicar los filtros activos y cargar las notificaciones correspondientes
 function applyNotificationFilters() {
     const activeFilters = Array.from(document.querySelectorAll('.notification-filters .filter-chip.active'))
         .map(chip => chip.getAttribute('data-filter'));
 
-    updateNotificationFilters(activeFilters);
-    fetchFilteredNotifications();
-}
-
-function updateNotificationFilters(activeFilters) {
+    // Actualizar el objeto de filtros
     notificationFilters = {
-        troncal: [],
-        station: [],
-        incidentType: []
+        troncal: ['all'],
+        station: ['all'],
+        incidentType: ['all']
     };
 
     activeFilters.forEach(filter => {
@@ -538,10 +324,34 @@ function updateNotificationFilters(activeFilters) {
                 break;
         }
     });
+
+    // Cargar las notificaciones filtradas
+    fetchFilteredNotifications();
 }
 
+// Función para construir los parámetros de consulta según los filtros
+function buildQueryParams() {
+    const params = [];
+
+    if (!notificationFilters.troncal.includes('all') && notificationFilters.troncal.length > 0) {
+        params.push(`troncal=${encodeURIComponent(notificationFilters.troncal.join(','))}`);
+    }
+
+    if (!notificationFilters.station.includes('all') && notificationFilters.station.length > 0) {
+        params.push(`station=${encodeURIComponent(notificationFilters.station.join(','))}`);
+    }
+
+    if (!notificationFilters.incidentType.includes('all') && notificationFilters.incidentType.length > 0) {
+        params.push(`type=${encodeURIComponent(notificationFilters.incidentType.join(','))}`);
+    }
+
+    return params.length > 0 ? `?${params.join('&')}` : '';
+}
+
+// Función para obtener y mostrar las notificaciones filtradas
 function fetchFilteredNotifications() {
     const queryParams = buildQueryParams();
+    console.log('Parámetros de consulta para notificaciones:', queryParams);
 
     fetch(`/api/notifications/history${queryParams}`)
         .then(response => {
@@ -549,6 +359,7 @@ function fetchFilteredNotifications() {
             return response.json();
         })
         .then(data => {
+            console.log('Datos de notificaciones recibidos:', data);
             updateNotificationsList(data);
         })
         .catch(error => {
@@ -559,22 +370,7 @@ function fetchFilteredNotifications() {
         });
 }
 
-function buildQueryParams() {
-    const params = [];
-
-    if (!notificationFilters.troncal.includes('all') && notificationFilters.troncal.length > 0) {
-        params.push(`troncal=${notificationFilters.troncal.join(',')}`);
-    }
-    if (!notificationFilters.station.includes('all') && notificationFilters.station.length > 0) {
-        params.push(`station=${notificationFilters.station.join(',')}`);
-    }
-    if (!notificationFilters.incidentType.includes('all') && notificationFilters.incidentType.length > 0) {
-        params.push(`type=${notificationFilters.incidentType.join(',')}`);
-    }
-
-    return params.length > 0 ? `?${params.join('&')}` : '';
-}
-
+// Función para actualizar la lista de notificaciones en el DOM
 function updateNotificationsList(data) {
     if (!notificationsList) return;
 
@@ -585,7 +381,7 @@ function updateNotificationsList(data) {
             item.className = 'notification-item';
             const timestamp = new Date(notification.timestamp).toLocaleString();
             item.innerHTML = `
-                <h6>${notification.title}</h6>
+                <h6>${capitalizeFirstLetter(notification.title)}</h6>
                 <p>${notification.message}</p>
                 <small>${timestamp}</small>
             `;
@@ -596,21 +392,57 @@ function updateNotificationsList(data) {
     }
 }
 
-function populateIncidentTypeOptions(settings) {
-    const incidentTypeGroup = document.querySelector('#typePreference .preferences-group');
-    if (!incidentTypeGroup) return;
-
-    // Assuming you have an array of incident types available somewhere
-    const incidentTypes = ['Incendio', 'Accidente', 'Retraso']; // Replace with your actual incident types
-
-    incidentTypes.forEach(type => {
-        const formCheck = createCheckboxElement(
-            `type-${type}`,
-            type,
-            settings.incidentType.includes('all') || settings.incidentType.includes(type)
-        );
-        incidentTypeGroup.appendChild(formCheck);
-    });
-
-    setupAllCheckboxHandler('typeAll', '#typePreference');
+// Función para capitalizar la primera letra de una cadena
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+// Función para sanitizar IDs (reemplazar espacios y caracteres especiales por guiones bajos)
+function sanitizeId(text) {
+    return text.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+}
+
+// Función para determinar si se deben mostrar notificaciones del navegador
+function shouldShowBrowserNotifications() {
+    return 'Notification' in window && Notification.permission === 'granted';
+}
+
+// Función para configurar eventos en los filtros de historial
+function setupFilterEventListeners() {
+    document.querySelectorAll('.notification-filters .filter-chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            if (this.getAttribute('data-filter') === 'all') {
+                // Si se selecciona "Todas", desactivar otros filtros
+                document.querySelectorAll('.notification-filters .filter-chip').forEach(c => {
+                    if (c !== this) c.classList.remove('active');
+                });
+                this.classList.add('active');
+            } else {
+                // Si se selecciona otro filtro, desactivar "Todas" si está activo
+                const allChip = document.querySelector('.notification-filters .filter-chip[data-filter="all"]');
+                if (allChip && allChip.classList.contains('active')) {
+                    allChip.classList.remove('active');
+                }
+                // Permitir múltiples selecciones
+                this.classList.toggle('active');
+            }
+
+            applyNotificationFilters();
+        });
+    });
+}
+
+// Inicialización cuando el DOM está listo
+document.addEventListener('DOMContentLoaded', () => {
+    // Solicitar permiso para notificaciones del navegador
+    requestNotificationPermission();
+
+    // Cargar las preferencias de notificaciones
+    loadPreferences();
+
+    // Inicializar Socket.IO
+    initializeSocketIO();
+
+    // Configurar eventos de filtros
+    setupFilterEventListeners();
+});

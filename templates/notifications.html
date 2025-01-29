@@ -10,7 +10,7 @@
 
     <!-- Configuración de Notificaciones -->
     <div class="row">
-        <div class="col-md-12 mb-4">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
             <div class="card">
                 <div class="card-body">
                     <h5>Preferencias de Notificaciones</h5>
@@ -20,35 +20,23 @@
                     </div>
                     <div class="row">
                         <!-- Troncales -->
-                        <div class="col-md-4">
+                        <div class="col-12">
                             <label for="troncalPreference">Troncales:</label>
-                            <div class="preferences-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
-                                    <label class="form-check-label" for="troncalAll">
-                                        Todas las Troncales
-                                    </label>
-                                </div>
+                            <div class="preferences-group" id="troncalPreference">
                                 <!-- Opciones dinámicas se añadirán aquí -->
                             </div>
                         </div>
                         <!-- Estaciones -->
-                        <div class="col-md-4">
+                        <div class="col-12">
                             <label for="stationPreference">Estaciones:</label>
-                            <div class="preferences-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
-                                    <label class="form-check-label" for="stationAll">
-                                        Todas las Estaciones
-                                    </label>
-                                </div>
+                            <div class="preferences-group" id="stationPreference">
                                 <!-- Opciones dinámicas se añadirán aquí -->
                             </div>
                         </div>
                         <!-- Tipos de Incidente -->
-                        <div class="col-md-4">
+                        <div class="col-12">
                             <label for="typePreference">Tipos de Incidente:</label>
-                            <div class="preferences-group">
+                            <div class="preferences-group" id="typePreference">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="all" id="typeAll" checked>
                                     <label class="form-check-label" for="typeAll">
@@ -101,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary mt-3" onclick="saveNotificationPreferences()">Guardar Preferencias</button>
+                    <button class="btn btn-primary mt-3 w-100" onclick="saveNotificationPreferences()">Guardar Preferencias</button>
                 </div>
             </div>
         </div>
@@ -109,10 +97,10 @@
 
     <!-- Historial de Notificaciones -->
     <div class="row">
-        <div class="col-md-12">
-            <h2>Historial de Notificaciones</h2>
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
             <div class="card">
                 <div class="card-body">
+                    <h2>Historial de Notificaciones</h2>
                     <div class="notification-filters mb-3">
                         <h5>Filtrar Historial</h5>
                         <div class="scroll-container">
@@ -133,6 +121,9 @@
 
 <!-- Contenedor para Toastr (opcional, si usas toasts) -->
 <div id="toastContainer"></div>
+
+<!-- Elemento para el contador de notificaciones (Añadido) -->
+<span id="notification-badge" class="badge bg-danger" style="position: fixed; top: 80px; right: 20px; display: none;">0</span>
 
 <!-- Font Awesome Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
