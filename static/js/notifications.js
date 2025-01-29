@@ -122,56 +122,75 @@ function setupCheckboxEvents() {
 async function loadPreferences() {
     try {
         const response = await fetch('/api/stations');
+        if (!response.ok) {
+            throw new Error('Error al obtener las estaciones');
+        }
         const stations = await response.json();
         
         // Cargar troncales
         const troncales = [...new Set(stations.map(station => station.troncal))]
-            .filter(troncal => troncal && troncal !== 'N/A')
+            .filter(troncal => troncal && troncal !== 'N/A' && troncal !== '')
             .sort();
         
         const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
         if (troncalGroup) {
-            troncalGroup.innerHTML = `
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
-                    <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
-                </div>
-            `;
+            // Limpiar contenido existente
+            troncalGroup.innerHTML = '';
             
+            // Agregar opción "Todas las Troncales"
+            const allTroncalDiv = document.createElement('div');
+            allTroncalDiv.className = 'form-check';
+            allTroncalDiv.innerHTML = `
+                <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
+                <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
+            `;
+            troncalGroup.appendChild(allTroncalDiv);
+            
+            // Agregar cada troncal individual
             troncales.forEach(troncal => {
-                const div = document.createElement('div');
-                div.className = 'form-check';
-                div.innerHTML = `
-                    <input class="form-check-input" type="checkbox" value="${troncal}" id="troncal-${troncal}">
-                    <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
-                `;
-                troncalGroup.appendChild(div);
+                if (troncal) {
+                    const div = document.createElement('div');
+                    div.className = 'form-check';
+                    div.innerHTML = `
+                        <input class="form-check-input troncal-checkbox" type="checkbox" value="${troncal}" id="troncal-${troncal}">
+                        <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
+                    `;
+                    troncalGroup.appendChild(div);
+                }
             });
         }
         
         // Cargar estaciones
         const stationGroup = document.querySelector('#stationPreference .preferences-group');
         if (stationGroup) {
-            stationGroup.innerHTML = `
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
-                    <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
-                </div>
-            `;
+            // Limpiar contenido existente
+            stationGroup.innerHTML = '';
             
-            stations
-                .sort((a, b) => a.nombre.localeCompare(b.nombre))
-                .forEach(station => {
-                    if (station.nombre) {
-                        const div = document.createElement('div');
-                        div.className = 'form-check';
-                        div.innerHTML = `
-                            <input class="form-check-input" type="checkbox" value="${station.nombre}" id="station-${station.nombre}">
-                            <label class="form-check-label" for="station-${station.nombre}">${station.nombre}</label>
-                        `;
-                        stationGroup.appendChild(div);
-                    }
-                });
+            // Agregar opción "Todas las Estaciones"
+            const allStationsDiv = document.createElement('div');
+            allStationsDiv.className = 'form-check';
+            allStationsDiv.innerHTML = `
+                <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
+                <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
+            `;
+            stationGroup.appendChild(allStationsDiv);
+            
+            // Filtrar y ordenar estaciones válidas
+            const validStations = stations
+                .filter(station => station.nombre && station.nombre.trim() !== '')
+                .sort((a, b) => a.nombre.localeCompare(b.nombre));
+            
+            // Agregar cada estación individual
+            validStations.forEach(station => {
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                const stationId = `station-${station.nombre.replace(/\s+/g, '-')}`;
+                div.innerHTML = `
+                    <input class="form-check-input station-checkbox" type="checkbox" value="${station.nombre}" id="${stationId}">
+                    <label class="form-check-label" for="${stationId}">${station.nombre}</label>
+                `;
+                stationGroup.appendChild(div);
+            });
         }
 
         setupCheckboxEvents();
