@@ -1,4 +1,28 @@
 
+/* Estilos para las listas de preferencias */
+.preferences-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.preference-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.preference-item:last-child {
+    border-bottom: none;
+}
+
+.preference-item:hover {
+    background-color: #f8f9fa;
+}
+
+
 /* Estilos para los grupos de preferencias */
 .preferences-group {
     max-height: 300px;

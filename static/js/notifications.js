@@ -137,27 +137,33 @@ async function loadPreferences() {
             // Limpiar contenido existente
             troncalGroup.innerHTML = '';
             
+            // Crear contenedor de lista para troncales
+            const troncalList = document.createElement('div');
+            troncalList.className = 'preferences-list';
+            
             // Agregar opción "Todas las Troncales"
             const allTroncalDiv = document.createElement('div');
-            allTroncalDiv.className = 'form-check';
+            allTroncalDiv.className = 'form-check preference-item';
             allTroncalDiv.innerHTML = `
                 <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
                 <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
             `;
-            troncalGroup.appendChild(allTroncalDiv);
+            troncalList.appendChild(allTroncalDiv);
             
             // Agregar cada troncal individual
             troncales.forEach(troncal => {
                 if (troncal) {
                     const div = document.createElement('div');
-                    div.className = 'form-check';
+                    div.className = 'form-check preference-item';
                     div.innerHTML = `
                         <input class="form-check-input troncal-checkbox" type="checkbox" value="${troncal}" id="troncal-${troncal}">
                         <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
                     `;
-                    troncalGroup.appendChild(div);
+                    troncalList.appendChild(div);
                 }
             });
+            
+            troncalGroup.appendChild(troncalList);
         }
         
         // Cargar estaciones
@@ -166,14 +172,18 @@ async function loadPreferences() {
             // Limpiar contenido existente
             stationGroup.innerHTML = '';
             
+            // Crear contenedor de lista para estaciones
+            const stationList = document.createElement('div');
+            stationList.className = 'preferences-list';
+            
             // Agregar opción "Todas las Estaciones"
             const allStationsDiv = document.createElement('div');
-            allStationsDiv.className = 'form-check';
+            allStationsDiv.className = 'form-check preference-item';
             allStationsDiv.innerHTML = `
                 <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
                 <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
             `;
-            stationGroup.appendChild(allStationsDiv);
+            stationList.appendChild(allStationsDiv);
             
             // Filtrar y ordenar estaciones válidas
             const validStations = stations
@@ -183,14 +193,16 @@ async function loadPreferences() {
             // Agregar cada estación individual
             validStations.forEach(station => {
                 const div = document.createElement('div');
-                div.className = 'form-check';
+                div.className = 'form-check preference-item';
                 const stationId = `station-${station.nombre.replace(/\s+/g, '-')}`;
                 div.innerHTML = `
                     <input class="form-check-input station-checkbox" type="checkbox" value="${station.nombre}" id="${stationId}">
                     <label class="form-check-label" for="${stationId}">${station.nombre}</label>
                 `;
-                stationGroup.appendChild(div);
+                stationList.appendChild(div);
             });
+            
+            stationGroup.appendChild(stationList);
         }
 
         setupCheckboxEvents();
