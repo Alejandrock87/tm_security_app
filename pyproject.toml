@@ -26,4 +26,6 @@ dependencies = [
     "cachetools>=5.5.1",
     "pytz>=2024.2",
     "flask-caching>=2.3.0",
+    "gevent>=24.11.1",
+    "gevent-websocket>=0.10.1",
 ]

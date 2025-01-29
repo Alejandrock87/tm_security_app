@@ -1,5 +1,6 @@
 {pkgs}: {
   deps = [
+    pkgs.libev
     pkgs.yakut
     pkgs.zlib
     pkgs.tk
