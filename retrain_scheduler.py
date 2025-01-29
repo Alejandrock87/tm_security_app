@@ -11,6 +11,14 @@ import os
 logging.basicConfig(level=logging.INFO)
 
 PREDICTIONS_CACHE_FILE = 'predictions_cache.json'
+MODEL_CACHE_FILE = 'model_cache.pkl'
+
+# Ejecutar entrenamiento inicial si no existe el modelo
+if not os.path.exists(MODEL_CACHE_FILE):
+    logging.info("Iniciando entrenamiento inicial del modelo...")
+    from ml_models import train_model
+    model, _ = train_model()
+    logging.info("Entrenamiento inicial completado")
 
 def generate_daily_predictions():
     predictions = []
