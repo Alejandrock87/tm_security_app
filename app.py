@@ -50,7 +50,7 @@ def create_app():
     from routes import init_routes
     init_routes(app)
 
-    socketio.init_app(app, cors_allowed_origins="*", async_mode='polling')
+    socketio.init_app(app, cors_allowed_origins="*")
 
     return app
 

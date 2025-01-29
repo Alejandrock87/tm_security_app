@@ -9,10 +9,7 @@ if __name__ == '__main__':
     with app.app_context():
         port = int(os.getenv('PORT', 3000))
         socketio.run(app, 
-                    host='0.0.0.0', 
-                    port=port, 
-                    debug=True,  # Enable debug for development
-                    allow_unsafe_werkzeug=True,
-                    use_reloader=True,
-                    log_output=True
-        )
+                host='0.0.0.0', 
+                port=port,
+                debug=True,
+                allow_unsafe_werkzeug=True)
