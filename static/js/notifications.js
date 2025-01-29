@@ -118,8 +118,72 @@ function setupCheckboxEvents() {
     }
 }
 
+// Función para cargar troncales y estaciones
+async function loadPreferences() {
+    try {
+        const response = await fetch('/api/stations');
+        const stations = await response.json();
+        
+        // Cargar troncales
+        const troncales = [...new Set(stations.map(station => station.troncal))]
+            .filter(troncal => troncal && troncal !== 'N/A')
+            .sort();
+        
+        const troncalGroup = document.querySelector('#troncalPreference .preferences-group');
+        if (troncalGroup) {
+            troncalGroup.innerHTML = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="all" id="troncalAll" checked>
+                    <label class="form-check-label" for="troncalAll">Todas las Troncales</label>
+                </div>
+            `;
+            
+            troncales.forEach(troncal => {
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" value="${troncal}" id="troncal-${troncal}">
+                    <label class="form-check-label" for="troncal-${troncal}">${troncal}</label>
+                `;
+                troncalGroup.appendChild(div);
+            });
+        }
+        
+        // Cargar estaciones
+        const stationGroup = document.querySelector('#stationPreference .preferences-group');
+        if (stationGroup) {
+            stationGroup.innerHTML = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="all" id="stationAll" checked>
+                    <label class="form-check-label" for="stationAll">Todas las Estaciones</label>
+                </div>
+            `;
+            
+            stations
+                .sort((a, b) => a.nombre.localeCompare(b.nombre))
+                .forEach(station => {
+                    if (station.nombre) {
+                        const div = document.createElement('div');
+                        div.className = 'form-check';
+                        div.innerHTML = `
+                            <input class="form-check-input" type="checkbox" value="${station.nombre}" id="station-${station.nombre}">
+                            <label class="form-check-label" for="station-${station.nombre}">${station.nombre}</label>
+                        `;
+                        stationGroup.appendChild(div);
+                    }
+                });
+        }
+
+        setupCheckboxEvents();
+    } catch (error) {
+        console.error('Error loading preferences:', error);
+        showToast({ type: 'error', message: 'Error al cargar las preferencias' });
+    }
+}
+
 // Inicialización de Socket.IO
 function initializeSocketIO() {
+    loadPreferences(); // Cargar preferencias al inicializar
     if (typeof io !== 'undefined') {
         try {
             socket = io(window.location.origin, {
