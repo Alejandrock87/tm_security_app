@@ -1,0 +1,88 @@
+
+/* Estilos específicos para dashboard */
+.welcome-title {
+  text-align: center !important;
+  font-size: 2rem !important;
+  color: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+}
+
+#map {
+  height: 500px !important;
+  border-radius: 8px !important;
+  margin-bottom: 1rem !important;
+}
+
+.filters-container {
+  background-color: #1e293b !important;
+  border-radius: 8px !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.filter-item {
+  margin-bottom: 1rem !important;
+}
+
+.filter-item label {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.form-check-input {
+  cursor: pointer !important;
+}
+
+.form-check-label {
+  color: #ffffff !important;
+  cursor: pointer !important;
+}
+
+.auth-input {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+}
+
+.auth-button {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.auth-button:hover {
+  background-color: #2563eb !important;
+}
+
+#incidentChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-container {
+  background-color: #1e293b !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    padding: 1rem !important;
+  }
+  
+  .filter-item {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .auth-button {
+    padding: 0.5rem 1rem !important;
+    width: 100% !important;
+  }
+}
