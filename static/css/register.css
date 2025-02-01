@@ -100,6 +100,13 @@
   background-color: #d63031;
 }
 
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #2d3436;
+  text-align: center;
+}
+
 .register-text {
   margin-top: 1.5rem;
   font-size: 0.95rem;
