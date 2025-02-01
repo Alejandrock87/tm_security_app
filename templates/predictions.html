@@ -5,36 +5,49 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-content">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h3 class="text-white mb-4 text-center">Predicciones de Inseguridad</h3>
-                <div class="predictions-container">
-                    <div class="predictions-header">
-                        <i class="fas fa-brain fa-3x mb-3" style="color: #3b82f6;"></i>
-                        <p>Recibe alertas sobre las áreas con mayor riesgo de incidentes para mantenerte informado y seguro.</p>
-                    </div>
-                    <div class="notification-toggle">
-                        <label class="form-check-label" for="notificationToggle">Activar notificaciones</label>
-                        <div class="form-check form-switch predictions-toggle">
-                            <input class="form-check-input" type="checkbox" id="notificationToggle">
-                        </div>
-                    </div>
-                    <div id="predictionsList" class="list-group">
-                        <!-- Las predicciones se cargarán aquí dinámicamente -->
-                        <!-- Ejemplo de predicción -->
-                        <!--
-                        <div class="prediction-item">
-                            <div class="prediction-title">Zona Norte</div>
-                            <div class="prediction-details">Predicción de alto nivel de inseguridad para el próximo mes.</div>
-                        </div>
-                        -->
-                    </div>
-                </div>
+<div class="main-content predictions-content">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12">
+        <!-- Título de la sección -->
+        <h3 class="predictions-title text-center">Predicciones de Inseguridad</h3>
+
+        <!-- Contenedor principal de las predicciones -->
+        <div class="predictions-container">
+          <!-- Encabezado con ícono y texto -->
+          <div class="predictions-header">
+            <i class="fas fa-brain fa-3x mb-3"></i>
+            <p>
+              Recibe alertas sobre las áreas con mayor riesgo de incidentes 
+              para mantenerte informado y seguro.
+            </p>
+          </div>
+
+          <!-- Sección de activación de notificaciones -->
+          <div class="notification-toggle">
+            <label class="form-check-label" for="notificationToggle">
+              Activar notificaciones
+            </label>
+            <div class="form-check form-switch predictions-toggle">
+              <input class="form-check-input" type="checkbox" id="notificationToggle">
             </div>
+          </div>
+
+          <!-- Lista de predicciones cargadas dinámicamente -->
+          <div id="predictionsList" class="list-group">
+            <!-- Ejemplo (comentado)
+            <div class="prediction-item">
+              <div class="prediction-title">Zona Norte</div>
+              <div class="prediction-details">
+                Predicción de alto nivel de inseguridad para el próximo mes.
+              </div>
+            </div>
+            -->
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
 

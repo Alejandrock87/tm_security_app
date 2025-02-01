@@ -1,113 +1,151 @@
-
-/* Estilos específicos para predictions */
-.predictions-container {
-    background-color: #1e293b !important;
-    border-radius: 16px !important;
-    padding: 2rem !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-    color: #ffffff !important;
+/* Reset básico y tipografía */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto utiliza otra fuente */
 }
 
+/* Contenedor principal */
+.main-content.predictions-content {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Limitar ancho en pantallas grandes */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Título principal */
+.predictions-title {
+  font-size: 1.75rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+/* Contenedor de la sección de predicciones */
+.predictions-container {
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+/* Encabezado dentro de la sección */
 .predictions-header {
-    text-align: center !important;
-    margin-bottom: 2rem !important;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .predictions-header i {
-    font-size: 3rem !important;
-    color: #3b82f6 !important;
-    margin-bottom: 1rem !important;
+  font-size: 3rem;
+  color: #3b82f6;
+  margin-bottom: 1rem;
 }
 
 .predictions-header p {
-    font-size: 1rem !important;
-    color: #94a3b8 !important;
+  font-size: 1rem;
+  color: #94a3b8;
+  line-height: 1.4;
 }
 
+/* Activación de notificaciones */
 .notification-toggle {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    margin-bottom: 1.5rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
+/* Estilos del switch de notificaciones */
 .predictions-toggle .form-check-input {
-    width: 2.5rem !important;
-    height: 1.25rem !important;
-    background-color: #6b7280 !important;
-    border-radius: 1.5rem !important;
-    position: relative !important;
-    transition: background-color 0.3s ease !important;
-    border: none !important;
-    cursor: pointer !important;
+  width: 2.5rem;
+  height: 1.25rem;
+  background-color: #6b7280;
+  border-radius: 1.5rem;
+  position: relative;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .predictions-toggle .form-check-input::after {
-    content: "" !important;
-    position: absolute !important;
-    top: 50% !important;
-    left: 0.25rem !important;
-    transform: translateY(-50%) !important;
-    width: 1rem !important;
-    height: 1rem !important;
-    background-color: white !important;
-    border-radius: 50% !important;
-    transition: transform 0.3s ease, background-color 0.3s ease !important;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0.25rem;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
+/* Cambia a color azul y desplaza el circulo al activar */
 .predictions-toggle .form-check-input:checked {
-    background-color: #3b82f6 !important;
+  background-color: #3b82f6;
 }
-
 .predictions-toggle .form-check-input:checked::after {
-    transform: translate(1.25rem, -50%) !important;
+  transform: translate(1.25rem, -50%);
 }
 
+/* Lista de predicciones */
 #predictionsList {
-    background-color: #0f172a !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
+  background-color: #0f172a;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
+/* Cada item de la lista */
 .prediction-item {
-    background-color: #1e293b !important;
-    border: 1px solid #334155 !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
-    margin-bottom: 0.75rem !important;
-    transition: background-color 0.2s, transform 0.2s !important;
-    cursor: pointer !important;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.2s, transform 0.2s;
+  cursor: pointer;
 }
-
 .prediction-item:hover {
-    background-color: #334155 !important;
-    transform: translateY(-2px) !important;
+  background-color: #334155;
+  transform: translateY(-2px);
 }
 
+/* Título y detalles de cada predicción */
 .prediction-title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.5rem !important;
-    color: #3b82f6 !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #3b82f6;
 }
-
 .prediction-details {
-    font-size: 0.95rem !important;
-    color: #94a3b8 !important;
+  font-size: 0.95rem;
+  color: #94a3b8;
 }
 
+/* Ajustes responsivos en pantallas pequeñas */
 @media (max-width: 768px) {
-    .predictions-container {
-        padding: 1rem !important;
-    }
-    
-    .predictions-header i {
-        font-size: 2.5rem !important;
-    }
-    
-    .prediction-item {
-        padding: 0.75rem !important;
-    }
+  .predictions-container {
+    padding: 1rem;
+  }
+
+  .predictions-header i {
+    font-size: 2.5rem;
+  }
+
+  .prediction-item {
+    padding: 0.75rem;
+  }
 }
