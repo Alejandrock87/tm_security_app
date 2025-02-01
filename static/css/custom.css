@@ -36,7 +36,7 @@
 
 /* Color de fondo general */
 body {
-    background-color: #e6e589 !important;
+    background-color: #feca57 !important;
 }
 
 /* Colores para contenedores y tarjetas */
@@ -49,7 +49,7 @@ body {
 .stat-card,
 .notification-item,
 .floating-alert {
-    background-color: #e65c8a !important;
+    background-color: #ee5253 !important;
 }
 
 .form-check {
