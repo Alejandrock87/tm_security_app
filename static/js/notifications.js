@@ -243,38 +243,35 @@ function showBrowserNotification(incident) {
 
 // Función para mostrar toasts
 function showToast(data) {
-    let container = document.getElementById('toastContainer');
+    let container = document.getElementById('flash-messages-container');
     if (!container) {
         container = document.createElement('div');
-        container.id = 'toastContainer';
+        container.id = 'flash-messages-container';
         document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    // Asignar clases según el tipo de alerta
-    let alertClass = 'alert-info'; // Predeterminado
+    let alertClass = 'alert-info';
     if (data.type === 'error') {
-        alertClass = 'alert-error';
+        alertClass = 'alert-danger';
     } else if (data.type === 'success') {
         alertClass = 'alert-success';
     }
 
     toast.className = `floating-alert ${alertClass}`;
+    toast.style.backgroundColor = '#1e293b';
     toast.innerHTML = `
         <div>${data.message}</div>
         <button type="button" class="btn-close" aria-label="Close">&times;</button>
     `;
 
-    container.appendChild(toast);
+    container.insertBefore(toast, container.firstChild);
 
-    // Auto-remove after 5 seconds
     setTimeout(() => {
         toast.classList.add('hide');
-        // Remover el toast después de la animación de salida
         toast.addEventListener('animationend', () => toast.remove());
     }, 5000);
 
-    // Remove on close button click
     toast.querySelector('.btn-close').addEventListener('click', () => {
         toast.classList.add('hide');
         toast.addEventListener('animationend', () => toast.remove());
