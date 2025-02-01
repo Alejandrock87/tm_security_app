@@ -54,7 +54,7 @@
 }
 
 .card-icon i {
-  color: #ee5253;
+  color: #ee5253 !important;
   transition: color 0.2s ease;
 }
 
