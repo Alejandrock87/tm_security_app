@@ -1,88 +1,158 @@
+/* =========================
+   ESTILOS PARA DASHBOARD
+   ========================= */
 
-/* Estilos específicos para dashboard */
+/* Ajustes generales */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evitar scroll horizontal */
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+}
+
+/* Contenedor principal */
+.main-content.dashboard-content {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Título de la pantalla */
 .welcome-title {
-  text-align: center !important;
-  font-size: 2rem !important;
-  color: #ffffff !important;
-  margin-bottom: 1.5rem !important;
+  text-align: center;
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
 }
 
+/* Tarjetas (mapa, filtros, gráfico) */
+.option-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.option-card .auth-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.option-card .auth-header i {
+  font-size: 1.75rem;
+  color: #3b82f6; /* Ícono en azul para resaltar */
+}
+
+.option-card .auth-header h1 {
+  font-size: 1.25rem;
+  color: #0f172a;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Mapa de Incidentes */
 #map {
-  height: 500px !important;
-  border-radius: 8px !important;
-  margin-bottom: 1rem !important;
+  height: 500px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
+/* Listado de incidentes (si se mostrara dinámicamente) */
+#incidentsList {
+  margin-top: 1rem;
+}
+
+/* Contenedor oscuro para los filtros */
 .filters-container {
-  background-color: #1e293b !important;
-  border-radius: 8px !important;
-  padding: 1.5rem !important;
-  margin-bottom: 1rem !important;
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
 }
 
+/* Ítems de los filtros */
 .filter-item {
-  margin-bottom: 1rem !important;
+  margin-bottom: 1rem;
 }
 
+/* Etiquetas de los filtros */
 .filter-item label {
-  color: #ffffff !important;
-  font-weight: 500 !important;
-  margin-bottom: 0.5rem !important;
+  color: #ffffff;
+  font-weight: 500;
 }
 
+/* Checkboxes */
 .form-check-input {
-  cursor: pointer !important;
+  cursor: pointer;
 }
-
 .form-check-label {
-  color: #ffffff !important;
-  cursor: pointer !important;
+  color: #ffffff;
+  cursor: pointer;
 }
 
+/* Selects / Inputs */
 .auth-input {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border: 1px solid #334155 !important;
-  border-radius: 8px !important;
-  padding: 0.75rem !important;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 0.75rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+.auth-input:focus {
+  outline: none;
+  border-color: #3b82f6;
 }
 
+/* Botones para los filtros */
 .auth-button {
-  background-color: #3b82f6 !important;
-  color: #ffffff !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 0.75rem 1.5rem !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s ease !important;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+.auth-button:hover {
+  background-color: #2563eb;
 }
 
-.auth-button:hover {
-  background-color: #2563eb !important;
+/* Contenedor del gráfico */
+.chart-container {
+  background-color: #1e293b; /* Oscuro, para resaltar el área del gráfico */
+  border-radius: 8px;
+  padding: 1rem;
+  height: 300px; /* Controla la altura disponible para el canvas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #incidentChart {
-  width: 100% !important;
-  height: 100% !important;
+  width: 100%;
+  height: 100%;
 }
 
-.chart-container {
-  background-color: #1e293b !important;
-  border-radius: 8px !important;
-  padding: 1rem !important;
-}
-
+/* Responsividad */
 @media (max-width: 768px) {
   .filters-container {
-    padding: 1rem !important;
+    padding: 1rem;
   }
-  
-  .filter-item {
-    margin-bottom: 0.75rem !important;
-  }
-  
+
   .auth-button {
-    padding: 0.5rem 1rem !important;
-    width: 100% !important;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+  #map {
+    height: 300px;
   }
 }
