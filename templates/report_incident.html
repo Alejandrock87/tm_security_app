@@ -9,16 +9,17 @@
 <div class="main-content report-incident">
   <div class="report-container">
       <div class="report-header">
-          <div class="card-icon">
+          <div class="report-header-icon">
               <i class="fas fa-exclamation-triangle"></i>
           </div>
-    <h1 class="welcome-title text-center">Reportar Incidente</h1>
-    <div class="content-wrapper">
+          <h1 class="report-header-title">Reportar Incidente</h1>
+      </div>
+      <div class="report-content">
       <!-- Sección del formulario -->
-      <div class="form-section">
-         <div class="form-card">           
-           <div class="card-body">
-             <form method="post">
+      <div class="report-form-section">
+         <div class="report-form-card">           
+           <div class="report-form-body">
+             <form method="post" class="report-form">
                {{ form.hidden_tag() }}
                <input type="hidden" id="latitude" name="latitude">
                <input type="hidden" id="longitude" name="longitude">

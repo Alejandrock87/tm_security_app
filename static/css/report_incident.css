@@ -1,36 +1,59 @@
 
 /* Estilos específicos para la página de reporte de incidentes */
 .main-content.report-incident {
-  min-height: 100vh;
-  background-color: #feca57;
-  padding: 2rem 1rem;
+  min-height: 100vh !important;
+  background-color: #feca57 !important;
+  padding: 2rem 1rem !important;
 }
 
 .report-container {
-  width: 100%;
-  max-width: 768px;
-  margin: 0 auto;
+  width: 100% !important;
+  max-width: 768px !important;
+  margin: 0 auto !important;
 }
 
 .report-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: center !important;
+  margin-bottom: 2rem !important;
 }
 
-.report-header .card-icon {
-  margin-bottom: 1rem;
+.report-header-icon {
+  margin-bottom: 1rem !important;
 }
 
-.report-header .card-icon i {
-  font-size: 2.5rem;
-  color: #ee5253;
+.report-header-icon i {
+  font-size: 2.5rem !important;
+  color: #ee5253 !important;
 }
 
-.report-header .welcome-title {
-  font-size: 2.25rem;
-  font-weight: 600;
-  color: #2d3436;
-  margin-bottom: 1rem;
+.report-header-title {
+  font-size: 2.25rem !important;
+  font-weight: 600 !important;
+  color: #2d3436 !important;
+  margin-bottom: 1rem !important;
+}
+
+.report-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important;
+}
+
+.report-form-section {
+  width: 100% !important;
+}
+
+.report-form-card {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.report-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
 }
 
 .form-card {
@@ -41,26 +64,37 @@
   margin-bottom: 2rem;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
+.report-form-group {
+  margin-bottom: 1.5rem !important;
 }
 
-.form-group label.form-label {
-  display: block;
-  font-weight: 500;
-  color: #2d3436;
-  margin-bottom: 0.5rem;
+.report-form-label {
+  display: block !important;
+  font-weight: 500 !important;
+  color: #2d3436 !important;
+  margin-bottom: 0.5rem !important;
 }
 
-.report-incident .auth-input {
-  width: 100%;
-  padding: 0.875rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  background-color: #f8f9fa;
-  color: #2d3436;
-  transition: all 0.2s ease;
+.report-input {
+  width: 100% !important;
+  padding: 0.875rem !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  font-size: 1rem !important;
+  background-color: #f8f9fa !important;
+  color: #2d3436 !important;
+  transition: all 0.2s ease !important;
+}
+
+.report-input:focus {
+  outline: none !important;
+  border-color: #ee5253 !important;
+  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15) !important;
+}
+
+.report-textarea {
+  min-height: 120px !important;
+  resize: vertical !important;
 }
 
 .report-incident .auth-input:focus {
