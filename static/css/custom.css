@@ -1167,3 +1167,30 @@
 }
 
 
+.chart-container {
+    height: 300px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.scroll-container {
+    overflow-x: auto;
+    padding: 0 1rem;
+}
+
+.detail-card {
+    background-color: #1e293b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem;
+    background-color: #2d3748;
+    border-bottom: 1px solid #4a5568;
+}
+
+.card-header h5 {
+    margin: 0;
+    color: #e2e8f0;
+}
