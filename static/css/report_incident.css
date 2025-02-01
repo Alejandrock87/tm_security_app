@@ -19,9 +19,9 @@ body {
 }
 .main-content.report-incident {
   background-color: #feca57 !important;
-  min-height: 100vh;
-  padding: 1rem;
-  position: relative;
+  min-height: 100vh !important;
+  padding: 1rem !important;
+  position: relative !important;
 }
 
 /* Contenedor centrado con ancho máximo para móviles */
@@ -33,13 +33,6 @@ body {
 
 /* Título principal */
 .welcome-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #2d3436;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.report-incident .welcome-title {
   font-size: 2.25rem !important;
   font-weight: 600 !important;
   color: #2d3436 !important;
@@ -47,12 +40,11 @@ body {
   text-align: center !important;
 }
 
-
 /* Wrapper de contenido (secciones se apilan en móvil) */
 .content-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
 }
 
 /* Sección del formulario */
@@ -62,12 +54,6 @@ body {
 
 /* Tarjeta del formulario */
 .form-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-.report-incident .form-card {
   background-color: #ffffff !important;
   border-radius: 16px !important;
   padding: 2rem !important;
@@ -76,23 +62,16 @@ body {
 
 /* Ícono de la tarjeta */
 .card-icon {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.report-incident .card-icon {
   text-align: center !important;
   margin-bottom: 1.5rem !important;
 }
 
 .card-icon i {
-  font-size: 2.5rem;
-  color: #ee5253;
-  transition: color 0.2s ease;
-}
-.report-incident .card-icon i {
   font-size: 2.5rem !important;
   color: #ee5253 !important;
+  transition: color 0.2s ease !important;
 }
+
 
 .card-icon i:hover {
   color: #d63031;
@@ -105,15 +84,10 @@ body {
 
 /* Grupos de formulario */
 .form-group {
-  margin-bottom: 1rem;
+    margin-bottom: 1.5rem !important;
 }
 .form-label {
-  display: block;
-  font-weight: 500;
-  color: #2d3436;
-  margin-bottom: 0.5rem;
-}
-.report-incident .form-label {
+  display: block !important;
   font-weight: 500 !important;
   color: #2d3436 !important;
   margin-bottom: 0.5rem !important;
@@ -122,31 +96,17 @@ body {
 
 /* Inputs, textareas y demás controles */
 .auth-input {
-  width: 100%;
-  padding: 0.875rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  color: #2d3436;
-  background-color: #ffffff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.report-incident .auth-input {
   width: 100% !important;
   padding: 0.875rem !important;
   border: 2px solid #e2e8f0 !important;
   border-radius: 12px !important;
   font-size: 1rem !important;
-  transition: border-color 0.2s ease !important;
+  color: #2d3436 !important;
+  background-color: #ffffff !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
-
 
 .auth-input:focus {
-  outline: none;
-  border-color: #ee5253;
-  box-shadow: 0 0 0 3px rgba(238,82,83,0.15);
-}
-.report-incident .auth-input:focus {
   outline: none !important;
   border-color: #ee5253 !important;
   box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15) !important;
@@ -171,9 +131,9 @@ textarea.auth-input {
 
 /* Grupo de fecha y hora */
 .date-time-group {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: flex !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
 }
 .date-time-group .form-group {
   flex: 1 1 100%;
@@ -184,11 +144,7 @@ textarea.auth-input {
   margin-bottom: 1rem;
 }
 #report-map {
-  width: 100%;
-  height: 250px;
-  border-radius: 12px;
-}
-.report-incident #report-map {
+  width: 100% !important;
   height: 400px !important;
   border-radius: 12px !important;
   margin-bottom: 1.5rem !important;
@@ -196,18 +152,6 @@ textarea.auth-input {
 
 /* Botón de envío */
 .auth-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #ee5253;
-  border: none;
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.report-incident .auth-button {
   width: 100% !important;
   padding: 1rem !important;
   background-color: #ee5253 !important;
@@ -221,17 +165,10 @@ textarea.auth-input {
 }
 
 .auth-button:hover:not(:disabled) {
-  background-color: #d63031;
-}
-.report-incident .auth-button:hover:not(:disabled) {
   background-color: #d63031 !important;
 }
 
 .auth-button:disabled {
-  background-color: #cbd5e0;
-  cursor: not-allowed;
-}
-.report-incident .auth-button:disabled {
   background-color: #cbd5e0 !important;
   cursor: not-allowed !important;
 }
@@ -239,38 +176,23 @@ textarea.auth-input {
 
 /* Alertas */
 .alert {
-  padding: 0.75rem;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  margin-bottom: 1rem !important;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.report-incident .alert {
-  padding: 1rem !important;
-  border-radius: 12px !important;
-  margin-bottom: 1rem !important;
-}
 
 
 .alert-info {
-  background-color: #ebf8ff;
-  border: 1px solid #4299e1;
-  color: #2b6cb0;
-}
-.report-incident .alert-info {
   background-color: #ebf8ff !important;
   border: 1px solid #4299e1 !important;
   color: #2b6cb0 !important;
 }
 
+
 .alert-success {
-  background-color: #f0fff4;
-  border: 1px solid #48bb78;
-  color: #2f855a;
-}
-.report-incident .alert-success {
   background-color: #f0fff4 !important;
   border: 1px solid #48bb78 !important;
   color: #2f855a !important;
@@ -289,17 +211,11 @@ textarea.auth-input {
   gap: 1rem;
 }
 .legend-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-.report-incident .legend-card {
-  background-color: #ffffff !important;
-  border-radius: 12px !important;
-  padding: 1.5rem !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  margin-bottom: 1rem !important;
+    background-color: #ffffff !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    margin-bottom: 1rem !important;
 }
 
 .legend-header {
@@ -316,23 +232,12 @@ textarea.auth-input {
   color: #636e72;
 }
 .legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-.report-incident .legend-item {
   display: flex !important;
   align-items: center !important;
   margin-bottom: 0.75rem !important;
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  margin-right: 0.5rem;
-}
-.report-incident .legend-color {
   width: 20px !important;
   height: 20px !important;
   border-radius: 4px !important;
@@ -359,15 +264,20 @@ textarea.auth-input {
     max-width: 720px;
   }
   .content-wrapper {
-    flex-direction: row;
+    flex-direction: row !important;
     gap: 1rem;
   }
   .form-section, .legend-section {
     flex: 1;
   }
-  .legend-section {
-    max-width: 300px;
-  }
+    .form-section {
+        flex: 2 !important;
+    }
+
+    .legend-section {
+        flex: 1 !important;
+        max-width: 300px;
+    }
   .date-time-group .form-group {
     flex: 1;
   }
@@ -375,7 +285,7 @@ textarea.auth-input {
     height: 300px;
   }
 }
-.report-incident .card-title {
+.card-title {
   color: #2d3436 !important;
   font-size: 1.25rem !important;
   font-weight: 600 !important;
@@ -383,11 +293,14 @@ textarea.auth-input {
 }
 
 @media (max-width: 768px) {
-  .report-incident .welcome-title {
+  .welcome-title {
     font-size: 1.75rem !important;
   }
 
-  .report-incident .form-card {
+  .form-card {
     padding: 1.5rem !important;
   }
+    .date-time-group .form-group {
+        flex: 1 1 100% !important;
+    }
 }
