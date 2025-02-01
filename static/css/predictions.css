@@ -1,0 +1,113 @@
+
+/* Estilos específicos para predictions */
+.predictions-container {
+    background-color: #1e293b !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.predictions-header {
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+}
+
+.predictions-header i {
+    font-size: 3rem !important;
+    color: #3b82f6 !important;
+    margin-bottom: 1rem !important;
+}
+
+.predictions-header p {
+    font-size: 1rem !important;
+    color: #94a3b8 !important;
+}
+
+.notification-toggle {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.predictions-toggle .form-check-input {
+    width: 2.5rem !important;
+    height: 1.25rem !important;
+    background-color: #6b7280 !important;
+    border-radius: 1.5rem !important;
+    position: relative !important;
+    transition: background-color 0.3s ease !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.predictions-toggle .form-check-input::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0.25rem !important;
+    transform: translateY(-50%) !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    background-color: white !important;
+    border-radius: 50% !important;
+    transition: transform 0.3s ease, background-color 0.3s ease !important;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
+}
+
+.predictions-toggle .form-check-input:checked {
+    background-color: #3b82f6 !important;
+}
+
+.predictions-toggle .form-check-input:checked::after {
+    transform: translate(1.25rem, -50%) !important;
+}
+
+#predictionsList {
+    background-color: #0f172a !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+}
+
+.prediction-item {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    transition: background-color 0.2s, transform 0.2s !important;
+    cursor: pointer !important;
+}
+
+.prediction-item:hover {
+    background-color: #334155 !important;
+    transform: translateY(-2px) !important;
+}
+
+.prediction-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+    color: #3b82f6 !important;
+}
+
+.prediction-details {
+    font-size: 0.95rem !important;
+    color: #94a3b8 !important;
+}
+
+@media (max-width: 768px) {
+    .predictions-container {
+        padding: 1rem !important;
+    }
+    
+    .predictions-header i {
+        font-size: 2.5rem !important;
+    }
+    
+    .prediction-item {
+        padding: 0.75rem !important;
+    }
+}
