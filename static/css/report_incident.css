@@ -128,6 +128,7 @@
 
 .legend-card {
   margin-bottom: 1.5rem;
+  background: #ee5253;
 }
 
 .legend-card:last-child {
@@ -167,7 +168,7 @@
 }
 
 .legend-text {
-  color: #636e72;
+  color: #ffffff !important;
   font-size: 0.95rem;
   line-height: 1.5;
 }
