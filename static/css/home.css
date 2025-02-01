@@ -48,8 +48,18 @@
 
 .card-icon {
   font-size: 2.5rem;
-  color: #ee5253;
   margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.card-icon i {
+  color: #ee5253;
+  transition: color 0.2s ease;
+}
+
+.option-card:hover .card-icon i {
+  color: #d63031;
 }
 
 .card-title {
