@@ -1,169 +1,206 @@
-/* Contenedor principal de estadísticas */
+/* ================================
+   ESTILOS PARA LA PANTALLA DE
+   ESTADÍSTICAS
+   ================================ */
+
+/* Reset básico y tipografía */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+}
+
+/* Contenedor principal para la sección de estadísticas */
+.main-content.statistics-wrapper {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Contenedor interno con fondo oscuro y esquinas redondeadas */
 .statistics-container {
-  background-color: #1e293b !important;
-  border-radius: 16px !important;
-  padding: 2rem !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-  color: #ffffff !important;
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 100%;
 }
 
-/* Encabezado de estadísticas */
+/* Encabezado de Estadísticas */
 .statistics-header {
-  text-align: center !important;
-  margin-bottom: 2rem !important;
+  text-align: center;
+  margin-bottom: 2rem;
 }
-
 .statistics-header h2 {
-  font-size: 2rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  margin-bottom: 0.5rem !important;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
 }
-
 .statistics-header p {
-  font-size: 1rem !important;
-  color: #94a3b8 !important;
+  font-size: 1rem;
+  color: #94a3b8;
 }
 
-/* Summary Cards */
+/* Mensaje de datos vacíos */
+.empty-data-message {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+}
+
+/* ========================
+   SECCIÓN DE RESUMEN (CARDS)
+   ======================== */
 .summary-section .stat-card {
-  background-color: #1e293b !important;
-  border-radius: 12px !important;
-  padding: 1.5rem !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-  text-align: center !important;
-  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
-  color: #ffffff !important;
+  background-color: #1e293b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  color: #ffffff;
 }
-
 .summary-section .stat-card:hover {
-  transform: translateY(-5px) !important;
-  background-color: #334155 !important;
+  transform: translateY(-5px);
+  background-color: #334155;
 }
 
+/* Íconos en las tarjetas */
 .summary-section .stat-card i {
-  font-size: 2.5rem !important;
-  margin-bottom: 1rem !important;
-  color: #3b82f6 !important;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #3b82f6; /* color por defecto */
 }
-
+/* Sección total, danger, warning, info personalizan el color del ícono */
 .summary-section .stat-card.total i {
-  color: #10b981 !important;
+  color: #10b981;
 }
-
 .summary-section .stat-card.danger i {
-  color: #ef4444 !important;
+  color: #ef4444;
 }
-
 .summary-section .stat-card.warning i {
-  color: #f59e0b !important;
+  color: #f59e0b;
 }
-
 .summary-section .stat-card.info i {
-  color: #3b82f6 !important;
+  color: #3b82f6;
 }
 
+/* Texto de las tarjetas */
 .summary-section .stat-card h3 {
-  font-size: 1.75rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 0.5rem !important;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
-
 .summary-section .stat-card p {
-  font-size: 1rem !important;
-  color: #94a3b8 !important;
+  font-size: 1rem;
+  color: #94a3b8;
 }
 
-/* Quick Filters */
+/* ========================
+   FILTROS RÁPIDOS
+   ======================== */
+.quick-filters {
+  margin-bottom: 1rem;
+}
 .quick-filters .scroll-container {
-  display: flex !important;
-  gap: 0.5rem !important;
-  overflow-x: auto !important;
-  padding-bottom: 0.5rem !important;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
 }
-
 .quick-filters .filter-chip {
-  background-color: #374151 !important;
-  border: none !important;
-  border-radius: 9999px !important;
-  color: #ffffff !important;
-  padding: 0.5rem 1rem !important;
-  font-size: 0.9rem !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s ease !important;
-  white-space: nowrap !important;
+  background-color: #374151;
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
 }
-
 .quick-filters .filter-chip:hover {
-  background-color: #3b82f6 !important;
+  background-color: #3b82f6;
 }
-
 .quick-filters .filter-chip.active {
-  background-color: #3b82f6 !important;
+  background-color: #3b82f6;
 }
 
-/* Detalle de Tarjetas */
+/* ========================
+   DETALLE DE TARJETAS
+   ======================== */
 .detail-card {
-  background-color: #1e293b !important;
-  border-radius: 12px !important;
-  padding: 1rem !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-  color: #ffffff !important;
+  background-color: #1e293b;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: #ffffff;
+  margin-bottom: 1rem; 
 }
 
 .detail-card .card-header {
-  border-bottom: 1px solid #334155 !important;
-  padding-bottom: 0.5rem !important;
-  margin-bottom: 1rem !important;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
-
 .detail-card .card-header h5 {
-  font-size: 1.25rem !important;
-  font-weight: 600 !important;
-  color: #ffffff !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
 }
 
-.detail-card .scrollable-list {
-  max-height: 300px !important;
-  overflow-y: auto !important;
-}
-
+/* Contenedor para la gráfica */
 .chart-container {
-  background-color: #1e293b !important;
-  border-radius: 8px !important;
-  padding: 1rem !important;
-  height: 300px !important;
-  margin-bottom: 1rem !important;
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1rem;
+  height: 300px;
+  margin-bottom: 1rem;
 }
 
-/* Responsive */
+/* Listas con scroll (para los tipos de incidentes o estaciones más afectadas) */
+.scroll-container {
+  overflow-x: hidden; /* sólo scroll vertical en la lista */
+}
+.scrollable-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Ajustes responsivos */
 @media (max-width: 768px) {
   .statistics-container {
-    padding: 1rem !important;
+    padding: 1rem;
   }
-  
+
   .summary-section .stat-card {
-    padding: 1rem !important;
+    padding: 1rem;
   }
-
   .summary-section .stat-card i {
-    font-size: 2rem !important;
+    font-size: 2rem;
   }
-
   .summary-section .stat-card h3 {
-    font-size: 1.5rem !important;
+    font-size: 1.5rem;
   }
-
   .summary-section .stat-card p {
-    font-size: 0.9rem !important;
+    font-size: 0.9rem;
   }
 
   .quick-filters .filter-chip {
-    padding: 0.4rem 0.8rem !important;
-    font-size: 0.8rem !important;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 
   .detail-card .scrollable-list {
-    max-height: 200px !important;
+    max-height: 200px;
   }
 }
