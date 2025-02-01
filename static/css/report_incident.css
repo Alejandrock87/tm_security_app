@@ -36,7 +36,7 @@ body {
 .content-wrapper {
   display: flex !important;
   flex-direction: column !important;
-  gap: 1.5rem !important;
+  gap: 1rem !important;
 }
 
 .form-section {
@@ -52,7 +52,7 @@ body {
 
 .card-icon {
   text-align: center !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .card-icon i {
@@ -70,7 +70,7 @@ body {
 }
 
 .form-group {
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .form-label {
@@ -193,7 +193,6 @@ textarea.auth-input {
   border-radius: 16px !important;
   padding: 1.5rem !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  margin-bottom: 1rem !important;
 }
 
 .legend-header {
