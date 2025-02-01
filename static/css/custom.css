@@ -1,4 +1,3 @@
-
 /* Estilos para las listas de preferencias */
 .preferences-list {
     max-height: 300px;
@@ -197,64 +196,76 @@ body {
 .input-icon {
     display: flex;
     align-items: center;
-    background-color: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 0.875rem;
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.input-icon:focus-within {
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
 }
 
 .input-icon i {
-    color: #64748b;
-    margin-right: 10px;
+    color: #d32f2f;
+    margin-right: 12px;
+    font-size: 1.1rem;
 }
 
 .auth-input {
-    background-color: #0f172a; /* Fondo oscuro para el select */
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 8px;
-    padding: 0.875rem;
-    color: #ffffff; /* Texto blanco por defecto */
-    font-size: 0.95rem;
     width: 100%;
-    appearance: none; /* Eliminar apariencia por defecto */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%239494b8' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 10px 5px;
-    cursor: pointer;
-}
-
-.auth-input option {
-    color: #000000; /* Texto negro */
-    background-color: #ffffff; /* Fondo blanco */
+    background: transparent;
+    border: none;
+    color: #1a202c;
+    font-size: 1rem;
+    padding: 0;
 }
 
 .auth-input:focus {
-    border-color: #3b82f6; /* Borde azul al enfocar */
     outline: none;
 }
 
 .auth-input::placeholder {
-    color: #64748b;
+    color: #a0aec0;
 }
 
 .auth-button {
     width: 100%;
-    padding: 0.875rem;
-    background-color: #3b82f6;
+    padding: 1rem;
+    background-color: #d32f2f;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     color: #ffffff;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .auth-button:hover {
-    background-color: #2563eb;
+    background-color: #b71c1c;
+    transform: translateY(-1px);
+}
+
+.auth-button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .input-icon {
+        padding: 0.625rem 0.875rem;
+    }
+
+    .auth-button {
+        padding: 0.875rem;
+        font-size: 0.95rem;
+    }
 }
 
 .remember-me {
