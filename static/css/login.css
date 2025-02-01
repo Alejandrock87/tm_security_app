@@ -8,6 +8,7 @@
     background-color: #feca57;
     padding: 1rem;
     overflow: hidden;
+    border-radius: 16px;
 }
 
 .auth-card {
