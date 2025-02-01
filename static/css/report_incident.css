@@ -1,62 +1,143 @@
+/* ===== Estilos Mobile-First para Reportar Incidente ===== */
 
-/* Estilos específicos para la página de reporte de incidentes */
+/* Reset básico y evitar overflow horizontal */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal y fondo */
 .main-content {
-  display: flex;
-  flex-direction: column;
+  background-color: #feca57;
   min-height: 100vh;
   padding: 1rem;
-  background-color: #feca57;
 }
 
+/* Contenedor centrado con ancho máximo para móviles */
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Título principal */
 .welcome-title {
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: #2d3436;
-  margin-bottom: 1.5rem;
   text-align: center;
-}
-
-.option-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.legend-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.auth-header i {
-  font-size: 2.5rem;
-  color: #ee5253;
   margin-bottom: 1rem;
 }
 
+/* Wrapper de contenido (secciones se apilan en móvil) */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Sección del formulario */
+.form-section {
+  width: 100%;
+}
+
+/* Tarjeta del formulario */
+.form-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Ícono de la tarjeta */
+.card-icon {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.card-icon i {
+  font-size: 2.5rem;
+  color: #ee5253;
+  transition: color 0.2s ease;
+}
+.card-icon i:hover {
+  color: #d63031;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+  width: 100%;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 1rem;
+}
 .form-label {
+  display: block;
   font-weight: 500;
   color: #2d3436;
   margin-bottom: 0.5rem;
 }
 
+/* Inputs, textareas y demás controles */
 .auth-input {
   width: 100%;
   padding: 0.875rem;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  color: #2d3436;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
 .auth-input:focus {
   outline: none;
   border-color: #ee5253;
-  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15);
+  box-shadow: 0 0 0 3px rgba(238,82,83,0.15);
+}
+/* Permitir redimensionar verticalmente en textareas */
+textarea.auth-input {
+  resize: vertical;
 }
 
+/* Estilos para dropdowns (select) */
+.form-select.auth-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ee5253' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* Grupo de fecha y hora */
+.date-time-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.date-time-group .form-group {
+  flex: 1 1 100%;
+}
+
+/* Contenedor del mapa */
+.map-container {
+  margin-bottom: 1rem;
+}
+#report-map {
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+}
+
+/* Botón de envío */
 .auth-button {
   width: 100%;
   padding: 1rem;
@@ -69,64 +150,109 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
 .auth-button:hover:not(:disabled) {
   background-color: #d63031;
 }
-
 .auth-button:disabled {
   background-color: #cbd5e0;
   cursor: not-allowed;
 }
 
-#report-map {
-  height: 400px;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-}
-
+/* Alertas */
 .alert {
-  padding: 1rem;
+  padding: 0.75rem;
   border-radius: 12px;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-
 .alert-info {
   background-color: #ebf8ff;
   border: 1px solid #4299e1;
   color: #2b6cb0;
 }
-
 .alert-success {
   background-color: #f0fff4;
   border: 1px solid #48bb78;
   color: #2f855a;
 }
+.alert-danger {
+  background-color: #fee2e2;
+  border: 1px solid #f56565;
+  color: #c53030;
+}
 
+/* Sección de leyendas */
+.legend-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.legend-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.legend-header {
+  margin-bottom: 0.5rem;
+}
+.legend-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3436;
+  text-align: center;
+}
+.legend-body {
+  font-size: 0.9rem;
+  color: #636e72;
+}
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
-
 .legend-color {
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  margin-right: 0.75rem;
+  margin-right: 0.5rem;
 }
-
-.card-title {
+.legend-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
   color: #2d3436;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.legend-text {
+  font-size: 0.9rem;
+  color: #636e72;
 }
 
-.station-marker {
-  text-align: center;
-}
-
-.station-marker-selected {
-  z-index: 1000;
+/* ===== Ajustes para pantallas mayores ===== */
+@media (min-width: 769px) {
+  .container {
+    max-width: 720px;
+  }
+  .content-wrapper {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .form-section, .legend-section {
+    flex: 1;
+  }
+  .legend-section {
+    max-width: 300px;
+  }
+  .date-time-group .form-group {
+    flex: 1;
+  }
+  #report-map {
+    height: 300px;
+  }
 }
