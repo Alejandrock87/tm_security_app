@@ -1,228 +1,267 @@
-
-/* Estilos generales */
+/* Evitar scroll horizontal y normalizar box-sizing */
+* {
+  box-sizing: border-box;
+}
 body {
-  font-family: "Arial", sans-serif !important;
-  line-height: 1.6 !important;
-  color: #2d3436 !important;
-  background-color: #feca57 !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
 }
 
+/* Contenedor principal con fondo y relleno */
 .main-content.report-incident {
-  min-height: 100vh !important;
-  padding: 1rem !important;
+  min-height: 100vh;
+  background-color: #feca57;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Contenedor para centrar y limitar el ancho */
 .report-container {
-  max-width: 1200px !important;
-  margin: 0 auto !important;
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
 }
 
-/* Encabezado */
+/* Encabezado: ícono y título */
 .report-header {
-  text-align: center !important;
-  margin-bottom: 2rem !important;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-.report-header-icon {
-  font-size: 3rem !important;
-  color: #ee5253 !important;
-  margin-bottom: 1rem !important;
+.report-header .card-icon {
+  margin-bottom: 0.75rem; 
+  display: inline-block;
 }
 
-.report-header-title {
-  font-size: 2rem !important;
-  font-weight: 600 !important;
-  color: #2d3436 !important;
+.report-header .card-icon i {
+  font-size: 2.5rem;
+  color: #ee5253;
 }
 
-/* Contenido del reporte */
-.report-content {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2rem !important;
+.welcome-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3436;
 }
 
-/* Sección del formulario */
-.report-form-section {
-  flex: 1 !important;
+/* Contenedor principal del contenido (form + leyendas) */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.report-form-card {
-  background-color: #ffffff !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  padding: 2rem !important;
+/* ============ SECCIÓN DEL FORMULARIO ============ */
+.form-section {
+  width: 100%;
 }
 
+.form-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-body {
+  width: 100%;
+}
+
+/* Grupos del formulario */
 .form-group {
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
-  display: block !important;
-  margin-bottom: 0.5rem !important;
-  font-weight: 600 !important;
+  display: block;
+  font-weight: 500;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
 }
 
-.form-control,
-.form-select {
-  width: 100% !important;
-  padding: 0.75rem !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 8px !important;
-  font-size: 1rem !important;
+/* Inputs y selects (similar a la idea de .auth-input) */
+.auth-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #2d3436;
+  background-color: #f8f9fa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-control:focus,
-.form-select:focus {
-  outline: none !important;
-  border-color: #ee5253 !important;
-  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.1) !important;
+.auth-input:focus {
+  outline: none;
+  border-color: #ee5253;
+  box-shadow: 0 0 0 3px rgba(238,82,83,0.15);
 }
 
+/* Agrupar fecha y hora en filas */
 .date-time-group {
-  display: flex !important;
-  gap: 1rem !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
-.date-time-group .form-group {
-  flex: 1 !important;
-}
-
-.alert {
-  padding: 1rem !important;
-  border-radius: 8px !important;
-  margin-bottom: 1rem !important;
-}
-
-.alert-info {
-  background-color: #e3f2fd !important;
-  color: #0d47a1 !important;
-}
-
-.alert-success {
-  background-color: #e8f5e9 !important;
-  color: #1b5e20 !important;
-}
-
+/* Contenedor del mapa */
 .map-container {
-  height: 300px !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1rem;
 }
 
 #report-map {
-  height: 100% !important;
-  border-radius: 8px !important;
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
 }
 
-.submit-button {
-  width: 100% !important;
-  padding: 1rem !important;
-  background-color: #ee5253 !important;
-  color: #ffffff !important;
-  border: none !important;
-  border-radius: 8px !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: background-color 0.2s ease !important;
+/* Botón principal (similar a .auth-button) */
+.auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: #ee5253;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
 }
 
-.submit-button:hover:not(:disabled) {
-  background-color: #d63031 !important;
+.auth-button i {
+  font-size: 1.1rem;
 }
 
-.submit-button:disabled {
-  background-color: #cbd5e0 !important;
-  cursor: not-allowed !important;
+.auth-button:hover:not(:disabled) {
+  background-color: #d63031;
 }
 
-/* Sección de leyendas */
+.auth-button:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Alertas con esquinas redondeadas */
+.alert {
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.alert-info {
+  background-color: #ebf8ff;
+  border: 1px solid #4299e1;
+  color: #2b6cb0;
+}
+
+.alert-success {
+  background-color: #f0fff4;
+  border: 1px solid #48bb78;
+  color: #2f855a;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  border: 1px solid #f56565;
+  color: #c53030;
+}
+
+/* ============ SECCIÓN DE LEYENDAS ============ */
 .legend-section {
-  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .legend-card {
-  background-color: #ffffff !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  margin-bottom: 1rem !important;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .legend-header {
-  padding: 1rem !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  margin-bottom: 0.5rem;
 }
 
 .legend-title {
-  font-size: 1.25rem !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3436;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .legend-body {
-  padding: 1rem !important;
+  font-size: 0.9rem;
+  color: #636e72;
 }
 
 .legend-item {
-  display: flex !important;
-  align-items: center !important;
-  margin-bottom: 0.5rem !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
 .legend-color {
-  width: 20px !important;
-  height: 20px !important;
-  border-radius: 50% !important;
-  margin-right: 0.5rem !important;
-}
-
-.info-card {
-  background-color: #ee5253 !important;
-  color: #ffffff !important;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 0.75rem;
 }
 
 .legend-subtitle {
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 0.5rem !important;
+  font-weight: 500;
+  color: #2d3436;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .legend-text {
-  font-size: 0.9rem !important;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #636e72;
 }
 
-/* Responsive design */
-@media (min-width: 768px) {
-  .report-content {
-    flex-direction: row !important;
-  }
-
-  .report-form-section,
-  .legend-section {
-    flex: 1 !important;
-  }
-
-  .legend-section {
-    margin-left: 2rem !important;
-  }
-}
-
-@media (max-width: 767px) {
+/* ============ RESPONSVIO ============ */
+@media (max-width: 768px) {
   .date-time-group {
-    flex-direction: column !important;
+    grid-template-columns: 1fr;
   }
-
-  .map-container {
-    height: 250px !important;
+  #report-map {
+    height: 250px;
   }
+}
 
-  .report-header-title {
-    font-size: 1.75rem !important;
+@media (min-width: 769px) {
+  .content-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
   }
-
-  .report-form-card,
-  .legend-card {
-    padding: 1.5rem !important;
+  .form-section, .legend-section {
+    flex: 1;
+  }
+  .legend-section {
+    max-width: 300px;
+  }
+  #report-map {
+    height: 350px;
   }
 }
