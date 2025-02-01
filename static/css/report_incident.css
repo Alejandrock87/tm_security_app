@@ -1,228 +1,228 @@
+
 /* Estilos generales */
 body {
-  font-family: "Arial", sans-serif;
-  line-height: 1.6;
-  color: #2d3436;
-  background-color: #feca57;
+  font-family: "Arial", sans-serif !important;
+  line-height: 1.6 !important;
+  color: #2d3436 !important;
+  background-color: #feca57 !important;
 }
 
 .main-content.report-incident {
-  min-height: 100vh;
-  padding: 1rem;
+  min-height: 100vh !important;
+  padding: 1rem !important;
 }
 
 .report-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
 }
 
 /* Encabezado */
 .report-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: center !important;
+  margin-bottom: 2rem !important;
 }
 
 .report-header-icon {
-  font-size: 3rem;
-  color: #ee5253;
-  margin-bottom: 1rem;
+  font-size: 3rem !important;
+  color: #ee5253 !important;
+  margin-bottom: 1rem !important;
 }
 
 .report-header-title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2d3436;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: #2d3436 !important;
 }
 
 /* Contenido del reporte */
 .report-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important;
 }
 
 /* Sección del formulario */
 .report-form-section {
-  flex: 1;
+  flex: 1 !important;
 }
 
 .report-form-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  padding: 2rem !important;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem !important;
 }
 
 .form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600 !important;
 }
 
 .form-control,
 .form-select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
+  width: 100% !important;
+  padding: 0.75rem !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
 }
 
 .form-control:focus,
 .form-select:focus {
-  outline: none;
-  border-color: #ee5253;
-  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.1);
+  outline: none !important;
+  border-color: #ee5253 !important;
+  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.1) !important;
 }
 
 .date-time-group {
-  display: flex;
-  gap: 1rem;
+  display: flex !important;
+  gap: 1rem !important;
 }
 
 .date-time-group .form-group {
-  flex: 1;
+  flex: 1 !important;
 }
 
 .alert {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  padding: 1rem !important;
+  border-radius: 8px !important;
+  margin-bottom: 1rem !important;
 }
 
 .alert-info {
-  background-color: #e3f2fd;
-  color: #0d47a1;
+  background-color: #e3f2fd !important;
+  color: #0d47a1 !important;
 }
 
 .alert-success {
-  background-color: #e8f5e9;
-  color: #1b5e20;
+  background-color: #e8f5e9 !important;
+  color: #1b5e20 !important;
 }
 
 .map-container {
-  height: 300px;
-  margin-bottom: 1.5rem;
+  height: 300px !important;
+  margin-bottom: 1.5rem !important;
 }
 
 #report-map {
-  height: 100%;
-  border-radius: 8px;
+  height: 100% !important;
+  border-radius: 8px !important;
 }
 
 .submit-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #ee5253;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  width: 100% !important;
+  padding: 1rem !important;
+  background-color: #ee5253 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: #d63031;
+  background-color: #d63031 !important;
 }
 
 .submit-button:disabled {
-  background-color: #cbd5e0;
-  cursor: not-allowed;
+  background-color: #cbd5e0 !important;
+  cursor: not-allowed !important;
 }
 
 /* Sección de leyendas */
 .legend-section {
-  flex: 1;
+  flex: 1 !important;
 }
 
 .legend-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 1rem !important;
 }
 
 .legend-header {
-  padding: 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 1rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 .legend-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
 }
 
 .legend-body {
-  padding: 1rem;
+  padding: 1rem !important;
 }
 
 .legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 0.5rem;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  margin-right: 0.5rem !important;
 }
 
 .info-card {
-  background-color: #ee5253;
-  color: #ffffff;
+  background-color: #ee5253 !important;
+  color: #ffffff !important;
 }
 
 .legend-subtitle {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .legend-text {
-  font-size: 0.9rem;
+  font-size: 0.9rem !important;
 }
 
 /* Responsive design */
 @media (min-width: 768px) {
   .report-content {
-    flex-direction: row;
+    flex-direction: row !important;
   }
 
   .report-form-section,
   .legend-section {
-    flex: 1;
+    flex: 1 !important;
   }
 
   .legend-section {
-    margin-left: 2rem;
+    margin-left: 2rem !important;
   }
 }
 
 @media (max-width: 767px) {
   .date-time-group {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 
   .map-container {
-    height: 250px;
+    height: 250px !important;
   }
 
   .report-header-title {
-    font-size: 1.75rem;
+    font-size: 1.75rem !important;
   }
 
   .report-form-card,
   .legend-card {
-    padding: 1.5rem;
+    padding: 1.5rem !important;
   }
 }
-
