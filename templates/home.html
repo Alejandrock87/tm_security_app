@@ -1,30 +1,32 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="container text-center mt-1">
-    <h1 class="welcome-title">Bienvenido a Transmilenio Security</h1>
-    <p class="auth-subtitle">Selecciona una opción para continuar</p>
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
 
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-5 mb-4">
-            <div class="option-card">
-                <div class="card-icon">
-                    <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <h5 class="card-title">Mapa de Incidentes</h5>
-                <p class="card-text">Visualiza los incidentes reportados en el sistema de Transmilenio.</p>
-                <a href="{{ url_for('dashboard') }}" class="option-link">Ver Mapa</a>
+{% block content %}
+<div class="home-container">
+    <h1 class="welcome-title">Bienvenido a Transmilenio Security</h1>
+    <p class="home-subtitle">Selecciona una opción para continuar</p>
+
+    <div class="options-grid">
+        <div class="option-card">
+            <div class="card-icon">
+                <i class="fas fa-map-marked-alt"></i>
             </div>
+            <h2 class="card-title">Mapa de Incidentes</h2>
+            <p class="card-text">Visualiza los incidentes reportados en el sistema de Transmilenio.</p>
+            <a href="{{ url_for('dashboard') }}" class="option-link">Ver Mapa</a>
         </div>
-        <div class="col-md-5 mb-4">
-            <div class="option-card">
-                <div class="card-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <h5 class="card-title">Reportar Incidente</h5>
-                <p class="card-text">Reporta un nuevo incidente de seguridad en el sistema.</p>
-                <a href="{{ url_for('report_incident') }}" class="option-link">Reportar</a>
+        
+        <div class="option-card">
+            <div class="card-icon">
+                <i class="fas fa-exclamation-triangle"></i>
             </div>
+            <h2 class="card-title">Reportar Incidente</h2>
+            <p class="card-text">Reporta un nuevo incidente de seguridad en el sistema.</p>
+            <a href="{{ url_for('report_incident') }}" class="option-link">Reportar</a>
         </div>
     </div>
 </div>
