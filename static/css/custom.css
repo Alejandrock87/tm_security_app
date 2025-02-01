@@ -36,7 +36,7 @@
 
 /* Color de fondo general */
 body {
-    background-color: #feca57 !important;
+    background-color: #fff5d7 !important;
 }
 
 /* Colores para contenedores y tarjetas */
@@ -49,7 +49,66 @@ body {
 .stat-card,
 .notification-item,
 .floating-alert {
-    background-color: #ee5253 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e0e0e0;
+}
+
+/* Encabezados y títulos */
+.card-title, .welcome-title, .statistics-header h2 {
+    color: #d32f2f !important;
+}
+
+/* Texto descriptivo */
+.card-text, .auth-subtitle, p {
+    color: #424242 !important;
+}
+
+/* Botones principales */
+.auth-button, .option-link {
+    background-color: #d32f2f !important;
+    color: #ffffff !important;
+}
+
+.auth-button:hover, .option-link:hover {
+    background-color: #b71c1c !important;
+}
+
+/* Íconos y elementos destacados */
+.card-icon i, .nav-link i {
+    color: #ffd700 !important;
+}
+
+/* Elementos de navegación */
+.navbar, .bottom-nav {
+    background-color: #d32f2f !important;
+    border-color: #b71c1c !important;
+}
+
+/* Notificaciones y alertas */
+.floating-alert {
+    background-color: #ffe082 !important;
+    color: #424242 !important;
+    border-left: 5px solid #d32f2f !important;
+}
+
+/* Tarjetas de estadísticas */
+.stat-card {
+    border-left: 4px solid #d32f2f !important;
+}
+
+.stat-card i {
+    color: #ffd700 !important;
+}
+
+/* Filtros y elementos interactivos */
+.filter-chip {
+    background-color: #f5f5f5 !important;
+    color: #424242 !important;
+}
+
+.filter-chip:hover, .filter-chip.active {
+    background-color: #d32f2f !important;
+    color: #ffffff !important;
 }
 
 .form-check {
