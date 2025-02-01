@@ -1,32 +1,9 @@
-/* Estilos base */
-:root {
-  --primary-color: #ee5253;
-  --primary-hover: #d63031;
-  --background-color: #feca57;
-  --text-color: #2d3436;
-  --border-color: #e2e8f0;
-  --card-bg: #ffffff;
-}
 
-/* Reset y estilos generales */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: var(--background-color);
-}
-
-/* Contenedor principal */
-.main-content {
+/* Estilos específicos para la página de reporte de incidentes */
+.main-content.report-incident {
   min-height: 100vh;
-  background-color: var(--background-color);
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
+  background-color: #feca57;
+  padding: 2rem 1rem;
 }
 
 .report-container {
@@ -35,65 +12,75 @@ body {
   margin: 0 auto;
 }
 
-/* Encabezado del reporte */
 .report-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.card-icon {
+.report-header .card-icon {
   margin-bottom: 1rem;
 }
 
-.card-icon i {
+.report-header .card-icon i {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color: #ee5253;
 }
 
-.welcome-title {
+.report-header .welcome-title {
   font-size: 2.25rem;
   font-weight: 600;
-  color: var(--text-color);
-  margin-bottom: 1.5rem;
-  text-align: center;
+  color: #2d3436;
+  margin-bottom: 1rem;
 }
 
-/* Formulario y contenido */
 .form-card {
-  background-color: var(--card-bg);
+  background-color: #ffffff;
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .form-group {
   margin-bottom: 1.5rem;
 }
 
-.form-label {
+.form-group label.form-label {
   display: block;
   font-weight: 500;
-  color: var(--text-color);
+  color: #2d3436;
   margin-bottom: 0.5rem;
 }
 
-.auth-input {
+.report-incident .auth-input {
   width: 100%;
   padding: 0.875rem;
-  border: 2px solid var(--border-color);
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
   font-size: 1rem;
+  background-color: #f8f9fa;
+  color: #2d3436;
   transition: all 0.2s ease;
 }
 
-.auth-input:focus {
+.report-incident .auth-input:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: #ee5253;
   box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15);
 }
 
-/* Mapa */
+.report-incident textarea.auth-input {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.date-time-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 #report-map {
   width: 100%;
   height: 400px;
@@ -101,7 +88,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* Alertas */
 .alert {
   padding: 1rem;
   border-radius: 12px;
@@ -109,6 +95,10 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.alert i {
+  font-size: 1.2rem;
 }
 
 .alert-info {
@@ -125,47 +115,33 @@ body {
 
 .alert-danger {
   background-color: #fee2e2;
-  border: 1px solid #f56565;
+  border: 1px solid #ef4444;
   color: #c53030;
 }
 
-/* Botón */
-.auth-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.auth-button:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-}
-
-.auth-button:disabled {
-  background-color: #cbd5e0;
-  cursor: not-allowed;
-}
-
-/* Leyenda */
 .legend-section {
-  background-color: var(--card-bg);
+  background-color: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  gap: 2rem;
+}
+
+.legend-card {
+  margin-bottom: 1.5rem;
+}
+
+.legend-card:last-child {
+  margin-bottom: 0;
 }
 
 .legend-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-color);
+  color: #2d3436;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .legend-item {
@@ -181,21 +157,66 @@ body {
   margin-right: 0.75rem;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-  .report-container {
-    padding: 0;
-  }
+.legend-subtitle {
+  font-weight: 600;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
+.legend-text {
+  color: #636e72;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #ee5253;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.auth-button:hover:not(:disabled) {
+  background-color: #d63031;
+}
+
+.auth-button:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .main-content.report-incident {
+    padding: 1rem;
+  }
+  
   .form-card {
     padding: 1.5rem;
   }
-
-  .welcome-title {
-    font-size: 1.75rem;
+  
+  .date-time-group {
+    grid-template-columns: 1fr;
   }
-
+  
   #report-map {
     height: 300px;
+  }
+  
+  .report-header .welcome-title {
+    font-size: 1.75rem;
   }
 }
