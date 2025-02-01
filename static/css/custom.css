@@ -31,6 +31,25 @@
     border: 1px solid #dee2e6;
     border-radius: 4px;
     margin-top: 5px;
+    background-color: #ff689c;
+}
+
+/* Color de fondo general */
+body {
+    background-color: #fffe99 !important;
+}
+
+/* Colores para contenedores y tarjetas */
+.auth-card,
+.statistics-container,
+.predictions-container,
+.notifications-page,
+.option-card,
+.detail-card,
+.stat-card,
+.notification-item,
+.floating-alert {
+    background-color: #ff689c !important;
 }
 
 .form-check {
