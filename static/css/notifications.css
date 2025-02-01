@@ -1,0 +1,211 @@
+/* Contenedor principal */
+.notifications-page {
+    background-color: #1e293b !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Encabezado */
+.notifications-header {
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+}
+
+.notifications-header h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.notifications-header p {
+    font-size: 1rem !important;
+    color: #94a3b8 !important;
+}
+
+/* Tarjetas */
+.card {
+    background-color: #1e293b !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    color: #ffffff !important;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
+}
+
+.card:hover {
+    transform: translateY(-5px) !important;
+    background-color: #334155 !important;
+}
+
+.card h5 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Formulario de Preferencias */
+.form-check-label {
+    color: #ffffff !important;
+}
+
+.preferences-group {
+    background-color: #374151 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    margin-bottom: 1rem !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+.preferences-group .form-check {
+    margin-bottom: 0.5rem !important;
+}
+
+.preferences-group .form-check:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #3b82f6 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb !important;
+}
+
+/* Filtros de Historial */
+.notification-filters h5 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    color: #ffffff !important;
+}
+
+.notification-filters .scroll-container {
+    display: flex !important;
+    gap: 0.5rem !important;
+    overflow-x: auto !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.filter-chip {
+    background-color: #374151 !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    color: #ffffff !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    white-space: nowrap !important;
+}
+
+.filter-chip:hover {
+    background-color: #3b82f6 !important;
+}
+
+.filter-chip.active {
+    background-color: #3b82f6 !important;
+}
+
+/* Lista de Notificaciones */
+.notification-list {
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    padding: 1rem !important;
+    background-color: #1e293b !important;
+    border-radius: 8px !important;
+}
+
+/* Elemento Individual de Notificación */
+.notification-item {
+    background-color: #374151 !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+    transition: background-color 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+.notification-item:hover {
+    background-color: #4b5563 !important;
+}
+
+.notification-item h6 {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+    color: #ffffff !important;
+}
+
+.notification-item p {
+    font-size: 0.9rem !important;
+    color: #94a3b8 !important;
+}
+
+.notification-item small {
+    color: #94a3b8 !important;
+}
+
+/* Badge de notificaciones */
+#notification-badge {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    padding: 0.5em 0.75em !important;
+    border-radius: 9999px !important;
+    font-size: 0.85rem !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    .notifications-page {
+        padding: 1rem !important;
+    }
+
+    .notifications-header h2 {
+        font-size: 1.75rem !important;
+    }
+
+    .notifications-header p {
+        font-size: 0.9rem !important;
+    }
+
+    .card {
+        padding: 1rem !important;
+    }
+
+    .btn-primary {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+        width: 100% !important;
+    }
+
+    .notification-list {
+        max-height: 300px !important;
+    }
+
+    .preferences-group {
+        padding: 0.5rem !important;
+        max-height: 150px !important;
+    }
+
+    .notification-filters h5 {
+        font-size: 1.1rem !important;
+    }
+
+    .filter-chip {
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.8rem !important;
+    }
+}
