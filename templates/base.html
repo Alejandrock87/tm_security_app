@@ -12,7 +12,7 @@
 </head>
 
 <body class="d-flex flex-column vh-100">
-    {% if not request.endpoint == 'login' %}
+    {% if not request.endpoint in ['login', 'register'] %}
     <nav class="navbar navbar-dark bg-dark px-6">
         <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
             <i class="fas fa-bus me-2"></i>
@@ -49,7 +49,7 @@
         {% block content %}{% endblock %}
     </div>
 
-    {% if current_user.is_authenticated and not request.endpoint == 'login' %}
+    {% if current_user.is_authenticated and not request.endpoint in ['login', 'register'] %}
     <nav class="navbar fixed-bottom navbar-dark bg-dark bottom-nav py-3">
         <div class="container-fluid d-flex justify-content-around">
             <a class="nav-link text-center" href="{{ url_for('home') }}">
