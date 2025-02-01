@@ -1,38 +1,30 @@
+
 /* ===== Estilos Mobile-First para Reportar Incidente ===== */
 
-/* Reset básico y evitar overflow horizontal */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-body {
-  overflow-x: hidden;
-  overflow-y: hidden;
-  font-family: Arial, sans-serif;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Contenedor principal y fondo */
-.main-content {
-  background-color: #feca57;
-  min-height: 100vh;
-  padding: 1rem;
+body {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  font-family: Arial, sans-serif !important;
 }
-.main-content.report-incident {
+
+.main-content {
   background-color: #feca57 !important;
   min-height: 100vh !important;
   padding: 1rem !important;
-  position: relative !important;
 }
 
-/* Contenedor centrado con ancho máximo para móviles */
 .container {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100% !important;
+  max-width: 480px !important;
+  margin: 0 auto !important;
 }
 
-/* Título principal */
 .welcome-title {
   font-size: 2.25rem !important;
   font-weight: 600 !important;
@@ -41,19 +33,16 @@ body {
   text-align: center !important;
 }
 
-/* Wrapper de contenido (secciones se apilan en móvil) */
 .content-wrapper {
   display: flex !important;
   flex-direction: column !important;
   gap: 1.5rem !important;
 }
 
-/* Sección del formulario */
 .form-section {
-  width: 100%;
+  width: 100% !important;
 }
 
-/* Tarjeta del formulario */
 .form-card {
   background-color: #ffffff !important;
   border-radius: 16px !important;
@@ -61,7 +50,6 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Ícono de la tarjeta */
 .card-icon {
   text-align: center !important;
   margin-bottom: 1.5rem !important;
@@ -73,20 +61,18 @@ body {
   transition: color 0.2s ease !important;
 }
 
-
 .card-icon i:hover {
-  color: #d63031;
+  color: #d63031 !important;
 }
 
-/* Cuerpo de la tarjeta */
 .card-body {
-  width: 100%;
+  width: 100% !important;
 }
 
-/* Grupos de formulario */
 .form-group {
-    margin-bottom: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
 }
+
 .form-label {
   display: block !important;
   font-weight: 500 !important;
@@ -94,8 +80,6 @@ body {
   margin-bottom: 0.5rem !important;
 }
 
-
-/* Inputs, textareas y demás controles */
 .auth-input {
   width: 100% !important;
   padding: 0.875rem !important;
@@ -113,37 +97,35 @@ body {
   box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15) !important;
 }
 
-/* Permitir redimensionar verticalmente en textareas */
 textarea.auth-input {
-  resize: vertical;
+  resize: vertical !important;
 }
 
-/* Estilos para dropdowns (select) */
 .form-select.auth-input {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ee5253' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1rem;
-  padding-right: 2.5rem;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ee5253' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1rem !important;
+  padding-right: 2.5rem !important;
 }
 
-/* Grupo de fecha y hora */
 .date-time-group {
   display: flex !important;
   gap: 1rem !important;
   flex-wrap: wrap !important;
 }
+
 .date-time-group .form-group {
-  flex: 1 1 100%;
+  flex: 1 1 100% !important;
 }
 
-/* Contenedor del mapa */
 .map-container {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
+
 #report-map {
   width: 100% !important;
   height: 400px !important;
@@ -151,7 +133,6 @@ textarea.auth-input {
   margin-bottom: 1.5rem !important;
 }
 
-/* Botón de envío */
 .auth-button {
   width: 100% !important;
   padding: 1rem !important;
@@ -174,24 +155,20 @@ textarea.auth-input {
   cursor: not-allowed !important;
 }
 
-
-/* Alertas */
 .alert {
   padding: 1rem !important;
   border-radius: 12px !important;
   margin-bottom: 1rem !important;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
 }
-
 
 .alert-info {
   background-color: #ebf8ff !important;
   border: 1px solid #4299e1 !important;
   color: #2b6cb0 !important;
 }
-
 
 .alert-success {
   background-color: #f0fff4 !important;
@@ -200,38 +177,41 @@ textarea.auth-input {
 }
 
 .alert-danger {
-  background-color: #fee2e2;
-  border: 1px solid #f56565;
-  color: #c53030;
+  background-color: #fee2e2 !important;
+  border: 1px solid #f56565 !important;
+  color: #c53030 !important;
 }
 
-/* Sección de leyendas */
 .legend-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
 }
+
 .legend-card {
-    background-color: #ffffff !important;
-    border-radius: 16px !important;
-    padding: 1.5rem !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-    margin-bottom: 1rem !important;
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 1rem !important;
 }
 
 .legend-header {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem !important;
 }
+
 .legend-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #2d3436;
-  text-align: center;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #2d3436 !important;
+  text-align: center !important;
 }
+
 .legend-body {
-  font-size: 0.9rem;
-  color: #636e72;
+  font-size: 0.9rem !important;
+  color: #636e72 !important;
 }
+
 .legend-item {
   display: flex !important;
   align-items: center !important;
@@ -246,46 +226,46 @@ textarea.auth-input {
 }
 
 .legend-subtitle {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #2d3436;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.legend-text {
-  font-size: 0.9rem;
-  color: #636e72;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: #2d3436 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
-/* ===== Ajustes para pantallas mayores ===== */
+.legend-text {
+  font-size: 0.9rem !important;
+  color: #636e72 !important;
+}
+
 @media (min-width: 769px) {
   .container {
-    max-width: 720px;
+    max-width: 720px !important;
   }
   .content-wrapper {
     flex-direction: row !important;
-    gap: 1rem;
+    gap: 1rem !important;
   }
   .form-section, .legend-section {
-    flex: 1;
+    flex: 1 !important;
   }
-    .form-section {
-        flex: 2 !important;
-    }
-
-    .legend-section {
-        flex: 1 !important;
-        max-width: 300px;
-    }
+  .form-section {
+    flex: 2 !important;
+  }
+  .legend-section {
+    flex: 1 !important;
+    max-width: 300px !important;
+  }
   .date-time-group .form-group {
-    flex: 1;
+    flex: 1 !important;
   }
   #report-map {
-    height: 300px;
+    height: 300px !important;
   }
 }
+
 .card-title {
   color: #2d3436 !important;
   font-size: 1.25rem !important;
@@ -297,11 +277,10 @@ textarea.auth-input {
   .welcome-title {
     font-size: 1.75rem !important;
   }
-
   .form-card {
     padding: 1.5rem !important;
   }
-    .date-time-group .form-group {
-        flex: 1 1 100% !important;
-    }
+  .date-time-group .form-group {
+    flex: 1 1 100% !important;
+  }
 }
