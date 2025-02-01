@@ -1,0 +1,126 @@
+
+/* Estilos específicos para la página de registro */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: #feca57;
+}
+
+.auth-header-outside {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-header-outside i {
+  font-size: 2.5rem;
+  color: #ee5253;
+}
+
+.auth-header-outside h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3436;
+  margin: 0.5rem 0 0;
+}
+
+.auth-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2d3436;
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-icon:focus-within {
+  border-color: #ee5253;
+  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15);
+}
+
+.input-icon i {
+  color: #ee5253;
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.auth-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #2d3436;
+  padding: 0;
+}
+
+.auth-input:focus {
+  outline: none;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #ee5253;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.auth-button:hover {
+  background-color: #d63031;
+}
+
+.register-text {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  color: #2d3436;
+}
+
+.register-text a {
+  color: #ee5253;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
+.error-text {
+  color: #ee5253;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: block;
+}
