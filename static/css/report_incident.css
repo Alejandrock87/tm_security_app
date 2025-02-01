@@ -17,6 +17,12 @@ body {
   min-height: 100vh;
   padding: 1rem;
 }
+.main-content.report-incident {
+  background-color: #feca57 !important;
+  min-height: 100vh;
+  padding: 1rem;
+  position: relative;
+}
 
 /* Contenedor centrado con ancho máximo para móviles */
 .container {
@@ -33,6 +39,14 @@ body {
   text-align: center;
   margin-bottom: 1rem;
 }
+.report-incident .welcome-title {
+  font-size: 2.25rem !important;
+  font-weight: 600 !important;
+  color: #2d3436 !important;
+  margin-bottom: 1.5rem !important;
+  text-align: center !important;
+}
+
 
 /* Wrapper de contenido (secciones se apilan en móvil) */
 .content-wrapper {
@@ -53,17 +67,33 @@ body {
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
+.report-incident .form-card {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
 
 /* Ícono de la tarjeta */
 .card-icon {
   text-align: center;
   margin-bottom: 1rem;
 }
+.report-incident .card-icon {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important;
+}
+
 .card-icon i {
   font-size: 2.5rem;
   color: #ee5253;
   transition: color 0.2s ease;
 }
+.report-incident .card-icon i {
+  font-size: 2.5rem !important;
+  color: #ee5253 !important;
+}
+
 .card-icon i:hover {
   color: #d63031;
 }
@@ -83,6 +113,12 @@ body {
   color: #2d3436;
   margin-bottom: 0.5rem;
 }
+.report-incident .form-label {
+  font-weight: 500 !important;
+  color: #2d3436 !important;
+  margin-bottom: 0.5rem !important;
+}
+
 
 /* Inputs, textareas y demás controles */
 .auth-input {
@@ -95,11 +131,27 @@ body {
   background-color: #ffffff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.report-incident .auth-input {
+  width: 100% !important;
+  padding: 0.875rem !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  font-size: 1rem !important;
+  transition: border-color 0.2s ease !important;
+}
+
+
 .auth-input:focus {
   outline: none;
   border-color: #ee5253;
   box-shadow: 0 0 0 3px rgba(238,82,83,0.15);
 }
+.report-incident .auth-input:focus {
+  outline: none !important;
+  border-color: #ee5253 !important;
+  box-shadow: 0 0 0 3px rgba(238, 82, 83, 0.15) !important;
+}
+
 /* Permitir redimensionar verticalmente en textareas */
 textarea.auth-input {
   resize: vertical;
@@ -136,6 +188,11 @@ textarea.auth-input {
   height: 250px;
   border-radius: 12px;
 }
+.report-incident #report-map {
+  height: 400px !important;
+  border-radius: 12px !important;
+  margin-bottom: 1.5rem !important;
+}
 
 /* Botón de envío */
 .auth-button {
@@ -150,13 +207,35 @@ textarea.auth-input {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+.report-incident .auth-button {
+  width: 100% !important;
+  padding: 1rem !important;
+  background-color: #ee5253 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
 .auth-button:hover:not(:disabled) {
   background-color: #d63031;
 }
+.report-incident .auth-button:hover:not(:disabled) {
+  background-color: #d63031 !important;
+}
+
 .auth-button:disabled {
   background-color: #cbd5e0;
   cursor: not-allowed;
 }
+.report-incident .auth-button:disabled {
+  background-color: #cbd5e0 !important;
+  cursor: not-allowed !important;
+}
+
 
 /* Alertas */
 .alert {
@@ -168,16 +247,35 @@ textarea.auth-input {
   align-items: center;
   gap: 0.5rem;
 }
+.report-incident .alert {
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  margin-bottom: 1rem !important;
+}
+
+
 .alert-info {
   background-color: #ebf8ff;
   border: 1px solid #4299e1;
   color: #2b6cb0;
 }
+.report-incident .alert-info {
+  background-color: #ebf8ff !important;
+  border: 1px solid #4299e1 !important;
+  color: #2b6cb0 !important;
+}
+
 .alert-success {
   background-color: #f0fff4;
   border: 1px solid #48bb78;
   color: #2f855a;
 }
+.report-incident .alert-success {
+  background-color: #f0fff4 !important;
+  border: 1px solid #48bb78 !important;
+  color: #2f855a !important;
+}
+
 .alert-danger {
   background-color: #fee2e2;
   border: 1px solid #f56565;
@@ -196,6 +294,14 @@ textarea.auth-input {
   padding: 1rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
+.report-incident .legend-card {
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 1rem !important;
+}
+
 .legend-header {
   margin-bottom: 0.5rem;
 }
@@ -214,12 +320,25 @@ textarea.auth-input {
   align-items: center;
   margin-bottom: 0.5rem;
 }
+.report-incident .legend-item {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0.75rem !important;
+}
+
 .legend-color {
   width: 20px;
   height: 20px;
   border-radius: 4px;
   margin-right: 0.5rem;
 }
+.report-incident .legend-color {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+  margin-right: 0.75rem !important;
+}
+
 .legend-subtitle {
   font-size: 1rem;
   font-weight: 500;
@@ -254,5 +373,21 @@ textarea.auth-input {
   }
   #report-map {
     height: 300px;
+  }
+}
+.report-incident .card-title {
+  color: #2d3436 !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1rem !important;
+}
+
+@media (max-width: 768px) {
+  .report-incident .welcome-title {
+    font-size: 1.75rem !important;
+  }
+
+  .report-incident .form-card {
+    padding: 1.5rem !important;
   }
 }
