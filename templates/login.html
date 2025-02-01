@@ -1,58 +1,60 @@
 {% extends "base.html" %}
 
 {% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <i class="fas fa-bus"></i>
-            <h1>Transmilenio Security</h1>
-        </div>
-        <h2>Bienvenido</h2>
-        <p class="auth-subtitle">Ingresa tus credenciales para acceder a la app</p>
-
-        <form action="{{ url_for('login') }}" method="post" novalidate>
-            {{ form.hidden_tag() }}
-
-            <div class="form-group">
-                <label for="username">Nombre de Usuario</label>
-                <div class="input-icon">
-                    <i class="fas fa-user"></i>
-                    {{ form.username(id="username", class="auth-input", placeholder="Tu nombre de usuario") }}
-                </div>
-                {% for error in form.username.errors %}
-                <span class="error-text">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <div class="input-icon">
-                    <i class="fas fa-lock"></i>
-                    {{ form.password(id="password", class="auth-input", placeholder="********") }}
-                </div>
-                {% for error in form.password.errors %}
-                <span class="error-text">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="form-group remember-me">
-                {{ form.remember_me(class="remember-checkbox") }}
-                <label for="remember_me">Recordarme</label>
-            </div>
-
-            <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-
-            <button type="submit" class="auth-button">Iniciar Sesión</button>
-        </form>
-
-        <p class="register-text">
-            ¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a>
-        </p>
+  <div class="auth-container">
+    <!-- Encabezado externo con ícono y título -->
+    <div class="auth-header-outside">
+      <i class="fas fa-bus"></i>
+      <h1>Transmilenio Security</h1>
     </div>
-</div>
+    <!-- Tarjeta con información del login -->
+    <div class="auth-card">
+      <h2>Bienvenido</h2>
+      <p class="auth-subtitle">Ingresa tus credenciales para acceder a la app</p>
+
+      <form action="{{ url_for('login') }}" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          <label for="username">Nombre de Usuario</label>
+          <div class="input-icon">
+            <i class="fas fa-user"></i>
+            {{ form.username(id="username", class="auth-input", placeholder="Tu nombre de usuario") }}
+          </div>
+          {% for error in form.username.errors %}
+            <span class="error-text">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            {{ form.password(id="password", class="auth-input", placeholder="********") }}
+          </div>
+          {% for error in form.password.errors %}
+            <span class="error-text">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="form-group remember-me">
+          {{ form.remember_me(class="remember-checkbox") }}
+          <label for="remember_me">Recordarme</label>
+        </div>
+
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+
+        <button type="submit" class="auth-button">Iniciar Sesión</button>
+      </form>
+
+      <p class="register-text">
+        ¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
 {% endblock %}
