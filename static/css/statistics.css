@@ -1,0 +1,169 @@
+/* Contenedor principal de estadísticas */
+.statistics-container {
+  background-color: #1e293b !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  color: #ffffff !important;
+}
+
+/* Encabezado de estadísticas */
+.statistics-header {
+  text-align: center !important;
+  margin-bottom: 2rem !important;
+}
+
+.statistics-header h2 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.statistics-header p {
+  font-size: 1rem !important;
+  color: #94a3b8 !important;
+}
+
+/* Summary Cards */
+.summary-section .stat-card {
+  background-color: #1e293b !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  text-align: center !important;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
+  color: #ffffff !important;
+}
+
+.summary-section .stat-card:hover {
+  transform: translateY(-5px) !important;
+  background-color: #334155 !important;
+}
+
+.summary-section .stat-card i {
+  font-size: 2.5rem !important;
+  margin-bottom: 1rem !important;
+  color: #3b82f6 !important;
+}
+
+.summary-section .stat-card.total i {
+  color: #10b981 !important;
+}
+
+.summary-section .stat-card.danger i {
+  color: #ef4444 !important;
+}
+
+.summary-section .stat-card.warning i {
+  color: #f59e0b !important;
+}
+
+.summary-section .stat-card.info i {
+  color: #3b82f6 !important;
+}
+
+.summary-section .stat-card h3 {
+  font-size: 1.75rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.summary-section .stat-card p {
+  font-size: 1rem !important;
+  color: #94a3b8 !important;
+}
+
+/* Quick Filters */
+.quick-filters .scroll-container {
+  display: flex !important;
+  gap: 0.5rem !important;
+  overflow-x: auto !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.quick-filters .filter-chip {
+  background-color: #374151 !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  color: #ffffff !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+  white-space: nowrap !important;
+}
+
+.quick-filters .filter-chip:hover {
+  background-color: #3b82f6 !important;
+}
+
+.quick-filters .filter-chip.active {
+  background-color: #3b82f6 !important;
+}
+
+/* Detalle de Tarjetas */
+.detail-card {
+  background-color: #1e293b !important;
+  border-radius: 12px !important;
+  padding: 1rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.detail-card .card-header {
+  border-bottom: 1px solid #334155 !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.detail-card .card-header h5 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+}
+
+.detail-card .scrollable-list {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+.chart-container {
+  background-color: #1e293b !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  height: 300px !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .statistics-container {
+    padding: 1rem !important;
+  }
+  
+  .summary-section .stat-card {
+    padding: 1rem !important;
+  }
+
+  .summary-section .stat-card i {
+    font-size: 2rem !important;
+  }
+
+  .summary-section .stat-card h3 {
+    font-size: 1.5rem !important;
+  }
+
+  .summary-section .stat-card p {
+    font-size: 0.9rem !important;
+  }
+
+  .quick-filters .filter-chip {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .detail-card .scrollable-list {
+    max-height: 200px !important;
+  }
+}
