@@ -1,115 +1,146 @@
-/* Estilos para las listas de preferencias */
-.preferences-list {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #fff;
-}
-
-.preference-item {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-}
-
-.preference-item:last-child {
-    border-bottom: none;
-}
-
-.preference-item:hover {
-    background-color: #f8f9fa;
-}
-
-
-/* Estilos para los grupos de preferencias */
-.preferences-group {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    margin-top: 5px;
-    background-color: #ff689c;
-}
-
-/* Color de fondo general */
+/* Estilos base compartidos */
 body {
-    background-color: #feca57 !important;
+    background-color: #0f172a !important;
+    overflow-x: hidden;
 }
 
-/* Colores para contenedores y tarjetas */
-.auth-card,
-.statistics-container,
-.predictions-container,
-.notifications-page,
-.option-card,
-.detail-card,
-.stat-card,
-.notification-item,
+/* Layout principal */
+.main-content {
+    padding-bottom: 70px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Barra de navegación superior */
+.navbar {
+    background-color: #1e293b;
+    padding: 0.5rem 1.5rem;
+    border-bottom: 1px solid #334155;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-link {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+/* Barra de navegación inferior */
+.bottom-nav {
+    background-color: #1e293b;
+    padding: 0.75rem 0;
+    border-top: 1px solid #334155;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.bottom-nav a {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.bottom-nav a:hover {
+    color: #ffffff;
+}
+
+.bottom-nav i {
+    font-size: 1.5rem;
+}
+
+/* Mensajes Flash */
+#flash-messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 400px;
+}
+
 .floating-alert {
-    background-color: #ffffff !important;
-    border: 1px solid #e0e0e0;
+    background-color: rgba(59, 130, 246, 0.9);
+    color: #ffffff;
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 0.5s ease-out;
 }
 
-/* Encabezados y títulos */
-.card-title, .welcome-title, .statistics-header h2 {
-    color: #d32f2f !important;
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-/* Texto descriptivo */
-.card-text, .auth-subtitle, p {
-    color: #424242 !important;
+@keyframes slideOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
 }
 
-/* Botones principales */
-.auth-button, .option-link {
-    background-color: #d32f2f !important;
-    color: #ffffff !important;
+.floating-alert.hide {
+    animation: slideOut 0.5s ease-out forwards;
 }
 
-.auth-button:hover, .option-link:hover {
-    background-color: #b71c1c !important;
+/* Modal de Notificaciones */
+.modal-content {
+    background-color: #1e293b;
+    color: #ffffff;
 }
 
-/* Íconos y elementos destacados */
-.card-icon i, .nav-link i {
-    color: #ffffff !important;
+.modal-header {
+    border-bottom: 1px solid #334155;
 }
 
-/* Elementos de navegación */
-.navbar, .bottom-nav {
-    background-color: #d32f2f !important;
-    border-color: #b71c1c !important;
+.modal-footer {
+    border-top: 1px solid #334155;
 }
 
-/* Notificaciones y alertas */
-.floating-alert {
-    background-color: #ffe082 !important;
-    color: #424242 !important;
-    border-left: 5px solid #d32f2f !important;
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .bottom-nav i {
+        font-size: 1.3rem;
+    }
 }
-
-/* Tarjetas de estadísticas */
-.stat-card {
-    border-left: 4px solid #d32f2f !important;
-}
-
-.stat-card i {
-    color: #ffd700 !important;
-}
-
-/* Filtros y elementos interactivos */
-.filter-chip {
-    background-color: #f5f5f5 !important;
-    color: #424242 !important;
-}
-
-.filter-chip:hover, .filter-chip.active {
-    background-color: #d32f2f !important;
-    color: #ffffff !important;
-}
-
 .form-check {
     margin-bottom: 8px;
     padding-left: 25px;
@@ -143,394 +174,6 @@ body {
     background: #555;
 }
 
-/* Estilos de la pantalla de autenticación */
-.auth-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #0f172a;
-    padding: 1rem;
-}
-
-.auth-card {
-    background-color: #1e293b;
-    border-radius: 16px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.auth-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    color: #3b82f6;
-}
-
-.auth-header i {
-    font-size: 2rem;
-}
-
-.auth-header h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.auth-subtitle {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    margin-bottom: 2.5rem;
-}
-
-.form-group {
-    text-align: left;
-    margin-bottom: 1.5rem;
-}
-
-.input-icon {
-    display: flex;
-    align-items: center;
-    background-color: #f8fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    transition: all 0.2s ease;
-    margin-bottom: 1rem;
-}
-
-.input-icon:focus-within {
-    border-color: #d32f2f;
-    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
-}
-
-.input-icon i {
-    color: #d32f2f;
-    margin-right: 12px;
-    font-size: 1.1rem;
-}
-
-.auth-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: #1a202c;
-    font-size: 1rem;
-    padding: 0;
-}
-
-.auth-input:focus {
-    outline: none;
-}
-
-.auth-input::placeholder {
-    color: #a0aec0;
-}
-
-.auth-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: #d32f2f;
-    border: none;
-    border-radius: 12px;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.auth-button:hover {
-    background-color: #b71c1c;
-    transform: translateY(-1px);
-}
-
-.auth-button:active {
-    transform: translateY(0);
-}
-
-@media (max-width: 480px) {
-    .input-icon {
-        padding: 0.625rem 0.875rem;
-    }
-
-    .auth-button {
-        padding: 0.875rem;
-        font-size: 0.95rem;
-    }
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.remember-checkbox {
-    width: 1rem;
-    height: 1rem;
-    accent-color: #3b82f6;
-}
-
-.register-text {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin-top: 1rem;
-}
-
-.register-text a {
-    color: #3b82f6;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.error-text {
-    color: #ef4444;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    display: block;
-}
-
-/* Estilos para alertas flotantes */
-#flash-messages-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1050;
-    max-width: 400px;
-}
-
-.floating-alert {
-    background-color: rgba(59, 130, 246, 0.9);
-    color: #ffffff;
-    border-left: 5px solid #2563eb;
-    border-radius: 10px;
-    padding: 1rem 1.5rem;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    animation: slideIn 0.5s ease-out;
-}
-
-.floating-alert .btn-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-/* Animaciones */
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-}
-
-/* Ocultar automáticamente la alerta después de 5 segundos */
-.floating-alert.hide {
-    animation: slideOut 0.5s ease-out forwards;
-}
-
-/* Estilos de la pantalla de inicio */
-.welcome-title {
-    color: #ffffff;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.option-card {
-    background-color: #1e293b;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-    margin-bottom: 0.5rem;
-}
-
-.option-card:hover {
-    transform: translateY(-5px);
-}
-
-.card-icon {
-    font-size: 3rem;
-    color: #3b82f6;
-    margin-bottom: 1rem;
-}
-
-.card-title {
-    color: #ffffff;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.card-text {
-    color: #94a3b8;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.option-link {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    background-color: #3b82f6;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.option-link:hover {
-    background-color: #2563eb;
-}
-
-/* Contenedor principal con padding para evitar que la barra inferior cubra contenido */
-.main-content {
-    padding-bottom: 0px; /* Ajusta el espacio para la barra de navegación inferior */
-    overflow-y: auto;
-    -ms-overflow-style: none;  /* Eliminar scroll en IE y Edge */
-    scrollbar-width: none;  /* Eliminar scroll en Firefox */
-}
-
-/* Ocultar la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
-.main-content::-webkit-scrollbar {
-    display: none;
-}
-
-
-/* Ajuste de altura para la barra de navegación superior */
-.navbar {
-    background-color: #1e293b;
-    padding: 0.5rem 1.5rem;  /* Reducir el padding para disminuir la altura */
-    border-bo: 1px solid #334155;
-    height: 70px;  /* Ajusta según sea necesario */
-    display: flex;
-    align-items: center;
-}
-
-/* Ajuste del tamaño del logo y texto de la barra superior */
-.navbar-brand {
-    font-size: 1.1rem;  /* Reducir tamaño del texto */
-    font-weight: 600;
-    color: #ffffff;
-}
-
-/* Espaciado para íconos en la barra de navegación */
-.nav-icons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;  /* Asegura que los iconos no estén muy juntos */
-}
-
-/* Espaciado para los enlaces de navegación */
-.nav-link {
-    font-size: 1rem;
-    color: #ffffff;
-    font-weight: 500;
-    margin-right: 1rem;
-}
-
-/* Ajustes para la barra de navegación inferior */
-.bottom-nav {
-    background-color: #1e293b;
-    padding: 0.75rem 0;
-    border-top: 1px solid #334155;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.bottom-nav a {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    text-align: center;
-    flex-grow: 1;
-}
-
-.bottom-nav a:hover {
-    color: #ffffff;
-}
-
-.bottom-nav i {
-    font-size: 1.5rem;
-}
-
-/* Ajustes de responsividad */
-@media (max-width: 768px) {
-    .option-card {
-        padding: 1.5rem;
-    }
-    .card-icon {
-        font-size: 2.5rem;
-    }
-    .bottom-nav i {
-        font-size: 1.3rem;
-    }
-}
-
-/* --- Nuevos Estilos Añadidos para los Filtros en dashboard.html --- */
-
-/* Contenedor de filtros con bordes y separación */
-.filters-container {
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 8px;
-    padding: 1rem;
-    background-color: #0f172a; /* Fondo oscuro para resaltar los filtros */
-}
-
-/* Separación entre cada filtro */
-.filter-item {
-    border-bottom: 1px solid #334155; /* Línea separadora entre filtros */
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-}
-
-.filter-item:last-child {
-    border-bottom: none; /* Eliminar la línea del último filtro */
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-/* Ajustes para los labels dentro de los filtros */
-.filters-container label {
-    color: #ffffff; /* Texto blanco para los labels */
-    font-weight: 500;
-}
-
-/* Asegurar que los selectores usen las clases personalizadas */
 .auth-input {
     background-color: #0f172a; /* Fondo oscuro */
     color: #ffffff; /* Texto blanco por defecto */
@@ -551,735 +194,36 @@ body {
     color: #000000; /* Texto negro */
     background-color: #ffffff; /* Fondo blanco */
 }
-
-/* Estilos responsivos para los filtros */
-@media (max-width: 768px) {
-    .filters-container {
-        padding: 0.75rem;
-    }
-    .filter-item {
-        padding-bottom: 0.75rem;
-        margin-bottom: 0.75rem;
-    }
-    .auth-input {
-        padding: 0.75rem;
-    }
-}
-
-/* --- Nuevos Estilos Añadidos para report_incident.html --- */
-
-/* Estilo para el mapa de reporte */
-#report-map {
-    height: 400px;
-    width: 100%;
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 8px; /* Bordes redondeados */
-    margin-bottom: 1rem;
-    background-color: #0f172a; /* Fondo oscuro */
-}
-
-/* Estilo para las tarjetas de leyenda */
-.legend-card {
-    background-color: #1e293b; /* Fondo oscuro consistente con option-card */
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 16px; /* Bordes redondeados */
-    padding: 1.5rem; /* Padding ajustado */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.legend-card .card-header {
-    background-color: #0f172a; /* Fondo oscuro para el encabezado */
-    border-bottom: 1px solid #334155; /* Borde inferior gris oscuro */
-    color: #3b82f6; /* Texto azul para coherencia */
-    padding: 1rem;
-    border-radius: 16px 16px 0 0; /* Bordes redondeados solo en la parte superior */
-}
-
-.legend-card .card-header h5 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.75rem;
-    color: #ffffff; /* Texto blanco para coherencia */
-    font-size: 0.95rem;
-}
-
-.legend-color {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border-radius: 4px;
-}
-
-/* Estilos para los marcadores de estación */
-.station-marker {
-    background: none;
-    border: none;
-}
-
-.station-marker-selected {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Estilo para los botones en report_incident.html */
-#submit-button {
-    width: 100%;
-    padding: 0.875rem;
-    background-color: #3b82f6;
-    border: none;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-#submit-button:hover {
-    background-color: #2563eb;
-}
-
-#submit-button:disabled {
-    background-color: #64748b;
-    cursor: not-allowed;
-}
-
-/* Estilo para las alertas en report_incident.html */
-.alert-info {
-    background-color: #1e293b;
-    color: #ffffff;
-    border: 1px solid #334155;
-}
-
-.alert-success {
-    background-color: #1e293b;
-    color: #d1fae5;
-    border: 1px solid #16a34a;
-}
-
-.alert-danger {
-    background-color: #1e293b;
-    color: #ef4444;
-    border: 1px solid #dc2626;
-}
-
-/* Estilo para los textos informativos */
-.card-subtitle {
-    color: #3b82f6;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.card-text {
-    color: #94a3b8;
-    font-size: 0.95rem;
-}
-
-/* --- Nuevos Estilos Añadidos para predictions.html --- */
-
-/* Contenedor principal de predicciones */
-.predictions-container {
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 16px; /* Bordes redondeados */
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #ffffff; /* Texto blanco por defecto */
-}
-
-/* Encabezado de predicciones */
-.predictions-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.predictions-header h3 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #ffffff; /* Texto blanco para el título */
-    margin-bottom: 0.5rem;
-}
-
-.predictions-header p {
-    font-size: 1rem;
-    color: #94a3b8; /* Texto gris para la descripción */
-}
-
-/* Contenedor para el switch de notificaciones */
-.notification-toggle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-/* Estilos específicos para el toggle en predictions.html */
-.predictions-toggle .form-check-input {
-    width: 2.5rem;
-    height: 1.25rem;
-    background-color: #6b7280; /* Gris cuando está inactivo */
-    border-radius: 1.5rem;
-    position: relative;
-    transition: background-color 0.3s ease;
-    border: none; /* Eliminar borde predeterminado */
-    cursor: pointer;
-}
-
-.predictions-toggle .form-check-input::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0.25rem;
-    transform: translateY(-50%);
-    width: 1rem;
-    height: 1rem;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2);
-}
-
-.predictions-toggle .form-check-input:checked {
-    background-color: #3b82f6; /* Azul cuando está activo */
-}
-
-.predictions-toggle .form-check-input:checked::after {
-    transform: translate(1.25rem, -50%);
-}
-
-/* Estilo para la lista de predicciones */
-#predictionsList {
-    background-color: #0f172a; /* Fondo ligeramente más claro para la lista */
-    border-radius: 8px;
-    padding: 1rem;
-}
-
-/* Elemento individual de predicción */
-.prediction-item {
-    background-color: #1e293b; /* Fondo oscuro para cada item */
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    transition: background-color 0.2s, transform 0.2s;
-    cursor: pointer;
-}
-
-.prediction-item:hover {
-    background-color: #334155; /* Cambio de fondo al hover */
-    transform: translateY(-2px);
-}
-
-.prediction-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #3b82f6; /* Título en azul */
-}
-
-.prediction-details {
-    font-size: 0.95rem;
-    color: #94a3b8; /* Detalles en gris */
-}
-
-/* --- Nuevos Estilos Añadidos para statistics.html --- */
-
-/* Contenedor principal de estadísticas */
-.statistics-container {
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 16px; /* Bordes redondeados */
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #ffffff; /* Texto blanco por defecto */
-}
-
-/* Encabezado de estadísticas */
-.statistics-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.statistics-header h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff; /* Texto blanco para el título */
-    margin-bottom: 0.5rem;
-}
-
-.statistics-header p {
-    font-size: 1rem;
-    color: #94a3b8; /* Texto gris para la descripción */
-}
-
-/* Summary Cards */
-.summary-section .stat-card {
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 12px; /* Bordes redondeados */
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    color: #ffffff; /* Texto blanco */
-}
-
-.summary-section .stat-card:hover {
-    transform: translateY(-5px);
-    background-color: #334155; /* Cambio de fondo al hover */
-}
-
-.summary-section .stat-card i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #3b82f6; /* Icono azul */
-}
-
-.summary-section .stat-card.total i {
-    color: #10b981; /* Verde para Total Incidentes */
-}
-
-.summary-section .stat-card.danger i {
-    color: #ef4444; /* Rojo para Estación más Afectada */
-}
-
-.summary-section .stat-card.warning i {
-    color: #f59e0b; /* Amarillo para Hora más Insegura */
-}
-
-.summary-section .stat-card.info i {
-    color: #3b82f6; /* Azul para Tipo más Común */
-}
-
-.summary-section .stat-card h3 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.summary-section .stat-card p {
-    font-size: 1rem;
-    color: #94a3b8; /* Texto gris para la descripción */
-}
-
-/* Quick Filters */
-.quick-filters .scroll-container {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-}
-
-.quick-filters .filter-chip {
-    background-color: #374151; /* Gris oscuro para los filtros */
-    border: none;
-    border-radius: 9999px; /* Forma de chip */
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    white-space: nowrap;
-}
-
-.quick-filters .filter-chip:hover {
-    background-color: #3b82f6; /* Azul al pasar el mouse */
-}
-
-.quick-filters .filter-chip.active {
-    background-color: #3b82f6; /* Azul para el filtro activo */
-}
-
-/* Detalle de Tarjetas */
-.detail-card {
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 12px; /* Bordes redondeados */
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #ffffff; /* Texto blanco */
-}
-
-.detail-card .card-header {
-    border-bottom: 1px solid #334155; /* Línea divisoria */
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.detail-card .card-header h5 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #ffffff; /* Texto blanco para el encabezado */
-}
-
-.detail-card .scrollable-list {
+.preferences-list {
     max-height: 300px;
     overflow-y: auto;
-}
-
-.detail-card .scrollable-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.detail-card .scrollable-list::-webkit-scrollbar-thumb {
-    background-color: #4b5563; /* Gris oscuro para la barra de desplazamiento */
+    border: 1px solid #dee2e6;
     border-radius: 4px;
+    padding: 10px;
+    background-color: #fff;
 }
 
-.detail-card .scrollable-list::-webkit-scrollbar-track {
-    background-color: #374151; /* Fondo de la barra de desplazamiento */
-    border-radius: 4px;
+.preference-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
 }
 
-.detail-card .list-item {
-    padding: 0.75rem;
-    border-bottom: 1px solid #374151; /* Línea divisoria entre items */
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.preference-item:last-child {
+    border-bottom: none;
 }
 
-.detail-card .list-item:last-child {
-    border-bottom: none; /* Eliminar línea del último item */
+.preference-item:hover {
+    background-color: #f8f9fa;
 }
 
-.detail-card .list-item:hover {
-    background-color: #374151; /* Cambio de fondo al hover */
-}
 
-.detail-card .list-item h6 {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-.detail-card .list-item p {
-    font-size: 0.9rem;
-    color: #94a3b8; /* Texto gris para detalles */
-}
-
-/* Estilos Responsivos */
-@media (max-width: 768px) {
-    .summary-section .stat-card {
-        padding: 1rem;
-    }
-
-    .summary-section .stat-card i {
-        font-size: 2rem;
-    }
-
-    .summary-section .stat-card h3 {
-        font-size: 1.5rem;
-    }
-
-    .summary-section .stat-card p {
-        font-size: 0.9rem;
-    }
-
-    .quick-filters .filter-chip {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    .detail-card .scrollable-list {
-        max-height: 200px;
-    }
-}
-
-/* --- Estilos Específicos para notifications.html --- */
-
-.notifications-page {
-    /* Contenedor principal */
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 16px; /* Bordes redondeados */
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #ffffff; /* Texto blanco por defecto */
-}
-
-/* Encabezado de Notificaciones */
-.notifications-page .notifications-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.notifications-page .notifications-header h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff; /* Texto blanco para el título */
-    margin-bottom: 0.5rem;
-}
-
-.notifications-page .notifications-header p {
-    font-size: 1rem;
-    color: #94a3b8; /* Texto gris para la descripción */
-}
-
-/* Tarjetas de Configuración y Historial */
-.notifications-page .card {
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 12px; /* Bordes redondeados */
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #ffffff; /* Texto blanco */
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-}
-
-.notifications-page .card:hover {
-    transform: translateY(-5px);
-    background-color: #334155; /* Cambio de fondo al hover */
-}
-
-/* Títulos de Tarjetas */
-.notifications-page .card h5 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #ffffff; /* Texto blanco para el encabezado */
-    margin-bottom: 1rem;
-}
-
-/* Formulario de Preferencias */
-.notifications-page .form-check-label {
-    color: #ffffff; /* Texto blanco para las etiquetas */
-}
-
-.notifications-page .preferences-group {
-    background-color: #374151; /* Fondo gris oscuro para el grupo de preferencias */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.notifications-page .preferences-group .form-check {
-    margin-bottom: 0.5rem;
-}
-
-.notifications-page .preferences-group .form-check:last-child {
-    margin-bottom: 0;
-}
-
-/* Botones */
-.notifications-page .btn-primary {
-    background-color: #3b82f6; /* Azul para el botón */
-    border: none;
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.notifications-page .btn-primary:hover {
-    background-color: #2563eb; /* Azul más oscuro al pasar el mouse */
-}
-
-/* Filtros de Historial */
-.notifications-page .notification-filters h5 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #ffffff;
-}
-
-.notifications-page .notification-filters .scroll-container {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-}
-
-.notifications-page .notification-filters .filter-chip {
-    background-color: #374151; /* Gris oscuro para los filtros */
-    border: none;
-    border-radius: 9999px; /* Forma de chip */
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    white-space: nowrap;
-}
-
-.notifications-page .notification-filters .filter-chip:hover {
-    background-color: #3b82f6; /* Azul al pasar el mouse */
-}
-
-.notifications-page .notification-filters .filter-chip.active {
-    background-color: #3b82f6; /* Azul para el filtro activo */
-}
-
-/* Lista de Notificaciones */
-.notifications-page .notification-list {
-    max-height: 400px;
+/* Estilos para los grupos de preferencias */
+.preferences-group {
+    max-height: 300px;
     overflow-y: auto;
-    padding: 1rem;
-    background-color: #1e293b; /* Fondo oscuro consistente */
-    border-radius: 8px;
-}
-
-.notifications-page .notification-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.notifications-page .notification-list::-webkit-scrollbar-thumb {
-    background-color: #4b5563; /* Gris oscuro para la barra de desplazamiento */
+    padding: 10px;
+    border: 1px solid #dee2e6;
     border-radius: 4px;
-}
-
-.notifications-page .notification-list::-webkit-scrollbar-track {
-    background-color: #374151; /* Fondo de la barra de desplazamiento */
-    border-radius: 4px;
-}
-
-/* Elemento Individual de Notificación */
-.notifications-page .notification-item {
-    background-color: #374151; /* Fondo gris oscuro para cada notificación */
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    transition: background-color 0.2s ease;
-    cursor: pointer;
-}
-
-.notifications-page .notification-item:hover {
-    background-color: #4b5563; /* Cambio de fondo al hover */
-}
-
-/* Títulos y Detalles de Notificaciones */
-.notifications-page .notification-item h6 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #ffffff; /* Texto blanco */
-}
-
-.notifications-page .notification-item p {
-    font-size: 0.9rem;
-    color: #94a3b8; /* Texto gris para detalles */
-}
-
-.notifications-page .notification-item small {
-    color: #94a3b8; /* Texto gris para información adicional */
-}
-
-/* Estilos para los checkboxes de preferencias */
-.notifications-page .preferences-group .form-check-input {
-    cursor: pointer;
-}
-
-.notifications-page .preferences-group .form-check-label {
-    cursor: pointer;
-}
-
-/* Estilos para el badge de notificaciones */
-#notification-badge {
-    background-color: #ef4444; /* Rojo para destacar */
-    color: #ffffff;
-    padding: 0.5em 0.75em;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilos Responsivos */
-@media (max-width: 768px) {
-    .notifications-page {
-        padding: 1rem;
-    }
-
-    .notifications-page .notifications-header h2 {
-        font-size: 1.75rem;
-    }
-
-    .notifications-page .notifications-header p {
-        font-size: 0.9rem;
-    }
-
-    .notifications-page .card {
-        padding: 1rem;
-    }
-
-    .notifications-page .btn-primary {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-        width: 100%; /* Botón ocupa todo el ancho en móviles */
-    }
-
-    .notifications-page .notification-list {
-        max-height: 300px;
-    }
-
-    .notifications-page .preferences-group {
-        padding: 0.5rem;
-    }
-
-    .notifications-page .preferences-group .form-check {
-        margin-bottom: 0.4rem;
-    }
-
-    .notifications-page .notification-filters h5 {
-        font-size: 1.1rem;
-    }
-
-    .notifications-page .notification-filters .filter-chip {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    /* Ajustes adicionales para móviles */
-    .preferences-group .form-check-label {
-        font-size: 0.9rem;
-    }
-
-    .notification-filters .scroll-container {
-        flex-wrap: wrap;
-    }
-
-    .notification-filters .filter-chip {
-        flex: 1 1 auto;
-    }
-}
-
-
-.chart-container {
-    height: 300px;
-    margin-bottom: 1rem;
-    padding: 1rem;
-}
-
-.scroll-container {
-    overflow-x: auto;
-    padding: 0 1rem;
-}
-
-.detail-card {
-    background-color: #1e293b;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.card-header {
-    padding: 1rem;
-    background-color: #2d3748;
-    border-bottom: 1px solid #4a5568;
-}
-
-.card-header h5 {
-    margin: 0;
-    color: #e2e8f0;
+    margin-top: 5px;
+    background-color: #ff689c;
 }
