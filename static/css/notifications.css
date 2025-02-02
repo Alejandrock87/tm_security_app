@@ -1,211 +1,226 @@
-/* Contenedor principal */
+/* =============================
+   ESTILOS PARA NOTIFICATIONS
+   ============================= */
+
+/* Reset y tipografía base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+}
+
+/* Contenedor principal con fondo oscuro y bordes redondeados */
+.main-content.notifications-wrapper {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* .notifications-page con fondo, sombra y color de texto blanco */
 .notifications-page {
-    background-color: #1e293b !important;
-    border-radius: 16px !important;
-    padding: 2rem !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-    color: #ffffff !important;
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 100%;
+  max-width: 1200px; /* Ajusta si deseas un ancho máximo distinto */
 }
 
-/* Encabezado */
+/* Encabezado principal */
 .notifications-header {
-    text-align: center !important;
-    margin-bottom: 2rem !important;
+  text-align: center;
+  margin-bottom: 2rem;
 }
-
 .notifications-header h2 {
-    font-size: 2rem !important;
-    font-weight: 700 !important;
-    color: #ffffff !important;
-    margin-bottom: 0.5rem !important;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
 }
-
 .notifications-header p {
-    font-size: 1rem !important;
-    color: #94a3b8 !important;
+  font-size: 1rem;
+  color: #94a3b8;
 }
 
-/* Tarjetas */
+/* Tarjetas con preferencia de notificaciones e historial */
 .card {
-    background-color: #1e293b !important;
-    border-radius: 12px !important;
-    padding: 1.5rem !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    color: #ffffff !important;
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
+  background-color: #1e293b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
-
 .card:hover {
-    transform: translateY(-5px) !important;
-    background-color: #334155 !important;
+  transform: translateY(-5px);
+  background-color: #334155;
 }
-
 .card h5 {
-    font-size: 1.25rem !important;
-    font-weight: 600 !important;
-    color: #ffffff !important;
-    margin-bottom: 1rem !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
 }
 
 /* Formulario de Preferencias */
 .form-check-label {
-    color: #ffffff !important;
+  color: #ffffff;
 }
 
+/* Sección de preferencias (Troncales, Estaciones, Tipos) */
 .preferences-group {
-    background-color: #374151 !important;
-    border-radius: 8px !important;
-    padding: 0.75rem !important;
-    margin-bottom: 1rem !important;
-    max-height: 200px !important;
-    overflow-y: auto !important;
+  background-color: #374151;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
 }
-
 .preferences-group .form-check {
-    margin-bottom: 0.5rem !important;
+  margin-bottom: 0.5rem;
 }
-
 .preferences-group .form-check:last-child {
-    margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
-/* Botones */
+/* Botón principal */
 .btn-primary {
-    background-color: #3b82f6 !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 0.75rem 1.5rem !important;
-    font-size: 1rem !important;
-    transition: background-color 0.3s ease !important;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
-
 .btn-primary:hover {
-    background-color: #2563eb !important;
+  background-color: #2563eb;
 }
 
-/* Filtros de Historial */
+/* Historial de notificaciones */
 .notification-filters h5 {
-    font-size: 1.25rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 1rem !important;
-    color: #ffffff !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
 }
-
 .notification-filters .scroll-container {
-    display: flex !important;
-    gap: 0.5rem !important;
-    overflow-x: auto !important;
-    padding-bottom: 0.5rem !important;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
 }
 
+/* Chips para filtrar historial */
 .filter-chip {
-    background-color: #374151 !important;
-    border: none !important;
-    border-radius: 9999px !important;
-    color: #ffffff !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.9rem !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
-    white-space: nowrap !important;
+  background-color: #374151;
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
 }
-
 .filter-chip:hover {
-    background-color: #3b82f6 !important;
+  background-color: #3b82f6;
 }
-
 .filter-chip.active {
-    background-color: #3b82f6 !important;
+  background-color: #3b82f6;
 }
 
-/* Lista de Notificaciones */
+/* Contenedor de lista de notificaciones */
 .notification-list {
-    max-height: 400px !important;
-    overflow-y: auto !important;
-    padding: 1rem !important;
-    background-color: #1e293b !important;
-    border-radius: 8px !important;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #1e293b;
+  border-radius: 8px;
 }
 
-/* Elemento Individual de Notificación */
+/* Ítems individuales de notificación */
 .notification-item {
-    background-color: #374151 !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
-    margin-bottom: 1rem !important;
-    transition: background-color 0.2s ease !important;
-    cursor: pointer !important;
+  background-color: #374151;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
-
 .notification-item:hover {
-    background-color: #4b5563 !important;
+  background-color: #4b5563;
 }
-
 .notification-item h6 {
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.5rem !important;
-    color: #ffffff !important;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
 }
-
 .notification-item p {
-    font-size: 0.9rem !important;
-    color: #94a3b8 !important;
+  font-size: 0.9rem;
+  color: #94a3b8;
 }
-
 .notification-item small {
-    color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
-/* Badge de notificaciones */
-#notification-badge {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
-    padding: 0.5em 0.75em !important;
-    border-radius: 9999px !important;
-    font-size: 0.85rem !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+/* Badge de notificaciones (posición fija, se muestra dinámicamente) */
+.notification-badge {
+  display: none; /* Se mostrará con JavaScript cuando haya notificaciones */
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #ef4444;
+  color: #ffffff;
+  padding: 0.5em 0.75em;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 9999; /* Para que quede por encima de otros elementos */
 }
 
-/* Estilos Responsivos */
+/* ========= RESPONSIVE ========= */
 @media (max-width: 768px) {
-    .notifications-page {
-        padding: 1rem !important;
-    }
+  .notifications-page {
+    padding: 1rem;
+  }
+  .notifications-header h2 {
+    font-size: 1.75rem;
+  }
+  .notifications-header p {
+    font-size: 0.9rem;
+  }
 
-    .notifications-header h2 {
-        font-size: 1.75rem !important;
-    }
+  .card {
+    padding: 1rem;
+  }
+  .btn-primary {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    width: 100%; /* Se expande en móvil */
+  }
 
-    .notifications-header p {
-        font-size: 0.9rem !important;
-    }
+  .notification-list {
+    max-height: 300px;
+  }
 
-    .card {
-        padding: 1rem !important;
-    }
+  .preferences-group {
+    padding: 0.5rem;
+    max-height: 150px;
+  }
 
-    .btn-primary {
-        padding: 0.5rem 1rem !important;
-        font-size: 0.9rem !important;
-        width: 100% !important;
-    }
-
-    .notification-list {
-        max-height: 300px !important;
-    }
-
-    .preferences-group {
-        padding: 0.5rem !important;
-        max-height: 150px !important;
-    }
-
-    .notification-filters h5 {
-        font-size: 1.1rem !important;
-    }
-
-    .filter-chip {
-        padding: 0.4rem 0.8rem !important;
-        font-size: 0.8rem !important;
-    }
+  .notification-filters h5 {
+    font-size: 1.1rem;
+  }
+  .filter-chip {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
