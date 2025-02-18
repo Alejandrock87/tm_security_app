@@ -1,19 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title if title else 'Transmilenio Security' }}</title>
+    <!-- Bootstrap Dark Theme -->
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- CSS Personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     {% block styles %}{% endblock %}
 </head>
 
-<body class="d-flex flex-column vh-100">
+<body>
     {% if not request.endpoint in ['login', 'register'] %}
-    <nav class="navbar navbar-dark bg-dark px-6">
+    <!-- Navbar Superior Fijo (70px) -->
+    <nav class="navbar navbar-dark top-nav">
         <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
             <i class="fas fa-bus me-2"></i>
             <span class="fw-bold">TS</span>
@@ -32,6 +35,7 @@
     </nav>
     {% endif %}
 
+    <!-- Contenedor para mensajes flash -->
     <div id="flash-messages-container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -45,12 +49,14 @@
         {% endwith %}
     </div>
 
-    <div class="container mt-4 mb-5 main-content">
+    <!-- Contenedor principal con scroll interno -->
+    <div class="main-content">
         {% block content %}{% endblock %}
     </div>
 
     {% if current_user.is_authenticated and not request.endpoint in ['login', 'register'] %}
-    <nav class="navbar fixed-bottom navbar-dark bg-dark bottom-nav py-3">
+    <!-- Navbar Inferior Fijo (~60px) -->
+    <nav class="navbar bottom-nav">
         <div class="container-fluid d-flex justify-content-around">
             <a class="nav-link text-center" href="{{ url_for('home') }}">
                 <i class="fas fa-home fa-lg"></i>
@@ -83,7 +89,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="notificationsModalLabel">Notificaciones en vivo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -93,42 +99,46 @@
                         </a>
                     </div>
                     <hr>
-                    <div id="notifications-list" class="list-group">
-                    </div>
+                    <div id="notifications-list" class="list-group"></div>
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
 
+    <!-- Scripts Globales -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const alerts = document.querySelectorAll('.floating-alert');
-            alerts.forEach(alert => {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ocultar alertas flash luego de 5s
+        const alerts = document.querySelectorAll('.floating-alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.classList.add('hide');
                 setTimeout(() => {
-                    alert.classList.add('hide');
-                    setTimeout(() => {
-                        alert.remove();
-                    }, 500);
-                }, 5000);
-            });
-            
-            const socket = io();
-            socket.on('newNotification', (notification) => {
-                const notificationList = document.getElementById('notifications-list');
-                const newNotificationItem = document.createElement('li');
-                newNotificationItem.classList.add('list-group-item');
-                newNotificationItem.textContent = notification;
-                notificationList.appendChild(newNotificationItem);
-                const notificationBadge = document.getElementById('notificationBadge');
-                let count = parseInt(notificationBadge.textContent) || 0;
-                count++;
-                notificationBadge.textContent = count;
-                notificationBadge.style.display = 'inline-block';
-            });
+                    alert.remove();
+                }, 500);
+            }, 5000);
         });
+        
+        // Socket.IO para notificaciones
+        const socket = io();
+        socket.on('newNotification', (notification) => {
+            const notificationList = document.getElementById('notifications-list');
+            const newNotificationItem = document.createElement('li');
+            newNotificationItem.classList.add('list-group-item');
+            newNotificationItem.textContent = notification;
+            notificationList.appendChild(newNotificationItem);
+
+            // Incrementar badge
+            const notificationBadge = document.getElementById('notificationBadge');
+            let count = parseInt(notificationBadge.textContent) || 0;
+            count++;
+            notificationBadge.textContent = count;
+            notificationBadge.style.display = 'inline-block';
+        });
+    });
     </script>
     {% block scripts %}{% endblock %}
 </body>

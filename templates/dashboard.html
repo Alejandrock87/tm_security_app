@@ -5,140 +5,133 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-content dashboard-content">
-    <div class="container-fluid">
-        <!-- Título de la pantalla -->
-        <div class="welcome-title text-center">Mapa de Incidentes</div>
+<div class="dashboard-content">
+    <div class="dashboard-screen">
+        <!-- Encabezado de la pantalla (icono sobre el título), FUERA de la tarjeta -->
+        <div class="dashboard-heading">
+            <!-- Ícono arriba -->
+            <div class="icon-over-title">
+                <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <!-- Título principal -->
+            <h1 class="dashboard-title">Mapa de Incidentes</h1>
+        </div>
 
-        <div class="row">
-            <!-- Columna izquierda: Mapa + Filtros -->
-            <div class="col-lg-8 col-md-12">
-                <!-- Tarjeta con el mapa de incidentes -->
-                <div class="option-card mb-4">
-                    <div class="auth-header">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </div>
+        <!-- Estructura de dos columnas: lado izquierdo (mapa + filtros), lado derecho (distribución) -->
+        <div class="dashboard-row">
+            
+            <!-- Columna Izquierda: Tarjeta del Mapa + Tarjeta de Filtros -->
+            <div class="dashboard-col dashboard-left-col">
+                
+                <!-- Tarjeta del Mapa (más alto) -->
+                <div class="dashboard-card map-card">
                     <div id="map"></div>
                     <div id="incidentsList" class="mt-3"></div>
                 </div>
 
-                <!-- Tarjeta con Filtros -->
-                <div class="option-card mb-4">
-                    <div class="auth-header">
+                <!-- Tarjeta de Filtros (contenido intacto) -->
+                <div class="dashboard-card">
+                    <div class="dashboard-header-center">
                         <i class="fas fa-filter"></i>
-                        <h1>Filtros</h1>
+                        <h2 class="filters-title">Filtros</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="filters-container">
-                            <div class="row">
-                                <!-- Filtro Troncal -->
-                                <div class="col-md-3 mb-3 filter-item">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <label for="troncalFilter">Troncal</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="enableTroncalFilter">
-                                            <label class="form-check-label" for="enableTroncalFilter">Activar</label>
-                                        </div>
+                    <div class="filters-container">
+                        <div class="dashboard-filters-row">
+                            <!-- Filtro Troncal -->
+                            <div class="filter-item">
+                                <div class="filter-header">
+                                    <label for="troncalFilter">Troncal</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enableTroncalFilter">
+                                        <label class="form-check-label" for="enableTroncalFilter">Activar</label>
                                     </div>
-                                    <select id="troncalFilter" class="form-select auth-input">
-                                        <option value="all">Todas las Troncales</option>
-                                        <!-- Opciones dinámicas -->
-                                    </select>
                                 </div>
-
-                                <!-- Filtro Estación -->
-                                <div class="col-md-3 mb-3 filter-item">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <label for="stationFilter">Estación</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="enableStationFilter">
-                                            <label class="form-check-label" for="enableStationFilter">Activar</label>
-                                        </div>
+                                <select id="troncalFilter" class="form-select auth-input">
+                                    <option value="all">Todas las Troncales</option>
+                                    <!-- Opciones dinámicas -->
+                                </select>
+                            </div>
+                            <!-- Estación -->
+                            <div class="filter-item">
+                                <div class="filter-header">
+                                    <label for="stationFilter">Estación</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enableStationFilter">
+                                        <label class="form-check-label" for="enableStationFilter">Activar</label>
                                     </div>
-                                    <select id="stationFilter" class="form-select auth-input">
-                                        <option value="all">Todas las Estaciones</option>
-                                        <!-- Opciones dinámicas -->
-                                    </select>
                                 </div>
-
-                                <!-- Filtro Tipo de Incidente -->
-                                <div class="col-md-3 mb-3 filter-item">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <label for="incidentTypeFilter">Tipo de Incidente</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="enableIncidentTypeFilter">
-                                            <label class="form-check-label" for="enableIncidentTypeFilter">Activar</label>
-                                        </div>
+                                <select id="stationFilter" class="form-select auth-input">
+                                    <option value="all">Todas las Estaciones</option>
+                                    <!-- Opciones dinámicas -->
+                                </select>
+                            </div>
+                            <!-- Tipo de Incidente -->
+                            <div class="filter-item">
+                                <div class="filter-header">
+                                    <label for="incidentTypeFilter">Tipo de Incidente</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enableIncidentTypeFilter">
+                                        <label class="form-check-label" for="enableIncidentTypeFilter">Activar</label>
                                     </div>
-                                    <select id="incidentTypeFilter" class="form-select auth-input">
-                                        <option value="all">Todos los Tipos</option>
-                                        <option value="Hurto">Hurto</option>
-                                        <option value="Hurto a mano armada">Hurto a mano armada</option>
-                                        <option value="Cosquilleo">Cosquilleo</option>
-                                        <option value="Ataque">Ataque</option>
-                                        <option value="Apertura de Puertas">Apertura de Puertas</option>
-                                        <option value="Sospechoso">Sospechoso</option>
-                                        <option value="Acoso">Acoso</option>
-                                    </select>
                                 </div>
-
-                                <!-- Filtro Nivel de Seguridad -->
-                                <div class="col-md-3 mb-3 filter-item">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <label for="securityLevelFilter">Nivel de Seguridad</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="enableSecurityLevelFilter">
-                                            <label class="form-check-label" for="enableSecurityLevelFilter">Activar</label>
-                                        </div>
+                                <select id="incidentTypeFilter" class="form-select auth-input">
+                                    <option value="all">Todos los Tipos</option>
+                                    <option value="Hurto">Hurto</option>
+                                    <option value="Hurto a mano armada">Hurto a mano armada</option>
+                                    <option value="Cosquilleo">Cosquilleo</option>
+                                    <option value="Ataque">Ataque</option>
+                                    <option value="Apertura de Puertas">Apertura de Puertas</option>
+                                    <option value="Sospechoso">Sospechoso</option>
+                                    <option value="Acoso">Acoso</option>
+                                </select>
+                            </div>
+                            <!-- Nivel de Seguridad -->
+                            <div class="filter-item">
+                                <div class="filter-header">
+                                    <label for="securityLevelFilter">Nivel de Seguridad</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enableSecurityLevelFilter">
+                                        <label class="form-check-label" for="enableSecurityLevelFilter">Activar</label>
                                     </div>
-                                    <select id="securityLevelFilter" class="form-select auth-input">
-                                        <option value="all">Todos los Niveles</option>
-                                        <option value="Alto">Alto</option>
-                                        <option value="Medio">Medio</option>
-                                        <option value="Bajo">Bajo</option>
-                                    </select>
                                 </div>
+                                <select id="securityLevelFilter" class="form-select auth-input">
+                                    <option value="all">Todos los Niveles</option>
+                                    <option value="Alto">Alto</option>
+                                    <option value="Medio">Medio</option>
+                                    <option value="Bajo">Bajo</option>
+                                </select>
                             </div>
                         </div>
-
-                        <!-- Botones de acción para Filtros -->
-                        <div class="row mt-3">
-                            <div class="col-12 text-end">
-                                <button onclick="resetFilters()" class="auth-button me-2">
-                                    Reiniciar Filtros
-                                </button>
-                                <button onclick="applyFilters()" class="auth-button mt-2">
-                                    Aplicar Filtros
-                                </button>
-                            </div>
+                        <div class="filters-actions">
+                            <button onclick="resetFilters()" class="auth-button">Reiniciar Filtros</button>
+                            <button onclick="applyFilters()" class="auth-button">Aplicar Filtros</button>
                         </div>
-                    </div> <!-- /.card-body -->
-                </div> <!-- /.option-card -->
-            </div> <!-- /.col-lg-8 -->
+                    </div>
+                </div>
+            </div>
 
-            <!-- Columna derecha: Distribución de Incidentes -->
-            <div class="col-lg-4 col-md-12 mb-4">
-                <div class="option-card mb-4">
-                    <div class="auth-header">
+            <!-- Columna Derecha: Distribución de Incidentes -->
+            <div class="dashboard-col dashboard-right-col">
+                <div class="dashboard-card">
+                    <div class="dashboard-header-center">
                         <i class="fas fa-chart-bar"></i>
-                        <h1>Distribución de Incidentes</h1>
+                        <h2 class="filters-title">Distribución de Incidentes</h2>
                     </div>
-                    <div class="card-body chart-container">
+                    <div class="chart-container">
                         <canvas id="incidentChart"></canvas>
                     </div>
                 </div>
-            </div> <!-- /.col-lg-4 -->
-        </div> <!-- /.row -->
-    </div> <!-- /.container-fluid -->
-</div> <!-- /.main-content -->
+            </div>
+        </div> <!-- /.dashboard-row -->
+        
+    </div> <!-- /.dashboard-screen -->
+</div> <!-- /.dashboard-content -->
 {% endblock %}
 
 {% block scripts %}
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<!-- Archivo con la lógica de la carga del mapa y la manipulación de marcadores -->
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 {% endblock %}

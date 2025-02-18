@@ -1,15 +1,26 @@
+/* Estilos específicos para la página de Home */
 
-/* Estilos específicos para la página de home */
+/* 
+  El contenedor principal se ajusta a todo el espacio disponible dentro de .main-content
+  Se define flex para alinear vertical y horizontalmente, 
+  y un fondo característico para esta pantalla.
+*/
 .home-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 1rem;
-  background-color: #feca57;
+  background-color: #feca57; /* Mantiene el fondo característico de Home */
+  padding: 0;               /* Eliminamos padding extra */
+  /* 
+     De esta forma, si el contenido de la home cabe en la ventana, 
+     no se generará scroll (ya que .main-content hace overflow-y:auto).
+  */
 }
 
+/* Título de bienvenida */
 .welcome-title {
   font-size: 2.25rem;
   font-weight: 600;
@@ -18,6 +29,7 @@
   text-align: center;
 }
 
+/* Subtítulo */
 .home-subtitle {
   color: #636e72;
   font-size: 1.1rem;
@@ -25,14 +37,17 @@
   text-align: center;
 }
 
+/* Grid de opciones */
 .options-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
+  padding: 0 1rem; /* Leve padding lateral para margen en móviles */
 }
 
+/* Tarjeta de cada opción */
 .option-card {
   background-color: #ffffff;
   border-radius: 16px;
@@ -46,6 +61,7 @@
   transform: translateY(-5px);
 }
 
+/* Ícono central de la tarjeta */
 .card-icon {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
@@ -62,6 +78,7 @@
   color: #d63031;
 }
 
+/* Título y texto */
 .card-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -76,6 +93,7 @@
   line-height: 1.5;
 }
 
+/* Botón de acción */
 .option-link {
   display: inline-block;
   padding: 0.875rem 2rem;
@@ -91,20 +109,21 @@
   background-color: #d63031;
 }
 
+/* Responsividad en pantallas pequeñas */
 @media (max-width: 768px) {
   .welcome-title {
     font-size: 1.75rem;
   }
-  
+
   .home-subtitle {
     font-size: 1rem;
   }
-  
+
+  /* La grid se apila en una sola columna */
   .options-grid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
   }
-  
+
   .option-card {
     padding: 1.5rem;
   }

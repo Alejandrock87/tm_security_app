@@ -1,229 +1,224 @@
-/* Estilos base compartidos */
-body {
-    background-color: #0f172a !important;
-    overflow-x: hidden;
+/* 
+   1) Layout global (nav superior e inferior),
+   2) .main-content => scroll interno (oculta scrollbar),
+   3) Popup Leaflet => MUY reducido, ~200px ancho en desktop, 
+      ~70% ancho en móvil, font-size 0.75-0.8rem, 
+      max-height ~30-35vh (escogemos 30%).
+*/
+
+/* RESET + LAYOUT */
+html, body {
+  margin: 0; 
+  padding: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: #0f172a !important;
+  overflow: hidden;
 }
 
-/* Layout principal */
-.main-content {
-    padding-bottom: 70px;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+/* NAV SUPERIOR */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 70px;
+  background-color: #1e293b !important;
+  padding: 0.5rem 1.5rem !important;
+  border-bottom: 1px solid #334155 !important;
+  display: flex; 
+  align-items: center;
+  z-index: 9999;
+}
+.top-nav .navbar-brand {
+  font-size: 1.1rem; font-weight: 600; color: #ffffff;
+}
+.top-nav .nav-icons {
+  display: flex; 
+  align-items: center; 
+  gap: 1rem;
+}
+.top-nav .nav-link {
+  font-size: 1rem; color: #ffffff; font-weight: 500;
+  margin-right: 1rem;
 }
 
-.main-content::-webkit-scrollbar {
-    display: none;
-}
-
-/* Barra de navegación superior */
-.navbar {
-    background-color: #1e293b;
-    padding: 0.5rem 1.5rem;
-    border-bottom: 1px solid #334155;
-    height: 70px;
-    display: flex;
-    align-items: center;
-}
-
-.navbar-brand {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.nav-icons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.nav-link {
-    font-size: 1rem;
-    color: #ffffff;
-    font-weight: 500;
-    margin-right: 1rem;
-}
-
-/* Barra de navegación inferior */
+/* NAV INFERIOR */
 .bottom-nav {
-    background-color: #1e293b;
-    padding: 0.75rem 0;
-    border-top: 1px solid #334155;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
+  position: fixed; 
+  bottom: 0; 
+  left: 0;
+  width: 100%;
+  background-color: #1e293b !important;
+  padding: 0.75rem 0 !important;
+  border-top: 1px solid #334155 !important;
+  display: flex; 
+  z-index: 9999;
 }
-
 .bottom-nav a {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    text-align: center;
-    flex-grow: 1;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  text-align: center;
+  flex-grow: 1;
 }
-
 .bottom-nav a:hover {
-    color: #ffffff;
+  color: #ffffff;
+}
+.bottom-nav i {
+  font-size: 1.5rem;
 }
 
-.bottom-nav i {
-    font-size: 1.5rem;
+/* MAIN-CONTENT => SCROLL INTERNO */
+.main-content {
+  position: absolute;
+  top: 70px; 
+  bottom: 60px; 
+  left: 0; 
+  right: 0;
+  overflow-y: scroll; 
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  margin: 0; 
+  padding: 0;
+}
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Quitar padding/margen en container, container-fluid */
+.container, .container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
 }
 
 /* Mensajes Flash */
 #flash-messages-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1050;
-    max-width: 400px;
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 1050;
+  max-width: 400px;
 }
-
 .floating-alert {
-    background-color: rgba(59, 130, 246, 0.9);
-    color: #ffffff;
-    border-left: 5px solid #2563eb;
-    border-radius: 10px;
-    padding: 1rem 1.5rem;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    animation: slideIn 0.5s ease-out;
+  background-color: rgba(59, 130, 246, 0.9);
+  color: #ffffff;
+  border-left: 5px solid #2563eb;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-size: 0.95rem;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  animation: slideIn 0.5s ease-out;
 }
-
-/* Animaciones */
 @keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
-
 @keyframes slideOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        transform: translateX(100%);
-    }
+  from { opacity: 1; }
+  to   { opacity: 0; transform: translateX(100%); }
 }
-
 .floating-alert.hide {
-    animation: slideOut 0.5s ease-out forwards;
+  animation: slideOut 0.5s ease-out forwards;
 }
 
-/* Modal de Notificaciones */
+/* Modal notificaciones */
 .modal-content {
-    background-color: #1e293b;
-    color: #ffffff;
+  background-color: #1e293b; 
+  color: #ffffff;
 }
-
 .modal-header {
-    border-bottom: 1px solid #334155;
+  border-bottom: 1px solid #334155;
 }
-
 .modal-footer {
-    border-top: 1px solid #334155;
+  border-top: 1px solid #334155;
 }
 
-/* Estilos responsivos */
+/* ========== POPUP LEAFLET MUY PEQUEÑO ========== */
+
+/* ~200px en desktop, 
+   ~70% ancho en móvil,
+   font-size ~0.75-0.8rem,
+   max-height ~30% viewport
+*/
+
+.leaflet-popup {
+  width: 300px !important;     /* super pequeño en desktop */
+  max-width: 120vw !important;  /* en pantallas angostas => 70% */
+  max-height: 60vh !important; /* no más de 30% del viewport */
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  border: none !important;
+}
+
+/* Contenido interno: borde #ee5253, padding 0.5rem, 
+   texto 0.75rem => ultra pequeño, line-height 1.25
+*/
+.leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  border: 2px solid #ee5253 !important; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+  padding: 0.5rem !important;
+  color: #2d3436 !important;
+  font-size: 0.75rem !important; 
+  line-height: 1.25 !important;
+  width: 100% !important;
+  max-height: 100% !important; 
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Texto interno */
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.leaflet-popup-content p,
+.leaflet-popup-content ul,
+.leaflet-popup-content ol {
+  margin-bottom: 0.3rem !important; /* menos espacio vertical */
+  padding: 0 !important;
+}
+.leaflet-popup-content ul {
+  list-style: disc outside;
+  margin-left: 1rem !important;
+}
+
+/* Botón de cierre (X) */
+.leaflet-popup-close-button {
+  color: #ee5253 !important;
+  font-size: 1rem !important;
+  top: 3px !important;
+  right: 6px !important;
+}
+
+/* Flechita del popup */
+.leaflet-popup-tip-container {
+  margin-top: -1px !important;
+}
+.leaflet-popup-tip {
+  background-color: #ffffff !important;
+  border: 2px solid #ee5253 !important;
+  border-radius: 3px !important;
+}
+
+/* Enlaces en el popup */
+.leaflet-popup-content a {
+  color: #ee5253 !important;
+  text-decoration: underline !important;
+}
+
+/* Responsivo en móviles */
 @media (max-width: 768px) {
-    .bottom-nav i {
-        font-size: 1.3rem;
-    }
-}
-.form-check {
-    margin-bottom: 8px;
-    padding-left: 25px;
-}
-
-.form-check-input {
-    margin-top: 4px;
-}
-
-.form-check-label {
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-/* Estilo para el scrollbar */
-.preferences-group::-webkit-scrollbar {
-    width: 8px;
-}
-
-.preferences-group::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.preferences-group::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.preferences-group::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.auth-input {
-    background-color: #0f172a; /* Fondo oscuro */
-    color: #ffffff; /* Texto blanco por defecto */
-    border: 1px solid #334155; /* Borde gris oscuro */
-    border-radius: 8px;
-    padding: 0.875rem;
-    appearance: none; /* Eliminar apariencia por defecto para personalizar */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%239494b8' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 10px 5px;
-    cursor: pointer;
-}
-
-.auth-input option {
-    color: #000000; /* Texto negro */
-    background-color: #ffffff; /* Fondo blanco */
-}
-.preferences-list {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #fff;
-}
-
-.preference-item {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-}
-
-.preference-item:last-child {
-    border-bottom: none;
-}
-
-.preference-item:hover {
-    background-color: #f8f9fa;
-}
-
-
-/* Estilos para los grupos de preferencias */
-.preferences-group {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    margin-top: 5px;
-    background-color: #ff689c;
+  .bottom-nav i {
+    font-size: 1.3rem;
+  }
+  /* en móvil => ~70% ancho y 30vh de alto */
+  .leaflet-popup {
+    width: 60vw !important;
+    max-width: 60vw !important;
+    max-height: 40vh !important;
+  }
 }
