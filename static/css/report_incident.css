@@ -11,12 +11,10 @@ body {
 
 /* Contenedor principal con fondo y relleno */
 .main-content.report-incident {
-  min-height: 100vh;
   background-color: #feca57;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 /* Contenedor para centrar y limitar el ancho */
