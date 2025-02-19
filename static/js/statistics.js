@@ -106,10 +106,12 @@ function updateIncidentTypesChart(incidentTypes) {
                 legend: {
                     position: 'right',
                     labels: {
-                        color: '#e2e8f0',
+                        color: '#2d3436',
                         font: {
-                            size: 12
-                        }
+                            size: 12,
+                            weight: 'bold'
+                        },
+                        padding: 20
                     }
                 },
                 tooltip: {
