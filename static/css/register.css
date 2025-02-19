@@ -130,3 +130,38 @@ h2 {
   margin-top: 0.5rem;
   display: block;
 }
+
+/* Responsivo */
+@media screen and (min-width: 375px) and (min-height: 667px) {
+  .auth-container {
+    min-height: 667px;
+    padding: 1rem;
+  }
+
+  .auth-card {
+    width: min(100%, 360px);
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .map-card {
+    height: 350px;
+  }
+  .dashboard-row {
+    flex-direction: column;
+  }
+  .dashboard-left-col, .dashboard-right-col {
+    flex: 1 1 100%;
+  }
+  .icon-over-title i {
+    font-size: 1.75rem;
+  }
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+}
