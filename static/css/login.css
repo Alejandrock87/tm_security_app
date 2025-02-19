@@ -11,31 +11,30 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Contenedor principal centrado vertical y horizontalmente.
-   Se elimina el fondo amarillo para evitar la doble aplicación de contenedores. */
+/* Contenedor principal adaptativo */
 .auth-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 1rem;
-  background-color: #feca57; /* Puedes omitir esta línea para usar el fondo por defecto */
+  padding: clamp(0.5rem, 2vh, 1.5rem);
+  background-color: #feca57;
 }
 
 /* Encabezado externo con ícono y título */
 .auth-header-outside {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 3vh, 2rem);
 }
 
 .auth-header-outside i {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 5vw, 2.5rem);
   color: #ee5253;
 }
 
 .auth-header-outside h1 {
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 600;
   color: #2d3436;
   margin: 0.5rem 0 0;
@@ -45,37 +44,37 @@ body {
 .auth-card {
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 2rem 1.5rem;
-  width: 100%;
-  max-width: 420px;
+  padding: clamp(1rem, 3vh, 2rem);
+  width: min(100%, 420px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Títulos y subtítulos internos */
 h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
   color: #2d3436;
   text-align: center;
 }
 
 .auth-subtitle {
   color: #636e72;
-  font-size: 1rem;
-  margin-bottom: 2rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  margin-bottom: clamp(1rem, 3vh, 2rem);
   text-align: center;
 }
 
 /* Estilos para el formulario */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.5rem);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
   font-weight: 500;
   color: #2d3436;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
 }
 
 .input-icon {
@@ -84,7 +83,7 @@ h2 {
   background-color: #f8f9fa;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  padding: 0.75rem 1rem;
+  padding: clamp(0.5rem, 1.5vh, 0.75rem) 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -96,14 +95,14 @@ h2 {
 .input-icon i {
   color: #ee5253;
   margin-right: 12px;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
 }
 
 .auth-input {
   width: 100%;
   background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   color: #2d3436;
   padding: 0;
 }
@@ -120,22 +119,22 @@ h2 {
 .remember-me {
   display: flex;
   align-items: center;
-  font-size: 0.95rem;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
   color: #2d3436;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.5rem, 2vh, 1rem);
 }
 
 .remember-me input[type="checkbox"] {
-  width: 1.2rem;
-  height: 1.2rem;
-  margin-right: 0.5rem;
+  width: clamp(1rem, 3vw, 1.2rem);
+  height: clamp(1rem, 3vw, 1.2rem);
+  margin-right: clamp(0.25rem, 1vh, 0.5rem);
 }
 
 .forgot-password {
   display: block;
   text-align: right;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  margin-bottom: clamp(0.5rem, 2vh, 1rem);
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
   color: #ee5253;
   text-decoration: none;
 }
@@ -147,18 +146,18 @@ h2 {
 /* Botón de acción */
 .auth-button {
   width: 100%;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vh, 1rem);
   background-color: #ee5253;
   border: none;
   border-radius: 12px;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
+  margin-top: clamp(0.25rem, 1vh, 0.5rem);
 }
 
 .auth-button:hover {
@@ -167,8 +166,8 @@ h2 {
 
 /* Texto de registro */
 .register-text {
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
+  margin-top: clamp(0.75rem, 2vh, 1.5rem);
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
   text-align: center;
   color: #2d3436;
 }
@@ -186,19 +185,33 @@ h2 {
 /* Mensajes de error */
 .error-text {
   color: #ee5253;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  margin-top: clamp(0.25rem, 1vh, 0.5rem);
   display: block;
 }
 
-/* Media query para pantallas mayores */
-@media (min-width: 481px) {
+/* Media queries responsivas */
+@media (max-height: 600px) {
+  .auth-container {
+    padding: 0.5rem;
+  }
+
   .auth-card {
-    padding: 2.5rem;
+    padding: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (min-width: 481px) and (min-height: 700px) {
+  .auth-card {
+    padding: clamp(1.5rem, 4vh, 2.5rem);
   }
 
   .auth-button {
-    padding: 1rem;
-    font-size: 1rem;
+    padding: clamp(0.75rem, 2vh, 1rem);
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
   }
 }
