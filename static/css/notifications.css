@@ -1,226 +1,264 @@
-/* =============================
-   ESTILOS PARA NOTIFICATIONS
-   ============================= */
 
-/* Reset y tipografía base */
+/* Variables y configuración base */
+:root {
+  --notification-primary: #3b82f6;
+  --notification-bg: #f8fafc;
+  --notification-card: #ffffff;
+  --notification-text: #1e293b;
+  --notification-border: #e2e8f0;
+  --notification-hover: #f1f5f9;
+  --notification-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --notification-radius: 16px;
+}
+
+/* Reset y configuración base */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-body {
-  overflow-x: hidden;
-  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+  box-sizing: border-box;
 }
 
-/* Contenedor principal con fondo oscuro y bordes redondeados */
-.main-content.notifications-wrapper {
-  min-height: 100vh;
-  padding: 1rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-/* .notifications-page con fondo, sombra y color de texto blanco */
-.notifications-page {
-  background-color: #1e293b;
-  border-radius: 16px;
+/* Contenedor principal */
+.notifications-wrapper {
+  min-height: calc(100vh - var(--nav-height));
+  background-color: var(--notification-bg);
   padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
-  width: 100%;
-  max-width: 1200px; /* Ajusta si deseas un ancho máximo distinto */
 }
 
-/* Encabezado principal */
+.notifications-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+/* Encabezado */
 .notifications-header {
   text-align: center;
-  margin-bottom: 2rem;
-}
-.notifications-header h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-}
-.notifications-header p {
-  font-size: 1rem;
-  color: #94a3b8;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: var(--notification-card);
+  border-radius: var(--notification-radius);
+  box-shadow: var(--notification-shadow);
 }
 
-/* Tarjetas con preferencia de notificaciones e historial */
-.card {
-  background-color: #1e293b;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #ffffff;
-  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+.notifications-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--notification-text);
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
 }
+
+.notifications-header p {
+  color: #64748b;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Tarjetas */
+.card {
+  background: var(--notification-card);
+  border-radius: var(--notification-radius);
+  border: none;
+  box-shadow: var(--notification-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .card:hover {
   transform: translateY(-5px);
-  background-color: #334155;
+  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
 }
+
+.card-body {
+  padding: 2rem;
+}
+
 .card h5 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 1rem;
+  color: var(--notification-text);
+  margin-bottom: 1.5rem;
 }
 
-/* Formulario de Preferencias */
-.form-check-label {
-  color: #ffffff;
-}
-
-/* Sección de preferencias (Troncales, Estaciones, Tipos) */
+/* Grupos de preferencias */
 .preferences-group {
-  background-color: #374151;
-  border-radius: 8px;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+  background: var(--notification-hover);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
   max-height: 200px;
   overflow-y: auto;
-}
-.preferences-group .form-check {
-  margin-bottom: 0.5rem;
-}
-.preferences-group .form-check:last-child {
-  margin-bottom: 0;
+  border: 1px solid var(--notification-border);
 }
 
-/* Botón principal */
-.btn-primary {
-  background-color: #3b82f6;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+.preferences-group::-webkit-scrollbar {
+  width: 8px;
 }
+
+.preferences-group::-webkit-scrollbar-track {
+  background: var(--notification-hover);
+  border-radius: 8px;
+}
+
+.preferences-group::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+/* Checkboxes y labels */
+.form-check {
+  margin-bottom: 0.75rem;
+  padding-left: 1.75rem;
+}
+
+.form-check-input {
+  margin-top: 0.25rem;
+  border-color: #94a3b8;
+}
+
+.form-check-input:checked {
+  background-color: var(--notification-primary);
+  border-color: var(--notification-primary);
+}
+
+.form-check-label {
+  color: var(--notification-text);
+  font-size: 0.95rem;
+}
+
+/* Botones */
+.btn-primary {
+  background-color: var(--notification-primary);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
 .btn-primary:hover {
   background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
-/* Historial de notificaciones */
-.notification-filters h5 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #ffffff;
+/* Filtros de notificaciones */
+.notification-filters {
+  margin-bottom: 2rem;
 }
-.notification-filters .scroll-container {
+
+.filter-chip {
+  background: var(--notification-card);
+  border: 1px solid var(--notification-border);
+  color: var(--notification-text);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 0.25rem;
+  box-shadow: var(--notification-shadow);
+}
+
+.filter-chip:hover,
+.filter-chip.active {
+  background: var(--notification-primary);
+  color: white;
+  border-color: var(--notification-primary);
+}
+
+.scroll-container {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Chips para filtrar historial */
-.filter-chip {
-  background-color: #374151;
-  border: none;
-  border-radius: 9999px;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  white-space: nowrap;
-}
-.filter-chip:hover {
-  background-color: #3b82f6;
-}
-.filter-chip.active {
-  background-color: #3b82f6;
-}
-
-/* Contenedor de lista de notificaciones */
+/* Lista de notificaciones */
 .notification-list {
-  max-height: 400px;
+  background: var(--notification-card);
+  border-radius: var(--notification-radius);
+  padding: 1.5rem;
+  max-height: 500px;
   overflow-y: auto;
-  padding: 1rem;
-  background-color: #1e293b;
-  border-radius: 8px;
 }
 
-/* Ítems individuales de notificación */
 .notification-item {
-  background-color: #374151;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--notification-hover);
+  border-radius: 12px;
+  padding: 1.25rem;
   margin-bottom: 1rem;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
+  transition: all 0.3s ease;
 }
+
 .notification-item:hover {
-  background-color: #4b5563;
+  transform: translateX(5px);
+  background: #f8fafc;
 }
+
 .notification-item h6 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: var(--notification-text);
 }
+
 .notification-item p {
-  font-size: 0.9rem;
-  color: #94a3b8;
+  color: #64748b;
+  margin-bottom: 0.5rem;
 }
+
 .notification-item small {
   color: #94a3b8;
+  font-size: 0.875rem;
 }
 
-/* Badge de notificaciones (posición fija, se muestra dinámicamente) */
+/* Badge de notificaciones */
 .notification-badge {
-  display: none; /* Se mostrará con JavaScript cuando haya notificaciones */
   position: fixed;
-  top: 80px;
-  right: 20px;
-  background-color: #ef4444;
-  color: #ffffff;
-  padding: 0.5em 0.75em;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #ef4444;
+  color: white;
   border-radius: 9999px;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  z-index: 9999; /* Para que quede por encima de otros elementos */
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
-/* ========= RESPONSIVE ========= */
+/* Responsividad */
 @media (max-width: 768px) {
-  .notifications-page {
+  .notifications-wrapper {
     padding: 1rem;
   }
+
+  .notifications-header {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
   .notifications-header h2 {
     font-size: 1.75rem;
   }
-  .notifications-header p {
-    font-size: 0.9rem;
+
+  .card-body {
+    padding: 1.25rem;
   }
 
-  .card {
-    padding: 1rem;
-  }
   .btn-primary {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    width: 100%; /* Se expande en móvil */
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .notification-list {
-    max-height: 300px;
+    max-height: 400px;
   }
 
-  .preferences-group {
-    padding: 0.5rem;
-    max-height: 150px;
-  }
-
-  .notification-filters h5 {
-    font-size: 1.1rem;
-  }
   .filter-chip {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 }
