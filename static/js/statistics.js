@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Inicializando página de estadísticas...');
     await loadStatistics();
@@ -46,7 +45,7 @@ function updateSummaryCards(data) {
 
 function updateIncidentTypesList(incidentTypes) {
     if (!incidentTypes) return;
-    
+
     const incidentTypesList = document.getElementById('incidentTypesList');
     if (incidentTypesList) {
         incidentTypesList.innerHTML = Object.entries(incidentTypes)
@@ -62,7 +61,7 @@ function updateIncidentTypesList(incidentTypes) {
 
 function updateStationsList(topStations) {
     if (!topStations) return;
-    
+
     const stationsList = document.getElementById('stationsList');
     if (stationsList) {
         stationsList.innerHTML = Object.entries(topStations)
@@ -78,7 +77,7 @@ function updateStationsList(topStations) {
 
 function updateIncidentTypesChart(incidentTypes) {
     if (!incidentTypes) return;
-    
+
     const ctx = document.getElementById('incidentTypesChart').getContext('2d');
     const data = Object.entries(incidentTypes);
     const total = data.reduce((sum, [,count]) => sum + count, 0);
@@ -130,7 +129,7 @@ function updateIncidentTypesChart(incidentTypes) {
 
 function updateStationsChart(stationsData) {
     if (!stationsData) return;
-    
+
     const ctx = document.getElementById('stationsChart').getContext('2d');
     const data = Object.entries(stationsData).sort(([,a], [,b]) => b - a);
 
@@ -158,12 +157,12 @@ function updateStationsChart(stationsData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        color: '#e2e8f0'
+                        color: '#2d3436'
                     }
                 },
                 x: {
                     ticks: {
-                        color: '#e2e8f0'
+                        color: '#2d3436'
                     }
                 }
             },
@@ -203,7 +202,7 @@ async function applyQuickFilter(period) {
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
         const data = await response.json();
-        
+
         if (response.ok) {
             updateSummaryCards(data);
             updateIncidentTypesChart(data.incident_types);

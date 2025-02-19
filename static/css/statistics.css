@@ -5,12 +5,13 @@
   --statistics-secondary: #f8f9fa;
   --statistics-border: #e2e8f0;
   --statistics-text: #2d3436;
-  --statistics-text-light: #94a3b8;
+  --statistics-text-light: #636e72;
   --statistics-card-bg: #ffffff;
   --statistics-success: #10b981;
   --statistics-danger: #ef4444;
   --statistics-warning: #f59e0b;
   --statistics-info: #3b82f6;
+  --statistics-background: #feca57;
 }
 
 /* Reset y configuración base */
@@ -24,15 +25,13 @@
 .statistics-wrapper {
   min-height: calc(100vh - var(--nav-height));
   padding: 1.5rem;
-  background-color: var(--statistics-secondary);
+  background-color: var(--statistics-background);
 }
 
 /* Contenedor interno */
 .statistics-container {
-  background-color: var(--statistics-card-bg);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 0.5rem;
 }
 
 /* Encabezado */
