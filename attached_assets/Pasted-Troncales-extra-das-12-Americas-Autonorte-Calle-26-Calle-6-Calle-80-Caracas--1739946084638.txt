@@ -1,0 +1,49 @@
+Troncales extraídas: 
+(12) ["Americas", "Autonorte", "Calle 26", "Calle 6", "Calle 80", "Caracas", "Cr 7-10", "Eje Ambiental", "NQS", "Soacha", "Suba", "Tunal"]
+Estaciones extraídas: 
+(149) ["21 Ángeles", "7 de Agosto", "AV. 1 Mayo", "AV. 39", "AV. 68", "AV. Américas - AV. Boyacá", "AV. Boyacá", "AV. Cali", "AV. Chile", "AV. ElDorado", "AV. Jiménez - CL 13", "AV. Jiménez - Caracas", "Alcalá – Colegio S. Tomás Dominicos", "Alquería", "Av. Rojas – UNISALESIANA", "Banderas", "Biblioteca", "Biblioteca Tintal", "Bicentenario", "Bosa", "CAD", "CAN", "CC Paseo Villa del Río - Madelena", "CDS - Carrera 32", "Calle 100 - Marketmedios", "Calle 106", "Calle 127", "Calle 142", "Calle 146", "Calle 161", "Calle 187", "Calle 19", "Calle 22", "Calle 26", "Calle 34", "Calle 40 Sur", "Calle 45 - American School Way", "Calle 57", "Calle 63", "Calle 72", "Calle 75 - Zona M", "Calle 76 - San Felipe", "Calle 85", "Campín - UAN", "Carrera 43 - Comapan", "Carrera 47", "Carrera 53", "Carrera 90", "Centro Memoria", "Ciudad Jardín - UAN", "Ciudad Universitaria - Lotería de Bogotá", "Comuneros", "Concejo de Bogotá", "Consuelo", "Corferias", "Country Sur", "De La Sabana", "Distrito Grafiti", "El Tiempo – Cámara de Comercio de Bogotá", "Escuela Militar", "Ferias", "Flores – Areandina", "Fucha", "General Santander", "Gobernación", "Granja - Kr 77", "Gratamira", "Guatoque - Veraguas", "Hortúa", "Hospital", "Humedal Córdoba", "Héroes", "La Campiña", "La Castellana", "La Despensa", "Las Aguas - Centro Colombo Americano", "Las Nieves", "León XIII", "Mandalay", "Marly", "Marsella", "Mazurén", "Minuto de Dios", "Modelia", "Molinos", "Movistar Arena", "Museo Nacional", "Museo del Oro", "NQS - Calle 30 S", "NQS - Calle 38A S", "Nariño", "Niza - Calle 127", "Normandía", "Olaya", "Paloquemao", "Parque", "Patio Bonito", "Pepe Sierra", "Perdomo", "Policarpa", …]
+Conectado a Socket.IO
+Parámetros de consulta para notificaciones: 
+Error al cargar historial de notificaciones: 
+Error {}
+message: "HTTP error! status: 404"
+stack: "Error: HTTP error! status: 404↵ at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/static/js/notifications.js:364:37"
+get stack: ƒ ()
+length: 0
+name: ""
+[[Prototype]]: ƒ ()
+apply: ƒ apply()
+arguments: "'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them"
+get arguments: ƒ ()
+set arguments: ƒ ()
+bind: ƒ bind()
+call: ƒ call()
+caller: "'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them"
+get caller: ƒ ()
+set caller: ƒ ()
+constructor: ƒ Function()
+length: 0
+name: ""
+toString: ƒ toString()
+Symbol(Symbol.hasInstance): undefined
+[[Prototype]]: Object
+set stack: ƒ ()
+[[Prototype]]: Object
+
+Parámetros de consulta para notificaciones: 
+Error al cargar historial de notificaciones: 
+Error {}
+message: "HTTP error! status: 404"
+stack: "Error: HTTP error! status: 404↵ at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/static/js/notifications.js:364:37"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+
+Parámetros de consulta para notificaciones: 
+Error al cargar historial de notificaciones: 
+Error {}
+
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
