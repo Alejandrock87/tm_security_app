@@ -11,7 +11,9 @@
   --statistics-danger: #ef4444;
   --statistics-warning: #f59e0b;
   --statistics-info: #3b82f6;
-  --statistics-background: #feca57;
+  --statistics-background: #f1f5f9;
+  --statistics-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --statistics-radius: 16px;
 }
 
 /* Reset y configuración base */
@@ -24,27 +26,34 @@
 /* Contenedor principal */
 .statistics-wrapper {
   min-height: calc(100vh - var(--nav-height));
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: var(--statistics-background);
 }
 
 /* Contenedor interno */
 .statistics-container {
   width: 100%;
-  padding: 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 /* Encabezado */
 .statistics-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: var(--statistics-card-bg);
+  border-radius: var(--statistics-radius);
+  box-shadow: var(--statistics-shadow);
 }
 
 .statistics-header h2 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: var(--statistics-text);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
 }
 
 .statistics-header p {
@@ -64,16 +73,22 @@
 /* Tarjetas de resumen */
 .summary-section .stat-card {
   background-color: var(--statistics-card-bg);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: var(--statistics-radius);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--statistics-shadow);
   text-align: center;
-  transition: transform 0.2s ease-in-out;
-  border: 2px solid var(--statistics-border);
+  transition: all 0.3s ease;
+  border: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .summary-section .stat-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
 }
 
 .summary-section .stat-card i {
@@ -119,16 +134,18 @@
 }
 
 .quick-filters .filter-chip {
-  background-color: var(--statistics-secondary);
-  border: 2px solid var(--statistics-border);
+  background-color: var(--statistics-card-bg);
+  border: none;
   border-radius: 24px;
   color: var(--statistics-text);
-  padding: 0.5rem 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  box-shadow: var(--statistics-shadow);
+  margin: 0.25rem;
 }
 
 .quick-filters .filter-chip:hover {
@@ -168,18 +185,22 @@
 
 /* Contenedor de gráficas */
 .chart-container {
-  background-color: var(--statistics-secondary);
-  border-radius: 12px;
-  padding: 1rem;
-  height: 300px;
-  margin-bottom: 1rem;
+  background-color: var(--statistics-card-bg);
+  border-radius: var(--statistics-radius);
+  padding: 1.5rem;
+  height: 350px;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--statistics-shadow);
 }
 
 /* Lista con scroll */
 .scrollable-list {
-  max-height: 300px;
+  max-height: 250px;
   overflow-y: auto;
-  padding: 0.5rem;
+  padding: 1rem;
+  background: var(--statistics-card-bg);
+  border-radius: var(--statistics-radius);
+  box-shadow: var(--statistics-shadow);
 }
 
 .list-item {
