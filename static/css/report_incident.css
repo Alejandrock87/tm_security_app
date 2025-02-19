@@ -10,9 +10,9 @@ body {
 }
 
 /* Contenedor principal con fondo y relleno */
-.main-content.report-incident {
+.report-incident {
   background-color: #feca57;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1rem;
   display: flex;
   justify-content: center;
 }

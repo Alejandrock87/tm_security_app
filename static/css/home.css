@@ -1,4 +1,14 @@
 /* Estilos específicos para la página de Home */
+/* Evitar scroll horizontal y normalizar box-sizing */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+}
 
 /* 
   El contenedor principal se ajusta a todo el espacio disponible dentro de .main-content
