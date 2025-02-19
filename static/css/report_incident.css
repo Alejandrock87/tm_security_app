@@ -1,20 +1,32 @@
 /* Evitar scroll horizontal y normalizar box-sizing */
+:root {
+  --nav-height: 56px;
+  --bottom-nav-height: 52px;
+  --primary-red: #ee5253;
+  --dark-blue: #1e293b;
+  --darker-blue: #0f172a;
+  --border-color: #334155;
+  --text-gray: #94a3b8;
+}
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
+  font-family: Arial, sans-serif;
 }
 
 /* Contenedor principal con fondo y relleno */
 .report-incident {
-  background-color: #feca57;
+  background-color: var(--darker-blue);
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
+  min-height: calc(100vh - var(--nav-height) - var(--bottom-nav-height));
 }
 
 /* Contenedor para centrar y limitar el ancho */
@@ -59,10 +71,11 @@ body {
 }
 
 .form-card {
-  background-color: #fff;
+  background-color: var(--dark-blue);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .card-body {
@@ -77,26 +90,31 @@ body {
 .form-label {
   display: block;
   font-weight: 500;
-  color: #2d3436;
+  color: #fff;
   margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
 /* Inputs y selects (similar a la idea de .auth-input) */
 .auth-input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  font-size: 1rem;
-  color: #2d3436;
-  background-color: #f8f9fa;
+  font-size: 0.95rem;
+  color: #fff;
+  background-color: var(--darker-blue);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-input:focus {
   outline: none;
-  border-color: #ee5253;
+  border-color: var(--primary-red);
   box-shadow: 0 0 0 3px rgba(238,82,83,0.15);
+}
+
+.auth-input::placeholder {
+  color: var(--text-gray);
 }
 
 /* Agrupar fecha y hora en filas */
