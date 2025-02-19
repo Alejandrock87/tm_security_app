@@ -79,6 +79,13 @@ html, body {
   margin: 0; 
   padding: 0;
 }
+
+/* Override para páginas de autenticación */
+.login .main-content,
+.register .main-content {
+  top: 0 !important;
+  bottom: 0 !important;
+}
 .main-content::-webkit-scrollbar {
   display: none;
 }

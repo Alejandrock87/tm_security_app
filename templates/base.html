@@ -13,7 +13,7 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
     {% if not request.endpoint in ['login', 'register'] %}
     <!-- Navbar Superior Fijo (70px) -->
     <nav class="navbar navbar-dark top-nav">
