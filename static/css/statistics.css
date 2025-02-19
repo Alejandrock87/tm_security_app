@@ -1,182 +1,211 @@
-/* ================================
-   ESTILOS PARA LA PANTALLA DE
-   ESTADÍSTICAS
-   ================================ */
 
-/* Reset básico y tipografía */
+/* Variables específicas para statistics */
+:root {
+  --statistics-primary: #ee5253;
+  --statistics-secondary: #f8f9fa;
+  --statistics-border: #e2e8f0;
+  --statistics-text: #2d3436;
+  --statistics-text-light: #94a3b8;
+  --statistics-card-bg: #ffffff;
+  --statistics-success: #10b981;
+  --statistics-danger: #ef4444;
+  --statistics-warning: #f59e0b;
+  --statistics-info: #3b82f6;
+}
+
+/* Reset y configuración base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-body {
-  overflow-x: hidden;
-  font-family: Arial, sans-serif; /* Ajusta si tu proyecto usa otra fuente */
-}
 
-/* Contenedor principal para la sección de estadísticas */
+/* Contenedor principal */
 .main-content.statistics-wrapper {
-  min-height: 100vh;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 1.5rem;
+  background-color: var(--statistics-secondary);
 }
 
-/* Contenedor interno con fondo oscuro y esquinas redondeadas */
+/* Contenedor interno */
 .statistics-container {
-  background-color: #1e293b;
+  background-color: var(--statistics-card-bg);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
-  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Encabezado de Estadísticas */
+/* Encabezado */
 .statistics-header {
   text-align: center;
   margin-bottom: 2rem;
 }
+
 .statistics-header h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--statistics-text);
   margin-bottom: 0.5rem;
 }
+
 .statistics-header p {
   font-size: 1rem;
-  color: #94a3b8;
+  color: var(--statistics-text-light);
 }
 
 /* Mensaje de datos vacíos */
 .empty-data-message {
   text-align: center;
   padding: 1rem;
-  color: #666;
+  color: var(--statistics-text-light);
+  background-color: var(--statistics-secondary);
+  border-radius: 12px;
 }
 
-/* ========================
-   SECCIÓN DE RESUMEN (CARDS)
-   ======================== */
+/* Tarjetas de resumen */
 .summary-section .stat-card {
-  background-color: #1e293b;
+  background-color: var(--statistics-card-bg);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   text-align: center;
-  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-  color: #ffffff;
-}
-.summary-section .stat-card:hover {
-  transform: translateY(-5px);
-  background-color: #334155;
+  transition: transform 0.2s ease-in-out;
+  border: 2px solid var(--statistics-border);
 }
 
-/* Íconos en las tarjetas */
+.summary-section .stat-card:hover {
+  transform: translateY(-5px);
+}
+
 .summary-section .stat-card i {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #3b82f6; /* color por defecto */
-}
-/* Sección total, danger, warning, info personalizan el color del ícono */
-.summary-section .stat-card.total i {
-  color: #10b981;
-}
-.summary-section .stat-card.danger i {
-  color: #ef4444;
-}
-.summary-section .stat-card.warning i {
-  color: #f59e0b;
-}
-.summary-section .stat-card.info i {
-  color: #3b82f6;
 }
 
-/* Texto de las tarjetas */
+.summary-section .stat-card.total i {
+  color: var(--statistics-success);
+}
+.summary-section .stat-card.danger i {
+  color: var(--statistics-danger);
+}
+.summary-section .stat-card.warning i {
+  color: var(--statistics-warning);
+}
+.summary-section .stat-card.info i {
+  color: var(--statistics-info);
+}
+
 .summary-section .stat-card h3 {
   font-size: 1.75rem;
   font-weight: 600;
+  color: var(--statistics-text);
   margin-bottom: 0.5rem;
 }
+
 .summary-section .stat-card p {
   font-size: 1rem;
-  color: #94a3b8;
+  color: var(--statistics-text-light);
 }
 
-/* ========================
-   FILTROS RÁPIDOS
-   ======================== */
+/* Filtros rápidos */
 .quick-filters {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
+
 .quick-filters .scroll-container {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;
 }
+
 .quick-filters .filter-chip {
-  background-color: #374151;
-  border: none;
-  border-radius: 9999px;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
+  background-color: var(--statistics-secondary);
+  border: 2px solid var(--statistics-border);
+  border-radius: 24px;
+  color: var(--statistics-text);
+  padding: 0.5rem 1.25rem;
   font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
+
 .quick-filters .filter-chip:hover {
-  background-color: #3b82f6;
-}
-.quick-filters .filter-chip.active {
-  background-color: #3b82f6;
+  background-color: var(--statistics-primary);
+  border-color: var(--statistics-primary);
+  color: white;
 }
 
-/* ========================
-   DETALLE DE TARJETAS
-   ======================== */
+.quick-filters .filter-chip.active {
+  background-color: var(--statistics-primary);
+  border-color: var(--statistics-primary);
+  color: white;
+}
+
+/* Tarjetas de detalle */
 .detail-card {
-  background-color: #1e293b;
+  background-color: var(--statistics-card-bg);
   border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  color: #ffffff;
-  margin-bottom: 1rem; 
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 2px solid var(--statistics-border);
+  margin-bottom: 1.5rem;
 }
 
 .detail-card .card-header {
-  border-bottom: 1px solid #334155;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--statistics-border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
+
 .detail-card .card-header h5 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--statistics-text);
   margin: 0;
 }
 
-/* Contenedor para la gráfica */
+/* Contenedor de gráficas */
 .chart-container {
-  background-color: #1e293b;
-  border-radius: 8px;
+  background-color: var(--statistics-secondary);
+  border-radius: 12px;
   padding: 1rem;
   height: 300px;
   margin-bottom: 1rem;
 }
 
-/* Listas con scroll (para los tipos de incidentes o estaciones más afectadas) */
-.scroll-container {
-  overflow-x: hidden; /* sólo scroll vertical en la lista */
-}
+/* Lista con scroll */
 .scrollable-list {
   max-height: 300px;
   overflow-y: auto;
+  padding: 0.5rem;
 }
 
-/* Ajustes responsivos */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--statistics-border);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  color: var(--statistics-text);
+  font-weight: 500;
+}
+
+.item-count {
+  color: var(--statistics-primary);
+  font-weight: 600;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
   .statistics-container {
     padding: 1rem;
@@ -185,22 +214,24 @@ body {
   .summary-section .stat-card {
     padding: 1rem;
   }
+
   .summary-section .stat-card i {
     font-size: 2rem;
   }
+
   .summary-section .stat-card h3 {
     font-size: 1.5rem;
   }
-  .summary-section .stat-card p {
-    font-size: 0.9rem;
+
+  .detail-card {
+    padding: 1rem;
   }
 
-  .quick-filters .filter-chip {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+  .chart-container {
+    height: 250px;
   }
 
-  .detail-card .scrollable-list {
+  .scrollable-list {
     max-height: 200px;
   }
 }
