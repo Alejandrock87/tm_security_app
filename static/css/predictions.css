@@ -1,24 +1,23 @@
 
-/* Reset y variables */
+/* Variables específicas para predictions */
 :root {
   --nav-height: 56px;
   --bottom-nav-height: 52px;
-  --primary-blue: #3b82f6;
-  --primary-red: #ee5253;
-  --dark-blue: #1e293b;
-  --darker-blue: #0f172a;
-  --border-color: #334155;
-  --text-gray: #94a3b8;
+  --predictions-primary: #ee5253;
+  --predictions-background: #feca57;
+  --predictions-text: #2d3436;
+  --predictions-text-secondary: #636e72;
+  --predictions-border: #e2e8f0;
 }
 
-.main-content.predictions-content {
+.predictions-content {
   position: fixed;
   top: var(--nav-height);
   bottom: var(--bottom-nav-height);
   left: 0;
   right: 0;
   overflow-y: auto;
-  background-color: #feca57;
+  background-color: var(--predictions-background);
   padding: 2rem 1rem;
 }
 
@@ -36,28 +35,27 @@
   margin-bottom: 1.5rem;
 }
 
-.predictions-header i {
+.predictions-icon {
   font-size: 2.5rem;
-  color: var(--primary-red);
+  color: var(--predictions-primary);
   margin-bottom: 0.75rem;
 }
 
-.predictions-header .predictions-title {
+.predictions-title {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #2d3436;
+  color: var(--predictions-text);
   margin-bottom: 0.5rem;
 }
 
-.predictions-header p {
+.predictions-description {
   font-size: 0.9rem;
-  color: #636e72;
+  color: var(--predictions-text-secondary);
   line-height: 1.4;
   margin: 0;
 }
 
-/* Toggle de notificaciones */
-.notification-toggle {
+.predictions-toggle-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -66,10 +64,10 @@
   padding: 1rem;
   background-color: #f8f9fa;
   border-radius: 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--predictions-border);
 }
 
-.form-check-input {
+.predictions-toggle {
   width: 2.5rem;
   height: 1.25rem;
   background-color: #cbd5e0;
@@ -80,11 +78,11 @@
   transition: background-color 0.3s;
 }
 
-.form-check-input:checked {
-  background-color: var(--primary-blue);
+.predictions-toggle:checked {
+  background-color: var(--predictions-primary);
 }
 
-.form-check-input::after {
+.predictions-toggle::after {
   content: "";
   position: absolute;
   top: 2px;
@@ -96,12 +94,11 @@
   transition: transform 0.3s;
 }
 
-.form-check-input:checked::after {
+.predictions-toggle:checked::after {
   transform: translateX(20px);
 }
 
-/* Lista de predicciones */
-#predictionsList {
+.predictions-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -110,7 +107,7 @@
 
 .prediction-item {
   background-color: #fff;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--predictions-border);
   border-radius: 12px;
   padding: 1rem;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -124,16 +121,15 @@
 .prediction-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #2d3436;
+  color: var(--predictions-text);
   margin-bottom: 0.5rem;
 }
 
 .prediction-details {
   font-size: 0.9rem;
-  color: #636e72;
+  color: var(--predictions-text-secondary);
 }
 
-/* Niveles de riesgo */
 .prediction-item-danger {
   border-left: 4px solid #ef4444;
 }
@@ -146,9 +142,8 @@
   border-left: 4px solid #3b82f6;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
-  .main-content.predictions-content {
+  .predictions-content {
     padding: 1rem;
   }
 
@@ -156,12 +151,8 @@
     padding: 1.25rem;
   }
 
-  .predictions-header i {
+  .predictions-icon {
     font-size: 2rem;
-  }
-
-  .prediction-item {
-    padding: 0.875rem;
   }
 }
 
@@ -170,17 +161,17 @@
     margin-bottom: 1rem;
   }
 
-  .predictions-header i {
+  .predictions-icon {
     font-size: 1.75rem;
     margin-bottom: 0.5rem;
   }
 
-  .notification-toggle {
+  .predictions-toggle-container {
     margin: 0.75rem 0;
     padding: 0.75rem;
   }
 
-  #predictionsList {
+  .predictions-list {
     gap: 0.75rem;
   }
 }
