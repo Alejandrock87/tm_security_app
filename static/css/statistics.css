@@ -21,7 +21,7 @@
 }
 
 /* Contenedor principal */
-.main-content.statistics-wrapper {
+.statistics-wrapper {
   min-height: calc(100vh - var(--nav-height));
   padding: 1.5rem;
   background-color: var(--statistics-secondary);
