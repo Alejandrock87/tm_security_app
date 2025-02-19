@@ -328,19 +328,28 @@ function applyNotificationFilters() {
 
 // Función para construir los parámetros de consulta según los filtros
 function buildQueryParams() {
+    const activeFilters = document.querySelectorAll('.notification-filters .filter-chip.active');
     const params = [];
-
-    if (!notificationFilters.troncal.includes('all') && notificationFilters.troncal.length > 0) {
-        params.push(`troncal=${encodeURIComponent(notificationFilters.troncal.join(','))}`);
-    }
-
-    if (!notificationFilters.station.includes('all') && notificationFilters.station.length > 0) {
-        params.push(`station=${encodeURIComponent(notificationFilters.station.join(','))}`);
-    }
-
-    if (!notificationFilters.incidentType.includes('all') && notificationFilters.incidentType.length > 0) {
-        params.push(`type=${encodeURIComponent(notificationFilters.incidentType.join(','))}`);
-    }
+    
+    activeFilters.forEach(filter => {
+        const filterType = filter.getAttribute('data-filter');
+        if (filterType === 'troncal') {
+            const selectedTroncal = document.querySelector('#troncalPreference input:checked');
+            if (selectedTroncal && selectedTroncal.value !== 'all') {
+                params.push(`troncal=${encodeURIComponent(selectedTroncal.value)}`);
+            }
+        } else if (filterType === 'station') {
+            const selectedStation = document.querySelector('#stationPreference input:checked');
+            if (selectedStation && selectedStation.value !== 'all') {
+                params.push(`station=${encodeURIComponent(selectedStation.value)}`);
+            }
+        } else if (filterType === 'type') {
+            const selectedType = document.querySelector('#typePreference input:checked');
+            if (selectedType && selectedType.value !== 'all') {
+                params.push(`incident_type=${encodeURIComponent(selectedType.value)}`);
+            }
+        }
+    });
 
     return params.length > 0 ? `?${params.join('&')}` : '';
 }
@@ -350,19 +359,36 @@ function fetchFilteredNotifications() {
     const queryParams = buildQueryParams();
     console.log('Parámetros de consulta para notificaciones:', queryParams);
 
-    fetch(`/api/notifications/history${queryParams}`)
+    fetch(`/api/notifications${queryParams}`)
         .then(response => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         })
-        .then(data => {
-            console.log('Datos de notificaciones recibidos:', data);
-            updateNotificationsList(data);
+        .then(notifications => {
+            console.log('Datos de notificaciones recibidos:', notifications);
+            if (notificationsList) {
+                notificationsList.innerHTML = '';
+                if (notifications && notifications.length > 0) {
+                    notifications.forEach(notification => {
+                        const item = document.createElement('div');
+                        item.className = 'notification-item';
+                        const timestamp = new Date(notification.timestamp).toLocaleString();
+                        item.innerHTML = `
+                            <h6>${capitalizeFirstLetter(notification.incident_type)}</h6>
+                            <p>Estación: ${notification.nearest_station}</p>
+                            <small>${timestamp}</small>
+                        `;
+                        notificationsList.appendChild(item);
+                    });
+                } else {
+                    notificationsList.innerHTML = '<p class="text-center">No hay notificaciones para mostrar.</p>';
+                }
+            }
         })
         .catch(error => {
             console.error('Error al cargar historial de notificaciones:', error);
             if (notificationsList) {
-                notificationsList.innerHTML = '<p>Error al cargar notificaciones.</p>';
+                notificationsList.innerHTML = '<p class="text-center">Error al cargar notificaciones.</p>';
             }
         });
 }
