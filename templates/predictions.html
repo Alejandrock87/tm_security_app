@@ -5,53 +5,31 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-content predictions-content">
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <!-- Título de la sección -->
-        <h3 class="predictions-title text-center">Predicciones de Inseguridad</h3>
+<main class="main-content predictions-content">
+  <div class="predictions-container">
+    <header class="predictions-header">
+      <i class="fas fa-shield-alt"></i>
+      <h1 class="predictions-title">Predicciones de Seguridad</h1>
+      <p>Mantente informado sobre posibles incidentes en tiempo real</p>
+    </header>
 
-        <!-- Contenedor principal de las predicciones -->
-        <div class="predictions-container">
-          <!-- Encabezado con ícono y texto -->
-          <div class="predictions-header">
-            <i class="fas fa-brain fa-3x mb-3"></i>
-            <p>
-              Recibe alertas sobre las áreas con mayor riesgo de incidentes 
-              para mantenerte informado y seguro.
-            </p>
-          </div>
-
-          <!-- Sección de activación de notificaciones -->
-          <div class="notification-toggle">
-            <label class="form-check-label" for="notificationToggle">
-              Activar notificaciones
-            </label>
-            <div class="form-check form-switch predictions-toggle">
-              <input class="form-check-input" type="checkbox" id="notificationToggle">
-            </div>
-          </div>
-
-          <!-- Lista de predicciones cargadas dinámicamente -->
-          <div id="predictionsList" class="list-group">
-            <!-- Ejemplo (comentado)
-            <div class="prediction-item">
-              <div class="prediction-title">Zona Norte</div>
-              <div class="prediction-details">
-                Predicción de alto nivel de inseguridad para el próximo mes.
-              </div>
-            </div>
-            -->
-          </div>
-        </div>
+    <section class="notification-toggle">
+      <label class="form-check-label" for="notificationToggle">
+        Recibir alertas
+      </label>
+      <div class="form-check form-switch predictions-toggle">
+        <input class="form-check-input" type="checkbox" id="notificationToggle" role="switch">
       </div>
-    </div>
+    </section>
+
+    <section id="predictionsList" class="predictions-list" aria-live="polite">
+      <!-- Las predicciones se cargarán dinámicamente aquí -->
+    </section>
   </div>
-</div>
+</main>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='js/predictions.js') }}"></script>
 {% endblock %}

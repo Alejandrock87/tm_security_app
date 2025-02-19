@@ -1,151 +1,172 @@
-/* Reset básico y tipografía */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-body {
-  overflow-x: hidden;
-  font-family: Arial, sans-serif; /* Ajusta si tu proyecto utiliza otra fuente */
+
+/* Reset y variables */
+:root {
+  --nav-height: 56px;
+  --bottom-nav-height: 52px;
+  --primary-blue: #3b82f6;
+  --dark-blue: #1e293b;
+  --darker-blue: #0f172a;
+  --border-color: #334155;
+  --text-gray: #94a3b8;
 }
 
-/* Contenedor principal */
 .main-content.predictions-content {
-  min-height: 100vh;
+  position: fixed;
+  top: var(--nav-height);
+  bottom: var(--bottom-nav-height);
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  background-color: var(--darker-blue);
   padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Limitar ancho en pantallas grandes */
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-/* Título principal */
-.predictions-title {
-  font-size: 1.75rem;
-  color: #ffffff;
-  margin-bottom: 1rem;
-}
-
-/* Contenedor de la sección de predicciones */
 .predictions-container {
-  background-color: #1e293b;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--dark-blue);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Encabezado dentro de la sección */
 .predictions-header {
   text-align: center;
-  margin-bottom: 2rem;
-}
-
-.predictions-header i {
-  font-size: 3rem;
-  color: #3b82f6;
-  margin-bottom: 1rem;
-}
-
-.predictions-header p {
-  font-size: 1rem;
-  color: #94a3b8;
-  line-height: 1.4;
-}
-
-/* Activación de notificaciones */
-.notification-toggle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
-/* Estilos del switch de notificaciones */
-.predictions-toggle .form-check-input {
+.predictions-header i {
+  font-size: 2rem;
+  color: var(--primary-blue);
+  margin-bottom: 0.75rem;
+}
+
+.predictions-header p {
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Toggle de notificaciones */
+.notification-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background-color: var(--darker-blue);
+  border-radius: 8px;
+}
+
+.form-check-input {
   width: 2.5rem;
   height: 1.25rem;
-  background-color: #6b7280;
-  border-radius: 1.5rem;
-  position: relative;
-  transition: background-color 0.3s ease;
+  background-color: var(--text-gray);
   border: none;
+  border-radius: 1rem;
   cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
 }
 
-.predictions-toggle .form-check-input::after {
+.form-check-input:checked {
+  background-color: var(--primary-blue);
+}
+
+.form-check-input::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 0.25rem;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 1rem;
-  background-color: #ffffff;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
   border-radius: 50%;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
 }
 
-/* Cambia a color azul y desplaza el circulo al activar */
-.predictions-toggle .form-check-input:checked {
-  background-color: #3b82f6;
-}
-.predictions-toggle .form-check-input:checked::after {
-  transform: translate(1.25rem, -50%);
+.form-check-input:checked::after {
+  transform: translateX(20px);
 }
 
 /* Lista de predicciones */
 #predictionsList {
-  background-color: #0f172a;
-  border-radius: 8px;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-/* Cada item de la lista */
 .prediction-item {
-  background-color: #1e293b;
-  border: 1px solid #334155;
+  background-color: var(--darker-blue);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 0.75rem;
-  transition: background-color 0.2s, transform 0.2s;
-  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
 }
+
 .prediction-item:hover {
-  background-color: #334155;
   transform: translateY(-2px);
+  background-color: color-mix(in srgb, var(--darker-blue) 90%, white);
 }
 
-/* Título y detalles de cada predicción */
 .prediction-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
+  color: var(--primary-blue);
   margin-bottom: 0.5rem;
-  color: #3b82f6;
-}
-.prediction-details {
-  font-size: 0.95rem;
-  color: #94a3b8;
 }
 
-/* Ajustes responsivos en pantallas pequeñas */
+.prediction-details {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+}
+
+/* Niveles de riesgo */
+.prediction-item-danger {
+  border-left: 3px solid #ef4444;
+}
+
+.prediction-item-warning {
+  border-left: 3px solid #f59e0b;
+}
+
+.prediction-item-info {
+  border-left: 3px solid #3b82f6;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
   .predictions-container {
     padding: 1rem;
   }
-
+  
   .predictions-header i {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
   }
-
+  
   .prediction-item {
-    padding: 0.75rem;
+    padding: 0.875rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .predictions-header {
+    margin-bottom: 1rem;
+  }
+  
+  .predictions-header i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .notification-toggle {
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+  }
+  
+  #predictionsList {
+    gap: 0.5rem;
   }
 }
