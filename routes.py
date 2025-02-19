@@ -305,6 +305,36 @@ def init_routes(app):
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
+    @app.route('/api/notifications')
+    @login_required
+    def get_notifications():
+        query = Incident.query
+        troncal = request.args.get('troncal')
+        station = request.args.get('station')
+        incident_type = request.args.get('incident_type')
+
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+            
+        if troncal:
+            stations_for_troncal = [feature['properties']['nombre_estacion'] 
+                                   for feature in geojson_data['features']
+                                   if feature['properties'].get('troncal_estacion') == troncal]
+            query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
+        if station:
+            query = query.filter(Incident.nearest_station == station)
+        if incident_type:
+            query = query.filter(Incident.incident_type == incident_type)
+
+        incidents = query.order_by(Incident.timestamp.desc()).limit(100).all()
+        return jsonify([{
+            'id': i.id,
+            'incident_type': i.incident_type,
+            'nearest_station': i.nearest_station,
+            'timestamp': i.timestamp.isoformat(),
+            'description': i.description
+        } for i in incidents])
+
     @app.route('/incidents')
     @login_required
     def get_incidents():

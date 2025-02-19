@@ -328,28 +328,34 @@ function applyNotificationFilters() {
 
 // Función para construir los parámetros de consulta según los filtros
 function buildQueryParams() {
-    const activeFilters = document.querySelectorAll('.notification-filters .filter-chip.active');
     const params = [];
+    const activeFilters = document.querySelectorAll('.notification-filters .filter-chip.active');
+    const allFilter = Array.from(activeFilters).some(chip => chip.getAttribute('data-filter') === 'all');
     
-    activeFilters.forEach(filter => {
-        const filterType = filter.getAttribute('data-filter');
-        if (filterType === 'troncal') {
-            const selectedTroncal = document.querySelector('#troncalPreference input:checked');
-            if (selectedTroncal && selectedTroncal.value !== 'all') {
-                params.push(`troncal=${encodeURIComponent(selectedTroncal.value)}`);
+    if (!allFilter) {
+        activeFilters.forEach(filter => {
+            const filterType = filter.getAttribute('data-filter');
+            if (filterType === 'troncal') {
+                const selectedTroncals = Array.from(document.querySelectorAll('#troncalPreference input:checked:not(#troncalAll)'))
+                    .map(cb => cb.value);
+                if (selectedTroncals.length > 0) {
+                    params.push(`troncal=${encodeURIComponent(selectedTroncals.join(','))}`);
+                }
+            } else if (filterType === 'station') {
+                const selectedStations = Array.from(document.querySelectorAll('#stationPreference input:checked:not(#stationAll)'))
+                    .map(cb => cb.value);
+                if (selectedStations.length > 0) {
+                    params.push(`station=${encodeURIComponent(selectedStations.join(','))}`);
+                }
+            } else if (filterType === 'type') {
+                const selectedTypes = Array.from(document.querySelectorAll('#typePreference input:checked:not(#typeAll)'))
+                    .map(cb => cb.value);
+                if (selectedTypes.length > 0) {
+                    params.push(`incident_type=${encodeURIComponent(selectedTypes.join(','))}`);
+                }
             }
-        } else if (filterType === 'station') {
-            const selectedStation = document.querySelector('#stationPreference input:checked');
-            if (selectedStation && selectedStation.value !== 'all') {
-                params.push(`station=${encodeURIComponent(selectedStation.value)}`);
-            }
-        } else if (filterType === 'type') {
-            const selectedType = document.querySelector('#typePreference input:checked');
-            if (selectedType && selectedType.value !== 'all') {
-                params.push(`incident_type=${encodeURIComponent(selectedType.value)}`);
-            }
-        }
-    });
+        });
+    }
 
     return params.length > 0 ? `?${params.join('&')}` : '';
 }
