@@ -22,7 +22,7 @@ body {
   background-color: #feca57;
   padding: clamp(1rem, 3vh, 2rem);
   /* Ajuste para barras de navegación */
-  padding-top: calc(70px + clamp(1rem, 3vh, 2rem));    /* Nav superior + padding */
+  padding-top: calc(50px + clamp(1rem, 3vh, 2rem));    /* Nav superior + padding */
   padding-bottom: calc(60px + clamp(1rem, 3vh, 2rem)); /* Nav inferior + padding */
 }
 
@@ -126,8 +126,8 @@ body {
 /* Media queries específicos para diferentes tamaños */
 @media (max-width: 480px) {
   .home-container {
-    padding-top: calc(70px + 0.5rem);
-    padding-bottom: calc(60px + 0.5rem);
+    padding-top: calc(70px + 0rem);
+    padding-bottom: calc(60px + 0rem);
   }
 
   .options-grid {
@@ -154,8 +154,8 @@ body {
 /* Ajustes para dispositivos con altura reducida */
 @media (max-height: 667px) {
   .home-container {
-    padding-top: calc(70px + 0.5rem);
-    padding-bottom: calc(60px + 0.5rem);
+    padding-top: calc(10px + 0rem);
+    padding-bottom: calc(10px + 0rem);
   }
 
   .card-icon {
