@@ -108,6 +108,30 @@
   margin-top: 1.5rem;
 }
 
+/* Estilos para la etiqueta de notificaciones */
+.predictions-label {
+  font-size: 0.95rem;
+  color: var(--predictions-text);
+  font-weight: 500;
+}
+
+/* Clases utilitarias */
+.d-flex {
+  display: flex;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
 .prediction-item {
   background-color: #fff;
   border: 2px solid var(--predictions-border);
