@@ -11,7 +11,7 @@
   --statistics-danger: #ef4444;
   --statistics-warning: #f59e0b;
   --statistics-info: #3b82f6;
-  --statistics-background: #f1f5f9;
+  --statistics-background: #feca57;
   --statistics-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --statistics-radius: 16px;
 }
@@ -179,6 +179,7 @@
 .detail-card .card-header h5 {
   font-size: 1.25rem;
   font-weight: 600;
+  text-align: center;
   color: var(--statistics-text);
   margin: 0;
 }
