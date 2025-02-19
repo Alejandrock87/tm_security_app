@@ -1,26 +1,38 @@
+
 /* Estilos específicos para la página de registro */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
 .auth-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vh, 1.5rem);
   background-color: #feca57;
 }
 
 .auth-header-outside {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 3vh, 2rem);
 }
 
 .auth-header-outside i {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 5vw, 2.5rem);
   color: #ee5253;
 }
 
 .auth-header-outside h1 {
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 600;
   color: #2d3436;
   margin: 0.5rem 0 0;
@@ -29,21 +41,35 @@
 .auth-card {
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 2rem 1.5rem;
-  width: 100%;
-  max-width: 420px;
+  padding: clamp(1rem, 3vh, 2rem);
+  width: min(100%, 420px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+h2 {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
+  color: #2d3436;
+  text-align: center;
+}
+
+.auth-subtitle {
+  color: #636e72;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  margin-bottom: clamp(1rem, 3vh, 2rem);
+  text-align: center;
+}
+
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.5rem);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
   font-weight: 500;
   color: #2d3436;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
 }
 
 .input-icon {
@@ -52,7 +78,7 @@
   background-color: #f8f9fa;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  padding: 0.75rem 1rem;
+  padding: clamp(0.5rem, 1.5vh, 0.75rem) 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -64,14 +90,14 @@
 .input-icon i {
   color: #ee5253;
   margin-right: 12px;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
 }
 
 .auth-input {
   width: 100%;
   background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   color: #2d3436;
   padding: 0;
 }
@@ -80,36 +106,33 @@
   outline: none;
 }
 
+.auth-input::placeholder {
+  color: #b2bec3;
+}
+
 .auth-button {
   width: 100%;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vh, 1rem);
   background-color: #ee5253;
   border: none;
   border-radius: 12px;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
+  margin-top: clamp(0.25rem, 1vh, 0.5rem);
 }
 
 .auth-button:hover {
   background-color: #d63031;
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #2d3436;
-  text-align: center;
-}
-
 .register-text {
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
+  margin-top: clamp(0.75rem, 2vh, 1.5rem);
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
   text-align: center;
   color: #2d3436;
 }
@@ -126,12 +149,12 @@ h2 {
 
 .error-text {
   color: #ee5253;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  margin-top: clamp(0.25rem, 1vh, 0.5rem);
   display: block;
 }
 
-/* Responsivo */
+/* Media queries responsivas */
 @media screen and (min-width: 375px) and (min-height: 667px) {
   .auth-container {
     min-height: 667px;
@@ -148,20 +171,8 @@ h2 {
   }
 }
 
-@media (min-width: 768px) {
-  .map-card {
-    height: 350px;
-  }
-  .dashboard-row {
-    flex-direction: column;
-  }
-  .dashboard-left-col, .dashboard-right-col {
-    flex: 1 1 100%;
-  }
-  .icon-over-title i {
-    font-size: 1.75rem;
-  }
-  .dashboard-title {
-    font-size: 1.5rem;
+@media screen and (min-width: 481px) and (min-height: 700px) {
+  .auth-card {
+    padding: clamp(1.5rem, 4vh, 2.5rem);
   }
 }
