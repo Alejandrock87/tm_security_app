@@ -58,10 +58,10 @@ body {
 /* Tarjetas adaptativas */
 .option-card {
   background-color: #ffffff;
-  border-radius: clamp(12px, 3vw, 16px);
-  padding: clamp(1.25rem, 4vh, 2rem);
+  border-radius: clamp(8px, min(2vw, 2vh), 12px);
+  padding: max(0.75rem, min(2vh, 1rem));
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
@@ -75,8 +75,8 @@ body {
 
 /* Ícono adaptativo */
 .card-icon {
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  margin-bottom: clamp(1rem, 3vh, 1.5rem);
+  font-size: clamp(1.5rem, min(4vw, 4vh), 2rem);
+  margin-bottom: max(0.5rem, min(1.5vh, 0.75rem));
   display: flex;
   justify-content: center;
 }
@@ -92,17 +92,17 @@ body {
 
 /* Títulos y textos adaptativos */
 .card-title {
-  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-size: clamp(1rem, min(2.5vw, 2.5vh), 1.25rem);
   font-weight: 600;
   color: #2d3436;
-  margin-bottom: clamp(0.75rem, 2vh, 1rem);
+  margin-bottom: max(0.25rem, min(1vh, 0.5rem));
 }
 
 .card-text {
   color: #636e72;
-  font-size: clamp(0.875rem, 2vw, 1rem);
-  margin-bottom: clamp(1rem, 3vh, 1.5rem);
-  line-height: 1.5;
+  font-size: clamp(0.75rem, min(2vw, 2vh), 0.875rem);
+  margin-bottom: max(0.5rem, min(1.5vh, 0.75rem));
+  line-height: 1.3;
 }
 
 /* Botón adaptativo */
@@ -129,11 +129,11 @@ body {
     padding-top: calc(70px + 0.5rem);
     padding-bottom: calc(60px + 0.5rem);
   }
-  
+
   .options-grid {
     gap: 1rem;
   }
-  
+
   .option-card {
     padding: 1rem;
   }
@@ -157,11 +157,11 @@ body {
     padding-top: calc(70px + 0.5rem);
     padding-bottom: calc(60px + 0.5rem);
   }
-  
+
   .card-icon {
     margin-bottom: 0.75rem;
   }
-  
+
   .card-text {
     margin-bottom: 1rem;
   }
