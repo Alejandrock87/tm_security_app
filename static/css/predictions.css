@@ -81,7 +81,7 @@
 }
 
 .form-check-input:checked {
-  background-color: var(--primary-red);
+  background-color: var(--primary-blue);
 }
 
 .form-check-input::after {
