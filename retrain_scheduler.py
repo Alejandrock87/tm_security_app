@@ -81,9 +81,8 @@ def retrain_model_job():
         logging.exception("Detailed error traceback:")
 
 def run_scheduler():
-    # Reentrenar dos veces por semana para mantener el modelo actualizado
-    schedule.every().wednesday.at("03:00").do(retrain_model_job)
-    schedule.every().sunday.at("03:00").do(retrain_model_job)
+    # Reentrenar el modelo los domingos a las 11:00 PM
+    schedule.every().sunday.at("23:00").do(retrain_model_job)
 
     # Verificar el estado del modelo cada 12 horas
     schedule.every(12).hours.do(check_model_health)
