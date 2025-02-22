@@ -43,3 +43,16 @@ class Incident(db.Model):
             'user_id': self.user_id,
             'nearest_station': self.nearest_station
         }
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    incident_type = db.Column(db.String(100), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False)
+    nearest_station = db.Column(db.String(100), nullable=False)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'incident_type': self.incident_type,
+            'timestamp': self.timestamp.isoformat(),
+            'nearest_station': self.nearest_station
+        }
