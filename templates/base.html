@@ -92,21 +92,24 @@
     <!-- Modal de Notificaciones -->
     {% if not request.endpoint == 'login' %}
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="notificationsModalLabel">Notificaciones en vivo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-white" id="notificationsModalLabel">
+                        <i class="fas fa-bell me-2"></i>
+                        Notificaciones en vivo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <a href="{{ url_for('notifications') }}" class="d-flex align-items-center text-decoration-none">
-                            <i class="fas fa-cog me-2"></i>
+                        <a href="{{ url_for('notifications') }}" class="notification-config-link">
+                            <i class="fas fa-cog"></i>
                             <span>Configurar notificaciones</span>
                         </a>
                     </div>
-                    <hr>
-                    <div id="notifications-list" class="list-group"></div>
+                    <hr class="border-secondary">
+                    <div id="notifications-list" class="list-group notifications-container"></div>
                 </div>
             </div>
         </div>
@@ -129,8 +132,48 @@
             });
         }
     </script>
+    {% if not request.endpoint == 'login' %}
     <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Configuración de Socket.IO con reconexión automática
+        const socket = io({
+            transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+
+        socket.on('connect', () => {
+            console.log('Conectado al servidor Socket.IO');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.log('Error de conexión Socket.IO:', error);
+        });
+
+        socket.on('disconnect', (reason) => {
+            console.log('Desconectado del servidor Socket.IO:', reason);
+        });
+
+        socket.on('newNotification', (notification) => {
+            const notificationList = document.getElementById('notifications-list');
+            if (notificationList) {
+                const newNotificationItem = document.createElement('li');
+                newNotificationItem.classList.add('list-group-item', 'bg-dark', 'text-white', 'border-secondary');
+                newNotificationItem.textContent = notification;
+                notificationList.appendChild(newNotificationItem);
+
+                // Incrementar badge
+                const notificationBadge = document.getElementById('notificationBadge');
+                if (notificationBadge) {
+                    let count = parseInt(notificationBadge.textContent) || 0;
+                    count++;
+                    notificationBadge.textContent = count;
+                    notificationBadge.style.display = 'inline-block';
+                }
+            }
+        });
+
         // Ocultar alertas flash luego de 5s
         const alerts = document.querySelectorAll('.floating-alert');
         alerts.forEach(alert => {
@@ -141,25 +184,9 @@
                 }, 500);
             }, 5000);
         });
-        
-        // Socket.IO para notificaciones
-        const socket = io();
-        socket.on('newNotification', (notification) => {
-            const notificationList = document.getElementById('notifications-list');
-            const newNotificationItem = document.createElement('li');
-            newNotificationItem.classList.add('list-group-item');
-            newNotificationItem.textContent = notification;
-            notificationList.appendChild(newNotificationItem);
-
-            // Incrementar badge
-            const notificationBadge = document.getElementById('notificationBadge');
-            let count = parseInt(notificationBadge.textContent) || 0;
-            count++;
-            notificationBadge.textContent = count;
-            notificationBadge.style.display = 'inline-block';
-        });
     });
     </script>
+    {% endif %}
     {% block scripts %}{% endblock %}
 </body>
 </html>
