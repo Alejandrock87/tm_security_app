@@ -3,7 +3,7 @@ modules = ["python-3.11"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Start Flask App"
+runButton = "Retrain Model"
 
 [[workflows.workflow]]
 name = "Project"
@@ -64,7 +64,7 @@ task = "shell.exec"
 args = "python retrain_scheduler.py"
 
 [deployment]
-run = ["sh", "-c", "python main.py"]
+run = ["sh", "-c", "python retrain_scheduler.py"]
 
 [[ports]]
 localPort = 3000
