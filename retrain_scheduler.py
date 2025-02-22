@@ -1,13 +1,13 @@
+import json
+import logging
+import os
+import pytz
 import schedule
 import time
-from ml_models import train_model, predict_station_risk, predict_incident_type
 from datetime import datetime, timedelta
-import logging
-import pytz
-import json
-import os
-from models import Incident
 from database import db
+from models import Incident
+from ml_models import train_model, predict_station_risk, predict_incident_type
 
 logging.basicConfig(level=logging.INFO)
 

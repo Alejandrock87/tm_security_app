@@ -397,13 +397,14 @@ def prepare_rnn_data():
         
         # Codificación de variables categóricas
         le = LabelEncoder()
+        df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
+        incident_types = le.classes_
         
-        return df, incidents, le
+        return df, incident_types, le
+
     except Exception as e:
         logging.error(f"Error preparing RNN data: {str(e)}")
         return None, None, None
-    df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
-    incident_types = le.classes_
 
     # Crear secuencias temporales
     sequence_length = 24  # 24 horas de historial
