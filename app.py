@@ -59,10 +59,11 @@ def create_app():
                      async_mode='threading',
                      engineio_logger=True,
                      logger=True,
-                     ping_timeout=5000,
-                     ping_interval=2500,
-                     allow_upgrades=False,
-                     transports=['polling'])
+                     ping_timeout=10000,
+                     ping_interval=5000,
+                     allow_upgrades=True,
+                     upgrade_timeout=10000,
+                     transports=['polling', 'websocket'])
     
     # Configure allowed hosts and proxy settings
     app.config['SERVER_NAME'] = None

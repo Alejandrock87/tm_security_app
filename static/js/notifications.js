@@ -263,38 +263,74 @@ function showToast(data) {
 
 // Solicitar permiso para notificaciones del navegador
 async function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-        showToast({type: 'error', message: 'Este navegador no soporta notificaciones'});
+    if (!("Notification" in window)) {
+        alert("Este navegador no soporta notificaciones de escritorio");
         return false;
     }
 
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
+    if (Notification.permission === "denied") {
+        alert("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador y recarga la página.");
+        return false;
+    }
+
+    if (Notification.permission === "granted") {
+        console.log("Notificaciones ya están habilitadas");
+        return true;
+    }
+
+    try {
+        const permission = await Notification.requestPermission();
+        console.log("Permiso de notificación:", permission);
+        if (permission === "granted") {
+            // Registrar el service worker después de obtener el permiso
+            await registerServiceWorker();
+            // Suscribir al usuario a las notificaciones push
+            await subscribeToPushNotifications();
+            return true;
+        }
+    } catch (error) {
+        console.error("Error al solicitar permisos:", error);
+    }
+    return false;
+}
+
+// Función para registrar el service worker
+async function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register('/static/js/service-worker.js');
+            console.log('Service Worker registrado:', registration);
+            return registration;
+        } catch (error) {
+            console.error('Error al registrar el Service Worker:', error);
+            throw error;
+        }
+    }
+    throw new Error('Service Worker no soportado');
+}
+
+// Función para suscribir a notificaciones push
+async function subscribeToPushNotifications() {
+    try {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: 'TU_VAPID_PUBLIC_KEY'
+            applicationServerKey: window.vapidPublicKey
         });
 
-        // Guardar subscripción en el servidor
+        // Enviar la suscripción al servidor
         await fetch('/push/subscribe', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(subscription)
         });
 
-        // Guardar preferencias en localStorage
-        localStorage.setItem('notificationPreferences', JSON.stringify({
-            enabled: true,
-            troncal: ['all'],
-            station: ['all'],
-            incidentType: ['all']
-        }));
-
-        showToast({type: 'success', message: 'Notificaciones activadas correctamente'});
+        console.log('Suscrito a notificaciones push');
         return true;
-    } else {
-        showToast({type: 'error', message: 'Permiso de notificaciones denegado'});
+    } catch (error) {
+        console.error('Error al suscribir a notificaciones push:', error);
         return false;
     }
 }
