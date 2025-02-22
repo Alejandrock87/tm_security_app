@@ -65,7 +65,7 @@ task = "shell.exec"
 args = "python retrain_scheduler.py"
 
 [deployment]
-run = ["sh", "-c", "python retrain_scheduler.py"]
+run = ["sh", "-c", "python main.py"]
 
 [[ports]]
 localPort = 3000
