@@ -1,0 +1,28 @@
+2025-02-22 08:49:21.396703: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2025-02-22 08:49:21.426854: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:9342] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-02-22 08:49:21.426888: E tensorflow/compiler/xla/stream_executor/cuda/cuda_fft.cc:609] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-02-22 08:49:21.426923: E tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:1518] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-02-22 08:49:21.433554: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2025-02-22 08:49:21.433779: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-02-22 08:49:22.348609: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+ * Restarting with stat
+2025-02-22 08:49:25.322943: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:9342] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-02-22 08:49:25.322979: E tensorflow/compiler/xla/stream_executor/cuda/cuda_fft.cc:609] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-02-22 08:49:25.323011: E tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:1518] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+ * Debugger is active!
+ * Debugger PIN: 281-970-120
+(14686) wsgi starting up on http://0.0.0.0:3000
+(14686) accepted ('172.31.128.41', 45504)
+181.61.208.87,10.81.0.51,172.31.128.41 - - [22/Feb/2025 08:49:28] "GET / HTTP/1.1" 302 348 0.247487
+181.61.208.87,10.81.0.51,172.31.128.41 - - [22/Feb/2025 08:49:28] "GET /home HTTP/1.1" 200 7438 0.095772
+181.61.208.87,10.81.3.61,172.31.128.41 - - [22/Feb/2025 08:49:29] "GET /static/css/custom.css HTTP/1.1" 304 218 0.004314
+(14686) accepted ('172.31.128.41', 45512)
+181.61.208.87,10.81.3.61,172.31.128.41 - - [22/Feb/2025 08:49:29] "GET /static/css/home.css HTTP/1.1" 304 216 0.001113
+(14686) accepted ('172.31.128.41', 45528)
+181.61.208.87,10.81.0.51,172.31.128.41 - - [22/Feb/2025 08:49:29] "GET /socket.io/?EIO=4&transport=polling&t=PKis8L7 HTTP/1.1" 200 254 0.000288
+181.61.208.87,10.81.0.51,172.31.128.41 - - [22/Feb/2025 08:49:29] "POST /socket.io/?EIO=4&transport=polling&t=PKis8Mm&sid=RYEca9bY9DXBt5POAAAA HTTP/1.1" 200 258 0.000967
+181.61.208.87,10.81.3.61,172.31.128.41 - - [22/Feb/2025 08:49:29] "GET /socket.io/?EIO=4&transport=polling&t=PKis8Mn&sid=RYEca9bY9DXBt5POAAAA HTTP/1.1" 200 189 0.000142
+(14686) accepted ('172.31.128.41', 45538)
+Invalid transport for session RYEca9bY9DXBt5POAAAA (further occurrences of this error will be logged with level INFO)
+181.61.208.87,10.81.4.240,172.31.128.41 - - [22/Feb/2025 08:49:30] "GET /socket.io/?EIO=4&transport=websocket&sid=RYEca9bY9DXBt5POAAAA HTTP/1.1" 400 285 0.000667
