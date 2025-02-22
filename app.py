@@ -54,7 +54,7 @@ def create_app():
     init_routes(app)
 
     socketio.init_app(app, cors_allowed_origins="*", async_mode='gevent', engineio_logger=True)
-    app.config['SERVER_NAME'] = '0.0.0.0:3000'
+    # Remove SERVER_NAME configuration as it's causing routing issues
 
     return app
 
