@@ -97,4 +97,8 @@ except Exception as e:
     logger.error(f"Error al inicializar rutas: {str(e)}")
     raise
 
+@app.route('/test_connection')
+def test_connection():
+    return 'Server is running correctly', 200
+
 logger.info("Aplicación Flask configurada completamente")
