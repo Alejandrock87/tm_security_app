@@ -1,4 +1,3 @@
-
 import schedule
 import time
 from ml_models import train_model, predict_station_risk, predict_incident_type
@@ -20,29 +19,25 @@ def generate_weekly_predictions():
     try:
         stations = db.session.query(Incident.nearest_station).distinct().all()
         current_time = datetime.now(pytz.timezone('America/Bogota'))
-        
+
         # Generar predicciones para los próximos 7 días
         for day in range(7):
             current_date = current_time + timedelta(days=day)
             for hour in range(24):
                 pred_time = current_date.replace(hour=hour, minute=0, second=0)
                 for station in stations:
-                    incident_type = predict_incident_type(station[0], pred_time.hour)
+                    risk_score = predict_station_risk(station[0], pred_time.hour)
                     predictions.append({
                         'station': station[0],
                         'predicted_time': pred_time.isoformat(),
-                        'risk_score': 0.5,  # Valor por defecto mientras se ajusta el modelo
-                        'incident_type': incident_type,
-                                'station': station[0],
-                                'predicted_time': pred_time.isoformat(),
-                                'risk_score': float(risk_score),
-                                'incident_type': predict_incident_type(station[0], pred_time.hour),
-                            })
-        
+                        'risk_score': float(predict_station_risk(station[0], pred_time.hour)),
+                        'incident_type': predict_incident_type(station[0], pred_time.hour),
+                    })
+
         # Guardar predicciones en caché
         with open(PREDICTIONS_CACHE_FILE, 'w') as f:
             json.dump(predictions, f)
-            
+
         logging.info(f"Generated {len(predictions)} predictions for the next week")
         return True
     except Exception as e:
@@ -51,7 +46,7 @@ def generate_weekly_predictions():
 
 def retrain_model_job():
     from app import app
-    
+
     logging.info("Starting scheduled model retraining...")
     try:
         with app.app_context():
@@ -70,12 +65,12 @@ def retrain_model_job():
 def run_scheduler():
     # Configurar para ejecutar todos los domingos a las 11 PM (Hora de Bogotá)
     schedule.every().sunday.at("23:00").do(retrain_model_job)
-    
+
     # Ejecutar inmediatamente si no existe el modelo
     if not os.path.exists(MODEL_CACHE_FILE):
         logging.info("No model found. Running initial training...")
         retrain_model_job()
-    
+
     while True:
         schedule.run_pending()
         time.sleep(60)

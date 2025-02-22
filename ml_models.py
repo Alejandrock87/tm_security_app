@@ -125,10 +125,32 @@ def train_model():
             ('cat', categorical_transformer, categorical_features)
         ])
 
-    # Create ensemble model
-    xgb_model = XGBClassifier(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=5)
-    rf_model = RandomForestClassifier(random_state=42, n_estimators=100, max_depth=10)
-    gb_model = GradientBoostingClassifier(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=5)
+    from imblearn.over_sampling import SMOTE
+    from imblearn.pipeline import Pipeline as ImbPipeline
+    
+    # Balancear clases
+    smote = SMOTE(random_state=42)
+    
+    # Modelos con parámetros ajustados
+    xgb_model = XGBClassifier(
+        random_state=42,
+        n_estimators=200,
+        learning_rate=0.05,
+        max_depth=7,
+        class_weight='balanced'
+    )
+    rf_model = RandomForestClassifier(
+        random_state=42,
+        n_estimators=200,
+        max_depth=12,
+        class_weight='balanced'
+    )
+    gb_model = GradientBoostingClassifier(
+        random_state=42,
+        n_estimators=200,
+        learning_rate=0.05,
+        max_depth=7
+    )
 
     ensemble_model = VotingClassifier(
         estimators=[
