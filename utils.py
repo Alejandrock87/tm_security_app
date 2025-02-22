@@ -1,4 +1,3 @@
-from flask_socketio import SocketIO
 from flask import jsonify
 import json
 import logging
@@ -8,13 +7,6 @@ from database import db
 from pywebpush import webpush
 from contextlib import contextmanager
 import os
-
-# Configurar Socket.IO con configuración básica
-socketio = SocketIO(
-    async_mode='gevent',
-    cors_allowed_origins="*",
-    logger=True
-)
 
 @contextmanager
 def transaction_context():
@@ -27,7 +19,9 @@ def transaction_context():
         raise
 
 def send_notification(incident_type, timestamp):
-    socketio.emit('new_incident', {'incident_type': incident_type, 'timestamp': timestamp})
+    # Temporalmente deshabilitado Socket.IO
+    logging.info(f"Notification received: {incident_type} at {timestamp}")
+    return True
 
 def send_push_notification(incident_type, timestamp, nearest_station, device_token=None):
     try:
@@ -38,9 +32,6 @@ def send_push_notification(incident_type, timestamp, nearest_station, device_tok
             'title': 'Alerta de Seguridad',
             'body': f'Nuevo incidente de {incident_type} en {nearest_station}'
         }
-
-        # Enviar notificación en tiempo real vía socket.io
-        socketio.emit('new_notification', notification_data)
 
         # Si hay token de dispositivo, enviar push notification
         if device_token:

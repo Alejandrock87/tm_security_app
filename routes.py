@@ -14,9 +14,15 @@ import os
 from sqlalchemy import exc as sql_exceptions
 
 def init_routes(app):
+    @app.route('/test')
+    def test():
+        app.logger.info("Test endpoint accessed")
+        return jsonify({"status": "ok", "message": "Server is running"}), 200
+
     @app.route('/')
     @app.route('/index')
     def index():
+        app.logger.info("Index endpoint accessed")
         if current_user.is_authenticated:
             return redirect(url_for('home'))
         return redirect(url_for('login'))
