@@ -83,8 +83,8 @@ def prepare_rnn_data():
             logging.warning("No sufficient data for sequences")
             return None, None, None
 
-        X = np.array(X)
-        y = np.array(y)
+        X = np.array(X, dtype=np.float32)
+        y = np.array(y, dtype=np.int32)
 
         return X, y, len(incident_types)
 
@@ -168,7 +168,7 @@ def prepare_data():
 
     if not incidents:
         return pd.DataFrame()
-        
+
     # Crear DataFrame con ordenamiento temporal
     data = pd.DataFrame([
         {
@@ -340,16 +340,16 @@ def predict_incident_type(station, hour):
     incidents = Incident.query.filter_by(nearest_station=station).all()
     if not incidents:
         return "Hurto"  # Default prediction
-        
+
     # Get most common incident type for this hour
     hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
     if not hour_incidents:
         return "Hurto"
-        
+
     incident_counts = {}
     for incident in hour_incidents:
         incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
-        
+
     return max(incident_counts.items(), key=lambda x: x[1])[0]
 
 #This function was not in the original code, added for completeness based on function call in predict_station_risk
@@ -369,21 +369,21 @@ def train_rnn_model():
     # Crear y entrenar modelo
     input_shape = (X_train.shape[1], X_train.shape[2])
     model = create_rnn_model(input_shape, num_classes)
-    
+
     # Callbacks para mejor entrenamiento
     early_stopping = EarlyStopping(
         monitor='val_loss',
         patience=10,
         restore_best_weights=True
     )
-    
+
     reduce_lr = ReduceLROnPlateau(
         monitor='val_loss',
         factor=0.2,
         patience=5,
         min_lr=0.0001
     )
-    
+
     # Entrenamiento
     history = model.fit(
         X_train, y_train,
@@ -393,9 +393,9 @@ def train_rnn_model():
         callbacks=[early_stopping, reduce_lr],
         shuffle=True
     )
-    
+
     # Evaluación
     test_loss, test_acc = model.evaluate(X_test, y_test)
     logging.info(f"Test accuracy: {test_acc:.4f}")
-    
+
     return model, history
