@@ -48,17 +48,20 @@ def generate_weekly_predictions():
         return False
 
 def retrain_model_job():
+    from app import app
+    
     logging.info("Starting scheduled model retraining...")
     try:
-        model, feature_importance = train_model()
-        if model:
-            logging.info("Model retraining completed successfully")
-            if generate_weekly_predictions():
-                logging.info("Weekly predictions generated successfully")
+        with app.app_context():
+            model, feature_importance = train_model()
+            if model:
+                logging.info("Model retraining completed successfully")
+                if generate_weekly_predictions():
+                    logging.info("Weekly predictions generated successfully")
+                else:
+                    logging.error("Failed to generate weekly predictions")
             else:
-                logging.error("Failed to generate weekly predictions")
-        else:
-            logging.error("Model retraining failed - insufficient data")
+                logging.error("Model retraining failed - insufficient data")
     except Exception as e:
         logging.error(f"Error during model retraining: {str(e)}")
 
