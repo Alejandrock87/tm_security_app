@@ -168,8 +168,22 @@ async function subscribeToPushNotifications() {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: 'TU_CLAVE_PUBLICA_VAPID'
+            applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
         });
+
+        // Send the subscription to the server
+        const response = await fetch('/push/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(subscription)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to subscribe to push notifications');
+        }
+
         return subscription;
     } catch (error) {
         console.error('Error en suscripción push:', error);
@@ -279,6 +293,7 @@ async function saveNotificationPreferences() {
         return false;
     }
 }
+
 
 
 let socket = null;
@@ -703,6 +718,38 @@ function setupFilterEventListeners() {
     });
 }
 
+// Implement the missing loadStations function
+async function loadStations() {
+    try {
+        const response = await fetch('/api/stations');
+        if (!response.ok) {
+            throw new Error('Error al obtener las estaciones');
+        }
+        const stations = await response.json();
+        console.log('Datos de estaciones recibidos:', stations);
+
+        // Extraer Troncales únicas
+        const troncales = [...new Set(stations.map(station => station.troncal))]
+            .filter(troncal => troncal && troncal !== 'N/A')
+            .sort();
+        console.log('Troncales extraídas:', troncales);
+
+        // Extraer Estaciones únicas
+        const estaciones = [...new Set(stations.map(station => station.nombre))]
+            .filter(nombre => nombre && nombre.trim() !== '')
+            .sort();
+        console.log('Estaciones extraídas:', estaciones);
+
+        // Poblar los selectores
+        populateCheckboxGroup('troncalPreference', troncales, ['all']);
+        populateCheckboxGroup('stationPreference', estaciones, ['all']);
+
+    } catch (error) {
+        console.error('Error loading stations:', error);
+        showToast('Error al cargar las estaciones', 'error');
+    }
+}
+
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -768,8 +815,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
-async function loadStations() {
-    // Placeholder: Replace with your actual station loading logic
-    console.log("Stations loaded (placeholder)");
-}

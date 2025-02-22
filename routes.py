@@ -369,18 +369,23 @@ def init_routes(app):
             'description': i.description
         } for i in incidents])
 
+    @app.route('/api/vapid-public-key')
+    def get_vapid_public_key():
+        return os.environ.get('VAPID_PUBLIC_KEY', '')
+
     @app.route('/push/subscribe', methods=['POST'])
+    @login_required
     def push_subscribe():
         subscription_info = request.get_json()
         try:
-            with db.session.begin_nested(): # Use nested transaction for better error handling
+            with db.session.begin_nested():  # Use nested transaction for better error handling
                 device = PushSubscription(
                     subscription_info=json.dumps(subscription_info),
                     user_id=current_user.id if current_user.is_authenticated else None
                 )
                 db.session.add(device)
             return jsonify({'success': True})
-        except sql_exceptions.IntegrityError: #Handle duplicate entry error
+        except sql_exceptions.IntegrityError:  # Handle duplicate entry error
             return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
