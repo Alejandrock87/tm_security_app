@@ -18,19 +18,21 @@ MODEL_CACHE_FILE = 'model_cache.pkl'
 def generate_weekly_predictions():
     predictions = []
     try:
-        with db.session() as session:
-            stations = session.query(Incident.nearest_station).distinct().all()
-            current_time = datetime.now(pytz.timezone('America/Bogota'))
-            
-            # Generar predicciones para los próximos 7 días
-            for day in range(7):
-                current_date = current_time + timedelta(days=day)
-                for hour in range(24):
-                    pred_time = current_date.replace(hour=hour, minute=0, second=0)
-                    for station in stations:
-                        risk_score = predict_station_risk(station[0], pred_time.hour)
-                        if risk_score > 0.3:  # Solo guardar predicciones relevantes
-                            predictions.append({
+        stations = db.session.query(Incident.nearest_station).distinct().all()
+        current_time = datetime.now(pytz.timezone('America/Bogota'))
+        
+        # Generar predicciones para los próximos 7 días
+        for day in range(7):
+            current_date = current_time + timedelta(days=day)
+            for hour in range(24):
+                pred_time = current_date.replace(hour=hour, minute=0, second=0)
+                for station in stations:
+                    incident_type = predict_incident_type(station[0], pred_time.hour)
+                    predictions.append({
+                        'station': station[0],
+                        'predicted_time': pred_time.isoformat(),
+                        'risk_score': 0.5,  # Valor por defecto mientras se ajusta el modelo
+                        'incident_type': incident_type,
                                 'station': station[0],
                                 'predicted_time': pred_time.isoformat(),
                                 'risk_score': float(risk_score),
