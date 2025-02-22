@@ -41,6 +41,11 @@ def prepare_rnn_data():
             return None, None, None
 
         logging.info(f"Found {len(incidents)} incidents")
+        
+        # Validación inicial de datos
+        if len(incidents) < 100:
+            logging.warning("Insufficient data for training")
+            return None, None, None
 
         df = pd.DataFrame([{
             'timestamp': incident.timestamp,
@@ -64,22 +69,34 @@ def prepare_rnn_data():
         df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
         incident_types = le.classes_
 
-        # Crear secuencias temporales
+        # Crear secuencias temporales con validación
         sequence_length = 24
         X = []
         y = []
+        
+        feature_columns = ['hour', 'day_of_week', 'month', 'latitude', 
+                         'longitude', 'is_weekend', 'is_peak_hour']
 
         for station in df['station'].unique():
             station_data = df[df['station'] == station].sort_values('timestamp')
             if len(station_data) >= sequence_length:
+                sequences = []
                 for i in range(len(station_data) - sequence_length):
                     sequence = station_data.iloc[i:i+sequence_length]
-                    features = sequence[[
-                        'hour', 'day_of_week', 'month', 'latitude', 
-                        'longitude', 'is_weekend', 'is_peak_hour'
-                    ]].values
-                    X.append(features)
-                    y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
+                    features = sequence[feature_columns].values
+                    if features.shape == (sequence_length, len(feature_columns)):
+                        sequences.append(features)
+                        y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
+                
+                if sequences:
+                    X.extend(sequences)
+                    
+        if not X:
+            logging.error("No valid sequences generated")
+            return None, None, None
+            
+        X = np.array(X, dtype=np.float32)
+        y = np.array(y, dtype=np.int32)
 
         if not X:
             logging.warning("No sufficient data for sequences")
@@ -334,15 +351,24 @@ def get_model_insights():
         return "An error occurred while generating model insights. Please check the logs for more information."
 
 def predict_station_risk(station, hour):
-    model, history = train_rnn_model()
-    if model is None:
+    try:
+        model, history = train_rnn_model()
+        if model is None:
+            return None
+
+        # Preparar datos de entrada para la predicción
+        input_data = prepare_prediction_data(station, hour)
+        if input_data is None:
+            return None
+            
+        predictions = model.predict(input_data)
+        # Tomar el máximo de las probabilidades como score de riesgo
+        risk_score = float(np.max(predictions[0]))
+        
+        return risk_score
+    except Exception as e:
+        logging.error(f"Error in prediction: {str(e)}")
         return None
-
-    # Preparar datos de entrada para la predicción
-    input_data = prepare_prediction_data(station, hour)
-    risk_score = model.predict(input_data)
-
-    return float(risk_score[0])
 
 def predict_incident_type(station, hour):
     incidents = Incident.query.filter_by(nearest_station=station).all()
