@@ -89,11 +89,12 @@ def save_model_cache(model, feature_importance):
 
 def train_model():
     model, feature_importance = load_cached_model()
-    if model is None or feature_importance is None:
-        logging.error("No cached model found. Please run retrain_scheduler.py")
-        return None, None
-    logging.info("Using cached model")
-    return model, feature_importance
+    if model is not None and feature_importance is not None:
+        logging.info("Using cached model")
+        return model, feature_importance
+
+    # Continue with training if no cached model exists
+    data = prepare_data()
 
     if len(data) < 100:
         logging.warning("Not enough data to train the model.")
