@@ -61,8 +61,7 @@ def create_app():
                      ping_timeout=60000,
                      ping_interval=25000,
                      allow_upgrades=True,
-                     websocket_class=None,
-                     transports=['polling', 'websocket'])
+                     transports=['websocket', 'polling'])
     
     # Configure allowed hosts
     app.config['SERVER_NAME'] = None  # Let Flask handle the server name automatically
