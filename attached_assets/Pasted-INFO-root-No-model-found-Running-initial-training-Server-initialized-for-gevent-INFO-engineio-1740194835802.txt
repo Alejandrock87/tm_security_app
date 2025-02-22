@@ -1,0 +1,37 @@
+INFO:root:No model found. Running initial training...
+Server initialized for gevent.
+INFO:engineio.server:Server initialized for gevent.
+INFO:root:Starting scheduled model retraining...
+Fitting 5 folds for each of 16 candidates, totalling 80 fits
+INFO:root:Model Accuracy: 0.1339712918660287
+INFO:root:ROC AUC Score: 0.4687306503848058
+INFO:root:Cross-validation Scores: [0.16267943 0.16267943 0.15311005 0.1722488  0.1291866 ]
+INFO:root:Mean CV Score: 0.15598086124401914
+INFO:root:Classification Report:
+INFO:root:                     precision    recall  f1-score   support
+
+              Acoso       0.24      0.27      0.25        30
+Apertura de Puertas       0.13      0.10      0.12        29
+             Ataque       0.13      0.14      0.13        29
+         Cosquilleo       0.05      0.07      0.06        30
+              Hurto       0.12      0.12      0.12        33
+Hurto a mano armada       0.15      0.12      0.13        26
+         Sospechoso       0.14      0.12      0.13        32
+
+           accuracy                           0.13       209
+          macro avg       0.14      0.13      0.13       209
+       weighted avg       0.14      0.13      0.13       209
+
+INFO:root:Confusion Matrix:
+INFO:root:[[8 2 1 5 7 2 5]
+ [3 3 5 8 4 3 3]
+ [5 1 4 6 6 2 5]
+ [7 3 4 2 6 5 3]
+ [8 4 7 5 4 1 4]
+ [1 5 3 5 4 3 5]
+ [1 5 7 8 3 4 4]]
+INFO:root:Feature Importance:
+INFO:root:{'latitude': np.float64(0.09657613175362689), 'longitude': np.float64(0.09071312189987824), 'hour': np.float64(0.024044935469596136), 'day_of_week': np.float64(0.03972898302712463), 'month': np.float64(0.04377298336410385), 'is_weekend': np.float64(0.009771132188098629), 'is_night': np.float64(0.009878344371205786), 'distance_from_center': np.float64(0.08696539996307573), 'incident_count': np.float64(0.05074530501436415), 'station_risk_score': np.float64(0.038488391609940165), 'day_of_month': np.float64(0.07429637711949691), 'week_of_year': np.float64(0.08143934207798409), 'hour_day_interaction': np.float64(0.04487174843601545), 'lat_long_interaction': np.float64(0.09376380089818984), 'nearest_station_Calle 100': np.float64(0.009800274695435257), 'nearest_station_Calle 187': np.float64(0.007435933983247619), 'nearest_station_Portal 80': np.float64(0.00875374442150336), 'nearest_station_Portal Norte': np.float64(0.01598795984349506), 'nearest_station_Portal Suba': np.float64(0.010415474490132364), 'nearest_station_Ricaurte': np.float64(0.01608007979778732), 'nearest_station_Terminal': np.float64(0.009899144187864653), 'time_of_day_Evening': np.float64(0.013222035353748742), 'season_Fall': np.float64(0.01440750590678404), 'season_Summer': np.float64(0.014674846247096474), 'season_Winter': np.float64(0.007818709000439189)}
+INFO:root:Model retraining completed successfully
+ERROR:root:Error generating predictions: name 'risk_score' is not defined
+ERROR:root:Failed to generate weekly predictions
