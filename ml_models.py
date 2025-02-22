@@ -325,11 +325,16 @@ def get_model_insights():
         logging.error(f"Error in get_model_insights: {str(e)}", exc_info=True)
         return "An error occurred while generating model insights. Please check the logs for more information."
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Reduce TF logging
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Force CPU usage
+
 def create_rnn_model(input_shape, num_classes):
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
+    from tensorflow.keras.callbacks import ReduceLROnPlateau
 
     model = Sequential([
         # Primera capa LSTM con regularización L2
@@ -365,11 +370,15 @@ def create_rnn_model(input_shape, num_classes):
     return model
 
 def prepare_rnn_data():
-    incidents = Incident.query.order_by(Incident.timestamp).all()
-    if not incidents:
-        return None, None, None
+    try:
+        incidents = Incident.query.order_by(Incident.timestamp).all()
+        if not incidents:
+            logging.warning("No incidents found in database")
+            return None, None, None
 
-    df = pd.DataFrame([{
+        from sklearn.preprocessing import LabelEncoder
+        
+        df = pd.DataFrame([{
         'timestamp': incident.timestamp,
         'hour': incident.timestamp.hour,
         'day_of_week': incident.timestamp.weekday(),

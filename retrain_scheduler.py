@@ -67,8 +67,8 @@ def retrain_model_job():
     logging.info("Starting scheduled model retraining...")
     try:
         with app.app_context():
-            model, feature_importance = train_model()
-            if model:
+            model = train_model()
+            if model is not None:
                 logging.info("Model retraining completed successfully")
                 if generate_weekly_predictions():
                     logging.info("Weekly predictions generated successfully")
@@ -78,6 +78,7 @@ def retrain_model_job():
                 logging.error("Model retraining failed - insufficient data")
     except Exception as e:
         logging.error(f"Error during model retraining: {str(e)}")
+        logging.exception("Detailed error traceback:")
 
 def run_scheduler():
     # Reentrenar dos veces por semana para mantener el modelo actualizado
