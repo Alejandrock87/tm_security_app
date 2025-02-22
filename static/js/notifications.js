@@ -3,11 +3,24 @@ let socket = null;
 let notificationCount = 0;
 let notificationsEnabled = false;
 
-// Función para mostrar toast
+// Función para mostrar toast notifications
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
+
+    // Agregar estilos inline para el toast
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '4px';
+    toast.style.backgroundColor = type === 'success' ? '#34a853' : 
+                                type === 'error' ? '#ea4335' :
+                                type === 'warning' ? '#fbbc05' : '#1a73e8';
+    toast.style.color = 'white';
+    toast.style.zIndex = '1000';
+
     document.body.appendChild(toast);
 
     setTimeout(() => {
@@ -94,41 +107,37 @@ function getNotificationSettings() {
     };
 }
 
-// Función para guardar las preferencias en localStorage
+// Función para guardar preferencias
 async function saveNotificationPreferences() {
-    if (!document.getElementById('notificationsEnabled').checked) {
-        localStorage.removeItem('notificationPreferences');
-        showToast('Notificaciones desactivadas', 'info');
+    if (Notification.permission !== "granted") {
+        showToast("Primero debes activar las notificaciones", "warning");
         return;
     }
 
-    if (Notification.permission !== 'granted') {
-        const granted = await requestNotificationPermission();
-        if (!granted) return;
+    try {
+        // Recolectar las preferencias seleccionadas
+        const preferences = {
+            troncal: getSelectedValues('troncalPreference'),
+            station: getSelectedValues('stationPreference'),
+            incidentType: getSelectedValues('typePreference')
+        };
+
+        // Guardar en localStorage
+        localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
+
+        // Aquí puedes agregar la lógica para enviar al servidor si es necesario
+
+        showToast("Preferencias guardadas correctamente", "success");
+    } catch (error) {
+        console.error("Error al guardar preferencias:", error);
+        showToast("Error al guardar las preferencias", "error");
     }
-
-    const preferences = {
-        enabled: true,
-        troncal: getSelectedPreferences('troncalPreference'),
-        station: getSelectedPreferences('stationPreference'),
-        incidentType: getSelectedPreferences('typePreference')
-    };
-
-    localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-    showToast('Preferencias guardadas correctamente', 'success');
 }
 
 // Helper function para obtener las preferencias seleccionadas
-function getSelectedPreferences(prefGroupId) {
-    const selected = [];
-    const checkboxes = document.querySelectorAll(`#${prefGroupId} .form-check-input:not(#${prefGroupId}All)`);
-    checkboxes.forEach(cb => {
-        if (cb.checked) {
-            selected.push(cb.value);
-        }
-    });
-
-    return selected.length > 0 ? selected : ['all'];
+function getSelectedValues(prefGroupId) {
+    const checkedBoxes = document.querySelectorAll(`#${prefGroupId} input[type="checkbox"]:checked`);
+    return Array.from(checkedBoxes).map(cb => cb.value);
 }
 
 // Función para cargar Troncales y Estaciones desde la API
@@ -290,29 +299,39 @@ function showBrowserNotification(incident) {
 // Solicitar permiso para notificaciones del navegador
 async function requestNotificationPermission() {
     if (!("Notification" in window)) {
-        showToast("Este navegador no soporta notificaciones", "error");
+        showToast("Este navegador no soporta notificaciones de escritorio", "error");
         return false;
     }
 
     if (Notification.permission === "denied") {
-        showToast("Notificaciones bloqueadas. Habilítalas en la configuración del navegador", "warning");
+        showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "error");
         return false;
     }
 
     try {
         const permission = await Notification.requestPermission();
+        console.log("Permiso de notificación:", permission);
+
         if (permission === "granted") {
-            notificationsEnabled = true;
+            // Registrar el service worker después de obtener el permiso
+            await registerServiceWorker();
+            // Suscribir al usuario a las notificaciones push
             await subscribeToPushNotifications();
-            showToast("Notificaciones activadas correctamente", "success");
-            updateNotificationUI();
+
+            // Habilitar el botón de guardar preferencias
+            const saveButton = document.getElementById('savePreferences');
+            if (saveButton) {
+                saveButton.disabled = false;
+            }
+
+            showToast("¡Notificaciones activadas correctamente!", "success");
             return true;
         } else {
-            showToast("Permiso de notificaciones denegado", "error");
+            showToast("No se otorgó permiso para las notificaciones", "warning");
         }
     } catch (error) {
         console.error("Error al solicitar permisos:", error);
-        showToast("Error al activar notificaciones", "error");
+        showToast("Error al activar las notificaciones", "error");
     }
     return false;
 }
@@ -408,13 +427,13 @@ function applyNotificationFilters() {
     activeFilters.forEach(filter => {
         switch(filter) {
             case 'troncal':
-                notificationFilters.troncal = getSelectedPreferences('troncalPreference');
+                notificationFilters.troncal = getSelectedValues('troncalPreference');
                 break;
             case 'station':
-                notificationFilters.station = getSelectedPreferences('stationPreference');
+                notificationFilters.station = getSelectedValues('stationPreference');
                 break;
             case 'type':
-                notificationFilters.incidentType = getSelectedPreferences('typePreference');
+                notificationFilters.incidentType = getSelectedValues('typePreference');
                 break;
             case 'all':
                 notificationFilters = {
