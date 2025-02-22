@@ -35,6 +35,7 @@ def create_app():
             "pool_recycle": 300,
             "pool_pre_ping": True
         }
+        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
         # Inicializar base de datos
         logger.info("Initializing database")
@@ -68,4 +69,5 @@ def create_app():
         logger.error(f"Error creating Flask application: {str(e)}", exc_info=True)
         raise
 
+# Create the Flask application instance
 app = create_app()

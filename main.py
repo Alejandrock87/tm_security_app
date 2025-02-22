@@ -3,7 +3,7 @@ monkey.patch_all()
 
 import os
 import logging
-from utils import socketio
+from app import app
 
 if __name__ == '__main__':
     # Setup detailed logging
@@ -15,7 +15,6 @@ if __name__ == '__main__':
 
     try:
         logger.info("Starting Flask application")
-        from app import app
 
         # Add health check route
         @app.route('/health')
@@ -26,14 +25,12 @@ if __name__ == '__main__':
         port = int(os.getenv('PORT', 5000))
         logger.info(f"Configured to run on port {port}")
 
-        # Iniciar el servidor con Socket.IO
-        socketio.init_app(app)
-        socketio.run(
-            app,
+        # Start server in the most basic way
+        logger.info("Attempting to start server...")
+        app.run(
             host='0.0.0.0',
             port=port,
-            debug=True,
-            log_output=True
+            debug=True
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)
