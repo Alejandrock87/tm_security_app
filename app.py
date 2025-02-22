@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import os
 import logging
 from flask import Flask
@@ -5,8 +8,6 @@ from flask_login import LoginManager
 from database import init_db, db
 from flask_caching import Cache
 from flask_socketio import SocketIO
-from gevent import monkey
-monkey.patch_all()
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -28,7 +29,7 @@ socketio = SocketIO(
     engineio_logger=True,
     ping_timeout=5,
     ping_interval=25,
-    transports=['websocket', 'polling']
+    transports=['websocket']
 )
 
 # Configurar cache

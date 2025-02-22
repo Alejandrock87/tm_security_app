@@ -1,8 +1,8 @@
-import os
-import logging
 from gevent import monkey
 monkey.patch_all()
 
+import os
+import logging
 from app import app, socketio
 
 # Setup detailed logging

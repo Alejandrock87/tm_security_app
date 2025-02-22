@@ -12,27 +12,11 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Retrain Model"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Generate Station Icon"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Flask Server"
-
-[[workflows.workflow]]
-name = "Retrain Model"
-author = "agent"
-mode = "sequential"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python retrain_scheduler.py"
 
 [[workflows.workflow]]
 name = "Generate Station Icon"
