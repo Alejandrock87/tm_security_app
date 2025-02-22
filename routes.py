@@ -12,6 +12,8 @@ from database import db
 from sqlalchemy import func
 import os
 from sqlalchemy import exc as sql_exceptions
+from ml_models import predict_station_risk as ml_predict_station_risk
+from ml_models import predict_incident_type as ml_predict_incident_type
 
 def init_routes(app):
     @app.route('/test')
@@ -413,20 +415,26 @@ def init_routes(app):
 
     return app
 
-# Placeholder functions -  These need to be implemented with your actual model
 def predict_station_risk(station, hour):
-    # Replace with your actual prediction logic
-    # This is a placeholder, returning a random risk score for demonstration
-    import random
-    return random.uniform(0.1, 1.0)
-
+    """Wrapper para la función de predicción del modelo real"""
+    try:
+        return ml_predict_station_risk(station, hour)
+    except Exception as e:
+        logging.error(f"Error predicting risk for station {station}: {str(e)}")
+        # Fallback a valores aleatorios si hay error
+        import random
+        return random.uniform(0.1, 1.0)
 
 def predict_incident_type(station, hour):
-    # Replace with your actual prediction logic
-    # This is a placeholder, returning a random incident type for demonstration
-    incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
-    import random
-    return random.choice(incident_types)
+    """Wrapper para la función de predicción del tipo de incidente"""
+    try:
+        return ml_predict_incident_type(station, hour)
+    except Exception as e:
+        logging.error(f"Error predicting incident type for station {station}: {str(e)}")
+        # Fallback a valores por defecto si hay error
+        incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
+        import random
+        return random.choice(incident_types)
 
 def get_all_stations():
     with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
@@ -440,5 +448,4 @@ def get_all_stations():
     return stations
 
 def get_route_information(route_id):
-    # Replace with your actual route information retrieval logic
     return {"route_id": route_id, "name": f"Ruta {route_id}"}

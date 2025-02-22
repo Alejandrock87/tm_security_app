@@ -7,7 +7,7 @@ from app import app, socketio
 
 # Setup detailed logging
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -28,10 +28,7 @@ if __name__ == '__main__':
             app,
             host='0.0.0.0',
             port=port,
-            debug=True,
-            allow_unsafe_werkzeug=True,
-            log_output=True,
-            use_reloader=True
+            debug=False
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)
