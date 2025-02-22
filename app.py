@@ -53,8 +53,14 @@ def create_app():
     from routes import init_routes
     init_routes(app)
 
-    socketio.init_app(app, cors_allowed_origins="*", async_mode='gevent', engineio_logger=True)
-    # Remove SERVER_NAME configuration as it's causing routing issues
+    socketio.init_app(app, 
+                     cors_allowed_origins="*", 
+                     async_mode='gevent', 
+                     engineio_logger=True)
+    
+    # Configure allowed hosts
+    app.config['SERVER_NAME'] = None  # Let Flask handle the server name automatically
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
 
     return app
 
