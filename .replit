@@ -12,10 +12,6 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Start Flask App"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Retrain Model"
 
 [[workflows.workflow.tasks]]
@@ -25,17 +21,6 @@ args = "Generate Station Icon"
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Flask Server"
-
-[[workflows.workflow]]
-name = "Start Flask App"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python main.py"
 
 [[workflows.workflow]]
 name = "Retrain Model"
@@ -105,6 +90,10 @@ externalPort = 3003
 [[ports]]
 localPort = 5000
 externalPort = 5000
+
+[[ports]]
+localPort = 5001
+externalPort = 3001
 
 [[ports]]
 localPort = 8000

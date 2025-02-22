@@ -4,6 +4,7 @@ from flask import Flask
 from flask_login import LoginManager
 from database import init_db, db
 from flask_caching import Cache
+from flask_socketio import SocketIO
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -15,6 +16,18 @@ logger = logging.getLogger(__name__)
 # Crear la aplicación Flask
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+
+# Configurar Socket.IO con opciones específicas para websocket
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="*",
+    async_mode='gevent',
+    logger=True,
+    engineio_logger=True,
+    ping_timeout=5,
+    ping_interval=25,
+    transports=['websocket', 'polling']
+)
 
 # Configurar cache
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
