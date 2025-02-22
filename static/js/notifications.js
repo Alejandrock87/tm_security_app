@@ -298,14 +298,26 @@ async function requestNotificationPermission() {
         return false;
     }
 
-    if (Notification.permission === "denied") {
-        showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "warning");
-        return false;
-    }
+    try {
+        const permission = await Notification.requestPermission();
+        console.log("Estado de permisos:", permission);
+        
+        if (permission === "denied") {
+            showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "warning");
+            return false;
+        }
 
-    if (Notification.permission === "granted") {
-        showToast("Las notificaciones ya están habilitadas", "info");
-        document.getElementById('savePreferences').disabled = false;
+        if (permission === "granted") {
+            await registerServiceWorker();
+            await subscribeToPushNotifications();
+            document.getElementById('savePreferences').disabled = false;
+            showToast("Notificaciones activadas correctamente", "success");
+            
+            // Enviar notificación de prueba
+            new Notification("TransMilenio Security", {
+                body: "Las notificaciones están funcionando correctamente",
+                icon: '/static/icons/notification-icon.png'
+            });
         return true;
     }
 
@@ -329,6 +341,11 @@ async function requestNotificationPermission() {
 }
 
 async function saveNotificationPreferences() {
+    if (Notification.permission !== "granted") {
+        showToast("Primero debes activar las notificaciones", "warning");
+        return;
+    }
+
     try {
         const preferences = {
             troncal: Array.from(document.querySelectorAll('#troncalPreference input:checked')).map(cb => cb.value),
@@ -336,8 +353,19 @@ async function saveNotificationPreferences() {
             incidentType: Array.from(document.querySelectorAll('#typePreference input:checked')).map(cb => cb.value)
         };
 
+        if (!preferences.troncal.length && !preferences.station.length && !preferences.incidentType.length) {
+            showToast("Debes seleccionar al menos una preferencia", "warning");
+            return;
+        }
+
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
         showToast("Preferencias guardadas correctamente", "success");
+        
+        // Notificar al usuario
+        new Notification("TransMilenio Security", {
+            body: "Tus preferencias de notificación han sido actualizadas",
+            icon: '/static/icons/notification-icon.png'
+        });
     } catch (error) {
         console.error("Error al guardar preferencias:", error);
         showToast("Error al guardar las preferencias", "error");
