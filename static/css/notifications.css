@@ -1,4 +1,3 @@
-
 /* Toast notifications */
 .toast {
     position: fixed;
@@ -420,30 +419,21 @@ h5 {
   }
 }
 
-  .notifications-header {
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
+.notification-info small {
+    color: #212529;
+    font-weight: 500;
+}
 
-  .notifications-header h2 {
-    font-size: 1.75rem;
-  }
+#savePreferences:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
-  .card-body {
-    padding: 1.25rem;
-  }
+#savePreferences:not(:disabled) {
+    cursor: pointer;
+}
 
-  .btn-primary {
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-  .notification-list {
-    max-height: 400px;
-  }
-
-  .filter-chip {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-  }
+/* Added styles for better visual feedback */
+.notification-info {
+    color: var(--notification-text); /* Use the defined color variable */
 }

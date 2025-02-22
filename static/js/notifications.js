@@ -109,11 +109,6 @@ function getNotificationSettings() {
 
 // Función para guardar preferencias
 async function saveNotificationPreferences() {
-    if (Notification.permission !== "granted") {
-        showToast("Primero debes activar las notificaciones", "warning");
-        return;
-    }
-
     try {
         // Recolectar las preferencias seleccionadas
         const preferences = {
@@ -304,27 +299,24 @@ async function requestNotificationPermission() {
     }
 
     if (Notification.permission === "denied") {
-        showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "error");
+        showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "warning");
         return false;
+    }
+
+    if (Notification.permission === "granted") {
+        showToast("Las notificaciones ya están habilitadas", "info");
+        document.getElementById('savePreferences').disabled = false;
+        return true;
     }
 
     try {
         const permission = await Notification.requestPermission();
         console.log("Permiso de notificación:", permission);
-
         if (permission === "granted") {
-            // Registrar el service worker después de obtener el permiso
             await registerServiceWorker();
-            // Suscribir al usuario a las notificaciones push
             await subscribeToPushNotifications();
-
-            // Habilitar el botón de guardar preferencias
-            const saveButton = document.getElementById('savePreferences');
-            if (saveButton) {
-                saveButton.disabled = false;
-            }
-
-            showToast("¡Notificaciones activadas correctamente!", "success");
+            document.getElementById('savePreferences').disabled = false;
+            showToast("Notificaciones activadas correctamente", "success");
             return true;
         } else {
             showToast("No se otorgó permiso para las notificaciones", "warning");
@@ -337,26 +329,18 @@ async function requestNotificationPermission() {
 }
 
 async function saveNotificationPreferences() {
-    if (!notificationsEnabled) {
-        showToast("Activa las notificaciones primero", "warning");
-        return;
-    }
-
     try {
-        // Obtener preferencias seleccionadas
         const preferences = {
-            enabled: true,
             troncal: Array.from(document.querySelectorAll('#troncalPreference input:checked')).map(cb => cb.value),
             station: Array.from(document.querySelectorAll('#stationPreference input:checked')).map(cb => cb.value),
             incidentType: Array.from(document.querySelectorAll('#typePreference input:checked')).map(cb => cb.value)
         };
 
-        // Guardar en localStorage
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
         showToast("Preferencias guardadas correctamente", "success");
     } catch (error) {
         console.error("Error al guardar preferencias:", error);
-        showToast("Error al guardar preferencias", "error");
+        showToast("Error al guardar las preferencias", "error");
     }
 }
 
