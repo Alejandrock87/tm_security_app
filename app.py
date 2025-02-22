@@ -55,10 +55,10 @@ def create_app():
 
     socketio.init_app(app, 
                      cors_allowed_origins="*", 
-                     async_mode='gevent', 
-                     engineio_logger=True,
-                     logger=False,  # Disable socketio logging
-                     manage_session=False)  # Let Flask handle sessions
+                     async_mode='threading',  # Change to threading mode
+                     engineio_logger=False,   # Disable engineio logging
+                     logger=False,            # Disable socketio logging
+                     manage_session=False)    # Let Flask handle sessions
     
     # Configure allowed hosts
     app.config['SERVER_NAME'] = None  # Let Flask handle the server name automatically
