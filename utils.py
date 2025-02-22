@@ -9,7 +9,12 @@ from pywebpush import webpush
 from contextlib import contextmanager
 import os
 
-socketio = SocketIO()
+# Configurar Socket.IO con configuración básica
+socketio = SocketIO(
+    async_mode='gevent',
+    cors_allowed_origins="*",
+    logger=True
+)
 
 @contextmanager
 def transaction_context():
