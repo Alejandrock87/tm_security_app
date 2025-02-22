@@ -35,14 +35,15 @@ FEATURE_CACHE_FILE = 'feature_cache.pkl'
 
 def prepare_rnn_data():
     try:
-        with transaction_context():
-            incidents = Incident.query.order_by(Incident.timestamp).all()
+        # Reemplazar transaction_context con una consulta directa
+        incidents = Incident.query.order_by(Incident.timestamp).all()
+
         if not incidents:
             logging.warning("No incidents found in database")
             return None, None, None
 
         logging.info(f"Found {len(incidents)} incidents")
-        
+
         # Validación inicial de datos
         if len(incidents) < 100:
             logging.warning("Insufficient data for training")
@@ -74,7 +75,7 @@ def prepare_rnn_data():
         sequence_length = 24
         X = []
         y = []
-        
+
         feature_columns = ['hour', 'day_of_week', 'month', 'latitude', 
                          'longitude', 'is_weekend', 'is_peak_hour']
 
@@ -88,37 +89,27 @@ def prepare_rnn_data():
                     if features.shape == (sequence_length, len(feature_columns)):
                         sequences.append(features)
                         y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
-                
+
                 if sequences:
                     X.extend(sequences)
-                    
+
         if not X:
             logging.error("No valid sequences generated")
             return None, None, None
-            
-        # Evitar duplicación de conversión y validar forma
-        if not X:
-            logging.warning("No sufficient data for sequences")
-            return None, None, None
-            
+
         X = np.array(X, dtype=np.float32)
         y = np.array(y, dtype=np.int32)
-        
+
         # Validación de dimensiones
         if len(X.shape) != 3:
             logging.error(f"Invalid tensor shape. Expected 3D, got {len(X.shape)}D")
             return None, None, None
-            
+
         if X.shape[1] != sequence_length:
             logging.error(f"Invalid sequence length. Expected {sequence_length}, got {X.shape[1]}")
             return None, None, None
 
         logging.info(f"X shape: {X.shape}, y shape: {y.shape}")
-
-        if len(X.shape) != 3:
-            logging.error(f"Invalid input shape. Expected 3D array, got {len(X.shape)}D")
-            return None, None, None
-
         return X, y, len(incident_types)
 
     except Exception as e:
@@ -197,7 +188,7 @@ def train_model():
         return None, None
 
 def prepare_data():
-    with transaction_context():
+    with db.session.begin(): #using db session directly as per intention.
         incidents = Incident.query.order_by(Incident.timestamp).all()
 
     if not incidents:
@@ -369,11 +360,11 @@ def predict_station_risk(station, hour):
         input_data = prepare_prediction_data(station, hour)
         if input_data is None:
             return None
-            
+
         predictions = model.predict(input_data)
         # Tomar el máximo de las probabilidades como score de riesgo
         risk_score = float(np.max(predictions[0]))
-        
+
         return risk_score
     except Exception as e:
         logging.error(f"Error in prediction: {str(e)}")
@@ -400,11 +391,11 @@ def prepare_prediction_data(station, hour):
     try:
         # Obtener datos históricos de la estación
         incidents = Incident.query.filter_by(nearest_station=station).order_by(Incident.timestamp.desc()).limit(24).all()
-        
+
         if len(incidents) < 24:
             logging.warning(f"Insufficient historical data for station {station}")
             return None
-            
+
         # Preparar features
         sequence = []
         for incident in incidents:
@@ -418,13 +409,13 @@ def prepare_prediction_data(station, hour):
                 1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0
             ]
             sequence.append(features)
-            
+
         # Convertir a numpy array y normalizar si es necesario
         sequence = np.array(sequence, dtype=np.float32)
-        
+
         # Expandir dimensiones para match con formato de entrada del modelo
         return np.expand_dims(sequence, axis=0)
-        
+
     except Exception as e:
         logging.error(f"Error preparing prediction data: {str(e)}")
         return None  
