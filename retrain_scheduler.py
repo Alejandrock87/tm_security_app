@@ -17,7 +17,9 @@ MODEL_CACHE_FILE = 'model_cache.pkl'
 def generate_weekly_predictions():
     predictions = []
     try:
-        stations = db.session.query(Incident.nearest_station).distinct().all()
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+
         current_time = datetime.now(pytz.timezone('America/Bogota'))
 
         # Generar predicciones para los próximos 7 días
@@ -25,19 +27,25 @@ def generate_weekly_predictions():
             current_date = current_time + timedelta(days=day)
             for hour in range(24):
                 pred_time = current_date.replace(hour=hour, minute=0, second=0)
-                for station in stations:
-                    risk_score = predict_station_risk(station[0], pred_time.hour)
+
+                for feature in geojson_data['features']:
+                    station = feature['properties']['nombre_estacion']
+                    coordinates = feature['geometry']['coordinates']
+
+                    risk_score = predict_station_risk(station, pred_time.hour)
                     if risk_score is not None:
                         predictions.append({
-                            'station': station[0],
+                            'station': station,
                             'predicted_time': pred_time.isoformat(),
                             'risk_score': float(risk_score),
-                            'incident_type': predict_incident_type(station[0], pred_time.hour),
+                            'incident_type': predict_incident_type(station, pred_time.hour),
+                            'latitude': coordinates[1],
+                            'longitude': coordinates[0]
                         })
 
         # Guardar predicciones en caché
-        with open(PREDICTIONS_CACHE_FILE, 'w') as f:
-            json.dump(predictions, f)
+        from app import cache
+        cache.set('predictions_cache', predictions, timeout=24*3600)  # 24 horas
 
         logging.info(f"Generated {len(predictions)} predictions for the next week")
         return True

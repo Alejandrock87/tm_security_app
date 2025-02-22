@@ -243,29 +243,46 @@ def init_routes(app):
     @login_required
     def api_predictions():
         try:
-            from ml_models import get_model_insights # Lazy import here
-            insights = get_model_insights()
+            # Intentar obtener predicciones del caché
+            cached_predictions = cache.get('predictions_cache')
+            if cached_predictions:
+                return jsonify(cached_predictions)
 
-            # Generar predicciones de ejemplo para demostración
+            # Si no hay caché, cargar el modelo y generar predicciones
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
+
             current_time = datetime.now()
+            predictions = []
 
-            predictions = [
-                {
-                    'station': 'Portal Norte',
-                    'incident_type': 'Hurto',
-                    'predicted_time': (current_time + timedelta(minutes=30)).isoformat(),
-                    'risk_score': 0.85
-                },
-                {
-                    'station': 'Calle 76',
-                    'incident_type': 'Acoso',
-                    'predicted_time': (current_time + timedelta(minutes=45)).isoformat(),
-                    'risk_score': 0.75
-                }
-            ]
+            # Generar predicciones para las próximas 3 horas
+            for hour_offset in range(3):
+                prediction_time = current_time + timedelta(hours=hour_offset)
 
+                for feature in geojson_data['features']:
+                    station = feature['properties']['nombre_estacion']
+                    coordinates = feature['geometry']['coordinates']
+
+                    # Usar el modelo real para predicciones
+                    risk_score = predict_station_risk(station, prediction_time.hour)
+                    if risk_score is not None:
+                        incident_type = predict_incident_type(station, prediction_time.hour)
+
+                        predictions.append({
+                            'station': station,
+                            'incident_type': incident_type,
+                            'predicted_time': prediction_time.isoformat(),
+                            'risk_score': float(risk_score),
+                            'latitude': coordinates[1],
+                            'longitude': coordinates[0]
+                        })
+
+            # Guardar en caché por 1 hora
+            cache.set('predictions_cache', predictions, timeout=3600)
             return jsonify(predictions)
+
         except Exception as e:
+            logging.error(f"Error generating predictions: {str(e)}")
             return jsonify({'error': str(e)}), 500
 
     @app.route('/real_time_map')
@@ -395,3 +412,33 @@ def init_routes(app):
 
 
     return app
+
+# Placeholder functions -  These need to be implemented with your actual model
+def predict_station_risk(station, hour):
+    # Replace with your actual prediction logic
+    # This is a placeholder, returning a random risk score for demonstration
+    import random
+    return random.uniform(0.1, 1.0)
+
+
+def predict_incident_type(station, hour):
+    # Replace with your actual prediction logic
+    # This is a placeholder, returning a random incident type for demonstration
+    incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
+    import random
+    return random.choice(incident_types)
+
+def get_all_stations():
+    with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+        geojson_data = json.load(f)
+        stations = [{
+            'nombre': feature['properties']['nombre_estacion'],
+            'troncal': feature['properties'].get('troncal_estacion', 'N/A'),
+            'latitude': feature['geometry']['coordinates'][1],
+            'longitude': feature['geometry']['coordinates'][0]
+        } for feature in geojson_data['features']]
+    return stations
+
+def get_route_information(route_id):
+    # Replace with your actual route information retrieval logic
+    return {"route_id": route_id, "name": f"Ruta {route_id}"}
