@@ -14,11 +14,154 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from xgboost import XGBClassifier
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
 
 from database import db
 from models import Incident
+
+# Configuración de TensorFlow
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+MODEL_CACHE_FILE = 'model_cache.pkl'
+FEATURE_CACHE_FILE = 'feature_cache.pkl'
+
+def prepare_rnn_data():
+    try:
+        incidents = Incident.query.order_by(Incident.timestamp).all()
+        if not incidents:
+            logging.warning("No incidents found in database")
+            return None, None, None
+
+        df = pd.DataFrame([{
+            'timestamp': incident.timestamp,
+            'hour': incident.timestamp.hour,
+            'day_of_week': incident.timestamp.weekday(),
+            'month': incident.timestamp.month,
+            'station': incident.nearest_station,
+            'latitude': incident.latitude,
+            'longitude': incident.longitude,
+            'incident_type': incident.incident_type,
+            'is_weekend': incident.timestamp.weekday() >= 5,
+            'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
+        } for incident in incidents])
+
+        # Normalización de coordenadas
+        scaler = StandardScaler()
+        df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
+
+        # Codificación de variables categóricas
+        le = LabelEncoder()
+        df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
+        incident_types = le.classes_
+
+        # Crear secuencias temporales
+        sequence_length = 24
+        X = []
+        y = []
+
+        for station in df['station'].unique():
+            station_data = df[df['station'] == station].sort_values('timestamp')
+            if len(station_data) >= sequence_length:
+                for i in range(len(station_data) - sequence_length):
+                    sequence = station_data.iloc[i:i+sequence_length]
+                    features = sequence[[
+                        'hour', 'day_of_week', 'month', 'latitude', 
+                        'longitude', 'is_weekend', 'is_peak_hour'
+                    ]].values
+                    X.append(features)
+                    y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
+
+        if not X:
+            logging.warning("No sufficient data for sequences")
+            return None, None, None
+
+        X = np.array(X)
+        y = np.array(y)
+
+        return X, y, len(incident_types)
+
+    except Exception as e:
+        logging.error(f"Error preparing RNN data: {str(e)}")
+        return None, None, None
+
+def create_rnn_model(input_shape, num_classes):
+    model = Sequential([
+        LSTM(128, return_sequences=True, 
+             input_shape=input_shape,
+             kernel_regularizer=l2(0.01),
+             recurrent_regularizer=l2(0.01)),
+        BatchNormalization(),
+        Dropout(0.3),
+        LSTM(64, return_sequences=True),
+        BatchNormalization(),
+        Dropout(0.3),
+        LSTM(32),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(32, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(num_classes, activation='softmax')
+    ])
+
+    model.compile(
+        optimizer=Adam(learning_rate=0.001),
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    return model
+
+def train_model():
+    X, y, num_classes = prepare_rnn_data()
+    if X is None or y is None or num_classes is None:
+        logging.error("Failed to prepare data for training")
+        return None, None
+
+    try:
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Crear y entrenar modelo
+        input_shape = (X_train.shape[1], X_train.shape[2])
+        model = create_rnn_model(input_shape, num_classes)
+
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=10,
+            restore_best_weights=True
+        )
+
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.2,
+            patience=5,
+            min_lr=0.0001
+        )
+
+        history = model.fit(
+            X_train, y_train,
+            epochs=100,
+            batch_size=32,
+            validation_split=0.2,
+            callbacks=[early_stopping, reduce_lr],
+            shuffle=True
+        )
+
+        test_loss, test_acc = model.evaluate(X_test, y_test)
+        logging.info(f"Test accuracy: {test_acc:.4f}")
+
+        return model, history
+
+    except Exception as e:
+        logging.error(f"Error training model: {str(e)}")
+        return None, None
 
 def prepare_data():
     incidents = Incident.query.order_by(Incident.timestamp).all()
@@ -63,13 +206,6 @@ def prepare_data():
 
     return data
 
-import pickle
-import os
-from pathlib import Path
-
-MODEL_CACHE_FILE = 'model_cache.pkl'
-FEATURE_CACHE_FILE = 'feature_cache.pkl'
-
 def load_cached_model():
     try:
         if os.path.exists(MODEL_CACHE_FILE) and os.path.exists(FEATURE_CACHE_FILE):
@@ -94,148 +230,6 @@ def save_model_cache(model, feature_importance):
     except Exception as e:
         logging.error(f"Error saving model cache: {e}")
 
-def train_model():
-    model, feature_importance = load_cached_model()
-    if model is not None and feature_importance is not None:
-        logging.info("Using cached model")
-        return model, feature_importance
-
-    # Continue with training if no cached model exists
-    data = prepare_data()
-
-    if len(data) < 100:
-        logging.warning("Not enough data to train the model.")
-        return None, None
-
-    X = data.drop('incident_type', axis=1)
-    y = data['incident_type']
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-
-    # Define preprocessing steps
-    numeric_features = ['latitude', 'longitude', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_night', 'distance_from_center', 'incident_count', 'station_risk_score', 'day_of_month', 'week_of_year', 'hour_day_interaction', 'lat_long_interaction']
-    categorical_features = ['nearest_station', 'time_of_day', 'season']
-
-    numeric_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
-    ])
-
-    categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ])
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', numeric_transformer, numeric_features),
-            ('cat', categorical_transformer, categorical_features)
-        ])
-
-    from imblearn.over_sampling import SMOTE
-    from imblearn.pipeline import Pipeline as ImbPipeline
-    
-    # Balancear clases
-    smote = SMOTE(random_state=42)
-    
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import LSTM, Dense, Dropout, Embedding
-    from tensorflow.keras.optimizers import Adam
-    from tensorflow.keras.preprocessing.sequence import pad_sequences
-    from tensorflow.keras.callbacks import EarlyStopping
-    
-    # Crear secuencias temporales
-    sequence_length = 24  # 24 horas de historial
-    
-    # Configuración del modelo LSTM con manejo de memoria mejorado
-    model = Sequential([
-        LSTM(64, return_sequences=True, input_shape=(sequence_length, X_train.shape[2]), 
-             dropout=0.2, recurrent_dropout=0.2),
-        LSTM(32, dropout=0.2, recurrent_dropout=0.2),
-        Dense(16, activation='relu'),
-        Dropout(0.2),
-        Dense(len(np.unique(y)), activation='softmax')
-    ])
-    
-    # Compilar modelo
-    model.compile(
-        optimizer=Adam(learning_rate=0.001),
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy']
-    )
-    
-    # Early stopping para evitar overfitting
-    early_stopping = EarlyStopping(
-        monitor='val_loss',
-        patience=5,
-        restore_best_weights=True
-    )
-
-    # Feature selection
-    selector = SelectFromModel(RandomForestClassifier(n_estimators=100, random_state=42), threshold='median')
-
-    # Create pipeline
-    model_pipeline = Pipeline(steps=[
-        ('preprocessor', preprocessor),
-        ('selector', selector),
-        ('classifier', ensemble_model)
-    ])
-
-    # Hyperparameter tuning
-    param_grid = {
-        'selector__estimator__max_depth': [5, 10],
-        'classifier__xgb__max_depth': [3, 5],
-        'classifier__rf__max_depth': [5, 10],
-        'classifier__gb__max_depth': [3, 5],
-    }
-
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    grid_search = GridSearchCV(model_pipeline, param_grid, cv=cv, n_jobs=-1, verbose=1, scoring='accuracy')
-
-    # Train the model
-    grid_search.fit(X_train, y_train)
-
-    best_model = grid_search.best_estimator_
-
-    # Evaluate the model
-    y_pred = best_model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
-    conf_matrix = confusion_matrix(y_test, y_pred)
-
-    # Calculate ROC AUC score
-    y_pred_proba = best_model.predict_proba(X_test)
-    roc_auc = roc_auc_score(y_test, y_pred_proba, multi_class='ovr')
-
-    # Cross-validation score
-    cv_scores = cross_val_score(best_model, X, y, cv=cv, scoring='accuracy')
-
-    logging.info(f"Model Accuracy: {accuracy}")
-    logging.info(f"ROC AUC Score: {roc_auc}")
-    logging.info(f"Cross-validation Scores: {cv_scores}")
-    logging.info(f"Mean CV Score: {np.mean(cv_scores)}")
-    logging.info("Classification Report:")
-    logging.info(report)
-    logging.info("Confusion Matrix:")
-    logging.info(conf_matrix)
-
-    # Feature importance
-    feature_importance = best_model.named_steps['selector'].estimator_.feature_importances_
-    feature_names = (numeric_features + 
-                     best_model.named_steps['preprocessor']
-                     .named_transformers_['cat']
-                     .named_steps['onehot']
-                     .get_feature_names_out(categorical_features).tolist())
-
-    selected_features_mask = best_model.named_steps['selector'].get_support()
-    selected_feature_names = [name for name, selected in zip(feature_names, selected_features_mask) if selected]
-    selected_feature_importance = feature_importance[selected_features_mask]
-
-    feature_importance_dict = dict(zip(selected_feature_names, selected_feature_importance))
-    logging.info("Feature Importance:")
-    logging.info(feature_importance_dict)
-
-    return best_model, feature_importance_dict
 
 def predict_incident_probability(latitude, longitude, hour, day_of_week, month, nearest_station):
     model, _ = train_model()
@@ -331,147 +325,43 @@ def get_model_insights():
         logging.error(f"Error in get_model_insights: {str(e)}", exc_info=True)
         return "An error occurred while generating model insights. Please check the logs for more information."
 
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Reduce TF logging
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Force CPU usage
+def predict_station_risk(station, hour):
+    model, history = train_rnn_model()
+    if model is None:
+        return None
 
-def create_rnn_model(input_shape, num_classes):
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
-    from tensorflow.keras.optimizers import Adam
-    from tensorflow.keras.regularizers import l2
-    from tensorflow.keras.callbacks import ReduceLROnPlateau
+    # Preparar datos de entrada para la predicción
+    input_data = prepare_prediction_data(station, hour)
+    risk_score = model.predict(input_data)
 
-    model = Sequential([
-        # Primera capa LSTM con regularización L2
-        LSTM(128, return_sequences=True, 
-             input_shape=input_shape,
-             kernel_regularizer=l2(0.01),
-             recurrent_regularizer=l2(0.01)),
-        BatchNormalization(),
-        Dropout(0.3),
+    return float(risk_score[0])
+
+def predict_incident_type(station, hour):
+    incidents = Incident.query.filter_by(nearest_station=station).all()
+    if not incidents:
+        return "Hurto"  # Default prediction
         
-        # Segunda capa LSTM
-        LSTM(64, return_sequences=True),
-        BatchNormalization(),
-        Dropout(0.3),
+    # Get most common incident type for this hour
+    hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
+    if not hour_incidents:
+        return "Hurto"
         
-        # Tercera capa LSTM
-        LSTM(32),
-        BatchNormalization(),
-        Dropout(0.2),
+    incident_counts = {}
+    for incident in hour_incidents:
+        incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
         
-        # Capas densas
-        Dense(32, activation='relu'),
-        BatchNormalization(),
-        Dropout(0.2),
-        Dense(num_classes, activation='softmax')
-    ])
+    return max(incident_counts.items(), key=lambda x: x[1])[0]
 
-    model.compile(
-        optimizer=Adam(learning_rate=0.001),
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy']
-    )
-    return model
-
-def prepare_rnn_data():
-    try:
-        incidents = Incident.query.order_by(Incident.timestamp).all()
-        if not incidents:
-            logging.warning("No incidents found in database")
-            return None, None, None
-        
-        df = pd.DataFrame([{
-            'timestamp': incident.timestamp,
-            'hour': incident.timestamp.hour,
-            'day_of_week': incident.timestamp.weekday(),
-            'month': incident.timestamp.month,
-            'station': incident.nearest_station,
-            'latitude': incident.latitude,
-            'longitude': incident.longitude,
-            'incident_type': incident.incident_type,
-            'is_weekend': incident.timestamp.weekday() >= 5,
-            'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
-        } for incident in incidents])
-
-        # Normalización de coordenadas
-        scaler = StandardScaler()
-        df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
-        
-        # Codificación de variables categóricas
-        le = LabelEncoder()
-        df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
-        incident_types = le.classes_
-
-        # Crear secuencias temporales
-        sequence_length = 24  # 24 horas de historial
-        X = []
-        y = []
-        
-        for station in df['station'].unique():
-            station_data = df[df['station'] == station].sort_values('timestamp')
-            if len(station_data) >= sequence_length:
-                for i in range(len(station_data) - sequence_length):
-                    sequence = station_data.iloc[i:i+sequence_length]
-                    features = sequence[[
-                        'hour', 'day_of_week', 'month', 'latitude', 
-                        'longitude', 'is_weekend', 'is_peak_hour'
-                    ]].values
-                    X.append(features)
-                    y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
-        
-        X = np.array(X)
-        y = np.array(y)
-        
-        return X, y, len(incident_types)
-
-    except Exception as e:
-        logging.error(f"Error preparing RNN data: {str(e)}")
-        return None, None, None
-    X = []
-    y = []
-    
-    for station in df['station'].unique():
-        station_data = df[df['station'] == station].sort_values('timestamp')
-        if len(station_data) >= sequence_length:
-            for i in range(len(station_data) - sequence_length):
-                sequence = station_data.iloc[i:i+sequence_length]
-                features = sequence[[
-                    'hour', 'day_of_week', 'month', 'latitude', 
-                    'longitude', 'is_weekend', 'is_peak_hour'
-                ]].values
-                X.append(features)
-                y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
-    
-    X = np.array(X)
-    y = np.array(y)
-    
-    return X, y, len(incident_types)
-
-    # Crear características temporales
-    df['is_peak_hour'] = df['hour'].apply(lambda x: 1 if x in [6,7,8,17,18,19] else 0)
-
-    # Codificar variables categóricas
-    df_encoded = pd.get_dummies(df, columns=['station', 'incident_type'])
-
-    # Preparar secuencias de 24 horas
-    sequences = []
-    labels = []
-    for station in df['station'].unique():
-        station_data = df_encoded[df_encoded[f'station_{station}'] == 1]
-        for day in station_data['day_of_week'].unique():
-            day_data = station_data[station_data['day_of_week'] == day]
-            if len(day_data) >= 24:
-                sequences.append(day_data.iloc[:24].values)
-                labels.append(1 if len(day_data) > 24 else 0)
-
-    return np.array(sequences), np.array(labels)
+#This function was not in the original code, added for completeness based on function call in predict_station_risk
+def prepare_prediction_data(station, hour):
+    #This function needs to be implemented based on the desired input data format for the RNN model
+    #Placeholder for now, replace with actual data preparation
+    return np.array([[[0.0] * 7] * 24])  
 
 def train_rnn_model():
     X, y, num_classes = prepare_rnn_data()
     if X is None:
-        return None
+        return None, None
 
     # Split datos
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -509,30 +399,3 @@ def train_rnn_model():
     logging.info(f"Test accuracy: {test_acc:.4f}")
     
     return model, history
-
-def predict_station_risk(station, hour):
-    model = train_rnn_model()
-    if model is None:
-        return None
-
-    # Preparar datos de entrada para la predicción
-    input_data = prepare_prediction_data(station, hour)
-    risk_score = model.predict(input_data)
-
-    return float(risk_score[0])
-
-def predict_incident_type(station, hour):
-    incidents = Incident.query.filter_by(nearest_station=station).all()
-    if not incidents:
-        return "Hurto"  # Default prediction
-        
-    # Get most common incident type for this hour
-    hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
-    if not hour_incidents:
-        return "Hurto"
-        
-    incident_counts = {}
-    for incident in hour_incidents:
-        incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
-        
-    return max(incident_counts.items(), key=lambda x: x[1])[0]
