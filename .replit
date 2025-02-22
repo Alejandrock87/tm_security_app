@@ -36,6 +36,7 @@ args = "python main.py"
 [[workflows.workflow]]
 name = "Retrain Model"
 author = "agent"
+mode = "sequential"
 
 [workflows.workflow.metadata]
 agentRequireRestartOnSave = false
