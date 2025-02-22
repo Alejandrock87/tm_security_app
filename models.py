@@ -43,6 +43,12 @@ class Incident(db.Model):
             'user_id': self.user_id,
             'nearest_station': self.nearest_station
         }
+class PushSubscription(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    subscription_info = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     incident_type = db.Column(db.String(100), nullable=False)

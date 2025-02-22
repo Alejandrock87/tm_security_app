@@ -8,11 +8,13 @@ from utils import send_notification, send_push_notification
 from datetime import datetime, timedelta
 from ml_models import get_model_insights
 import logging
-from models import User, Incident
+from models import User, Incident, PushSubscription # Added PushSubscription import
 from database import db
 from transmilenio_api import get_all_stations, get_route_information
 from sqlalchemy import func
 import os
+from sqlalchemy import exc as sql_exceptions # Added for exception handling
+
 
 def init_routes(app):
     @app.route('/')
@@ -243,7 +245,7 @@ def init_routes(app):
             # Generar predicciones de ejemplo para demostración
             from datetime import datetime, timedelta
             current_time = datetime.now()
-            
+
             predictions = [
                 {
                     'station': 'Portal Norte',
@@ -258,7 +260,7 @@ def init_routes(app):
                     'risk_score': 0.75
                 }
             ]
-            
+
             return jsonify(predictions)
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -315,7 +317,7 @@ def init_routes(app):
 
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
-            
+
         if troncal:
             stations_for_troncal = [feature['properties']['nombre_estacion'] 
                                    for feature in geojson_data['features']
@@ -345,7 +347,7 @@ def init_routes(app):
 
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
-            
+
         if troncal:
             stations_for_troncal = [feature['properties']['nombre_estacion'] 
                                    for feature in geojson_data['features']
@@ -366,5 +368,22 @@ def init_routes(app):
             'nearest_station': i.nearest_station,
             'description': i.description
         } for i in incidents])
+
+    @app.route('/push/subscribe', methods=['POST'])
+    def push_subscribe():
+        subscription_info = request.get_json()
+        try:
+            with db.session.begin_nested(): # Use nested transaction for better error handling
+                device = PushSubscription(
+                    subscription_info=json.dumps(subscription_info),
+                    user_id=current_user.id if current_user.is_authenticated else None
+                )
+                db.session.add(device)
+            return jsonify({'success': True})
+        except sql_exceptions.IntegrityError: #Handle duplicate entry error
+            return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
 
     return app

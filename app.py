@@ -12,6 +12,9 @@ def create_app():
     app = Flask(__name__)
     cache.init_app(app)
     app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+app.config['VAPID_PUBLIC_KEY'] = os.environ.get('VAPID_PUBLIC_KEY')
+app.config['VAPID_PRIVATE_KEY'] = os.environ.get('VAPID_PRIVATE_KEY')
+app.config['VAPID_CLAIM_EMAIL'] = os.environ.get('VAPID_CLAIM_EMAIL', 'mailto:admin@example.com')
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
         database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
