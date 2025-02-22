@@ -1,16 +1,51 @@
 // Variables globales
 let socket = null;
 let notificationCount = 0;
+let notificationsEnabled = false;
 
-// Registrar Service Worker
+// Función para mostrar toast
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Inicializar Service Worker sin solicitar permisos
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/static/js/service-worker.js')
-    .then(registration => {
-      console.log('Service Worker registrado:', registration);
-    })
-    .catch(error => {
-      console.error('Error al registrar Service Worker:', error);
-    });
+    navigator.serviceWorker.register('/static/js/service-worker.js')
+        .then(registration => {
+            console.log('Service Worker registrado:', registration);
+            checkNotificationStatus();
+        })
+        .catch(error => {
+            console.error('Error al registrar Service Worker:', error);
+        });
+}
+
+// Verificar estado actual de notificaciones
+function checkNotificationStatus() {
+    if ('Notification' in window) {
+        notificationsEnabled = Notification.permission === 'granted';
+        updateUI();
+    }
+}
+
+// Actualizar UI basado en el estado
+function updateUI() {
+    const activateBtn = document.getElementById('activateNotifications');
+    const preferencesBtn = document.getElementById('savePreferences');
+    
+    if (activateBtn) {
+        activateBtn.textContent = notificationsEnabled ? 
+            'Notificaciones Activadas' : 'Activar Notificaciones';
+        activateBtn.disabled = notificationsEnabled;
+    }
+    
+    if (preferencesBtn) {
+        preferencesBtn.disabled = !notificationsEnabled;
+    }
 }
 const notificationBadge = document.getElementById('notification-badge');
 const notificationsList = document.getElementById('notificationList');
@@ -264,34 +299,55 @@ function showToast(data) {
 // Solicitar permiso para notificaciones del navegador
 async function requestNotificationPermission() {
     if (!("Notification" in window)) {
-        alert("Este navegador no soporta notificaciones de escritorio");
+        showToast("Este navegador no soporta notificaciones", "error");
         return false;
     }
 
     if (Notification.permission === "denied") {
-        alert("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador y recarga la página.");
+        showToast("Notificaciones bloqueadas. Habilítalas en la configuración del navegador", "warning");
         return false;
-    }
-
-    if (Notification.permission === "granted") {
-        console.log("Notificaciones ya están habilitadas");
-        return true;
     }
 
     try {
         const permission = await Notification.requestPermission();
-        console.log("Permiso de notificación:", permission);
         if (permission === "granted") {
-            // Registrar el service worker después de obtener el permiso
-            await registerServiceWorker();
-            // Suscribir al usuario a las notificaciones push
+            notificationsEnabled = true;
             await subscribeToPushNotifications();
+            showToast("Notificaciones activadas correctamente", "success");
+            updateUI();
             return true;
+        } else {
+            showToast("Permiso de notificaciones denegado", "error");
         }
     } catch (error) {
         console.error("Error al solicitar permisos:", error);
+        showToast("Error al activar notificaciones", "error");
     }
     return false;
+}
+
+async function saveNotificationPreferences() {
+    if (!notificationsEnabled) {
+        showToast("Activa las notificaciones primero", "warning");
+        return;
+    }
+
+    try {
+        // Obtener preferencias seleccionadas
+        const preferences = {
+            enabled: true,
+            troncal: Array.from(document.querySelectorAll('#troncalPreference input:checked')).map(cb => cb.value),
+            station: Array.from(document.querySelectorAll('#stationPreference input:checked')).map(cb => cb.value),
+            incidentType: Array.from(document.querySelectorAll('#typePreference input:checked')).map(cb => cb.value)
+        };
+
+        // Guardar en localStorage
+        localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
+        showToast("Preferencias guardadas correctamente", "success");
+    } catch (error) {
+        console.error("Error al guardar preferencias:", error);
+        showToast("Error al guardar preferencias", "error");
+    }
 }
 
 // Función para registrar el service worker
