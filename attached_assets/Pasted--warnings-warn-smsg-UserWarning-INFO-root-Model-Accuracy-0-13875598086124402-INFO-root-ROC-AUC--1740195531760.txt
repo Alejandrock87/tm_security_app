@@ -1,0 +1,33 @@
+ warnings.warn(smsg, UserWarning)
+INFO:root:Model Accuracy: 0.13875598086124402
+INFO:root:ROC AUC Score: 0.4564931260519453
+INFO:root:Cross-validation Scores: [0.18181818 0.12440191 0.15789474 0.13397129 0.13875598]
+INFO:root:Mean CV Score: 0.1473684210526316
+INFO:root:Classification Report:
+INFO:root:                     precision    recall  f1-score   support
+
+              Acoso       0.23      0.33      0.27        30
+Apertura de Puertas       0.12      0.07      0.09        29
+             Ataque       0.19      0.10      0.13        29
+         Cosquilleo       0.05      0.07      0.06        30
+              Hurto       0.09      0.12      0.11        33
+Hurto a mano armada       0.11      0.08      0.09        26
+         Sospechoso       0.18      0.19      0.18        32
+
+           accuracy                           0.14       209
+          macro avg       0.14      0.14      0.13       209
+       weighted avg       0.14      0.14      0.13       209
+
+INFO:root:Confusion Matrix:
+INFO:root:[[10  0  2  3  8  2  5]
+ [ 2  2  4  6  4  5  6]
+ [ 7  0  3  8  7  1  3]
+ [ 9  1  2  2  9  2  5]
+ [ 8  4  2  8  4  2  5]
+ [ 6  4  0  6  5  2  3]
+ [ 1  5  3  7  6  4  6]]
+INFO:root:Feature Importance:
+INFO:root:{'latitude': np.float64(0.09657613175362689), 'longitude': np.float64(0.09071312189987824), 'hour': np.float64(0.024044935469596136), 'day_of_week': np.float64(0.03972898302712463), 'month': np.float64(0.04377298336410385), 'is_weekend': np.float64(0.009771132188098629), 'is_night': np.float64(0.009878344371205786), 'distance_from_center': np.float64(0.08696539996307573), 'incident_count': np.float64(0.05074530501436415), 'station_risk_score': np.float64(0.038488391609940165), 'day_of_month': np.float64(0.07429637711949691), 'week_of_year': np.float64(0.08143934207798409), 'hour_day_interaction': np.float64(0.04487174843601545), 'lat_long_interaction': np.float64(0.09376380089818984), 'nearest_station_Calle 100': np.float64(0.009800274695435257), 'nearest_station_Calle 187': np.float64(0.007435933983247619), 'nearest_station_Portal 80': np.float64(0.00875374442150336), 'nearest_station_Portal Norte': np.float64(0.01598795984349506), 'nearest_station_Portal Suba': np.float64(0.010415474490132364), 'nearest_station_Ricaurte': np.float64(0.01608007979778732), 'nearest_station_Terminal': np.float64(0.009899144187864653), 'time_of_day_Evening': np.float64(0.013222035353748742), 'season_Fall': np.float64(0.01440750590678404), 'season_Summer': np.float64(0.014674846247096474), 'season_Winter': np.float64(0.007818709000439189)}
+INFO:root:Model retraining completed successfully
+ERROR:root:Error generating predictions: With n_samples=0, test_size=0.2 and train_size=None, the resulting train set will be empty. Adjust any of the aforementioned parameters.
+ERROR:root:Failed to generate weekly predictions
