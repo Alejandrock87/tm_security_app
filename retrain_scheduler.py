@@ -28,6 +28,9 @@ def generate_weekly_predictions():
                 for station in stations:
                     risk_score = predict_station_risk(station[0], pred_time.hour)
 
+except Exception as e:
+        logging.error(f"Error during model retraining: {str(e)}")
+
 def check_model_health():
     """Verifica el estado del modelo y sus predicciones"""
     try:
