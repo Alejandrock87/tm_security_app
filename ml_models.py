@@ -39,7 +39,7 @@ def prepare_rnn_data():
         if not incidents:
             logging.warning("No incidents found in database")
             return None, None, None
-            
+
         logging.info(f"Found {len(incidents)} incidents")
 
         df = pd.DataFrame([{
@@ -87,9 +87,9 @@ def prepare_rnn_data():
 
         X = np.array(X, dtype=np.float32)
         y = np.array(y, dtype=np.int32)
-        
+
         logging.info(f"X shape: {X.shape}, y shape: {y.shape}")
-        
+
         if len(X.shape) != 3:
             logging.error(f"Invalid input shape. Expected 3D array, got {len(X.shape)}D")
             return None, None, None
@@ -103,12 +103,11 @@ def prepare_rnn_data():
 def create_rnn_model(input_shape, num_classes):
     logging.info(f"Creating RNN model with input_shape={input_shape}, num_classes={num_classes}")
     model = Sequential([
-        LSTM(128, return_sequences=True, 
+        LSTM(64, return_sequences=True, 
              input_shape=input_shape,
-             kernel_regularizer=l2(0.01),
-             recurrent_regularizer=l2(0.01)),
+             kernel_regularizer=l2(0.001)),
         BatchNormalization(),
-        Dropout(0.3),
+        Dropout(0.2),
         LSTM(64, return_sequences=True),
         BatchNormalization(),
         Dropout(0.3),
