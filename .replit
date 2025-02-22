@@ -3,7 +3,7 @@ modules = ["python-3.11"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Start Flask App"
+runButton = "Run"
 
 [[workflows.workflow]]
 name = "Project"
@@ -63,6 +63,14 @@ author = 14140229
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python retrain_scheduler.py"
+
+[[workflows.workflow]]
+name = "Run"
+author = 14140229
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
