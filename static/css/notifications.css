@@ -10,21 +10,10 @@
     animation: slideIn 0.3s ease-in-out;
 }
 
-.toast-success {
-    background-color: #4CAF50;
-}
-
-.toast-error {
-    background-color: #f44336;
-}
-
-.toast-warning {
-    background-color: #ff9800;
-}
-
-.toast-info {
-    background-color: #2196F3;
-}
+.toast-success { background-color: #4CAF50; }
+.toast-error { background-color: #f44336; }
+.toast-warning { background-color: #ff9800; }
+.toast-info { background-color: #2196F3; }
 
 @keyframes slideIn {
     from {
@@ -39,21 +28,21 @@
 
 /* Variables y configuración base */
 :root {
-  --notification-primary: #ee5253;
-  --notification-bg: #feca57;
-  --notification-card: #ffffff;
-  --notification-text: #1e293b;
-  --notification-border: #e2e8f0;
-  --notification-hover: #f1f5f9;
-  --notification-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --notification-radius: 16px;
+    --notification-primary: #1a73e8;
+    --notification-bg: #f8f9fa;
+    --notification-card: #ffffff;
+    --notification-text: #1e293b;
+    --notification-border: #e2e8f0;
+    --notification-hover: #f1f5f9;
+    --notification-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --notification-radius: 12px;
 }
 
 /* Reset y configuración base */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* Clases utilitarias */
@@ -146,59 +135,239 @@ h5 {
 
 /* Contenedor principal */
 .notifications-wrapper {
-  min-height: calc(100vh - var(--nav-height));
-  background-color: var(--notification-bg);
-  padding: 2rem;
+    min-height: calc(100vh - var(--nav-height));
+    background-color: var(--notification-bg);
+    padding: 2rem;
 }
 
 .notifications-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: transparent;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
 /* Encabezado */
 .notifications-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background: var(--notification-card);
-  border-radius: var(--notification-radius);
-  box-shadow: var(--notification-shadow);
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: var(--notification-card);
+    border-radius: var(--notification-radius);
+    box-shadow: var(--notification-shadow);
 }
 
 .notifications-header h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--notification-text);
-  margin-bottom: 1rem;
-  letter-spacing: -0.5px;
-  text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--notification-text);
+    margin-bottom: 1rem;
 }
 
 .notifications-header p {
-  color: #64748b;
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto;
+    color: #64748b;
+    font-size: 1.1rem;
 }
 
-/* Tarjetas */
+/* Cards y Preferencias */
 .card {
-  background: var(--notification-card);
-  border-radius: var(--notification-radius);
-  border: none;
-  box-shadow: var(--notification-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--notification-card);
+    border-radius: var(--notification-radius);
+    border: none;
+    box-shadow: var(--notification-shadow);
+    transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
-.card-body {
-  padding: 2rem;
+.preferences-group {
+    background: var(--notification-hover);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Filtros */
+.notification-filters {
+    margin-bottom: 2rem;
+}
+
+.scroll-container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.filter-chip {
+    background: var(--notification-card);
+    border: 1px solid var(--notification-border);
+    color: var(--notification-text);
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    margin: 0.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.filter-chip:hover {
+    background: var(--notification-hover);
+    transform: translateY(-1px);
+}
+
+.filter-chip.active {
+    background: var(--notification-primary);
+    color: white;
+    border-color: var(--notification-primary);
+}
+
+/* Lista de Notificaciones */
+.notification-list {
+    background: var(--notification-card);
+    border-radius: var(--notification-radius);
+    padding: 1.5rem;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    background: var(--notification-hover);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.notification-item:hover {
+    transform: translateX(5px);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.incident-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--notification-primary);
+    margin: 0;
+}
+
+.notification-time {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.station-name {
+    font-weight: 500;
+    color: var(--notification-text);
+    margin-bottom: 0.5rem;
+}
+
+.incident-description {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.no-notifications {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Botones y Controles */
+.notification-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: var(--notification-primary);
+    border: none;
+}
+
+.btn-success {
+    background-color: #4CAF50;
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notifications-wrapper {
+        padding: 1rem;
+    }
+
+    .notification-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .filter-chip {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn-success.activated {
+  animation: pulse 1s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.notification-info {
+  color: var(--notification-text); 
+}
+
+.notification-info small {
+    color: #212529;
+    font-weight: 500;
+}
+
+#savePreferences:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#savePreferences:not(:disabled) {
+    cursor: pointer;
+}
+
+.notification-info {
+    color: var(--notification-text); 
 }
 
 .card h5 {
@@ -216,16 +385,6 @@ h5 {
   text-align: center;
 }
 
-/* Grupos de preferencias */
-.preferences-group {
-  background: var(--notification-hover);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid var(--notification-border);
-}
 
 .preferences-group::-webkit-scrollbar {
   width: 8px;
@@ -241,7 +400,6 @@ h5 {
   border-radius: 8px;
 }
 
-/* Checkboxes y labels */
 .form-check {
   margin-bottom: 0.75rem;
   padding-left: 1.75rem;
@@ -262,7 +420,6 @@ h5 {
   font-size: 0.95rem;
 }
 
-/* Botones */
 .btn-primary, .btn-success {
   border: none;
   padding: 0.75rem 1.5rem;
@@ -299,113 +456,6 @@ h5 {
   box-shadow: none;
 }
 
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px 25px;
-  border-radius: 8px;
-  color: white;
-  z-index: 1000;
-  animation: slideIn 0.3s ease-in-out;
-}
-
-.toast-success {
-  background-color: #34a853;
-}
-
-.toast-error {
-  background-color: #ea4335;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.btn-loading {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.btn-success.activated {
-  animation: pulse 1s;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.notification-info {
-  color: #333;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-/* Filtros de notificaciones */
-.notification-filters {
-  margin-bottom: 2rem;
-}
-
-.filter-chip {
-  background: var(--notification-card);
-  border: 1px solid var(--notification-border);
-  color: var(--notification-text);
-  padding: 0.75rem 1.25rem;
-  border-radius: 9999px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  margin: 0.25rem;
-  box-shadow: var(--notification-shadow);
-}
-
-.filter-chip:hover,
-.filter-chip.active {
-  background: var(--notification-primary);
-  color: white;
-  border-color: var(--notification-primary);
-}
-
-.scroll-container {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding: 0.5rem 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Lista de notificaciones */
-.notification-list {
-  background: var(--notification-card);
-  border-radius: var(--notification-radius);
-  padding: 1.5rem;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  background: var(--notification-hover);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-}
-
-.notification-item:hover {
-  transform: translateX(5px);
-  background: #f8fafc;
-}
-
 .notification-item h6 {
   font-size: 1.1rem;
   font-weight: 600;
@@ -424,7 +474,6 @@ h5 {
   font-size: 0.875rem;
 }
 
-/* Badge de notificaciones */
 .notification-badge {
   position: fixed;
   top: 1.5rem;
@@ -439,7 +488,6 @@ h5 {
   z-index: 1000;
 }
 
-/* Responsividad */
 @media (max-width: 768px) {
   .notifications-wrapper {
     padding: 1rem;
@@ -463,23 +511,4 @@ h5 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
-}
-
-.notification-info small {
-    color: #212529;
-    font-weight: 500;
-}
-
-#savePreferences:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-#savePreferences:not(:disabled) {
-    cursor: pointer;
-}
-
-/* Added styles for better visual feedback */
-.notification-info {
-    color: var(--notification-text); /* Use the defined color variable */
 }

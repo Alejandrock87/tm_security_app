@@ -42,22 +42,16 @@ async function saveNotificationPreferences() {
     try {
         saveBtn.textContent = 'Guardando...';
         saveBtn.disabled = true;
-
         const preferences = {
             troncal: getSelectedValues('troncalPreference'),
             station: getSelectedValues('stationPreference'),
             incidentType: getSelectedValues('typePreference')
         };
-
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-        
-        // Simular delay para feedback visual
         await new Promise(resolve => setTimeout(resolve, 500));
-        
         showToast('Preferencias guardadas correctamente', 'success');
         saveBtn.textContent = '¡Guardado!';
         saveBtn.classList.add('btn-success');
-        
         setTimeout(() => {
             saveBtn.textContent = originalText;
             saveBtn.classList.remove('btn-success');
@@ -82,8 +76,6 @@ async function requestNotificationPermission() {
             showToast('Este navegador no soporta notificaciones', 'error');
             return;
         }
-
-        // Verificar si las notificaciones están bloqueadas
         if (Notification.permission === 'denied') {
             activateBtn.textContent = 'Notificaciones Bloqueadas';
             activateBtn.classList.remove('btn-primary', 'btn-success');
@@ -91,18 +83,13 @@ async function requestNotificationPermission() {
             showToast('Por favor, desbloquea las notificaciones en la configuración de tu navegador', 'warning');
             return;
         }
-
         activateBtn.textContent = 'Solicitando permisos...';
         activateBtn.disabled = true;
-
         const permission = await Notification.requestPermission();
-        
         if (permission === 'granted') {
             notificationsEnabled = true;
             updateButtonStates(true);
             showToast('Notificaciones activadas correctamente', 'success');
-            
-            // Enviar notificación de prueba
             new Notification('Notificaciones Activadas', {
                 body: 'Recibirás alertas de incidentes según tus preferencias',
                 icon: '/static/icons/notification-icon.png'
@@ -121,13 +108,10 @@ async function requestNotificationPermission() {
 
 // Función para mostrar mensajes al usuario
 function showToast(message, type = 'info') {
-    // Implementación existente
     console.log(`${type}: ${message}`);
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
-
-    // Agregar estilos inline para el toast
     toast.style.position = 'fixed';
     toast.style.bottom = '20px';
     toast.style.right = '20px';
@@ -138,9 +122,7 @@ function showToast(message, type = 'info') {
                                 type === 'warning' ? '#fbbc05' : '#1a73e8';
     toast.style.color = 'white';
     toast.style.zIndex = '1000';
-
     document.body.appendChild(toast);
-
     setTimeout(() => {
         toast.remove();
     }, 3000);
@@ -152,7 +134,6 @@ async function registerServiceWorker() {
         if (!('serviceWorker' in navigator)) {
             throw new Error('Service Worker no soportado');
         }
-
         const registration = await navigator.serviceWorker.register('/service-worker.js');
         console.log('Service Worker registrado:', registration);
         return registration;
@@ -170,8 +151,6 @@ async function subscribeToPushNotifications() {
             userVisibleOnly: true,
             applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
         });
-
-        // Send the subscription to the server
         const response = await fetch('/push/subscribe', {
             method: 'POST',
             headers: {
@@ -179,11 +158,9 @@ async function subscribeToPushNotifications() {
             },
             body: JSON.stringify(subscription)
         });
-
         if (!response.ok) {
             throw new Error('Failed to subscribe to push notifications');
         }
-
         return subscription;
     } catch (error) {
         console.error('Error en suscripción push:', error);
@@ -191,109 +168,11 @@ async function subscribeToPushNotifications() {
     }
 }
 
-// Función para solicitar permiso de notificaciones
-async function requestNotificationPermission() {
-    const activateBtn = document.getElementById('activateNotifications');
-    const saveBtn = document.getElementById('savePreferences');
+// Función para solicitar permiso de notificaciones (duplicate function, this one will be removed)
+//async function requestNotificationPermission() { ... }
 
-    if (!("Notification" in window)) {
-        showToast("Este navegador no soporta notificaciones", "error");
-        return false;
-    }
-
-    try {
-        activateBtn.disabled = true;
-        activateBtn.textContent = 'Activando...';
-
-        const permission = await Notification.requestPermission();
-        console.log("Estado de permisos:", permission);
-
-        if (permission === "granted") {
-            await registerServiceWorker();
-            await subscribeToPushNotifications();
-
-            activateBtn.textContent = 'Notificaciones Activadas';
-            activateBtn.classList.remove('btn-primary');
-            activateBtn.classList.add('btn-success');
-            saveBtn.disabled = false;
-
-            showToast("Notificaciones activadas correctamente", "success");
-
-            // Enviar notificación de prueba
-            new Notification("TransMilenio Security", {
-                body: "Las notificaciones están funcionando correctamente",
-                icon: '/static/icons/notification-icon.png'
-            });
-
-            return true;
-        } else {
-            activateBtn.disabled = false;
-            activateBtn.textContent = 'Activar Notificaciones';
-            showToast("Notificaciones bloqueadas. Verifica los permisos del navegador", "warning");
-            return false;
-        }
-    } catch (error) {
-        console.error("Error al activar notificaciones:", error);
-        activateBtn.disabled = false;
-        activateBtn.textContent = 'Activar Notificaciones';
-        showToast("Error al activar las notificaciones", "error");
-        return false;
-    }
-}
-
-// Función para guardar preferencias
-async function saveNotificationPreferences() {
-    const saveBtn = document.getElementById('savePreferences');
-    try {
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Guardando...';
-
-        if (!notificationsEnabled) {
-            showToast("Primero debes activar las notificaciones", "warning");
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'Guardar Preferencias';
-            return;
-        }
-
-        const preferences = {
-            troncal: Array.from(document.querySelectorAll('#troncalPreference input:checked')).map(cb => cb.value),
-            station: Array.from(document.querySelectorAll('#stationPreference input:checked')).map(cb => cb.value),
-            incidentType: Array.from(document.querySelectorAll('#typePreference input:checked')).map(cb => cb.value)
-        };
-
-        if (!preferences.troncal.length && !preferences.station.length && !preferences.incidentType.length) {
-            showToast("Debes seleccionar al menos una preferencia", "warning");
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'Guardar Preferencias';
-            return;
-        }
-
-        // Guardar en localStorage
-        localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-
-        showToast("Preferencias guardadas correctamente", "success");
-
-        // Notificar al usuario
-        new Notification("TransMilenio Security", {
-            body: "Tus preferencias de notificación han sido actualizadas",
-            icon: '/static/icons/notification-icon.png'
-        });
-
-        setTimeout(() => {
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'Guardar Preferencias';
-        }, 1000);
-
-        return true;
-    } catch (error) {
-        console.error("Error al guardar preferencias:", error);
-        showToast("Error al guardar las preferencias", "error");
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Guardar Preferencias';
-        return false;
-    }
-}
-
+// Función para guardar preferencias (duplicate function, this one will be removed)
+//async function saveNotificationPreferences() { ... }
 
 
 let socket = null;
@@ -311,13 +190,11 @@ function checkInitialNotificationState() {
 function updateNotificationUI() {
     const activateBtn = document.getElementById('activateNotifications');
     const saveBtn = document.getElementById('savePreferences');
-
     if (activateBtn) {
         activateBtn.textContent = notificationsEnabled ?
             'Notificaciones Activadas' : 'Activar Notificaciones';
         activateBtn.disabled = notificationsEnabled;
     }
-
     if (saveBtn) {
         saveBtn.disabled = !notificationsEnabled;
     }
@@ -352,13 +229,11 @@ function checkNotificationStatus() {
 function updateUI() {
     const activateBtn = document.getElementById('activateNotifications');
     const preferencesBtn = document.getElementById('savePreferences');
-
     if (activateBtn) {
         activateBtn.textContent = notificationsEnabled ?
             'Notificaciones Activadas' : 'Activar Notificaciones';
         activateBtn.disabled = notificationsEnabled;
     }
-
     if (preferencesBtn) {
         preferencesBtn.disabled = !notificationsEnabled;
     }
@@ -366,12 +241,8 @@ function updateUI() {
 const notificationBadge = document.getElementById('notification-badge');
 const notificationsList = document.getElementById('notificationList');
 
-// Objeto para almacenar los filtros activos
-let notificationFilters = {
-    troncal: ['all'],
-    station: ['all'],
-    incidentType: ['all']
-};
+// Objeto para almacenar los filtros activos (this will be removed)
+//let notificationFilters = { ... };
 
 // Función para obtener las preferencias almacenadas en localStorage
 function getNotificationSettings() {
@@ -399,30 +270,18 @@ async function loadPreferences() {
         }
         const stations = await response.json();
         console.log('Datos de estaciones recibidos:', stations);
-
-        // Extraer Troncales únicas
         const troncales = [...new Set(stations.map(station => station.troncal))]
             .filter(troncal => troncal && troncal !== 'N/A')
             .sort();
         console.log('Troncales extraídas:', troncales);
-
-        // Extraer Estaciones únicas usando el campo correcto 'nombre'
         const estaciones = [...new Set(stations.map(station => station.nombre))]
             .filter(nombre => nombre && nombre.trim() !== '')
             .sort();
         console.log('Estaciones extraídas:', estaciones);
-
         const settings = getNotificationSettings();
-
-        // Poblar Troncales
         populateCheckboxGroup('troncalPreference', troncales, settings.troncal);
-
-        // Poblar Estaciones
         populateCheckboxGroup('stationPreference', estaciones, settings.station);
-
-        // Establecer preferencias para Tipos de Incidente (ya está estático en HTML)
         setIncidentTypePreferences(settings.incidentType);
-
     } catch (error) {
         console.error('Error loading preferences:', error);
         showToast('Error al cargar las preferencias', 'error');
@@ -433,17 +292,12 @@ async function loadPreferences() {
 function populateCheckboxGroup(groupId, items, selectedItems) {
     const group = document.getElementById(groupId);
     if (!group) return;
-
-    // Limpiar contenido existente
     group.innerHTML = '';
-
-    // Crear checkboxes individuales
     items.forEach(item => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'form-check';
         const itemId = `${groupId}-${sanitizeId(item)}`;
         const isChecked = selectedItems.includes('all') || selectedItems.includes(item);
-
         itemDiv.innerHTML = `
             <input class="form-check-input" type="checkbox" value="${item}" id="${itemId}" ${isChecked ? 'checked' : ''}>
             <label class="form-check-label" for="${itemId}">${item}</label>
@@ -455,8 +309,6 @@ function populateCheckboxGroup(groupId, items, selectedItems) {
 // Función para establecer las preferencias de Tipos de Incidente
 function setIncidentTypePreferences(selectedTypes) {
     const typeCheckboxes = document.querySelectorAll('#typePreference .form-check-input');
-
-    // Establecer estado de los checkboxes individuales
     typeCheckboxes.forEach(cb => {
         cb.checked = selectedTypes.includes('all') || selectedTypes.includes(cb.value);
     });
@@ -466,28 +318,21 @@ function setIncidentTypePreferences(selectedTypes) {
 function initializeSocketIO() {
     try {
         socket = io();
-
-        // Eventos de Socket.IO
         socket.on('connect', () => {
             console.log('Conectado a Socket.IO');
         });
-
         socket.on('disconnect', () => {
             console.log('Desconectado del servidor Socket.IO');
         });
-
-        // Escuchar nuevos incidentes
         socket.on('new_incident', (data) => {
             const settings = getNotificationSettings();
             if (!settings.enabled) return;
-
             if (shouldShowNotification(data)) {
                 addNotification(data);
                 updateNotificationBadge(++notificationCount);
                 showBrowserNotification(data);
             }
         });
-
     } catch (error) {
         console.error('Error inicializando Socket.IO:', error);
         showToast('Error al inicializar Socket.IO', 'error');
@@ -497,17 +342,14 @@ function initializeSocketIO() {
 // Función para agregar una nueva notificación al historial
 function addNotification(incident) {
     if (!notificationsList) return;
-
     const notificationElement = document.createElement('div');
     notificationElement.className = 'notification-item';
     const timestamp = new Date(incident.timestamp).toLocaleString();
-
     notificationElement.innerHTML = `
         <h6>${capitalizeFirstLetter(incident.incident_type)}</h6>
         <p>Estación: ${incident.nearest_station}</p>
         <small>${timestamp}</small>
     `;
-
     notificationsList.insertBefore(notificationElement, notificationsList.firstChild);
 }
 
@@ -522,16 +364,9 @@ function updateNotificationBadge(count) {
 // Función para determinar si una notificación debe mostrarse según las preferencias
 function shouldShowNotification(incident) {
     const settings = getNotificationSettings();
-
-    // Troncal
     const troncalMatch = settings.troncal.includes('all') || settings.troncal.includes(incident.troncal);
-
-    // Estación
     const stationMatch = settings.station.includes('all') || settings.station.includes(incident.nearest_station);
-
-    // Tipo de Incidente
     const typeMatch = settings.incidentType.includes('all') || settings.incidentType.includes(incident.incident_type);
-
     return troncalMatch && stationMatch && typeMatch;
 }
 
@@ -540,179 +375,133 @@ function showBrowserNotification(incident) {
     if (shouldShowBrowserNotifications()) {
         new Notification('Nuevo Incidente', {
             body: `${capitalizeFirstLetter(incident.incident_type)} en ${incident.nearest_station}`,
-            icon: '/static/icons/notification-icon.png' // Asegúrate de tener un ícono adecuado
+            icon: '/static/icons/notification-icon.png' 
         });
     }
 }
 
+
+// Función para actualizar el estado visual de los filtros
+function updateFilterVisuals() {
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.classList.remove('active');
+    });
+
+    const activeFilters = getActiveFilters();
+    activeFilters.forEach(filter => {
+        const chip = document.querySelector(`.filter-chip[data-filter="${filter}"]`);
+        if (chip) chip.classList.add('active');
+    });
+}
+
+// Función para obtener los filtros activos
+function getActiveFilters() {
+    const preferences = JSON.parse(localStorage.getItem('notificationPreferences') || '{}');
+    const activeFilters = [];
+
+    if (!preferences.troncal && !preferences.station && !preferences.incidentType) {
+        return ['all'];
+    }
+
+    if (preferences.troncal && preferences.troncal.length > 0) activeFilters.push('troncal');
+    if (preferences.station && preferences.station.length > 0) activeFilters.push('station');
+    if (preferences.incidentType && preferences.incidentType.length > 0) activeFilters.push('type');
+
+    return activeFilters.length > 0 ? activeFilters : ['all'];
+}
 
 // Función para aplicar los filtros activos y cargar las notificaciones correspondientes
 function applyNotificationFilters() {
-    const activeFilters = Array.from(document.querySelectorAll('.notification-filters .filter-chip.active'))
-        .map(chip => chip.getAttribute('data-filter'));
+    const preferences = JSON.parse(localStorage.getItem('notificationPreferences') || '{}');
+    const activeFilters = getActiveFilters();
 
-    // Actualizar el objeto de filtros
-    notificationFilters = {
-        troncal: ['all'],
-        station: ['all'],
-        incidentType: ['all']
-    };
+    // Construir parámetros de consulta
+    const queryParams = new URLSearchParams();
 
-    activeFilters.forEach(filter => {
-        switch (filter) {
-            case 'troncal':
-                notificationFilters.troncal = getSelectedValues('troncalPreference');
-                break;
-            case 'station':
-                notificationFilters.station = getSelectedValues('stationPreference');
-                break;
-            case 'type':
-                notificationFilters.incidentType = getSelectedValues('typePreference');
-                break;
-            case 'all':
-                notificationFilters = {
-                    troncal: ['all'],
-                    station: ['all'],
-                    incidentType: ['all']
-                };
-                break;
+    if (!activeFilters.includes('all')) {
+        if (activeFilters.includes('troncal') && preferences.troncal) {
+            queryParams.append('troncal', preferences.troncal.join(','));
         }
-    });
-
-    // Cargar las notificaciones filtradas
-    fetchFilteredNotifications();
-}
-
-// Función para construir los parámetros de consulta según los filtros
-function buildQueryParams() {
-    const params = [];
-    const activeFilters = document.querySelectorAll('.notification-filters .filter-chip.active');
-    const allFilter = Array.from(activeFilters).some(chip => chip.getAttribute('data-filter') === 'all');
-
-    if (!allFilter) {
-        activeFilters.forEach(filter => {
-            const filterType = filter.getAttribute('data-filter');
-            if (filterType === 'troncal') {
-                const selectedTroncals = Array.from(document.querySelectorAll('#troncalPreference input:checked:not(#troncalAll)'))
-                    .map(cb => cb.value);
-                if (selectedTroncals.length > 0) {
-                    params.push(`troncal=${encodeURIComponent(selectedTroncals.join(','))}`);
-                }
-            } else if (filterType === 'station') {
-                const selectedStations = Array.from(document.querySelectorAll('#stationPreference input:checked:not(#stationAll)'))
-                    .map(cb => cb.value);
-                if (selectedStations.length > 0) {
-                    params.push(`station=${encodeURIComponent(selectedStations.join(','))}`);
-                }
-            } else if (filterType === 'type') {
-                const selectedTypes = Array.from(document.querySelectorAll('#typePreference input:checked:not(#typeAll)'))
-                    .map(cb => cb.value);
-                if (selectedTypes.length > 0) {
-                    params.push(`incident_type=${encodeURIComponent(selectedTypes.join(','))}`);
-                }
-            }
-        });
+        if (activeFilters.includes('station') && preferences.station) {
+            queryParams.append('station', preferences.station.join(','));
+        }
+        if (activeFilters.includes('type') && preferences.incidentType) {
+            queryParams.append('incident_type', preferences.incidentType.join(','));
+        }
     }
 
-    return params.length > 0 ? `?${params.join('&')}` : '';
+    // Cargar notificaciones filtradas
+    fetchFilteredNotifications(queryParams);
 }
 
 // Función para obtener y mostrar las notificaciones filtradas
-function fetchFilteredNotifications() {
-    const queryParams = buildQueryParams();
-    console.log('Parámetros de consulta para notificaciones:', queryParams);
+async function fetchFilteredNotifications(queryParams) {
+    try {
+        const response = await fetch(`/api/notifications?${queryParams.toString()}`);
+        if (!response.ok) throw new Error('Error al cargar notificaciones');
 
-    fetch(`/api/notifications${queryParams}`)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(notifications => {
-            console.log('Datos de notificaciones recibidos:', notifications);
-            if (notificationsList) {
-                notificationsList.innerHTML = '';
-                if (notifications && notifications.length > 0) {
-                    notifications.forEach(notification => {
-                        const item = document.createElement('div');
-                        item.className = 'notification-item';
-                        const timestamp = new Date(notification.timestamp).toLocaleString();
-                        item.innerHTML = `
-                            <h6>${capitalizeFirstLetter(notification.incident_type)}</h6>
-                            <p>Estación: ${notification.nearest_station}</p>
-                            <small>${timestamp}</small>
-                        `;
-                        notificationsList.appendChild(item);
-                    });
-                } else {
-                    notificationsList.innerHTML = '<p class="text-center">No hay notificaciones para mostrar.</p>';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error al cargar historial de notificaciones:', error);
-            if (notificationsList) {
-                notificationsList.innerHTML = '<p class="text-center">Error al cargar notificaciones.</p>';
-            }
-        });
-}
-
-// Función para actualizar la lista de notificaciones en el DOM
-function updateNotificationsList(data) {
-    if (!notificationsList) return;
-
-    notificationsList.innerHTML = '';
-    if (data.notifications && data.notifications.length > 0) {
-        data.notifications.forEach(notification => {
-            const item = document.createElement('div');
-            item.className = 'notification-item';
-            const timestamp = new Date(notification.timestamp).toLocaleString();
-            item.innerHTML = `
-                <h6>${capitalizeFirstLetter(notification.title)}</h6>
-                <p>${notification.message}</p>
-                <small>${timestamp}</small>
-            `;
-            notificationsList.appendChild(item);
-        });
-    } else {
-        notificationsList.innerHTML = '<p>No hay notificaciones para mostrar.</p>';
+        const notifications = await response.json();
+        updateNotificationsList(notifications);
+    } catch (error) {
+        console.error('Error al cargar notificaciones:', error);
+        showToast('Error al cargar las notificaciones', 'error');
     }
 }
 
-// Función para capitalizar la primera letra de una cadena
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+// Función para actualizar la lista de notificaciones en el DOM
+function updateNotificationsList(notifications) {
+    const notificationsList = document.getElementById('notificationList');
+    if (!notificationsList) return;
 
-// Función para sanitizar IDs (reemplazar espacios y caracteres especiales por guiones bajos)
-function sanitizeId(text) {
-    return text.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
-}
+    notificationsList.innerHTML = '';
 
-// Función para determinar si se deben mostrar notificaciones del navegador
-function shouldShowBrowserNotifications() {
-    return 'Notification' in window && Notification.permission === 'granted';
+    if (notifications && notifications.length > 0) {
+        notifications.forEach(notification => {
+            const item = document.createElement('div');
+            item.className = 'notification-item';
+            const timestamp = new Date(notification.timestamp).toLocaleString();
+
+            item.innerHTML = `
+                <div class="notification-header">
+                    <h6 class="incident-type">${capitalizeFirstLetter(notification.incident_type)}</h6>
+                    <span class="notification-time">${timestamp}</span>
+                </div>
+                <p class="station-name">Estación: ${notification.nearest_station}</p>
+                ${notification.description ? `<p class="incident-description">${notification.description}</p>` : ''}
+            `;
+
+            notificationsList.appendChild(item);
+        });
+    } else {
+        notificationsList.innerHTML = '<p class="no-notifications">No hay notificaciones que coincidan con los filtros seleccionados.</p>';
+    }
 }
 
 // Función para configurar eventos en los filtros de historial
 function setupFilterEventListeners() {
     document.querySelectorAll('.notification-filters .filter-chip').forEach(chip => {
-        chip.addEventListener('click', function () {
-            if (this.getAttribute('data-filter') === 'all') {
-                // Si se selecciona "Todas", desactivar otros filtros
+        chip.addEventListener('click', function() {
+            const filterType = this.getAttribute('data-filter');
+            const preferences = JSON.parse(localStorage.getItem('notificationPreferences') || '{}');
+
+            // Si se hace clic en "Todas", desactivar otros filtros
+            if (filterType === 'all') {
                 document.querySelectorAll('.notification-filters .filter-chip').forEach(c => {
-                    if (c !== this) c.classList.remove('active');
+                    c.classList.remove('active');
                 });
                 this.classList.add('active');
-            } else {
-                // Si se selecciona otro filtro, desactivar "Todas" si está activo
-                const allChip = document.querySelector('.notification-filters .filter-chip[data-filter="all"]');
-                if (allChip && allChip.classList.contains('active')) {
-                    allChip.classList.remove('active');
-                }
-                // Permitir múltiples selecciones
-                this.classList.toggle('active');
+                fetchFilteredNotifications(new URLSearchParams());
+                return;
             }
 
+            // Si hay otros filtros activos, desactivar "Todas"
+            const allChip = document.querySelector('.filter-chip[data-filter="all"]');
+            if (allChip) allChip.classList.remove('active');
+
+            // Alternar el estado activo del filtro actual
+            this.classList.toggle('active');
+
+            // Aplicar filtros según las preferencias guardadas
             applyNotificationFilters();
         });
     });
@@ -753,21 +542,18 @@ async function loadStations() {
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Verificar estado actual de notificaciones
-        if (Notification.permission === "granted") {
-            notificationsEnabled = true;
-            document.getElementById('savePreferences').disabled = false;
-        }
-
-        // Cargar datos iniciales
+        // Cargar datos iniciales y configurar listeners
         await Promise.all([
             loadStations(),
             loadPreferences()
         ]);
 
-        // Configurar listeners
         setupFilterEventListeners();
         initializeSocketIO();
+
+        // Aplicar filtros iniciales basados en preferencias guardadas
+        applyNotificationFilters();
+        updateFilterVisuals();
 
     } catch (error) {
         console.error('Error en inicialización:', error);
@@ -775,43 +561,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Inicializar al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    const activateBtn = document.getElementById('activateNotifications');
-    const saveBtn = document.getElementById('savePreferences');
+// Función para capitalizar la primera letra de una cadena
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-    // Verificar estado actual de notificaciones
-    if (Notification.permission === "granted") {
-        notificationsEnabled = true;
-        activateBtn.textContent = 'Notificaciones Activadas';
-        activateBtn.classList.add('btn-success');
-        activateBtn.classList.remove('btn-primary');
-        activateBtn.disabled = true;
-        saveBtn.disabled = false;
-    }
+// Función para sanitizar IDs (reemplazar espacios y caracteres especiales por guiones bajos)
+function sanitizeId(text) {
+    return text.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+}
 
-    // Cargar preferencias guardadas
-    const savedPrefs = localStorage.getItem('notificationPreferences');
-    if (savedPrefs) {
-        const prefs = JSON.parse(savedPrefs);
-        // Marcar checkboxes según preferencias guardadas
-        if (prefs.troncal) {
-            prefs.troncal.forEach(value => {
-                const checkbox = document.querySelector(`#troncalPreference input[value="${value}"]`);
-                if (checkbox) checkbox.checked = true;
-            });
-        }
-        if (prefs.station) {
-            prefs.station.forEach(value => {
-                const checkbox = document.querySelector(`#stationPreference input[value="${value}"]`);
-                if (checkbox) checkbox.checked = true;
-            });
-        }
-        if (prefs.incidentType) {
-            prefs.incidentType.forEach(value => {
-                const checkbox = document.querySelector(`#typePreference input[value="${value}"]`);
-                if (checkbox) checkbox.checked = true;
-            });
-        }
-    }
-});
+// Función para determinar si se deben mostrar notificaciones del navegador
+function shouldShowBrowserNotifications() {
+    return 'Notification' in window && Notification.permission === 'granted';
+}
+
+// This event listener is removed because the functionality is now handled by the new functions.
+//document.addEventListener('DOMContentLoaded', () => { ... });
