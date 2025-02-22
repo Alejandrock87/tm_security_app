@@ -131,13 +131,17 @@ def train_model():
     # Balancear clases
     smote = SMOTE(random_state=42)
     
-    # Modelos con parámetros ajustados
+    # Modelos con parámetros optimizados
     xgb_model = XGBClassifier(
         random_state=42,
-        n_estimators=200,
-        learning_rate=0.05,
-        max_depth=7,
-        class_weight='balanced'
+        n_estimators=300,
+        learning_rate=0.01,
+        max_depth=8,
+        min_child_weight=3,
+        gamma=0.2,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        scale_pos_weight=1
     )
     rf_model = RandomForestClassifier(
         random_state=42,
