@@ -379,20 +379,20 @@ def prepare_rnn_data():
         from sklearn.preprocessing import LabelEncoder
         
         df = pd.DataFrame([{
-        'timestamp': incident.timestamp,
-        'hour': incident.timestamp.hour,
-        'day_of_week': incident.timestamp.weekday(),
-        'month': incident.timestamp.month,
-        'station': incident.nearest_station,
-        'latitude': incident.latitude,
-        'longitude': incident.longitude,
-        'incident_type': incident.incident_type,
-        'is_weekend': incident.timestamp.weekday() >= 5,
-        'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
-    } for incident in incidents])
+            'timestamp': incident.timestamp,
+            'hour': incident.timestamp.hour,
+            'day_of_week': incident.timestamp.weekday(),
+            'month': incident.timestamp.month,
+            'station': incident.nearest_station,
+            'latitude': incident.latitude,
+            'longitude': incident.longitude,
+            'incident_type': incident.incident_type,
+            'is_weekend': incident.timestamp.weekday() >= 5,
+            'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
+        } for incident in incidents])
 
-    # Normalización de coordenadas
-    scaler = StandardScaler()
+        # Normalización de coordenadas
+        scaler = StandardScaler()
     df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
     
     # Codificación de variables categóricas
