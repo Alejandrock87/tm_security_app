@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from database import init_db, db
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_socketio import SocketIO
 from utils import socketio, send_notification
 from flask_caching import Cache
@@ -58,13 +59,15 @@ def create_app():
                      async_mode='threading',
                      engineio_logger=True,
                      logger=True,
-                     ping_timeout=60000,
-                     ping_interval=25000,
-                     allow_upgrades=True,
-                     transports=['websocket', 'polling'])
+                     ping_timeout=5000,
+                     ping_interval=2500,
+                     allow_upgrades=False,
+                     transports=['polling'])
     
-    # Configure allowed hosts
-    app.config['SERVER_NAME'] = None  # Let Flask handle the server name automatically
+    # Configure allowed hosts and proxy settings
+    app.config['SERVER_NAME'] = None
+    app.config['PROXY_FIX'] = True
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
     app.config['PREFERRED_URL_SCHEME'] = 'https'
 
     return app
