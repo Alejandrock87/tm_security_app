@@ -6,15 +6,12 @@ from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
 from utils import send_notification, send_push_notification
 from datetime import datetime, timedelta
-from ml_models import get_model_insights
 import logging
-from models import User, Incident, PushSubscription # Added PushSubscription import
+from models import User, Incident, PushSubscription
 from database import db
-from transmilenio_api import get_all_stations, get_route_information
 from sqlalchemy import func
 import os
-from sqlalchemy import exc as sql_exceptions # Added for exception handling
-
+from sqlalchemy import exc as sql_exceptions
 
 def init_routes(app):
     @app.route('/')
@@ -222,6 +219,7 @@ def init_routes(app):
     @login_required
     def model_insights():
         try:
+            from ml_models import get_model_insights # Lazy import here
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
         except Exception as e:
@@ -232,18 +230,17 @@ def init_routes(app):
     @app.route('/predictions')
     @login_required
     def predictions():
+        from ml_models import get_model_insights # Lazy import here
         return render_template('predictions.html', title='Predicciones')
 
     @app.route('/api/predictions')
     @login_required
     def api_predictions():
         try:
-            # Obtener predicciones del modelo ML
-            from ml_models import get_model_insights
+            from ml_models import get_model_insights # Lazy import here
             insights = get_model_insights()
 
             # Generar predicciones de ejemplo para demostración
-            from datetime import datetime, timedelta
             current_time = datetime.now()
 
             predictions = [
