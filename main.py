@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 # Add health check route
 @app.route('/health')
 def health_check():
+    logger.info("Health check endpoint accessed")
     return 'OK', 200
 
 if __name__ == '__main__':

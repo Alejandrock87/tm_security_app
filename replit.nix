@@ -1,5 +1,6 @@
 {pkgs}: {
   deps = [
+    pkgs.iana-etc
     pkgs.libev
     pkgs.yakut
     pkgs.zlib
