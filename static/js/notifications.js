@@ -53,16 +53,27 @@ function updateNotificationUI() {
 }
 
 // Inicializar Service Worker sin solicitar permisos
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/js/service-worker.js')
-        .then(registration => {
+async function initializeServiceWorker() {
+    try {
+        if ('serviceWorker' in navigator) {
+            const registration = await navigator.serviceWorker.register('/service-worker.js');
             console.log('Service Worker registrado:', registration);
             checkInitialNotificationState();
-        })
-        .catch(error => {
-            console.error('Error al registrar Service Worker:', error);
-        });
+            loadPreferences();
+            setupFilterEventListeners();
+            return registration;
+        }
+    } catch (error) {
+        console.error('Error al registrar Service Worker:', error);
+        showToast("Error al inicializar las notificaciones", "error");
+    }
 }
+
+// Inicializar cuando el DOM está listo
+document.addEventListener('DOMContentLoaded', () => {
+    initializeServiceWorker();
+    loadStations();
+});
 
 // Verificar estado actual de notificaciones
 function checkNotificationStatus() {
