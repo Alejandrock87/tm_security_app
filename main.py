@@ -28,9 +28,10 @@ if __name__ == '__main__':
             app,
             host='0.0.0.0',
             port=port,
-            debug=True,
+            debug=False,
             use_reloader=False,
-            log_output=True
+            log_output=True,
+            allow_unsafe_werkzeug=True
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)
