@@ -6,14 +6,20 @@ function updateButtonStates(notificationsEnabled) {
     const activateBtn = document.getElementById('activateNotifications');
     const saveBtn = document.getElementById('savePreferences');
     
-    if (notificationsEnabled) {
+    if (Notification.permission === 'denied') {
+        activateBtn.textContent = 'Notificaciones Bloqueadas';
+        activateBtn.classList.remove('btn-primary', 'btn-success');
+        activateBtn.classList.add('btn-danger');
+        saveBtn.disabled = true;
+        showToast('Notificaciones bloqueadas. Revisa la configuración del navegador', 'warning');
+    } else if (notificationsEnabled) {
         activateBtn.textContent = 'Notificaciones Activadas';
-        activateBtn.classList.remove('btn-primary');
+        activateBtn.classList.remove('btn-primary', 'btn-danger');
         activateBtn.classList.add('btn-success');
         saveBtn.disabled = false;
     } else {
         activateBtn.textContent = 'Activar Notificaciones';
-        activateBtn.classList.remove('btn-success');
+        activateBtn.classList.remove('btn-success', 'btn-danger');
         activateBtn.classList.add('btn-primary');
         saveBtn.disabled = true;
     }
@@ -72,12 +78,22 @@ async function requestNotificationPermission() {
     const originalText = activateBtn.textContent;
     
     try {
+        if (!('Notification' in window)) {
+            showToast('Este navegador no soporta notificaciones', 'error');
+            return;
+        }
+
+        // Verificar si las notificaciones están bloqueadas
+        if (Notification.permission === 'denied') {
+            activateBtn.textContent = 'Notificaciones Bloqueadas';
+            activateBtn.classList.remove('btn-primary', 'btn-success');
+            activateBtn.classList.add('btn-danger');
+            showToast('Por favor, desbloquea las notificaciones en la configuración de tu navegador', 'warning');
+            return;
+        }
+
         activateBtn.textContent = 'Solicitando permisos...';
         activateBtn.disabled = true;
-
-        if (!('Notification' in window)) {
-            throw new Error('Este navegador no soporta notificaciones');
-        }
 
         const permission = await Notification.requestPermission();
         
