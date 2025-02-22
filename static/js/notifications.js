@@ -9,7 +9,34 @@ function showToast(message, type = 'info') {
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Verificar estado inicial de notificaciones
+function checkInitialNotificationState() {
+    if ('Notification' in window) {
+        notificationsEnabled = Notification.permission === 'granted';
+        updateNotificationUI();
+    }
+}
+
+// Actualizar UI basado en estado de notificaciones
+function updateNotificationUI() {
+    const activateBtn = document.getElementById('activateNotifications');
+    const saveBtn = document.getElementById('savePreferences');
+
+    if (activateBtn) {
+        activateBtn.textContent = notificationsEnabled ? 
+            'Notificaciones Activadas' : 'Activar Notificaciones';
+        activateBtn.disabled = notificationsEnabled;
+    }
+
+    if (saveBtn) {
+        saveBtn.disabled = !notificationsEnabled;
+    }
 }
 
 // Inicializar Service Worker sin solicitar permisos
@@ -17,7 +44,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/static/js/service-worker.js')
         .then(registration => {
             console.log('Service Worker registrado:', registration);
-            checkNotificationStatus();
+            checkInitialNotificationState();
         })
         .catch(error => {
             console.error('Error al registrar Service Worker:', error);
@@ -36,13 +63,13 @@ function checkNotificationStatus() {
 function updateUI() {
     const activateBtn = document.getElementById('activateNotifications');
     const preferencesBtn = document.getElementById('savePreferences');
-    
+
     if (activateBtn) {
         activateBtn.textContent = notificationsEnabled ? 
             'Notificaciones Activadas' : 'Activar Notificaciones';
         activateBtn.disabled = notificationsEnabled;
     }
-    
+
     if (preferencesBtn) {
         preferencesBtn.disabled = !notificationsEnabled;
     }
@@ -71,7 +98,7 @@ function getNotificationSettings() {
 async function saveNotificationPreferences() {
     if (!document.getElementById('notificationsEnabled').checked) {
         localStorage.removeItem('notificationPreferences');
-        showToast({type: 'info', message: 'Notificaciones desactivadas'});
+        showToast('Notificaciones desactivadas', 'info');
         return;
     }
 
@@ -88,7 +115,7 @@ async function saveNotificationPreferences() {
     };
 
     localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-    showToast({type: 'success', message: 'Preferencias guardadas correctamente'});
+    showToast('Preferencias guardadas correctamente', 'success');
 }
 
 // Helper function para obtener las preferencias seleccionadas
@@ -139,7 +166,7 @@ async function loadPreferences() {
 
     } catch (error) {
         console.error('Error loading preferences:', error);
-        showToast({ type: 'error', message: 'Error al cargar las preferencias' });
+        showToast('Error al cargar las preferencias', 'error');
     }
 }
 
@@ -204,7 +231,7 @@ function initializeSocketIO() {
 
     } catch (error) {
         console.error('Error inicializando Socket.IO:', error);
-        showToast({ type: 'error', message: 'Error al inicializar Socket.IO' });
+        showToast('Error al inicializar Socket.IO', 'error');
     }
 }
 
@@ -259,42 +286,6 @@ function showBrowserNotification(incident) {
     }
 }
 
-// Función para mostrar toasts
-function showToast(data) {
-    let container = document.getElementById('flash-messages-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'flash-messages-container';
-        document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    let alertClass = 'alert-info';
-    if (data.type === 'error') {
-        alertClass = 'alert-danger';
-    } else if (data.type === 'success') {
-        alertClass = 'alert-success';
-    }
-
-    toast.className = `floating-alert ${alertClass}`;
-    toast.style.backgroundColor = '#1e293b';
-    toast.innerHTML = `
-        <div>${data.message}</div>
-        <button type="button" class="btn-close" aria-label="Close">&times;</button>
-    `;
-
-    container.insertBefore(toast, container.firstChild);
-
-    setTimeout(() => {
-        toast.classList.add('hide');
-        toast.addEventListener('animationend', () => toast.remove());
-    }, 5000);
-
-    toast.querySelector('.btn-close').addEventListener('click', () => {
-        toast.classList.add('hide');
-        toast.addEventListener('animationend', () => toast.remove());
-    });
-}
 
 // Solicitar permiso para notificaciones del navegador
 async function requestNotificationPermission() {
@@ -314,7 +305,7 @@ async function requestNotificationPermission() {
             notificationsEnabled = true;
             await subscribeToPushNotifications();
             showToast("Notificaciones activadas correctamente", "success");
-            updateUI();
+            updateNotificationUI();
             return true;
         } else {
             showToast("Permiso de notificaciones denegado", "error");
@@ -588,4 +579,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Configurar eventos de filtros
     setupFilterEventListeners();
+});
+
+// Inicializar al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    checkInitialNotificationState();
 });
