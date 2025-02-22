@@ -58,10 +58,9 @@ def create_app():
                      async_mode='threading',
                      engineio_logger=True,
                      logger=True,
-                     ping_timeout=60,
-                     ping_interval=25,
-                     allow_upgrades=True,
-                     websocket_class=None)
+                     ping_timeout=60000,
+                     ping_interval=25000,
+                     allow_upgrades=True)
     
     # Configure allowed hosts
     app.config['SERVER_NAME'] = None  # Let Flask handle the server name automatically
