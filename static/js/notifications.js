@@ -61,54 +61,65 @@ async function subscribeToPushNotifications() {
 
 // Función para solicitar permiso de notificaciones
 async function requestNotificationPermission() {
+    const activateBtn = document.getElementById('activateNotifications');
+    const saveBtn = document.getElementById('savePreferences');
+
+    if (!("Notification" in window)) {
+        showToast("Este navegador no soporta notificaciones", "error");
+        return false;
+    }
+
     try {
-        if (!("Notification" in window)) {
-            showToast("Este navegador no soporta notificaciones", "error");
-            return false;
-        }
+        activateBtn.disabled = true;
+        activateBtn.textContent = 'Activando...';
 
         const permission = await Notification.requestPermission();
-
-        if (permission === "denied") {
-            showToast("Notificaciones bloqueadas por el usuario", "warning");
-            return false;
-        }
+        console.log("Estado de permisos:", permission);
 
         if (permission === "granted") {
-            try {
-                await registerServiceWorker();
-                await subscribeToPushNotifications();
-                notificationsEnabled = true;
-                document.getElementById('savePreferences').disabled = false;
-                showToast("Notificaciones activadas correctamente", "success");
+            await registerServiceWorker();
+            await subscribeToPushNotifications();
 
-                // Notificación de prueba
-                new Notification("TransMilenio Security", {
-                    body: "Las notificaciones están funcionando correctamente",
-                    icon: '/static/icons/notification-icon.png'
-                });
+            activateBtn.textContent = 'Notificaciones Activadas';
+            activateBtn.classList.remove('btn-primary');
+            activateBtn.classList.add('btn-success');
+            saveBtn.disabled = false;
 
-                return true;
-            } catch (error) {
-                console.error('Error al configurar notificaciones:', error);
-                showToast("Error al configurar notificaciones", "error");
-                return false;
-            }
+            showToast("Notificaciones activadas correctamente", "success");
+
+            // Enviar notificación de prueba
+            new Notification("TransMilenio Security", {
+                body: "Las notificaciones están funcionando correctamente",
+                icon: '/static/icons/notification-icon.png'
+            });
+
+            return true;
+        } else {
+            activateBtn.disabled = false;
+            activateBtn.textContent = 'Activar Notificaciones';
+            showToast("Notificaciones bloqueadas. Verifica los permisos del navegador", "warning");
+            return false;
         }
-
-        return false;
     } catch (error) {
-        console.error('Error al solicitar permiso:', error);
-        showToast("Error al solicitar permiso de notificaciones", "error");
+        console.error("Error al activar notificaciones:", error);
+        activateBtn.disabled = false;
+        activateBtn.textContent = 'Activar Notificaciones';
+        showToast("Error al activar las notificaciones", "error");
         return false;
     }
 }
 
 // Función para guardar preferencias
 async function saveNotificationPreferences() {
+    const saveBtn = document.getElementById('savePreferences');
     try {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Guardando...';
+
         if (!notificationsEnabled) {
             showToast("Primero debes activar las notificaciones", "warning");
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Guardar Preferencias';
             return;
         }
 
@@ -120,22 +131,34 @@ async function saveNotificationPreferences() {
 
         if (!preferences.troncal.length && !preferences.station.length && !preferences.incidentType.length) {
             showToast("Debes seleccionar al menos una preferencia", "warning");
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Guardar Preferencias';
             return;
         }
 
+        // Guardar en localStorage
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
+
         showToast("Preferencias guardadas correctamente", "success");
 
         // Notificar al usuario
-        if (Notification.permission === "granted") {
-            new Notification("TransMilenio Security", {
-                body: "Tus preferencias han sido actualizadas",
-                icon: '/static/icons/notification-icon.png'
-            });
-        }
+        new Notification("TransMilenio Security", {
+            body: "Tus preferencias de notificación han sido actualizadas",
+            icon: '/static/icons/notification-icon.png'
+        });
+
+        setTimeout(() => {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Guardar Preferencias';
+        }, 1000);
+
+        return true;
     } catch (error) {
         console.error("Error al guardar preferencias:", error);
         showToast("Error al guardar las preferencias", "error");
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Guardar Preferencias';
+        return false;
     }
 }
 
@@ -391,39 +414,8 @@ function showBrowserNotification(incident) {
 
 
 // Solicitar permiso para notificaciones del navegador
-async function requestNotificationPermission() {
-    if (!("Notification" in window)) {
-        showToast("Este navegador no soporta notificaciones de escritorio", "error");
-        return false;
-    }
+// (Esta función ya está actualizada arriba)
 
-    try {
-        const permission = await Notification.requestPermission();
-        console.log("Estado de permisos:", permission);
-
-        if (permission === "granted") {
-            await registerServiceWorker();
-            await subscribeToPushNotifications();
-            document.getElementById('savePreferences').disabled = false;
-            showToast("Notificaciones activadas correctamente", "success");
-
-            // Enviar notificación de prueba
-            new Notification("TransMilenio Security", {
-                body: "Las notificaciones están funcionando correctamente",
-                icon: '/static/icons/notification-icon.png'
-            });
-            return true;
-        } else if (permission === "denied") {
-            showToast("Has bloqueado las notificaciones. Por favor, habilítalas en la configuración de tu navegador.", "warning");
-            return false;
-        }
-    
-    } catch (error) {
-        console.error("Error al solicitar permisos:", error);
-        showToast("Error al activar las notificaciones", "error");
-    }
-    return false;
-}
 
 // Función para registrar el service worker (Redundant, removed)
 
