@@ -3,7 +3,7 @@ modules = ["python-3.11"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Retrain Model"
+runButton = "Start Flask App"
 
 [[workflows.workflow]]
 name = "Project"
