@@ -1,6 +1,15 @@
 // Variables globales
 let notificationsEnabled = false;
 
+// Función para mostrar mensajes toast
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    document.getElementById('toastContainer').appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
 // Función para mostrar mensajes al usuario
 function showToast(message, type = 'info') {
     // Implementación existente
@@ -413,30 +422,6 @@ function showBrowserNotification(incident) {
 }
 
 
-// Solicitar permiso para notificaciones del navegador
-// (Esta función ya está actualizada arriba)
-
-
-// Función para registrar el service worker (Redundant, removed)
-
-
-// Función para suscribir a notificaciones push (Redundant, removed)
-
-
-// Función para guardar preferencias (Redundant, removed)
-
-
-// Cargar preferencias guardadas
-function loadSavedPreferences() {
-    const savedPrefs = localStorage.getItem('notificationPreferences');
-    if (savedPrefs) {
-        const prefs = JSON.parse(savedPrefs);
-        document.getElementById('notificationsEnabled').checked = prefs.enabled;
-        // Restaurar otras preferencias...
-    }
-}
-
-
 // Función para aplicar los filtros activos y cargar las notificaciones correspondientes
 function applyNotificationFilters() {
     const activeFilters = Array.from(document.querySelectorAll('.notification-filters .filter-chip.active'))
@@ -636,7 +621,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Inicializar al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    checkInitialNotificationState();
+    const activateBtn = document.getElementById('activateNotifications');
+    const saveBtn = document.getElementById('savePreferences');
+
+    // Verificar estado actual de notificaciones
+    if (Notification.permission === "granted") {
+        notificationsEnabled = true;
+        activateBtn.textContent = 'Notificaciones Activadas';
+        activateBtn.classList.add('btn-success');
+        activateBtn.classList.remove('btn-primary');
+        activateBtn.disabled = true;
+        saveBtn.disabled = false;
+    }
+
+    // Cargar preferencias guardadas
+    const savedPrefs = localStorage.getItem('notificationPreferences');
+    if (savedPrefs) {
+        const prefs = JSON.parse(savedPrefs);
+        // Marcar checkboxes según preferencias guardadas
+        if (prefs.troncal) {
+            prefs.troncal.forEach(value => {
+                const checkbox = document.querySelector(`#troncalPreference input[value="${value}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+        if (prefs.station) {
+            prefs.station.forEach(value => {
+                const checkbox = document.querySelector(`#stationPreference input[value="${value}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+        if (prefs.incidentType) {
+            prefs.incidentType.forEach(value => {
+                const checkbox = document.querySelector(`#typePreference input[value="${value}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+    }
 });
 
 async function loadStations() {
