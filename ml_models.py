@@ -15,11 +15,12 @@ import logging
 from datetime import datetime, timedelta
 
 def prepare_data():
-    incidents = Incident.query.all()
+    incidents = Incident.query.order_by(Incident.timestamp).all()
 
     if not incidents:
         return pd.DataFrame()
-
+        
+    # Crear DataFrame con ordenamiento temporal
     data = pd.DataFrame([
         {
             'incident_type': incident.incident_type,
@@ -131,38 +132,38 @@ def train_model():
     # Balancear clases
     smote = SMOTE(random_state=42)
     
-    # Modelos con parámetros optimizados
-    xgb_model = XGBClassifier(
-        random_state=42,
-        n_estimators=300,
-        learning_rate=0.01,
-        max_depth=8,
-        min_child_weight=3,
-        gamma=0.2,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        scale_pos_weight=1
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import LSTM, Dense, Dropout, Embedding
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.preprocessing.sequence import pad_sequences
+    from tensorflow.keras.callbacks import EarlyStopping
+    
+    # Crear secuencias temporales
+    sequence_length = 24  # 24 horas de historial
+    
+    # Modelo LSTM
+    model = Sequential([
+        LSTM(128, return_sequences=True, input_shape=(sequence_length, X_train.shape[2])),
+        Dropout(0.3),
+        LSTM(64, return_sequences=False),
+        Dropout(0.3),
+        Dense(32, activation='relu'),
+        Dropout(0.2),
+        Dense(len(np.unique(y)), activation='softmax')
+    ])
+    
+    # Compilar modelo
+    model.compile(
+        optimizer=Adam(learning_rate=0.001),
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
     )
-    rf_model = RandomForestClassifier(
-        random_state=42,
-        n_estimators=200,
-        max_depth=12,
-        class_weight='balanced'
-    )
-    gb_model = GradientBoostingClassifier(
-        random_state=42,
-        n_estimators=200,
-        learning_rate=0.05,
-        max_depth=7
-    )
-
-    ensemble_model = VotingClassifier(
-        estimators=[
-            ('xgb', xgb_model),
-            ('rf', rf_model),
-            ('gb', gb_model)
-        ],
-        voting='soft'
+    
+    # Early stopping para evitar overfitting
+    early_stopping = EarlyStopping(
+        monitor='val_loss',
+        patience=5,
+        restore_best_weights=True
     )
 
     # Feature selection
