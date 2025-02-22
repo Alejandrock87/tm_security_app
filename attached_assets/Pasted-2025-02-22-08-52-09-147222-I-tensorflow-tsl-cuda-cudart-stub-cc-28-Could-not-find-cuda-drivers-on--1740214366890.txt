@@ -1,0 +1,39 @@
+2025-02-22 08:52:09.147222: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2025-02-22 08:52:09.200459: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:9342] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-02-22 08:52:09.200508: E tensorflow/compiler/xla/stream_executor/cuda/cuda_fft.cc:609] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-02-22 08:52:09.200558: E tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:1518] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-02-22 08:52:09.209840: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2025-02-22 08:52:09.210128: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-02-22 08:52:10.321961: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Server initialized for threading.
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3000
+ * Running on http://172.31.128.41:3000
+Press CTRL+C to quit
+ * Restarting with stat
+2025-02-22 08:52:13.576367: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:9342] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-02-22 08:52:13.576405: E tensorflow/compiler/xla/stream_executor/cuda/cuda_fft.cc:609] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-02-22 08:52:13.576447: E tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:1518] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+Server initialized for threading.
+ * Debugger is active!
+ * Debugger PIN: 298-313-590
+172.31.128.41 - - [22/Feb/2025 08:52:16] "GET / HTTP/1.1" 302 -
+172.31.128.41 - - [22/Feb/2025 08:52:16] "GET /home HTTP/1.1" 200 -
+172.31.128.41 - - [22/Feb/2025 08:52:16] "GET /static/css/custom.css HTTP/1.1" 304 -
+172.31.128.41 - - [22/Feb/2025 08:52:16] "GET /static/css/home.css HTTP/1.1" 304 -
+sy5r4nUnyElPEBChAAAA: Sending packet OPEN data {'sid': 'sy5r4nUnyElPEBChAAAA', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+172.31.128.41 - - [22/Feb/2025 08:52:17] "GET /socket.io/?EIO=4&transport=polling&t=PKisnDE HTTP/1.1" 200 -
+sy5r4nUnyElPEBChAAAA: Received packet MESSAGE data 0
+sy5r4nUnyElPEBChAAAA: Sending packet MESSAGE data 0{"sid":"S6LV2fDezomTZqsGAAAB"}
+172.31.128.41 - - [22/Feb/2025 08:52:17] "POST /socket.io/?EIO=4&transport=polling&t=PKisnEh&sid=sy5r4nUnyElPEBChAAAA HTTP/1.1" 200 -
+172.31.128.41 - - [22/Feb/2025 08:52:17] "GET /socket.io/?EIO=4&transport=polling&t=PKisnEi&sid=sy5r4nUnyElPEBChAAAA HTTP/1.1" 200 -
+Invalid transport for session sy5r4nUnyElPEBChAAAA (further occurrences of this error will be logged with level INFO)
+172.31.128.41 - - [22/Feb/2025 08:52:17] "GET /socket.io/?EIO=4&transport=websocket&sid=sy5r4nUnyElPEBChAAAA HTTP/1.1" 400 -
+sy5r4nUnyElPEBChAAAA: Sending packet PING data None
+172.31.128.41 - - [22/Feb/2025 08:52:42] "GET /socket.io/?EIO=4&transport=polling&t=PKisnG6&sid=sy5r4nUnyElPEBChAAAA HTTP/1.1" 200 -
+sy5r4nUnyElPEBChAAAA: Received packet PONG data 
+172.31.128.41 - - [22/Feb/2025 08:52:42] "POST /socket.io/?EIO=4&transport=polling&t=PKistLk&sid=sy5r4nUnyElPEBChAAAA HTTP/1.1" 200 -
