@@ -95,15 +95,22 @@ def prepare_rnn_data():
             logging.error("No valid sequences generated")
             return None, None, None
             
-        X = np.array(X, dtype=np.float32)
-        y = np.array(y, dtype=np.int32)
-
+        # Evitar duplicación de conversión y validar forma
         if not X:
             logging.warning("No sufficient data for sequences")
             return None, None, None
-
+            
         X = np.array(X, dtype=np.float32)
         y = np.array(y, dtype=np.int32)
+        
+        # Validación de dimensiones
+        if len(X.shape) != 3:
+            logging.error(f"Invalid tensor shape. Expected 3D, got {len(X.shape)}D")
+            return None, None, None
+            
+        if X.shape[1] != sequence_length:
+            logging.error(f"Invalid sequence length. Expected {sequence_length}, got {X.shape[1]}")
+            return None, None, None
 
         logging.info(f"X shape: {X.shape}, y shape: {y.shape}")
 
@@ -388,9 +395,37 @@ def predict_incident_type(station, hour):
 
 #This function was not in the original code, added for completeness based on function call in predict_station_risk
 def prepare_prediction_data(station, hour):
-    #This function needs to be implemented based on the desired input data format for the RNN model
-    #Placeholder for now, replace with actual data preparation
-    return np.array([[[0.0] * 7] * 24])  
+    try:
+        # Obtener datos históricos de la estación
+        incidents = Incident.query.filter_by(nearest_station=station).order_by(Incident.timestamp.desc()).limit(24).all()
+        
+        if len(incidents) < 24:
+            logging.warning(f"Insufficient historical data for station {station}")
+            return None
+            
+        # Preparar features
+        sequence = []
+        for incident in incidents:
+            features = [
+                incident.timestamp.hour,
+                incident.timestamp.weekday(),
+                incident.timestamp.month,
+                incident.latitude,
+                incident.longitude,
+                1 if incident.timestamp.weekday() >= 5 else 0,
+                1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0
+            ]
+            sequence.append(features)
+            
+        # Convertir a numpy array y normalizar si es necesario
+        sequence = np.array(sequence, dtype=np.float32)
+        
+        # Expandir dimensiones para match con formato de entrada del modelo
+        return np.expand_dims(sequence, axis=0)
+        
+    except Exception as e:
+        logging.error(f"Error preparing prediction data: {str(e)}")
+        return None  
 
 def train_rnn_model():
     X, y, num_classes = prepare_rnn_data()
