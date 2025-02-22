@@ -393,7 +393,7 @@ def prepare_rnn_data():
 
         # Normalización de coordenadas
         scaler = StandardScaler()
-    df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
+        df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
     
     # Codificación de variables categóricas
     le = LabelEncoder()
