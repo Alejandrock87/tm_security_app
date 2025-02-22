@@ -85,9 +85,20 @@
               </div>
             </div>
 
-            <button class="btn btn-primary mt-3 w-100" onclick="saveNotificationPreferences()">
-              Guardar Preferencias
-            </button>
+            <div class="notification-controls mt-3">
+              <button class="btn btn-primary w-100 mb-2" onclick="requestNotificationPermission()">
+                Activar Notificaciones
+              </button>
+              <button class="btn btn-success w-100" onclick="saveNotificationPreferences()">
+                Guardar Preferencias
+              </button>
+            </div>
+            <div class="notification-info mt-2">
+              <small class="text-muted">
+                Las notificaciones te mantendrán informado sobre incidentes en las estaciones seleccionadas.
+                Tu selección se guardará incluso si cierras el navegador.
+              </small>
+            </div>
           </div><!-- /.card-body -->
         </div><!-- /.card -->
       </div><!-- /.col (Preferencias) -->

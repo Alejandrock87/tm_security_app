@@ -33,33 +33,38 @@ function getNotificationSettings() {
 }
 
 // Función para guardar las preferencias en localStorage
-function saveNotificationPreferences() {
-    const settings = {
-        enabled: document.getElementById('notificationsEnabled').checked,
-        troncal: getSelectedPreferences('troncalPreference', 'troncalAll'),
-        station: getSelectedPreferences('stationPreference', 'stationAll'),
-        incidentType: getSelectedPreferences('typePreference', 'typeAll')
+async function saveNotificationPreferences() {
+    if (!document.getElementById('notificationsEnabled').checked) {
+        localStorage.removeItem('notificationPreferences');
+        showToast({type: 'info', message: 'Notificaciones desactivadas'});
+        return;
+    }
+
+    if (Notification.permission !== 'granted') {
+        const granted = await requestNotificationPermission();
+        if (!granted) return;
+    }
+
+    const preferences = {
+        enabled: true,
+        troncal: getSelectedPreferences('troncalPreference'),
+        station: getSelectedPreferences('stationPreference'),
+        incidentType: getSelectedPreferences('typePreference')
     };
 
-    localStorage.setItem('notificationSettings', JSON.stringify(settings));
-    showToast({ type: 'success', message: 'Preferencias guardadas exitosamente' });
+    localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
+    showToast({type: 'success', message: 'Preferencias guardadas correctamente'});
 }
 
 // Helper function para obtener las preferencias seleccionadas
-function getSelectedPreferences(prefGroupId, allId) {
-    const allCheckbox = document.getElementById(allId);
+function getSelectedPreferences(prefGroupId) {
     const selected = [];
-
-    if (allCheckbox && allCheckbox.checked) {
-        selected.push('all');
-    } else {
-        const checkboxes = document.querySelectorAll(`#${prefGroupId} .form-check-input:not(#${allId})`);
-        checkboxes.forEach(cb => {
-            if (cb.checked) {
-                selected.push(cb.value);
-            }
-        });
-    }
+    const checkboxes = document.querySelectorAll(`#${prefGroupId} .form-check-input:not(#${prefGroupId}All)`);
+    checkboxes.forEach(cb => {
+        if (cb.checked) {
+            selected.push(cb.value);
+        }
+    });
 
     return selected.length > 0 ? selected : ['all'];
 }
@@ -89,10 +94,10 @@ async function loadPreferences() {
         const settings = getNotificationSettings();
 
         // Poblar Troncales
-        populateCheckboxGroup('troncalPreference', troncales, 'troncalAll', settings.troncal);
+        populateCheckboxGroup('troncalPreference', troncales, settings.troncal);
 
         // Poblar Estaciones
-        populateCheckboxGroup('stationPreference', estaciones, 'stationAll', settings.station);
+        populateCheckboxGroup('stationPreference', estaciones, settings.station);
 
         // Establecer preferencias para Tipos de Incidente (ya está estático en HTML)
         setIncidentTypePreferences(settings.incidentType);
@@ -104,21 +109,12 @@ async function loadPreferences() {
 }
 
 // Función para poblar un grupo de checkboxes (Troncales o Estaciones)
-function populateCheckboxGroup(groupId, items, allId, selectedItems) {
+function populateCheckboxGroup(groupId, items, selectedItems) {
     const group = document.getElementById(groupId);
     if (!group) return;
 
     // Limpiar contenido existente
     group.innerHTML = '';
-
-    // Crear checkbox "Todas"
-    const allDiv = document.createElement('div');
-    allDiv.className = 'form-check';
-    allDiv.innerHTML = `
-        <input class="form-check-input" type="checkbox" value="all" id="${allId}" ${selectedItems.includes('all') ? 'checked' : ''}>
-        <label class="form-check-label" for="${allId}">Todas las ${groupId.includes('troncal') ? 'Troncales' : 'Estaciones'}</label>
-    `;
-    group.appendChild(allDiv);
 
     // Crear checkboxes individuales
     items.forEach(item => {
@@ -126,46 +122,22 @@ function populateCheckboxGroup(groupId, items, allId, selectedItems) {
         itemDiv.className = 'form-check';
         const itemId = `${groupId}-${sanitizeId(item)}`;
         const isChecked = selectedItems.includes('all') || selectedItems.includes(item);
-        const isDisabled = selectedItems.includes('all') ? 'disabled' : '';
 
         itemDiv.innerHTML = `
-            <input class="form-check-input" type="checkbox" value="${item}" id="${itemId}" ${isChecked ? 'checked' : ''} ${isDisabled}>
+            <input class="form-check-input" type="checkbox" value="${item}" id="${itemId}" ${isChecked ? 'checked' : ''}>
             <label class="form-check-label" for="${itemId}">${item}</label>
         `;
         group.appendChild(itemDiv);
     });
-
-    // Configurar eventos para el checkbox "Todas"
-    const allCheckbox = document.getElementById(allId);
-    if (allCheckbox) {
-        allCheckbox.addEventListener('change', function() {
-            const checkboxes = group.querySelectorAll(`.form-check-input:not(#${allId})`);
-            checkboxes.forEach(cb => {
-                cb.checked = this.checked;
-                cb.disabled = this.checked;
-            });
-        });
-    }
 }
 
 // Función para establecer las preferencias de Tipos de Incidente
 function setIncidentTypePreferences(selectedTypes) {
-    const typeAllCheckbox = document.getElementById('typeAll');
-    const typeCheckboxes = document.querySelectorAll('#typePreference .form-check-input:not(#typeAll)');
-
-    // Establecer estado del checkbox "Todos los tipos"
-    typeAllCheckbox.checked = selectedTypes.includes('all');
+    const typeCheckboxes = document.querySelectorAll('#typePreference .form-check-input');
 
     // Establecer estado de los checkboxes individuales
     typeCheckboxes.forEach(cb => {
         cb.checked = selectedTypes.includes('all') || selectedTypes.includes(cb.value);
-    });
-
-    // Configurar evento para el checkbox "Todos los tipos"
-    typeAllCheckbox.addEventListener('change', function() {
-        typeCheckboxes.forEach(cb => {
-            cb.checked = this.checked;
-        });
     });
 }
 
@@ -290,15 +262,53 @@ function showToast(data) {
 }
 
 // Solicitar permiso para notificaciones del navegador
-function requestNotificationPermission() {
-    if ('Notification' in window && Notification.permission !== 'granted') {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('Permiso para notificaciones concedido');
-            }
+async function requestNotificationPermission() {
+    if (!('Notification' in window)) {
+        showToast({type: 'error', message: 'Este navegador no soporta notificaciones'});
+        return false;
+    }
+
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: 'TU_VAPID_PUBLIC_KEY'
         });
+
+        // Guardar subscripción en el servidor
+        await fetch('/push/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(subscription)
+        });
+
+        // Guardar preferencias en localStorage
+        localStorage.setItem('notificationPreferences', JSON.stringify({
+            enabled: true,
+            troncal: ['all'],
+            station: ['all'],
+            incidentType: ['all']
+        }));
+
+        showToast({type: 'success', message: 'Notificaciones activadas correctamente'});
+        return true;
+    } else {
+        showToast({type: 'error', message: 'Permiso de notificaciones denegado'});
+        return false;
     }
 }
+
+// Cargar preferencias guardadas
+function loadSavedPreferences() {
+    const savedPrefs = localStorage.getItem('notificationPreferences');
+    if (savedPrefs) {
+        const prefs = JSON.parse(savedPrefs);
+        document.getElementById('notificationsEnabled').checked = prefs.enabled;
+        // Restaurar otras preferencias...
+    }
+}
+
 
 // Función para aplicar los filtros activos y cargar las notificaciones correspondientes
 function applyNotificationFilters() {
@@ -315,13 +325,13 @@ function applyNotificationFilters() {
     activeFilters.forEach(filter => {
         switch(filter) {
             case 'troncal':
-                notificationFilters.troncal = getSelectedPreferences('troncalPreference', 'troncalAll');
+                notificationFilters.troncal = getSelectedPreferences('troncalPreference');
                 break;
             case 'station':
-                notificationFilters.station = getSelectedPreferences('stationPreference', 'stationAll');
+                notificationFilters.station = getSelectedPreferences('stationPreference');
                 break;
             case 'type':
-                notificationFilters.incidentType = getSelectedPreferences('typePreference', 'typeAll');
+                notificationFilters.incidentType = getSelectedPreferences('typePreference');
                 break;
             case 'all':
                 notificationFilters = {
@@ -342,7 +352,7 @@ function buildQueryParams() {
     const params = [];
     const activeFilters = document.querySelectorAll('.notification-filters .filter-chip.active');
     const allFilter = Array.from(activeFilters).some(chip => chip.getAttribute('data-filter') === 'all');
-    
+
     if (!allFilter) {
         activeFilters.forEach(filter => {
             const filterType = filter.getAttribute('data-filter');
@@ -473,15 +483,16 @@ function setupFilterEventListeners() {
 }
 
 // Inicialización cuando el DOM está listo
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Solicitar permiso para notificaciones del navegador
-    requestNotificationPermission();
+    await requestNotificationPermission();
 
     // Cargar las preferencias de notificaciones
     loadPreferences();
 
     // Inicializar Socket.IO
     initializeSocketIO();
+
 
     // Configurar eventos de filtros
     setupFilterEventListeners();
