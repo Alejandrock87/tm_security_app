@@ -1,6 +1,24 @@
 // Variables globales
 let notificationsEnabled = false;
 
+// Función para actualizar el estado visual de los botones
+function updateButtonStates(notificationsEnabled) {
+    const activateBtn = document.getElementById('activateNotifications');
+    const saveBtn = document.getElementById('savePreferences');
+    
+    if (notificationsEnabled) {
+        activateBtn.textContent = 'Notificaciones Activadas';
+        activateBtn.classList.remove('btn-primary');
+        activateBtn.classList.add('btn-success');
+        saveBtn.disabled = false;
+    } else {
+        activateBtn.textContent = 'Activar Notificaciones';
+        activateBtn.classList.remove('btn-success');
+        activateBtn.classList.add('btn-primary');
+        saveBtn.disabled = true;
+    }
+}
+
 // Función para mostrar mensajes toast
 function showToast(message, type) {
     const toast = document.createElement('div');
@@ -8,6 +26,81 @@ function showToast(message, type) {
     toast.textContent = message;
     document.getElementById('toastContainer').appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
+}
+
+// Función para guardar preferencias
+async function saveNotificationPreferences() {
+    const saveBtn = document.getElementById('savePreferences');
+    const originalText = saveBtn.textContent;
+    
+    try {
+        saveBtn.textContent = 'Guardando...';
+        saveBtn.disabled = true;
+
+        const preferences = {
+            troncal: getSelectedValues('troncalPreference'),
+            station: getSelectedValues('stationPreference'),
+            incidentType: getSelectedValues('typePreference')
+        };
+
+        localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
+        
+        // Simular delay para feedback visual
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        showToast('Preferencias guardadas correctamente', 'success');
+        saveBtn.textContent = '¡Guardado!';
+        saveBtn.classList.add('btn-success');
+        
+        setTimeout(() => {
+            saveBtn.textContent = originalText;
+            saveBtn.classList.remove('btn-success');
+            saveBtn.disabled = false;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error al guardar preferencias:', error);
+        showToast('Error al guardar preferencias', 'error');
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+    }
+}
+
+// Función para solicitar permisos de notificación
+async function requestNotificationPermission() {
+    const activateBtn = document.getElementById('activateNotifications');
+    const originalText = activateBtn.textContent;
+    
+    try {
+        activateBtn.textContent = 'Solicitando permisos...';
+        activateBtn.disabled = true;
+
+        if (!('Notification' in window)) {
+            throw new Error('Este navegador no soporta notificaciones');
+        }
+
+        const permission = await Notification.requestPermission();
+        
+        if (permission === 'granted') {
+            notificationsEnabled = true;
+            updateButtonStates(true);
+            showToast('Notificaciones activadas correctamente', 'success');
+            
+            // Enviar notificación de prueba
+            new Notification('Notificaciones Activadas', {
+                body: 'Recibirás alertas de incidentes según tus preferencias',
+                icon: '/static/icons/notification-icon.png'
+            });
+        } else {
+            throw new Error('Permiso de notificaciones denegado');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(error.message, 'error');
+        updateButtonStates(false);
+    } finally {
+        activateBtn.disabled = false;
+    }
 }
 
 // Función para mostrar mensajes al usuario
