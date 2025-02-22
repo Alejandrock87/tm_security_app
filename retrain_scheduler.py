@@ -27,6 +27,23 @@ def generate_weekly_predictions():
                 pred_time = current_date.replace(hour=hour, minute=0, second=0)
                 for station in stations:
                     risk_score = predict_station_risk(station[0], pred_time.hour)
+
+def check_model_health():
+    """Verifica el estado del modelo y sus predicciones"""
+    try:
+        from ml_models import get_model_insights
+        insights = get_model_insights()
+        
+        if isinstance(insights, dict):
+            cv_score = insights['cross_validation_scores']['mean']
+            if cv_score < 0.5:  # Si el rendimiento es muy bajo
+                logging.warning(f"Bajo rendimiento del modelo (CV Score: {cv_score}). Iniciando reentrenamiento.")
+                retrain_model_job()
+        return True
+    except Exception as e:
+        logging.error(f"Error en verificación de salud del modelo: {str(e)}")
+        return False
+
                     predictions.append({
                         'station': station[0],
                         'predicted_time': pred_time.isoformat(),
@@ -63,8 +80,12 @@ def retrain_model_job():
         logging.error(f"Error during model retraining: {str(e)}")
 
 def run_scheduler():
-    # Configurar para ejecutar todos los domingos a las 11 PM (Hora de Bogotá)
-    schedule.every().sunday.at("23:00").do(retrain_model_job)
+    # Reentrenar dos veces por semana para mantener el modelo actualizado
+    schedule.every().wednesday.at("03:00").do(retrain_model_job)
+    schedule.every().sunday.at("03:00").do(retrain_model_job)
+    
+    # Verificar el estado del modelo cada 12 horas
+    schedule.every(12).hours.do(check_model_health)
 
     # Ejecutar inmediatamente si no existe el modelo
     if not os.path.exists(MODEL_CACHE_FILE):

@@ -141,13 +141,12 @@ def train_model():
     # Crear secuencias temporales
     sequence_length = 24  # 24 horas de historial
     
-    # Modelo LSTM
+    # Configuración del modelo LSTM con manejo de memoria mejorado
     model = Sequential([
-        LSTM(128, return_sequences=True, input_shape=(sequence_length, X_train.shape[2])),
-        Dropout(0.3),
-        LSTM(64, return_sequences=False),
-        Dropout(0.3),
-        Dense(32, activation='relu'),
+        LSTM(64, return_sequences=True, input_shape=(sequence_length, X_train.shape[2]), 
+             dropout=0.2, recurrent_dropout=0.2),
+        LSTM(32, dropout=0.2, recurrent_dropout=0.2),
+        Dense(16, activation='relu'),
         Dropout(0.2),
         Dense(len(np.unique(y)), activation='softmax')
     ])
