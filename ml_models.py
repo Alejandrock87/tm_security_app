@@ -1,18 +1,24 @@
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.feature_selection import SelectFromModel
-from xgboost import XGBClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
-from models import Incident
-from database import db
 import logging
+import os
+import pickle
+import time
 from datetime import datetime, timedelta
+
+import numpy as np
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
+from sklearn.feature_selection import SelectFromModel
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from xgboost import XGBClassifier
+
+from database import db
+from models import Incident
 
 def prepare_data():
     incidents = Incident.query.order_by(Incident.timestamp).all()
@@ -375,8 +381,6 @@ def prepare_rnn_data():
         if not incidents:
             logging.warning("No incidents found in database")
             return None, None, None
-
-        from sklearn.preprocessing import LabelEncoder
         
         df = pd.DataFrame([{
             'timestamp': incident.timestamp,
@@ -399,15 +403,32 @@ def prepare_rnn_data():
         le = LabelEncoder()
         df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
         incident_types = le.classes_
+
+        # Crear secuencias temporales
+        sequence_length = 24  # 24 horas de historial
+        X = []
+        y = []
         
-        return df, incident_types, le
+        for station in df['station'].unique():
+            station_data = df[df['station'] == station].sort_values('timestamp')
+            if len(station_data) >= sequence_length:
+                for i in range(len(station_data) - sequence_length):
+                    sequence = station_data.iloc[i:i+sequence_length]
+                    features = sequence[[
+                        'hour', 'day_of_week', 'month', 'latitude', 
+                        'longitude', 'is_weekend', 'is_peak_hour'
+                    ]].values
+                    X.append(features)
+                    y.append(station_data.iloc[i+sequence_length]['incident_type_encoded'])
+        
+        X = np.array(X)
+        y = np.array(y)
+        
+        return X, y, len(incident_types)
 
     except Exception as e:
         logging.error(f"Error preparing RNN data: {str(e)}")
         return None, None, None
-
-    # Crear secuencias temporales
-    sequence_length = 24  # 24 horas de historial
     X = []
     y = []
     
