@@ -394,9 +394,14 @@ def prepare_rnn_data():
         # Normalización de coordenadas
         scaler = StandardScaler()
         df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
-    
-    # Codificación de variables categóricas
-    le = LabelEncoder()
+        
+        # Codificación de variables categóricas
+        le = LabelEncoder()
+        
+        return df, incidents, le
+    except Exception as e:
+        logging.error(f"Error preparing RNN data: {str(e)}")
+        return None, None, None
     df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
     incident_types = le.classes_
 
