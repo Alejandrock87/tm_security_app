@@ -35,7 +35,8 @@ FEATURE_CACHE_FILE = 'feature_cache.pkl'
 
 def prepare_rnn_data():
     try:
-        incidents = Incident.query.order_by(Incident.timestamp).all()
+        with transaction_context():
+            incidents = Incident.query.order_by(Incident.timestamp).all()
         if not incidents:
             logging.warning("No incidents found in database")
             return None, None, None
@@ -196,7 +197,8 @@ def train_model():
         return None, None
 
 def prepare_data():
-    incidents = Incident.query.order_by(Incident.timestamp).all()
+    with transaction_context():
+        incidents = Incident.query.order_by(Incident.timestamp).all()
 
     if not incidents:
         return pd.DataFrame()
