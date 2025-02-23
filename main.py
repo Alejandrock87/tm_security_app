@@ -21,7 +21,7 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = int(os.getenv('PORT', 5000))
+        port = int(os.getenv('PORT', 3000))
         logger.info(f"Configured to run on port {port}")
 
         socketio.run(
