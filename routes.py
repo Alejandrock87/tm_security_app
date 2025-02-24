@@ -75,6 +75,10 @@ def init_routes(app):
     @app.route('/report_incident', methods=['GET', 'POST'])
     @login_required
     def report_incident():
+        app.logger.info(f"Accessing report_incident. User: {current_user}, Remote addr: {request.remote_addr}")
+        app.logger.debug(f"Request headers: {dict(request.headers)}")
+        app.logger.debug(f"Session data: {dict(session)}")
+
         form = IncidentReportForm()
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
@@ -120,6 +124,7 @@ def init_routes(app):
                 flash('Error al guardar el incidente. Por favor, intente de nuevo.')
                 return redirect(url_for('report_incident'))
 
+        app.logger.info("Rendering report_incident template")
         return render_template('report_incident.html', title='Reportar incidente', form=form)
 
     @app.route('/dashboard')
