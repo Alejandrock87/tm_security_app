@@ -14,7 +14,7 @@ logger.info("Starting application initialization...")
 
 @app.route('/health')
 def health_check():
-    logger.info("Health check endpoint accessed")
+    logger.debug("Health check endpoint accessed")
     return 'OK', 200
 
 if __name__ == '__main__':
@@ -23,20 +23,13 @@ if __name__ == '__main__':
         port = 5000  # Always use port 5000 for Replit
         logger.info(f"Configured to run on port {port}")
 
-        # Configure logging for the server components
-        logging.getLogger('werkzeug').setLevel(logging.DEBUG)
-        logging.getLogger('engineio').setLevel(logging.DEBUG)
-        logging.getLogger('socketio').setLevel(logging.DEBUG)
-
-        # Configure Flask server with SocketIO
+        # Temporarily use simple app.run instead of socketio.run for debugging
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
-        socketio.run(
-            app,
+        app.run(
             host='0.0.0.0',
             port=port,
             debug=True,
-            use_reloader=False,  # Disable reloader to prevent duplicate processes
-            log_output=True      # Enable log output for better debugging
+            use_reloader=False  # Disable reloader to prevent duplicate processes
         )
         logger.info(f"Server successfully started and listening on port {port}")
     except Exception as e:

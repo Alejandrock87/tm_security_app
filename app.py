@@ -50,26 +50,32 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["WTF_CSRF_ENABLED"] = True
 app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
-# Inicializar login manager
+# Inicializar extensiones en orden específico
+logger.debug("Inicializando extensiones...")
+db.init_app(app)
+logger.info("SQLAlchemy inicializado")
+
+cache.init_app(app)
+logger.info("Cache inicializado")
+
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
+logger.info("Login manager inicializado")
 
-# Importar modelos antes de crear las tablas
+socketio.init_app(app)
+logger.info("SocketIO inicializado")
+
+# Inicializar base de datos y crear tablas
+init_db(app)
+logger.info("Base de datos inicializada")
+
+# Importar modelos después de inicializar la base de datos
 from models import User
 
 @login_manager.user_loader
 def load_user(user_id):
-    logger.debug(f"Cargando usuario con ID: {user_id}")
     return User.query.get(int(user_id))
-
-# Inicializar base de datos y crear tablas
-init_db(app)
-
-# Inicializar extensiones
-logger.debug("Inicializando extensiones...")
-cache.init_app(app)
-db.init_app(app)
 
 # Importar e inicializar rutas después de que todo esté configurado
 try:

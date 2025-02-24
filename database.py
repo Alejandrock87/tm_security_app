@@ -13,7 +13,7 @@ def init_db(app):
     """Initialize database with proper error handling"""
     try:
         logger.info("Initializing database...")
-        db.init_app(app)
+        # No llamar a db.init_app aquí, ya que se hace en app.py
 
         with app.app_context():
             # Import models here to avoid circular imports

@@ -146,11 +146,13 @@ def init_routes(app):
             logging.info("Iniciando generación de estadísticas")
 
             # Try to get statistics from cache first
-            cache_key = 'api_statistics_cache'
+            cache_key = f'api_statistics_cache_{request.args.get("dateFrom", "all")}_{request.args.get("dateTo", "all")}'
             cached_stats = cache.get(cache_key)
             if cached_stats:
                 logging.info("Retornando estadísticas desde caché")
                 return jsonify(cached_stats)
+
+            logging.info("Cache miss - generando nuevas estadísticas")
 
             # Get date parameters
             date_from = request.args.get('dateFrom')
@@ -163,55 +165,46 @@ def init_routes(app):
             if date_from:
                 date_from_obj = datetime.strptime(date_from, '%Y-%m-%d')
                 base_query = base_query.filter(Incident.timestamp >= date_from_obj)
+                logging.info(f"Aplicando filtro desde: {date_from}")
             if date_to:
                 date_to_obj = datetime.strptime(date_to, '%Y-%m-%d')
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 base_query = base_query.filter(Incident.timestamp <= date_to_end)
+                logging.info(f"Aplicando filtro hasta: {date_to}")
 
             try:
-                # Use a single optimized query for all statistics
-                stats = db.session.query(
-                    func.count(Incident.id).label('total'),
+                logging.info("Iniciando consultas de estadísticas")
+                start_time = datetime.now()
+
+                # Total incidents
+                total_incidents = base_query.count()
+                logging.info(f"Total de incidentes encontrados: {total_incidents} ({(datetime.now() - start_time).total_seconds()}s)")
+
+                # Incident types and counts
+                incident_types = db.session.query(
                     Incident.incident_type,
+                    func.count(Incident.id).label('count')
+                ).filter(base_query.whereclause).group_by(Incident.incident_type).all()
+                incident_types_dict = {t[0]: t[1] for t in incident_types}
+                logging.info(f"Tipos de incidentes procesados: {len(incident_types_dict)} tipos ({(datetime.now() - start_time).total_seconds()}s)")
+
+                # Station statistics
+                station_counts = db.session.query(
                     Incident.nearest_station,
-                    func.extract('hour', Incident.timestamp).label('hour')
-                ).group_by(
-                    Incident.incident_type,
-                    Incident.nearest_station,
-                    func.extract('hour', Incident.timestamp)
-                ).all()
+                    func.count(Incident.id).label('count')
+                ).filter(base_query.whereclause).group_by(Incident.nearest_station).all()
+                station_counts_dict = {s[0]: s[1] for s in station_counts}
+                logging.info(f"Estaciones procesadas: {len(station_counts_dict)} estaciones ({(datetime.now() - start_time).total_seconds()}s)")
 
-                # Process results efficiently
-                total_incidents = 0
-                incident_types_dict = {}
-                station_counts_dict = {}
-                hour_counts = {}
-
-                for stat in stats:
-                    count = stat[0]
-                    incident_type = stat[1]
-                    station = stat[2]
-                    hour = int(stat[3])
-
-                    total_incidents += count
-
-                    # Aggregate incident types
-                    if incident_type not in incident_types_dict:
-                        incident_types_dict[incident_type] = 0
-                    incident_types_dict[incident_type] += count
-
-                    # Aggregate station counts
-                    if station not in station_counts_dict:
-                        station_counts_dict[station] = 0
-                    station_counts_dict[station] += count
-
-                    # Aggregate hour counts
-                    if hour not in hour_counts:
-                        hour_counts[hour] = 0
-                    hour_counts[hour] += count
+                # Most dangerous hour
+                hour_counts = db.session.query(
+                    func.extract('hour', Incident.timestamp).label('hour'),
+                    func.count(Incident.id).label('count')
+                ).filter(base_query.whereclause).group_by('hour').order_by(func.count(Incident.id).desc()).first()
+                most_dangerous_hour = f"{int(hour_counts[0]):02d}:00" if hour_counts else "-"
+                logging.info(f"Hora más peligrosa identificada: {most_dangerous_hour} ({(datetime.now() - start_time).total_seconds()}s)")
 
                 # Calculate derived statistics
-                most_dangerous_hour = f"{max(hour_counts.items(), key=lambda x: x[1])[0]:02d}:00" if hour_counts else "-"
                 most_affected_station = max(station_counts_dict.items(), key=lambda x: x[1])[0] if station_counts_dict else "-"
                 most_common_type = max(incident_types_dict.items(), key=lambda x: x[1])[0] if incident_types_dict else "-"
 
@@ -227,7 +220,7 @@ def init_routes(app):
 
                 # Cache results for 5 minutes
                 cache.set(cache_key, response_data, timeout=300)
-                logging.info("Estadísticas generadas y guardadas en caché")
+                logging.info(f"Estadísticas generadas y guardadas en caché (tiempo total: {(datetime.now() - start_time).total_seconds()}s)")
 
                 return jsonify(response_data)
 
