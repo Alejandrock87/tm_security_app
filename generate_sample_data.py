@@ -1,4 +1,3 @@
-
 import random
 from datetime import datetime, timedelta
 from app import app, db
@@ -127,25 +126,27 @@ def populate_real_incident_data():
         # Generar reportes para enero 2025
         start_date = datetime(2025, 1, 1)
         end_date = datetime(2025, 1, 25)
-        
-        print("Generando 500 incidentes distribuidos...")
+
+        print("Generando 1000 incidentes distribuidos...")
         total_incidents = 0
-        
+
         for station_name, station_info in stations_data.items():
             lat, lon = station_info["coords"]
-            
+
             for incident_type, count in station_info["incidents"].items():
-                for _ in range(count):
-                    if total_incidents >= 500:
+                # Duplicar el número de incidentes por tipo
+                adjusted_count = count * 2
+                for _ in range(adjusted_count):
+                    if total_incidents >= 1000:
                         break
-                        
+
                     # Seleccionar día y hora
                     current_date = start_date + timedelta(days=random.randint(0, 24))
-                    
+
                     # Mayor probabilidad en días pico
                     while current_date.weekday() not in station_info["peak_days"]:
                         current_date = start_date + timedelta(days=random.randint(0, 24))
-                    
+
                     # Seleccionar rango de hora pico
                     is_peak = random.random() < 0.7  # 70% probabilidad hora pico
                     if is_peak:
@@ -153,16 +154,16 @@ def populate_real_incident_data():
                         hour = random.randint(peak_period[0], peak_period[1]-1)
                     else:
                         hour = random.randint(5, 22)  # Resto del día
-                    
+
                     minute = random.randint(0, 59)
                     second = random.randint(0, 59)
-                    
+
                     timestamp = current_date.replace(hour=hour, minute=minute, second=second)
-                    
+
                     # Variación en coordenadas
                     incident_lat = lat + random.uniform(-0.0002, 0.0002)
                     incident_lon = lon + random.uniform(-0.0002, 0.0002)
-                    
+
                     description = f"{incident_type} reportado en la estación {station_name}"
                     if incident_type == "Hurto":
                         description += " - Pérdida de pertenencias personales"
@@ -170,7 +171,7 @@ def populate_real_incident_data():
                         description += " - Intento de hurto en aglomeración"
                     elif incident_type == "Acoso":
                         description += " - Acoso verbal/físico reportado"
-                    
+
                     incident = Incident(
                         incident_type=incident_type,
                         description=description,
@@ -182,13 +183,13 @@ def populate_real_incident_data():
                     )
                     db.session.add(incident)
                     total_incidents += 1
-                
-                if total_incidents >= 500:
+
+                if total_incidents >= 1000:
                     break
-            
-            if total_incidents >= 500:
+
+            if total_incidents >= 1000:
                 break
-                
+
         db.session.commit()
         print(f"Se han generado {total_incidents} incidentes distribuidos entre las estaciones.")
 
