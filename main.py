@@ -19,7 +19,7 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = 5000
+        port = int(os.environ.get('PORT', 5000))
         logger.info(f"Configured to run on port {port}")
 
         # Configure logging for the server components
@@ -27,11 +27,13 @@ if __name__ == '__main__':
         logging.getLogger('engineio').setLevel(logging.DEBUG)
         logging.getLogger('socketio').setLevel(logging.DEBUG)
 
+        # Configure Flask server
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
         app.run(
             host='0.0.0.0',
             port=port,
-            debug=True
+            debug=True,
+            use_reloader=False  # Disable reloader to prevent duplicate processes
         )
         logger.info(f"Server successfully started and listening on port {port}")
     except Exception as e:
