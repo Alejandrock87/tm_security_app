@@ -1,4 +1,4 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
     {% block styles %}
       {{ super() }}
@@ -148,6 +148,7 @@
       }
 
       function getStationSecurityColor(count) {
+          if (!count && count !== 0) return '#feca57'; // Color por defecto si no hay datos
           if (count > 5) return '#ff0000';
           if (count >= 2) return '#ffa500';
           return '#008000';
@@ -223,20 +224,34 @@
           const minutes = String(now.getMinutes()).padStart(2, '0');
           timeInput.value = `${hours}:${minutes}`;
 
-          // Inicializar mapa
-          reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; OpenStreetMap contributors'
-          }).addTo(reportMap);
+          // Inicializar mapa con manejo de errores mejorado
+          try {
+              reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; OpenStreetMap contributors'
+              }).addTo(reportMap);
+          } catch (error) {
+              console.error('Error initializing map:', error);
+              locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al cargar el mapa. Por favor, recargue la página.';
+              locationStatus.classList.remove('alert-info');
+              locationStatus.classList.add('alert-danger');
+              return;
+          }
 
           Promise.all([
-              fetch('/station_statistics'),
-              fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson')
+              fetch('/station_statistics').catch(error => {
+                  console.error('Error fetching station statistics:', error);
+                  return { json: () => ({}) };
+              }),
+              fetch('/static/Estaciones_Troncales_de_TRANSMILENIO.geojson').catch(error => {
+                  console.error('Error fetching station data:', error);
+                  return { json: () => ({ features: [] }) };
+              })
           ])
           .then(responses => Promise.all(responses.map(response => response.json())))
           .then(([statistics, stationsData]) => {
-              stationSecurityLevels = statistics;
-              stations = stationsData.features;
+              stationSecurityLevels = statistics.stations || {};
+              stations = stationsData.features || [];
 
               if ("geolocation" in navigator) {
                   navigator.geolocation.getCurrentPosition(
@@ -260,7 +275,7 @@
                               if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
 
                               const stationNameValue = nearestStation.properties.nombre_estacion;
-                              const incidentCount = statistics[stationNameValue] || 0;
+                              const incidentCount = stationSecurityLevels[stationNameValue] || 0;
                               const stationColor = getStationSecurityColor(incidentCount);
 
                               document.querySelector('select[name="station"]').value = stationNameValue;
@@ -294,6 +309,7 @@
                           }
                       },
                       function(error) {
+                          console.error('Geolocation error:', error);
                           locationStatus.classList.remove('alert-info');
                           locationStatus.classList.add('alert-danger');
                           locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al obtener la ubicación: ' + error.message;
