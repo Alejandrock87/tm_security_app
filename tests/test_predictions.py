@@ -8,9 +8,11 @@ from models import User, db, Incident
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def test_client():
     """Create a test client"""
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/test_db'
     with app.test_client() as testing_client:
         with app.app_context():
             # Create all database tables
@@ -19,7 +21,7 @@ def test_client():
             db.session.remove()
             db.drop_all()
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def test_user(test_client):
     """Create a test user for authentication"""
     with app.app_context():
@@ -31,7 +33,7 @@ def test_user(test_client):
         db.session.delete(user)
         db.session.commit()
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def authenticated_client(test_client, test_user):
     """Create an authenticated client session"""
     test_client.post('/login', data={
@@ -40,63 +42,104 @@ def authenticated_client(test_client, test_user):
     }, follow_redirects=True)
     return test_client
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 def sample_incidents(test_client, test_user):
     """Create sample incidents for testing predictions"""
+    logger.info("Creating sample incidents for testing")
     with app.app_context():
         # Crear suficientes incidentes para el entrenamiento del modelo
         stations = ["Pepe Sierra", "Calle 100", "Virrey"]
         base_time = datetime.now() - timedelta(days=30)
         incident_types = ["Hurto", "Acoso", "Accidente", "Otro"]
 
-        for station in stations:
-            for i in range(100):  # Incrementado a 100 incidentes por estación
-                incident = Incident(
-                    incident_type=incident_types[i % len(incident_types)],  # Rotación de tipos
-                    description=f"Incidente de prueba {i} en {station}",
-                    latitude=4.6097 + (i * 0.0001),  # Variar ligeramente las coordenadas
-                    longitude=-74.0817 + (i * 0.0001),
-                    user_id=test_user.id,
-                    nearest_station=station,
-                    timestamp=base_time + timedelta(
-                        days=i//4,  # Distribuir en el tiempo
-                        hours=i%24  # Variar la hora del día
-                    )
-                )
-                db.session.add(incident)
+        try:
+            # Limpiar datos anteriores
+            Incident.query.delete()
+            db.session.commit()
+            logger.info("Cleaned previous test data")
 
-        db.session.commit()
-        yield
-        # Limpiar datos de prueba
-        Incident.query.delete()
-        db.session.commit()
+            total_incidents = 0
+            # Crear nuevos incidentes
+            for station in stations:
+                logger.info(f"Creating incidents for station: {station}")
+                for incident_index in range(100):  # 100 incidentes por estación
+                    incident = Incident(
+                        incident_type=incident_types[incident_index % len(incident_types)],
+                        description=f"Incidente de prueba {incident_index} en {station}",
+                        latitude=4.6097 + (incident_index * 0.0001),
+                        longitude=-74.0817 + (incident_index * 0.0001),
+                        user_id=test_user.id,
+                        nearest_station=station,
+                        timestamp=base_time + timedelta(
+                            days=incident_index//4,
+                            hours=incident_index%24
+                        )
+                    )
+                    db.session.add(incident)
+                    total_incidents += 1
+
+                    if incident_index > 0 and incident_index % 50 == 0:  # Commit cada 50 registros
+                        db.session.commit()
+                        logger.info(f"Committed {incident_index} incidents for station {station}")
+
+                # Commit final para esta estación
+                db.session.commit()
+                logger.info(f"Finished creating incidents for station {station}")
+
+            # Verificar la creación
+            verification_count = Incident.query.count()
+            logger.info(f"Verification: Total incidents in database: {verification_count}")
+            assert verification_count == total_incidents, f"Expected {total_incidents} incidents, but found {verification_count}"
+
+            # Verificar distribución por estación
+            for station in stations:
+                station_count = Incident.query.filter_by(nearest_station=station).count()
+                logger.info(f"Station {station} has {station_count} incidents")
+                assert station_count == 100, f"Expected 100 incidents for station {station}, but found {station_count}"
+
+            yield
+
+            # Limpiar datos de prueba
+            Incident.query.delete()
+            db.session.commit()
+            logger.info("Cleaned up test data")
+
+        except Exception as e:
+            logger.error(f"Error creating sample incidents: {str(e)}")
+            db.session.rollback()
+            raise
 
 def test_predictions_endpoint(authenticated_client, sample_incidents):
     """Test the predictions endpoint basic functionality"""
     logger.info("Testing predictions endpoint")
     with app.app_context():
-        response = authenticated_client.get('/api/predictions')
-        assert response.status_code == 200
-        data = json.loads(response.data)
-        assert isinstance(data, list)
-        logger.info(f"Received {len(data)} predictions")
+        try:
+            response = authenticated_client.get('/api/predictions')
+            assert response.status_code == 200
+            data = json.loads(response.data)
+            assert isinstance(data, list)
+            logger.info(f"Received {len(data)} predictions")
 
-        if len(data) > 0:
-            prediction = data[0]
-            required_fields = ['station', 'incident_type', 'predicted_time', 'risk_score', 'latitude', 'longitude']
-            for field in required_fields:
-                assert field in prediction
+            if len(data) > 0:
+                prediction = data[0]
+                required_fields = ['station', 'incident_type', 'predicted_time', 'risk_score', 'latitude', 'longitude']
+                for field in required_fields:
+                    assert field in prediction
 
-            # Validar tipos de datos
-            assert isinstance(prediction['station'], str)
-            assert isinstance(prediction['incident_type'], str)
-            assert isinstance(prediction['risk_score'], float)
-            assert 0 <= prediction['risk_score'] <= 1
+                # Validar tipos de datos
+                assert isinstance(prediction['station'], str)
+                assert isinstance(prediction['incident_type'], str)
+                assert isinstance(prediction['risk_score'], float)
+                assert 0 <= prediction['risk_score'] <= 1
 
-            # Validar formato de tiempo
-            predicted_time = datetime.fromisoformat(prediction['predicted_time'])
-            assert predicted_time > datetime.now() - timedelta(hours=1)
-            assert predicted_time < datetime.now() + timedelta(hours=4)
+                # Validar formato de tiempo
+                predicted_time = datetime.fromisoformat(prediction['predicted_time'])
+                assert predicted_time > datetime.now() - timedelta(hours=1)
+                assert predicted_time < datetime.now() + timedelta(hours=4)
+
+        except Exception as e:
+            logger.error(f"Error in test_predictions_endpoint: {str(e)}")
+            raise
 
 def test_predictions_error_handling(authenticated_client):
     """Test error handling in predictions endpoint"""

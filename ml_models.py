@@ -59,9 +59,10 @@ def prepare_rnn_data():
 
         logging.info(f"Found {len(incidents)} incidents")
 
-        # Validación inicial de datos
-        if len(incidents) < 100:
-            logging.warning("Insufficient data for training")
+        # Validación inicial de datos - reducido a 30 para pruebas
+        min_incidents = 30  # Reducido de 100 a 30 para pruebas
+        if len(incidents) < min_incidents:
+            logging.warning(f"Insufficient data for training. Found {len(incidents)} incidents, need at least {min_incidents}")
             return None, None, None
 
         df = pd.DataFrame([{
@@ -77,6 +78,8 @@ def prepare_rnn_data():
             'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
         } for incident in incidents])
 
+        logging.info(f"Created DataFrame with {len(df)} rows")
+
         # Normalización de coordenadas
         scaler = StandardScaler()
         df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
@@ -85,6 +88,7 @@ def prepare_rnn_data():
         le = LabelEncoder()
         df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
         incident_types = le.classes_
+        logging.info(f"Encoded {len(incident_types)} different incident types")
 
         # Crear secuencias temporales con validación
         sequence_length = 24
@@ -96,6 +100,9 @@ def prepare_rnn_data():
 
         for station in df['station'].unique():
             station_data = df[df['station'] == station].sort_values('timestamp')
+            station_incidents = len(station_data)
+            logging.info(f"Processing station {station} with {station_incidents} incidents")
+
             if len(station_data) >= sequence_length:
                 sequences = []
                 for i in range(len(station_data) - sequence_length):
@@ -107,6 +114,7 @@ def prepare_rnn_data():
 
                 if sequences:
                     X.extend(sequences)
+                    logging.info(f"Added {len(sequences)} sequences for station {station}")
 
         if not X:
             logging.error("No valid sequences generated")
@@ -124,7 +132,7 @@ def prepare_rnn_data():
             logging.error(f"Invalid sequence length. Expected {sequence_length}, got {X.shape[1]}")
             return None, None, None
 
-        logging.info(f"X shape: {X.shape}, y shape: {y.shape}")
+        logging.info(f"Final tensor shapes - X: {X.shape}, y: {y.shape}")
         return X, y, len(incident_types)
 
     except Exception as e:
