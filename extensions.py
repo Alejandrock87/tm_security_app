@@ -9,7 +9,14 @@ logger = logging.getLogger(__name__)
 
 # Initialize extensions
 cache = Cache()
-socketio = SocketIO()
+socketio = SocketIO(
+    cors_allowed_origins="*",
+    async_mode='gevent',
+    logger=True,
+    engineio_logger=True,
+    ping_timeout=60,
+    ping_interval=25
+)
 db = SQLAlchemy()
 login_manager = LoginManager()
 
@@ -25,36 +32,6 @@ def init_extensions(app):
         except Exception as e:
             logger.error(f"Error al inicializar Cache: {str(e)}")
             raise
-
-        # Configuración detallada de SocketIO con manejo de eventos
-        try:
-            logger.debug("Inicializando SocketIO...")
-            socketio.init_app(
-                app,
-                async_mode='gevent',
-                cors_allowed_origins="*",
-                logger=True,
-                engineio_logger=True,
-                ping_timeout=60,
-                ping_interval=25
-            )
-            logger.info("SocketIO inicializado correctamente")
-        except Exception as e:
-            logger.error(f"Error al inicializar SocketIO: {str(e)}")
-            raise
-
-        # Agregar manejadores de eventos de SocketIO
-        @socketio.on('connect')
-        def handle_connect():
-            logger.info(f"Cliente WebSocket conectado: {request.sid}")
-
-        @socketio.on('disconnect')
-        def handle_disconnect():
-            logger.info(f"Cliente WebSocket desconectado: {request.sid}")
-
-        @socketio.on_error()
-        def handle_error(e):
-            logger.error(f"Error en WebSocket: {str(e)}")
 
         # Inicializar base de datos
         try:
@@ -74,6 +51,28 @@ def init_extensions(app):
         except Exception as e:
             logger.error(f"Error al inicializar Login Manager: {str(e)}")
             raise
+
+        # Configuración detallada de SocketIO
+        try:
+            logger.debug("Inicializando SocketIO...")
+            socketio.init_app(app)
+            logger.info("SocketIO inicializado correctamente")
+        except Exception as e:
+            logger.error(f"Error al inicializar SocketIO: {str(e)}")
+            raise
+
+        # Agregar manejadores de eventos de SocketIO
+        @socketio.on('connect')
+        def handle_connect():
+            logger.info(f"Cliente WebSocket conectado: {request.sid}")
+
+        @socketio.on('disconnect')
+        def handle_disconnect():
+            logger.info(f"Cliente WebSocket desconectado: {request.sid}")
+
+        @socketio.on_error()
+        def handle_error(e):
+            logger.error(f"Error en WebSocket: {str(e)}")
 
         logger.info("Todas las extensiones inicializadas correctamente")
 

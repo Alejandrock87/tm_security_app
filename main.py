@@ -20,7 +20,7 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = int(os.environ.get('PORT', 5000))
+        port = 5000  # Always use port 5000 for Replit
         logger.info(f"Configured to run on port {port}")
 
         # Configure logging for the server components
