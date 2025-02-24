@@ -29,7 +29,12 @@ socketio = SocketIO(
     engineio_logger=True,
     ping_timeout=5,
     ping_interval=25,
-    manage_session=False
+    manage_session=False,
+    always_connect=True,
+    reconnection=True,
+    reconnection_attempts=5,
+    reconnection_delay=1000,
+    reconnection_delay_max=5000
 )
 
 # Configurar cache
