@@ -44,14 +44,10 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 }
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Inicializar extensiones
-try:
-    logger.debug("Inicializando extensiones...")
-    init_extensions(app)
-    logger.info("Extensiones inicializadas correctamente")
-except Exception as e:
-    logger.error(f"Error al inicializar extensiones: {str(e)}")
-    raise
+# Inicializar extensiones antes de importar modelos o rutas
+db.init_app(app)
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -70,7 +66,25 @@ with app.app_context():
         logger.error(f"Error al crear tablas: {str(e)}")
         raise
 
-# Importar e inicializar rutas
+# Inicializar el resto de las extensiones después de la base de datos
+try:
+    logger.debug("Inicializando extensiones...")
+    cache.init_app(app)
+    socketio.init_app(
+        app,
+        async_mode='gevent',
+        cors_allowed_origins="*",
+        logger=True,
+        engineio_logger=True,
+        ping_timeout=60,
+        ping_interval=25
+    )
+    logger.info("Extensiones inicializadas correctamente")
+except Exception as e:
+    logger.error(f"Error al inicializar extensiones: {str(e)}")
+    raise
+
+# Importar e inicializar rutas después de que todo esté configurado
 try:
     logger.debug("Importando e inicializando rutas...")
     from routes import init_routes

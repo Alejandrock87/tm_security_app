@@ -1,12 +1,9 @@
-
-from flask_sqlalchemy import SQLAlchemy
+from extensions import db
 from sqlalchemy.orm import DeclarativeBase
 from contextlib import contextmanager
 
 class Base(DeclarativeBase):
     pass
-
-db = SQLAlchemy(model_class=Base)
 
 def init_db(app):
     db.init_app(app)
