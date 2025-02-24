@@ -15,6 +15,8 @@ from ml_models import predict_station_risk as ml_predict_station_risk
 from ml_models import predict_incident_type as ml_predict_incident_type
 
 def init_routes(app):
+    # Note: /health route is defined in main.py
+
     @app.route('/test')
     def test():
         app.logger.info("Test endpoint accessed")
@@ -27,7 +29,7 @@ def init_routes(app):
         if current_user.is_authenticated:
             return redirect(url_for('home'))
         return redirect(url_for('login'))
-
+    
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
@@ -419,7 +421,6 @@ def init_routes(app):
             return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
-
 
     return app
 
