@@ -4,6 +4,7 @@ monkey.patch_all()
 import os
 import logging
 from flask import Flask
+from flask_cors import CORS
 from extensions import init_extensions, cache, socketio, db, login_manager
 
 # Configurar logging más detallado
@@ -13,9 +14,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Configurar logging específico para gevent y socketio
+logging.getLogger('gevent').setLevel(logging.DEBUG)
+logging.getLogger('engineio').setLevel(logging.DEBUG)
+logging.getLogger('socketio').setLevel(logging.DEBUG)
+
 # Crear la aplicación Flask
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+
+# Configurar CORS
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configuración del cache
 app.config['CACHE_TYPE'] = 'SimpleCache'
@@ -74,17 +83,25 @@ except Exception as e:
 
 @app.route('/test_connection')
 def test_connection():
+    logger.info("Test connection endpoint accessed")
     return 'Server is running correctly', 200
 
 logger.info("Aplicación Flask configurada completamente")
 
 if __name__ == '__main__':
     debug_mode = os.environ.get("FLASK_ENV") != "production"
-    port = int(os.environ.get("PORT", 5000))
-    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto {port}")
-    socketio.run(app, 
-                 host='0.0.0.0',
-                 port=port,
-                 debug=debug_mode,
-                 use_reloader=debug_mode,
-                 log_output=True)
+    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto 5000")
+
+    # Configuración detallada de Socket.IO
+    logger.info("Configurando Socket.IO con gevent")
+    try:
+        # ALWAYS serve the app on port 5000
+        socketio.run(app, 
+                    host='0.0.0.0',
+                    port=5000,
+                    debug=debug_mode,
+                    use_reloader=debug_mode,
+                    log_output=True)
+    except Exception as e:
+        logger.error(f"Error al iniciar el servidor: {str(e)}", exc_info=True)
+        raise
