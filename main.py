@@ -3,7 +3,7 @@ monkey.patch_all()
 
 import os
 import logging
-from app import app
+from app import app, socketio
 
 # Setup detailed logging
 logging.basicConfig(
@@ -24,10 +24,13 @@ if __name__ == '__main__':
         port = int(os.getenv('PORT', 5000))
         logger.info(f"Configured to run on port {port}")
 
-        app.run(
+        socketio.run(
+            app,
             host='0.0.0.0',
             port=port,
-            debug=False
+            debug=False,
+            use_reloader=False,
+            log_output=True
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)

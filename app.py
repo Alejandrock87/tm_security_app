@@ -20,15 +20,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 
-# Configurar Socket.IO con opciones específicas para gevent
+# Configurar Socket.IO
 socketio = SocketIO(
     app,
-    cors_allowed_origins="*",
     async_mode='gevent',
+    cors_allowed_origins="*",
     logger=True,
-    engineio_logger=True,
-    ping_timeout=5,
-    ping_interval=25
+    engineio_logger=True
 )
 
 # Configurar cache
@@ -36,13 +34,6 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 # Configurar base de datos
-required_vars = ['PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGDATABASE']
-missing_vars = [var for var in required_vars if not os.environ.get(var)]
-
-if missing_vars:
-    logger.error(f"Missing required environment variables: {', '.join(missing_vars)}")
-    raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
-
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
     logger.info("Construyendo DATABASE_URL desde variables de entorno")
