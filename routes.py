@@ -140,6 +140,7 @@ def init_routes(app):
     @login_required
     def api_statistics():
         try:
+            logging.info("Iniciando generación de estadísticas")
             query = Incident.query
 
             # Obtener parámetros de fecha
@@ -155,74 +156,72 @@ def init_routes(app):
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 query = query.filter(Incident.timestamp <= date_to_end)
 
-            incidents = query.all()
+            # Usar consultas separadas para cada estadística para evitar timeouts
+            try:
+                total_incidents = query.count()
+                logging.info(f"Total de incidentes encontrados: {total_incidents}")
+            except Exception as e:
+                logging.error(f"Error al contar incidentes: {str(e)}")
+                total_incidents = 0
 
-            if not incidents:
-                return jsonify({
-                    'total_incidents': 0,
-                    'incident_types': {},
-                    'most_affected_station': '-',
-                    'most_common_type': '-',
-                    'most_dangerous_hour': '-',
-                    'hourly_stats': {},
-                    'top_stations': {}
-                })
+            # Contar tipos de incidentes
+            try:
+                incident_types = db.session.query(
+                    Incident.incident_type,
+                    func.count(Incident.id).label('count')
+                ).group_by(Incident.incident_type).all()
+                incident_types_dict = {t[0]: t[1] for t in incident_types}
+                logging.info(f"Tipos de incidentes procesados: {len(incident_types_dict)} tipos")
+            except Exception as e:
+                logging.error(f"Error al procesar tipos de incidentes: {str(e)}")
+                incident_types_dict = {}
 
-            total_incidents = len(incidents)
-            incident_types = {}
-            station_counts = {}
-            hourly_stats = {}
-
-            for incident in incidents:
-                # Contar tipos de incidentes
-                if incident.incident_type not in incident_types:
-                    incident_types[incident.incident_type] = 0
-                incident_types[incident.incident_type] += 1
-
-                # Contar incidentes por estación
-                if incident.nearest_station not in station_counts:
-                    station_counts[incident.nearest_station] = 0
-                station_counts[incident.nearest_station] += 1
-
-                # Estadísticas por hora y día
-                day = incident.timestamp.strftime('%A')
-                hour = incident.timestamp.strftime('%H')
-                if day not in hourly_stats:
-                    hourly_stats[day] = {}
-                if hour not in hourly_stats[day]:
-                    hourly_stats[day][hour] = 0
-                hourly_stats[day][hour] += 1
-
-            # Encontrar la estación más afectada
-            most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0]
-
-            # Encontrar el tipo más común
-            most_common_type = max(incident_types.items(), key=lambda x: x[1])[0]
+            # Contar incidentes por estación
+            try:
+                station_counts = db.session.query(
+                    Incident.nearest_station,
+                    func.count(Incident.id).label('count')
+                ).group_by(Incident.nearest_station).all()
+                station_counts_dict = {s[0]: s[1] for s in station_counts}
+                logging.info(f"Estaciones procesadas: {len(station_counts_dict)} estaciones")
+            except Exception as e:
+                logging.error(f"Error al procesar estaciones: {str(e)}")
+                station_counts_dict = {}
 
             # Encontrar la hora más peligrosa
-            most_dangerous_hour = None
-            max_incidents = 0
-            for day in hourly_stats:
-                for hour in hourly_stats[day]:
-                    if hourly_stats[day][hour] > max_incidents:
-                        max_incidents = hourly_stats[day][hour]
-                        most_dangerous_hour = f"{hour}:00"
+            try:
+                hour_counts = db.session.query(
+                    func.extract('hour', Incident.timestamp).label('hour'),
+                    func.count(Incident.id).label('count')
+                ).group_by('hour').order_by(func.count(Incident.id).desc()).first()
+                most_dangerous_hour = f"{int(hour_counts[0]):02d}:00" if hour_counts else "-"
+                logging.info(f"Hora más peligrosa identificada: {most_dangerous_hour}")
+            except Exception as e:
+                logging.error(f"Error al procesar hora más peligrosa: {str(e)}")
+                most_dangerous_hour = "-"
 
-            # Obtener top 5 estaciones
-            top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+            # Preparar respuesta
+            most_affected_station = max(station_counts_dict.items(), key=lambda x: x[1])[0] if station_counts_dict else "-"
+            most_common_type = max(incident_types_dict.items(), key=lambda x: x[1])[0] if incident_types_dict else "-"
 
-            return jsonify({
+            response_data = {
                 'total_incidents': total_incidents,
-                'incident_types': incident_types,
+                'incident_types': incident_types_dict,
                 'most_affected_station': most_affected_station,
                 'most_common_type': most_common_type,
                 'most_dangerous_hour': most_dangerous_hour,
-                'hourly_stats': hourly_stats,
-                'top_stations': top_stations
-            })
+                'top_stations': dict(sorted(station_counts_dict.items(), key=lambda x: x[1], reverse=True)[:5])
+            }
+
+            logging.info("Estadísticas generadas exitosamente")
+            return jsonify(response_data)
 
         except Exception as e:
-            return jsonify({'error': str(e)}), 500
+            logging.error(f"Error general en api_statistics: {str(e)}", exc_info=True)
+            return jsonify({
+                'error': 'Error al generar estadísticas',
+                'details': str(e) if app.debug else 'Error interno del servidor'
+            }), 500
 
     @app.route('/model_insights')
     @login_required

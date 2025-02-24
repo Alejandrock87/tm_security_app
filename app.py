@@ -31,10 +31,6 @@ CORS(app, resources={
     }
 })
 
-# Configuración del cache
-app.config['CACHE_TYPE'] = 'SimpleCache'
-app.config['CACHE_DEFAULT_TIMEOUT'] = 300
-
 # Configurar base de datos
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
