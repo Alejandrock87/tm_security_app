@@ -37,6 +37,19 @@ socketio = SocketIO(
     reconnection_delay_max=5000
 )
 
+# Agregar manejador de eventos para debugging de Socket.IO
+@socketio.on('connect')
+def handle_connect():
+    logger.info('Cliente conectado a Socket.IO')
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    logger.info('Cliente desconectado de Socket.IO')
+
+@socketio.on_error()
+def handle_error(e):
+    logger.error(f'Error en Socket.IO: {str(e)}')
+
 # Configurar cache
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
