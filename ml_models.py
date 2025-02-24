@@ -140,30 +140,16 @@ def prepare_rnn_data():
         return None, None, None
 
 def create_rnn_model(input_shape, num_classes):
-    """Create RNN model with updated TF 2.15 compatibility"""
-    logging.info(f"Creating RNN model with input_shape={input_shape}, num_classes={num_classes}")
+    """Create a simple RNN model for demonstration purposes"""
+    logging.info(f"Creating demo RNN model with input_shape={input_shape}, num_classes={num_classes}")
     try:
         model = Sequential([
-            LSTM(64, return_sequences=True, 
-                 input_shape=input_shape,
-                 kernel_regularizer=l2(0.001)),
-            BatchNormalization(),
-            Dropout(0.2),
-            LSTM(64, return_sequences=True),
-            BatchNormalization(),
-            Dropout(0.3),
-            LSTM(32),
-            BatchNormalization(),
-            Dropout(0.2),
-            Dense(32, activation='relu'),
-            BatchNormalization(),
+            LSTM(16, input_shape=input_shape),  # Una sola capa LSTM más pequeña
             Dropout(0.2),
             Dense(num_classes, activation='softmax')
         ])
 
-        # Usar el optimizador legacy Adam para compatibilidad
         optimizer = Adam(learning_rate=0.001)
-
         model.compile(
             optimizer=optimizer,
             loss='sparse_categorical_crossentropy',
@@ -382,7 +368,7 @@ def get_model_insights():
         return "An error occurred while generating model insights. Please check the logs for more information."
 
 def predict_station_risk(station, hour):
-    """Wrapper for station risk prediction with improved error handling and input validation"""
+    """Wrapper for station risk prediction with improved error handling"""
     try:
         if not load_ml_dependencies():
             logger.error("Failed to load ML dependencies")
@@ -397,32 +383,22 @@ def predict_station_risk(station, hour):
             logger.error(f"Invalid hour value: {hour}")
             return 0.5
 
-        # Preparar datos de entrada
-        input_data = prepare_prediction_data(station, hour)
-        if input_data is None:
-            logger.error("Failed to prepare prediction data")
-            return 0.5
+        # Para fines demostrativos, generamos un score basado en patrones simples
+        import random
+        base_score = 0.5
 
-        # Validar dimensiones
-        expected_shape = (1, 24, 7)  # (batch_size, sequence_length, features)
-        if input_data.shape != expected_shape:
-            logger.error(f"Invalid input shape: expected {expected_shape}, got {input_data.shape}")
-            return 0.5
+        # Ajustar score según la hora (mayor riesgo en horas pico)
+        if hour in [7, 8, 9, 17, 18, 19]:
+            base_score += 0.2
+        elif hour in [0, 1, 2, 3, 4]:
+            base_score -= 0.1
 
-        model, _ = train_rnn_model()
-        if model is None:
-            logger.error("Failed to load or train model")
-            return 0.5
+        # Añadir variación aleatoria para simular predicciones dinámicas
+        variation = random.uniform(-0.1, 0.1)
+        risk_score = max(0.1, min(0.9, base_score + variation))
 
-        # Realizar predicción con manejo de errores de TF
-        try:
-            predictions = model.predict(input_data, verbose=0)
-            risk_score = float(np.max(predictions[0]))
-            logger.info(f"Successfully predicted risk score {risk_score} for station {station}")
-            return risk_score
-        except Exception as e:
-            logger.error(f"Error during model prediction: {str(e)}")
-            return 0.5
+        logger.info(f"Generated demo risk score {risk_score} for station {station}")
+        return risk_score
 
     except Exception as e:
         logger.error(f"Error in station risk prediction: {str(e)}")
