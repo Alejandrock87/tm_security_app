@@ -1,9 +1,6 @@
-from gevent import monkey
-monkey.patch_all()
-
 import os
 import logging
-from app import app, socketio
+from app import app
 
 # Setup detailed logging
 logging.basicConfig(
@@ -12,7 +9,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Add health check route
 @app.route('/health')
 def health_check():
     logger.info("Health check endpoint accessed")
@@ -21,17 +17,19 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = int(os.getenv('PORT', 5000))
+        port = 5000
         logger.info(f"Configured to run on port {port}")
 
-        socketio.run(
-            app,
+        # Configure logging for the server components
+        logging.getLogger('werkzeug').setLevel(logging.INFO)
+
+        logger.info("Initializing server...")
+        app.run(
             host='0.0.0.0',
             port=port,
-            debug=False,
-            use_reloader=False,
-            log_output=True
+            debug=True
         )
+        logger.info("Server started successfully")
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)
         raise

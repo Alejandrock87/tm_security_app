@@ -16,7 +16,9 @@ def init_extensions(app):
         async_mode='gevent',
         cors_allowed_origins="*",
         logger=True,
-        engineio_logger=True
+        engineio_logger=True,
+        ping_timeout=60,
+        ping_interval=25
     )
     db.init_app(app)
     login_manager.init_app(app)

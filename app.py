@@ -1,11 +1,8 @@
-from gevent import monkey
-monkey.patch_all()
-
-import os
-import logging
 from flask import Flask, request
 from flask_cors import CORS
-from extensions import init_extensions, cache, socketio, db, login_manager
+from extensions import init_extensions, cache, db, login_manager
+import os
+import logging
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -14,17 +11,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Configurar logging específico para gevent y socketio
-logging.getLogger('gevent').setLevel(logging.DEBUG)
-logging.getLogger('engineio').setLevel(logging.DEBUG)
-logging.getLogger('socketio').setLevel(logging.DEBUG)
-
 # Crear la aplicación Flask
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 
-# Configurar CORS
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Configurar CORS con opciones más específicas
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Configuración del cache
 app.config['CACHE_TYPE'] = 'SimpleCache'
@@ -81,37 +79,4 @@ except Exception as e:
     logger.error(f"Error al inicializar rutas: {str(e)}")
     raise
 
-@app.route('/test_connection')
-def test_connection():
-    client_ip = request.remote_addr
-    logger.info(f"Test connection endpoint accessed from IP: {client_ip}")
-    logger.info(f"Request headers: {dict(request.headers)}")
-    logger.info(f"Server host: {request.host}")
-
-    response = 'Server is running correctly'
-    logger.info(f"Sending response: {response}")
-
-    return response, 200, {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Server': 'Flask/SocketIO'
-    }
-
 logger.info("Aplicación Flask configurada completamente")
-
-if __name__ == '__main__':
-    debug_mode = os.environ.get("FLASK_ENV") != "production"
-    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto 80")
-
-    # Configuración detallada de Socket.IO
-    logger.info("Configurando Socket.IO con gevent")
-    try:
-        socketio.run(app, 
-                    host='0.0.0.0', 
-                    port=80,
-                    debug=debug_mode,
-                    use_reloader=debug_mode,
-                    log_output=True)
-    except Exception as e:
-        logger.error(f"Error al iniciar el servidor: {str(e)}", exc_info=True)
-        raise
