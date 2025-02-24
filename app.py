@@ -3,7 +3,7 @@ monkey.patch_all()
 
 import os
 import logging
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from extensions import init_extensions, cache, socketio, db, login_manager
 
@@ -83,22 +83,32 @@ except Exception as e:
 
 @app.route('/test_connection')
 def test_connection():
-    logger.info("Test connection endpoint accessed")
-    return 'Server is running correctly', 200
+    client_ip = request.remote_addr
+    logger.info(f"Test connection endpoint accessed from IP: {client_ip}")
+    logger.info(f"Request headers: {dict(request.headers)}")
+    logger.info(f"Server host: {request.host}")
+
+    response = 'Server is running correctly'
+    logger.info(f"Sending response: {response}")
+
+    return response, 200, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Server': 'Flask/SocketIO'
+    }
 
 logger.info("Aplicación Flask configurada completamente")
 
 if __name__ == '__main__':
     debug_mode = os.environ.get("FLASK_ENV") != "production"
-    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto 5000")
+    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto 80")
 
     # Configuración detallada de Socket.IO
     logger.info("Configurando Socket.IO con gevent")
     try:
-        # ALWAYS serve the app on port 5000
         socketio.run(app, 
                     host='0.0.0.0', 
-                    port=5000,
+                    port=80,
                     debug=debug_mode,
                     use_reloader=debug_mode,
                     log_output=True)
