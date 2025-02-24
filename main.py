@@ -21,17 +21,14 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = int(os.getenv('PORT', 3000))
+        port = int(os.getenv('PORT', 5000))
         logger.info(f"Configured to run on port {port}")
 
-        socketio.run(
-            app,
+        # Temporarily use app.run() for debugging
+        app.run(
             host='0.0.0.0',
             port=port,
-            debug=False,
-            use_reloader=False,
-            log_output=True,
-            allow_unsafe_werkzeug=True
+            debug=False
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)

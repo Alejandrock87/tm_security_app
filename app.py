@@ -28,7 +28,8 @@ socketio = SocketIO(
     logger=True,
     engineio_logger=True,
     ping_timeout=5,
-    ping_interval=25
+    ping_interval=25,
+    manage_session=False
 )
 
 # Configurar cache
