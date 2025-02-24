@@ -55,13 +55,6 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 # Configurar base de datos
-required_vars = ['PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGDATABASE']
-missing_vars = [var for var in required_vars if not os.environ.get(var)]
-
-if missing_vars:
-    logger.error(f"Missing required environment variables: {', '.join(missing_vars)}")
-    raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
-
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
     logger.info("Construyendo DATABASE_URL desde variables de entorno")
@@ -122,9 +115,5 @@ try:
 except Exception as e:
     logger.error(f"Error al inicializar rutas: {str(e)}")
     raise
-
-@app.route('/test_connection')
-def test_connection():
-    return 'Server is running correctly', 200
 
 logger.info("Aplicación Flask configurada completamente")

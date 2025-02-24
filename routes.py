@@ -82,8 +82,9 @@ def init_routes(app):
                         f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
                        for feature in geojson_data['features']
                        if 'nombre_estacion' in feature['properties']]
-            stations.sort(key=lambda x: x[0]) 
-            form.station.choices = stations
+            stations.sort(key=lambda x: x[0])
+            form.station.choices = [(s[0], s[1]) for s in stations]
+
         if form.validate_on_submit():
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
@@ -93,6 +94,10 @@ def init_routes(app):
                 flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
                 return redirect(url_for('report_incident'))
 
+            # Asegurarse de que la fecha y hora no sean None antes de combinarlas
+            incident_date = form.incident_date.data or datetime.now().date()
+            incident_time = form.incident_time.data or datetime.now().time()
+
             incident = Incident(
                 incident_type=form.incident_type.data,
                 description=form.description.data,
@@ -100,15 +105,21 @@ def init_routes(app):
                 longitude=float(longitude),
                 user_id=current_user.id,
                 nearest_station=form.station.data,
-                timestamp=datetime.combine(form.incident_date.data, form.incident_time.data)
-
+                timestamp=datetime.combine(incident_date, incident_time)
             )
-            db.session.add(incident)
-            db.session.commit()
 
-            flash('¡Incidente reportado con éxito!')
-            send_notification(incident.incident_type, incident.timestamp.isoformat())
-            return redirect(url_for('home'))
+            try:
+                db.session.add(incident)
+                db.session.commit()
+                flash('¡Incidente reportado con éxito!')
+                send_notification(incident.incident_type, incident.timestamp.isoformat())
+                return redirect(url_for('home'))
+            except Exception as e:
+                db.session.rollback()
+                app.logger.error(f"Error al guardar el incidente: {str(e)}")
+                flash('Error al guardar el incidente. Por favor, intente de nuevo.')
+                return redirect(url_for('report_incident'))
+
         return render_template('report_incident.html', title='Reportar incidente', form=form)
 
     @app.route('/dashboard')
