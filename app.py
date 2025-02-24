@@ -1,83 +1,111 @@
-from flask import Flask, request
-from flask_cors import CORS
-from extensions import db, login_manager
+from gevent import monkey
+monkey.patch_all()
+
 import os
 import logging
-import secrets
+from flask import Flask
+from flask_login import LoginManager
+from database import init_db, db
+from flask_caching import Cache
+from flask_socketio import SocketIO
 
 # Configurar logging más detallado
 logging.basicConfig(
-    level=logging.INFO if os.environ.get("FLASK_ENV") == "production" else logging.DEBUG,
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
 # Crear la aplicación Flask
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 
-# Generar una clave secreta fuerte si no existe
-if not os.environ.get("FLASK_SECRET_KEY"):
-    os.environ["FLASK_SECRET_KEY"] = secrets.token_hex(32)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+# Configurar Socket.IO con opciones específicas para gevent
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="*",
+    async_mode='gevent',
+    logger=True,
+    engineio_logger=True,
+    ping_timeout=5,
+    ping_interval=25
+)
 
-# Configurar CORS con opciones más específicas
-CORS(app, resources={
-    r"/*": {
-        "origins": "*",
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    }
-})
+# Configurar cache
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
+cache.init_app(app)
 
 # Configurar base de datos
+required_vars = ['PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGDATABASE']
+missing_vars = [var for var in required_vars if not os.environ.get(var)]
+
+if missing_vars:
+    logger.error(f"Missing required environment variables: {', '.join(missing_vars)}")
+    raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
+
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
+    logger.info("Construyendo DATABASE_URL desde variables de entorno")
     database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
+
+logger.debug(f"Intentando conectar a la base de datos...")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_size": 5,
-    "max_overflow": 2,
-    "pool_timeout": 30,
     "pool_recycle": 300,
     "pool_pre_ping": True
 }
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["WTF_CSRF_ENABLED"] = True
-app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
+# Inicializar base de datos
 try:
-    logger.info("Inicializando extensiones de Flask...")
-    # Inicializar solo las extensiones esenciales
-    db.init_app(app)
+    logger.debug("Inicializando base de datos...")
+    init_db(app)
+    logger.info("Base de datos inicializada correctamente")
+except Exception as e:
+    logger.error(f"Error al inicializar la base de datos: {str(e)}")
+    raise
+
+# Inicializar login manager
+try:
+    logger.debug("Configurando login manager...")
+    login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
-    login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
-    logger.info("Extensiones básicas inicializadas correctamente")
+    logger.info("Login manager configurado correctamente")
+except Exception as e:
+    logger.error(f"Error al configurar login manager: {str(e)}")
+    raise
 
-    # Inicializar base de datos y crear tablas
-    with app.app_context():
-        from database import init_db
-        init_db(app)
-        logger.info("Base de datos inicializada correctamente")
-
-    # Importar modelos después de inicializar la base de datos
+@login_manager.user_loader
+def load_user(user_id):
+    logger.debug(f"Cargando usuario con ID: {user_id}")
     from models import User
+    return User.query.get(int(user_id))
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        try:
-            return User.query.get(int(user_id))
-        except Exception as e:
-            logger.error(f"Error loading user {user_id}: {str(e)}")
-            return None
+# Crear tablas de la base de datos
+with app.app_context():
+    try:
+        logger.debug("Creando tablas de la base de datos...")
+        import models
+        db.create_all()
+        logger.info("Tablas creadas correctamente")
+    except Exception as e:
+        logger.error(f"Error al crear tablas: {str(e)}")
+        raise
 
-    # Importar e inicializar rutas después de que todo esté configurado
+# Importar e inicializar rutas
+try:
+    logger.debug("Importando e inicializando rutas...")
     from routes import init_routes
     init_routes(app)
-    logger.info("Aplicación Flask configurada completamente")
-
+    logger.info("Rutas inicializadas correctamente")
 except Exception as e:
-    logger.error(f"Error durante la inicialización de la aplicación: {str(e)}", exc_info=True)
+    logger.error(f"Error al inicializar rutas: {str(e)}")
     raise
+
+@app.route('/test_connection')
+def test_connection():
+    return 'Server is running correctly', 200
+
+logger.info("Aplicación Flask configurada completamente")

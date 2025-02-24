@@ -1,61 +1,22 @@
-from extensions import db
+
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from contextlib import contextmanager
-from sqlalchemy import text
-import logging
-
-logger = logging.getLogger(__name__)
 
 class Base(DeclarativeBase):
     pass
 
+db = SQLAlchemy(model_class=Base)
+
 def init_db(app):
-    """Initialize database with proper error handling"""
-    try:
-        logger.info("Initializing database...")
-        # No llamar a db.init_app aquí, ya que se hace en app.py
-
-        with app.app_context():
-            # Import models here to avoid circular imports
-            from models import User, Incident, PushSubscription, Notification
-
-            # Verify database connection first
-            logger.info("Verificando conexión a la base de datos...")
-            db.session.execute(text("SELECT 1"))
-            db.session.commit()
-            logger.info("Conexión a la base de datos verificada")
-
-            # Create tables
-            logger.info("Creating database tables...")
-            db.create_all()
-            logger.info("Database tables created successfully")
-
-            # Verify tables exist
-            inspector = db.inspect(db.engine)
-            tables = inspector.get_table_names()
-            logger.info(f"Existing tables: {tables}")
-
-            required_tables = {'users', 'incident', 'push_subscription', 'notification'}
-            missing_tables = required_tables - set(tables)
-
-            if missing_tables:
-                logger.error(f"Missing required tables: {missing_tables}")
-                raise Exception(f"Failed to create tables: {missing_tables}")
-
-            logger.info("Database initialization completed successfully")
-
-    except Exception as e:
-        logger.error(f"Database initialization failed: {str(e)}")
-        raise
+    db.init_app(app)
 
 @contextmanager
 def transaction_context():
-    """Provide a transactional scope around a series of operations"""
     try:
         yield
         db.session.commit()
-    except Exception as e:
-        logger.error(f"Transaction error: {str(e)}")
+    except:
         db.session.rollback()
         raise
     finally:

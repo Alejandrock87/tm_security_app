@@ -4,49 +4,34 @@ import pickle
 import time
 from datetime import datetime, timedelta
 
-# Configure basic logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+import numpy as np
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
+from sklearn.feature_selection import SelectFromModel
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from xgboost import XGBClassifier
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
 
-# Import Incident model at module level to avoid circular imports
+from database import db
 from models import Incident
+
+# Configuración de TensorFlow
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 MODEL_CACHE_FILE = 'model_cache.pkl'
 FEATURE_CACHE_FILE = 'feature_cache.pkl'
-
-def load_ml_dependencies():
-    """Lazy load ML dependencies to avoid startup issues"""
-    try:
-        global np, pd, Pipeline, StandardScaler, OneHotEncoder, LabelEncoder
-        global RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
-        global Sequential, Dense, LSTM, Dropout, BatchNormalization
-        global Adam, l2, EarlyStopping, ReduceLROnPlateau
-        global train_test_split, StratifiedKFold, cross_val_score, SMOTE
-
-        import numpy as np
-        import pandas as pd
-        from sklearn.pipeline import Pipeline
-        from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
-        from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
-        from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
-        from imblearn.over_sampling import SMOTE
-
-        # Tensorflow imports actualizados para 2.15
-        try:
-            from tensorflow.keras.models import Sequential
-            from tensorflow.keras.layers import Dense, LSTM, Dropout, BatchNormalization
-            from tensorflow.keras.optimizers.legacy import Adam  # Usar legacy optimizer para compatibilidad
-            from tensorflow.keras.regularizers import l2
-            from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-            logger.info("TensorFlow y Keras importados correctamente")
-        except ImportError as e:
-            logger.error(f"Error importando TensorFlow/Keras: {str(e)}")
-            return False
-
-        return True
-    except ImportError as e:
-        logger.error(f"Failed to load ML dependencies: {str(e)}")
-        return False
 
 def prepare_rnn_data():
     try:
@@ -59,10 +44,9 @@ def prepare_rnn_data():
 
         logging.info(f"Found {len(incidents)} incidents")
 
-        # Validación inicial de datos - reducido a 30 para pruebas
-        min_incidents = 30  # Reducido de 100 a 30 para pruebas
-        if len(incidents) < min_incidents:
-            logging.warning(f"Insufficient data for training. Found {len(incidents)} incidents, need at least {min_incidents}")
+        # Validación inicial de datos
+        if len(incidents) < 100:
+            logging.warning("Insufficient data for training")
             return None, None, None
 
         df = pd.DataFrame([{
@@ -78,8 +62,6 @@ def prepare_rnn_data():
             'is_peak_hour': incident.timestamp.hour in [6,7,8,17,18,19]
         } for incident in incidents])
 
-        logging.info(f"Created DataFrame with {len(df)} rows")
-
         # Normalización de coordenadas
         scaler = StandardScaler()
         df[['latitude', 'longitude']] = scaler.fit_transform(df[['latitude', 'longitude']])
@@ -88,7 +70,6 @@ def prepare_rnn_data():
         le = LabelEncoder()
         df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
         incident_types = le.classes_
-        logging.info(f"Encoded {len(incident_types)} different incident types")
 
         # Crear secuencias temporales con validación
         sequence_length = 24
@@ -100,9 +81,6 @@ def prepare_rnn_data():
 
         for station in df['station'].unique():
             station_data = df[df['station'] == station].sort_values('timestamp')
-            station_incidents = len(station_data)
-            logging.info(f"Processing station {station} with {station_incidents} incidents")
-
             if len(station_data) >= sequence_length:
                 sequences = []
                 for i in range(len(station_data) - sequence_length):
@@ -114,7 +92,6 @@ def prepare_rnn_data():
 
                 if sequences:
                     X.extend(sequences)
-                    logging.info(f"Added {len(sequences)} sequences for station {station}")
 
         if not X:
             logging.error("No valid sequences generated")
@@ -132,7 +109,7 @@ def prepare_rnn_data():
             logging.error(f"Invalid sequence length. Expected {sequence_length}, got {X.shape[1]}")
             return None, None, None
 
-        logging.info(f"Final tensor shapes - X: {X.shape}, y: {y.shape}")
+        logging.info(f"X shape: {X.shape}, y shape: {y.shape}")
         return X, y, len(incident_types)
 
     except Exception as e:
@@ -140,25 +117,31 @@ def prepare_rnn_data():
         return None, None, None
 
 def create_rnn_model(input_shape, num_classes):
-    """Create a simple RNN model for demonstration purposes"""
-    logging.info(f"Creating demo RNN model with input_shape={input_shape}, num_classes={num_classes}")
-    try:
-        model = Sequential([
-            LSTM(16, input_shape=input_shape),  # Una sola capa LSTM más pequeña
-            Dropout(0.2),
-            Dense(num_classes, activation='softmax')
-        ])
+    logging.info(f"Creating RNN model with input_shape={input_shape}, num_classes={num_classes}")
+    model = Sequential([
+        LSTM(64, return_sequences=True, 
+             input_shape=input_shape,
+             kernel_regularizer=l2(0.001)),
+        BatchNormalization(),
+        Dropout(0.2),
+        LSTM(64, return_sequences=True),
+        BatchNormalization(),
+        Dropout(0.3),
+        LSTM(32),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(32, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(num_classes, activation='softmax')
+    ])
 
-        optimizer = Adam(learning_rate=0.001)
-        model.compile(
-            optimizer=optimizer,
-            loss='sparse_categorical_crossentropy',
-            metrics=['accuracy']
-        )
-        return model
-    except Exception as e:
-        logger.error(f"Error creating RNN model: {str(e)}")
-        return None
+    model.compile(
+        optimizer=Adam(learning_rate=0.001),
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    return model
 
 def train_model():
     X, y, num_classes = prepare_rnn_data()
@@ -368,146 +351,74 @@ def get_model_insights():
         return "An error occurred while generating model insights. Please check the logs for more information."
 
 def predict_station_risk(station, hour):
-    """Wrapper for station risk prediction with improved error handling"""
     try:
-        if not load_ml_dependencies():
-            logger.error("Failed to load ML dependencies")
-            return 0.5  # Return default risk score if dependencies fail
+        model, history = train_rnn_model()
+        if model is None:
+            return None
 
-        # Validar entrada
-        if not isinstance(station, str) or not isinstance(hour, int):
-            logger.error(f"Invalid input types: station={type(station)}, hour={type(hour)}")
-            return 0.5
+        # Preparar datos de entrada para la predicción
+        input_data = prepare_prediction_data(station, hour)
+        if input_data is None:
+            return None
 
-        if hour < 0 or hour > 23:
-            logger.error(f"Invalid hour value: {hour}")
-            return 0.5
+        predictions = model.predict(input_data)
+        # Tomar el máximo de las probabilidades como score de riesgo
+        risk_score = float(np.max(predictions[0]))
 
-        # Para fines demostrativos, generamos un score basado en patrones simples
-        import random
-        base_score = 0.5
-
-        # Ajustar score según la hora (mayor riesgo en horas pico)
-        if hour in [7, 8, 9, 17, 18, 19]:
-            base_score += 0.2
-        elif hour in [0, 1, 2, 3, 4]:
-            base_score -= 0.1
-
-        # Añadir variación aleatoria para simular predicciones dinámicas
-        variation = random.uniform(-0.1, 0.1)
-        risk_score = max(0.1, min(0.9, base_score + variation))
-
-        logger.info(f"Generated demo risk score {risk_score} for station {station}")
         return risk_score
-
     except Exception as e:
-        logger.error(f"Error in station risk prediction: {str(e)}")
-        return 0.5
+        logging.error(f"Error in prediction: {str(e)}")
+        return None
 
 def predict_incident_type(station, hour):
-    """Wrapper for incident type prediction with error handling"""
-    try:
-        if not load_ml_dependencies():
-            return "Hurto"  # Return default prediction if dependencies fail
+    incidents = Incident.query.filter_by(nearest_station=station).all()
+    if not incidents:
+        return "Hurto"  # Default prediction
 
-        incidents = Incident.query.filter_by(nearest_station=station).all()
-        if not incidents:
-            return "Hurto"  # Default prediction
-
-        # Get most common incident type for this hour
-        hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
-        if not hour_incidents:
-            return "Hurto"
-
-        incident_counts = {}
-        for incident in hour_incidents:
-            incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
-
-        return max(incident_counts.items(), key=lambda x: x[1])[0]
-    except Exception as e:
-        logger.error(f"Error in incident type prediction: {str(e)}")
+    # Get most common incident type for this hour
+    hour_incidents = [i for i in incidents if i.timestamp.hour == hour]
+    if not hour_incidents:
         return "Hurto"
 
+    incident_counts = {}
+    for incident in hour_incidents:
+        incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
+
+    return max(incident_counts.items(), key=lambda x: x[1])[0]
+
+#This function was not in the original code, added for completeness based on function call in predict_station_risk
 def prepare_prediction_data(station, hour):
-    """
-    Prepara y valida los datos para la predicción con manejo de errores mejorado.
-
-    Args:
-        station (str): Nombre de la estación
-        hour (int): Hora del día (0-23)
-
-    Returns:
-        numpy.ndarray or None: Datos preparados para el modelo o None si hay error
-    """
     try:
-        # Validación de entrada
-        if not isinstance(station, str):
-            logger.error(f"Invalid station type: expected str, got {type(station)}")
-            return None
-        if not isinstance(hour, int) or hour < 0 or hour > 23:
-            logger.error(f"Invalid hour value: {hour}")
-            return None
-
-        logger.info(f"Preparing prediction data for station: {station}, hour: {hour}")
-
         # Obtener datos históricos de la estación
         incidents = Incident.query.filter_by(nearest_station=station).order_by(Incident.timestamp.desc()).limit(24).all()
 
         if len(incidents) < 24:
-            logger.warning(f"Insufficient historical data for station {station}. Found {len(incidents)} incidents, need 24")
+            logging.warning(f"Insufficient historical data for station {station}")
             return None
 
-        logger.debug(f"Found {len(incidents)} historical incidents for station {station}")
-
-        # Preparar features con validación
+        # Preparar features
         sequence = []
-        try:
-            # Calcular estadísticas para normalización
-            latitudes = [i.latitude for i in incidents]
-            longitudes = [i.longitude for i in incidents]
-            lat_mean, lat_std = np.mean(latitudes), np.std(latitudes)
-            lon_mean, lon_std = np.mean(longitudes), np.std(longitudes)
+        for incident in incidents:
+            features = [
+                incident.timestamp.hour,
+                incident.timestamp.weekday(),
+                incident.timestamp.month,
+                incident.latitude,
+                incident.longitude,
+                1 if incident.timestamp.weekday() >= 5 else 0,
+                1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0
+            ]
+            sequence.append(features)
 
-            for incident in incidents:
-                # Normalizar coordenadas
-                norm_lat = (incident.latitude - lat_mean) / (lat_std if lat_std > 0 else 1)
-                norm_lon = (incident.longitude - lon_mean) / (lon_std if lon_std > 0 else 1)
+        # Convertir a numpy array y normalizar si es necesario
+        sequence = np.array(sequence, dtype=np.float32)
 
-                features = [
-                    incident.timestamp.hour,
-                    incident.timestamp.weekday(),
-                    incident.timestamp.month,
-                    norm_lat,
-                    norm_lon,
-                    1 if incident.timestamp.weekday() >= 5 else 0,  # is_weekend
-                    1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0  # is_peak_hour
-                ]
-                sequence.append(features)
-
-            # Validar que todos los features estén presentes
-            if not all(len(feat) == 7 for feat in sequence):
-                logger.error("Invalid feature vector length detected")
-                return None
-
-            # Convertir a numpy array y validar dimensiones
-            sequence = np.array(sequence, dtype=np.float32)
-            if sequence.shape != (24, 7):
-                logger.error(f"Invalid sequence shape: expected (24, 7), got {sequence.shape}")
-                return None
-
-            # Expandir dimensiones para match con formato de entrada del modelo
-            sequence = np.expand_dims(sequence, axis=0)
-            logger.info(f"Successfully prepared prediction data with shape {sequence.shape}")
-
-            return sequence
-
-        except Exception as e:
-            logger.error(f"Error processing features: {str(e)}")
-            return None
+        # Expandir dimensiones para match con formato de entrada del modelo
+        return np.expand_dims(sequence, axis=0)
 
     except Exception as e:
-        logger.error(f"Error preparing prediction data: {str(e)}")
-        return None
+        logging.error(f"Error preparing prediction data: {str(e)}")
+        return None  
 
 def train_rnn_model():
     X, y, num_classes = prepare_rnn_data()
@@ -550,7 +461,3 @@ def train_rnn_model():
     logging.info(f"Test accuracy: {test_acc:.4f}")
 
     return model, history
-
-
-# Export only the necessary functions
-__all__ = ['predict_station_risk', 'predict_incident_type']
