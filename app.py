@@ -3,6 +3,7 @@ from flask_cors import CORS
 from extensions import init_extensions, cache, socketio, db, login_manager
 import os
 import logging
+import secrets
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -13,7 +14,12 @@ logger = logging.getLogger(__name__)
 
 # Crear la aplicación Flask
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+
+# Generar una clave secreta fuerte si no existe
+if not os.environ.get("FLASK_SECRET_KEY"):
+    os.environ["FLASK_SECRET_KEY"] = secrets.token_hex(32)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+logger.info("Secret key configurada correctamente")
 
 # Configurar CORS con opciones más específicas
 CORS(app, resources={
@@ -39,15 +45,21 @@ logger.debug(f"Intentando conectar a la base de datos...")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_size": 5,
+    "max_overflow": 2,
+    "pool_timeout": 30,
     "pool_recycle": 300,
     "pool_pre_ping": True
 }
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["WTF_CSRF_ENABLED"] = True
+app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
 # Inicializar extensiones antes de importar modelos o rutas
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -62,6 +74,16 @@ with app.app_context():
         import models
         db.create_all()
         logger.info("Tablas creadas correctamente")
+
+        # Crear usuario de prueba si no existe
+        from models import User
+        if not User.query.filter_by(username='demo_user').first():
+            demo_user = User(username='demo_user', email='demo@example.com')
+            demo_user.set_password('demo12345')
+            db.session.add(demo_user)
+            db.session.commit()
+            logger.info("Usuario de prueba creado correctamente")
+
     except Exception as e:
         logger.error(f"Error al crear tablas: {str(e)}")
         raise

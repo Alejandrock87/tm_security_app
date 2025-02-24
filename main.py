@@ -1,6 +1,7 @@
 import logging
 import os
 from app import app
+from extensions import socketio
 
 # Setup detailed logging
 logging.basicConfig(
@@ -27,9 +28,10 @@ if __name__ == '__main__':
         logging.getLogger('engineio').setLevel(logging.DEBUG)
         logging.getLogger('socketio').setLevel(logging.DEBUG)
 
-        # Configure Flask server
+        # Configure Flask server with SocketIO
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
-        app.run(
+        socketio.run(
+            app,
             host='0.0.0.0',
             port=port,
             debug=True,
