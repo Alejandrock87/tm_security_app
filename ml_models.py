@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Import Incident model at module level to avoid circular imports
+from models import Incident
+
 MODEL_CACHE_FILE = 'model_cache.pkl'
 FEATURE_CACHE_FILE = 'feature_cache.pkl'
 
@@ -17,16 +20,21 @@ def load_ml_dependencies():
         global np, pd, Pipeline, StandardScaler, OneHotEncoder, LabelEncoder
         global RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
         global SMOTE, Sequential, LSTM, Dense, Dropout, BatchNormalization, Adam
+        global l2, EarlyStopping, ReduceLROnPlateau
+        global train_test_split, StratifiedKFold, cross_val_score
 
         import numpy as np
         import pandas as pd
         from sklearn.pipeline import Pipeline
         from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
         from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
+        from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
         from imblearn.over_sampling import SMOTE
         from tensorflow.keras.models import Sequential
         from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
         from tensorflow.keras.optimizers import Adam
+        from tensorflow.keras.regularizers import l2
+        from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
         return True
     except ImportError as e:
@@ -398,7 +406,6 @@ def predict_incident_type(station, hour):
         logger.error(f"Error in incident type prediction: {str(e)}")
         return "Hurto"
 
-#This function was not in the original code, added for completeness based on function call in predict_station_risk
 def prepare_prediction_data(station, hour):
     try:
         # Obtener datos históricos de la estación

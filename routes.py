@@ -226,6 +226,7 @@ def init_routes(app):
     @login_required
     def model_insights():
         try:
+            logging.info("Accediendo a insights del modelo")
             from ml_models import get_model_insights # Lazy import here
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
@@ -237,6 +238,7 @@ def init_routes(app):
     @app.route('/predictions')
     @login_required
     def predictions():
+        logging.info("Accediendo a la ruta de predicciones")
         from ml_models import get_model_insights # Lazy import here
         return render_template('predictions.html', title='Predicciones')
 
@@ -244,12 +246,15 @@ def init_routes(app):
     @login_required
     def api_predictions():
         try:
+            logging.info("Iniciando generación de predicciones")
             # Intentar obtener predicciones del caché
             cached_predictions = cache.get('predictions_cache')
             if cached_predictions:
+                logging.info("Retornando predicciones desde caché")
                 return jsonify(cached_predictions)
 
             # Si no hay caché, cargar el modelo y generar predicciones
+            logging.info("Cargando datos de estaciones para predicciones")
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
 
@@ -257,6 +262,7 @@ def init_routes(app):
             predictions = []
 
             # Generar predicciones para las próximas 3 horas
+            logging.info("Generando predicciones para las próximas 3 horas")
             for hour_offset in range(3):
                 prediction_time = current_time + timedelta(hours=hour_offset)
 
@@ -265,8 +271,10 @@ def init_routes(app):
                     coordinates = feature['geometry']['coordinates']
 
                     # Usar el modelo real para predicciones
+                    logging.info(f"Prediciendo riesgo para estación: {station}")
                     risk_score = predict_station_risk(station, prediction_time.hour)
                     if risk_score is not None:
+                        logging.info(f"Prediciendo tipo de incidente para estación: {station}")
                         incident_type = predict_incident_type(station, prediction_time.hour)
 
                         predictions.append({
@@ -279,6 +287,7 @@ def init_routes(app):
                         })
 
             # Guardar en caché por 1 hora
+            logging.info("Guardando predicciones en caché")
             cache.set('predictions_cache', predictions, timeout=3600)
             return jsonify(predictions)
 

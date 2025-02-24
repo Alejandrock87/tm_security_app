@@ -8,7 +8,7 @@ from extensions import init_extensions, cache, socketio, db, login_manager
 
 # Configurar logging más detallado
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO if os.environ.get("FLASK_ENV") == "production" else logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -79,4 +79,12 @@ def test_connection():
 logger.info("Aplicación Flask configurada completamente")
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    debug_mode = os.environ.get("FLASK_ENV") != "production"
+    port = int(os.environ.get("PORT", 5000))
+    logger.info(f"Iniciando servidor en modo {'debug' if debug_mode else 'producción'} en el puerto {port}")
+    socketio.run(app, 
+                 host='0.0.0.0',
+                 port=port,
+                 debug=debug_mode,
+                 use_reloader=debug_mode,
+                 log_output=True)
