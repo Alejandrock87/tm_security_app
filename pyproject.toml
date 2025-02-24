@@ -30,4 +30,5 @@ dependencies = [
     "gevent-websocket==0.10.1",
     "imbalanced-learn>=0.13.0",
     "pywebpush>=1.14.3",
+    "imblearn>=0.0",
 ]

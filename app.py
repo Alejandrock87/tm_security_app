@@ -4,10 +4,7 @@ monkey.patch_all()
 import os
 import logging
 from flask import Flask
-from flask_login import LoginManager
-from database import init_db, db
-from flask_caching import Cache
-from flask_socketio import SocketIO
+from extensions import init_extensions, cache, socketio, db, login_manager
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -20,18 +17,9 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 
-# Configurar Socket.IO
-socketio = SocketIO(
-    app,
-    async_mode='gevent',
-    cors_allowed_origins="*",
-    logger=True,
-    engineio_logger=True
-)
-
-# Configurar cache
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-cache.init_app(app)
+# Configuración del cache
+app.config['CACHE_TYPE'] = 'SimpleCache'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300
 
 # Configurar base de datos
 database_url = os.environ.get("DATABASE_URL")
@@ -48,24 +36,13 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 }
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Inicializar base de datos
+# Inicializar extensiones
 try:
-    logger.debug("Inicializando base de datos...")
-    init_db(app)
-    logger.info("Base de datos inicializada correctamente")
+    logger.debug("Inicializando extensiones...")
+    init_extensions(app)
+    logger.info("Extensiones inicializadas correctamente")
 except Exception as e:
-    logger.error(f"Error al inicializar la base de datos: {str(e)}")
-    raise
-
-# Inicializar login manager
-try:
-    logger.debug("Configurando login manager...")
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = 'login'
-    logger.info("Login manager configurado correctamente")
-except Exception as e:
-    logger.error(f"Error al configurar login manager: {str(e)}")
+    logger.error(f"Error al inicializar extensiones: {str(e)}")
     raise
 
 @login_manager.user_loader
@@ -100,3 +77,6 @@ def test_connection():
     return 'Server is running correctly', 200
 
 logger.info("Aplicación Flask configurada completamente")
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
