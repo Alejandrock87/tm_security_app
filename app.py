@@ -4,6 +4,7 @@ from extensions import init_extensions, cache, socketio, db, login_manager
 import os
 import logging
 import secrets
+from database import init_db
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -51,38 +52,34 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["WTF_CSRF_ENABLED"] = True
 app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
-# Inicializar extensiones antes de importar modelos o rutas
-db.init_app(app)
+# Inicializar login manager
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
 
+# Importar modelos antes de crear las tablas
+from models import User
+
 @login_manager.user_loader
 def load_user(user_id):
     logger.debug(f"Cargando usuario con ID: {user_id}")
-    from models import User
     return User.query.get(int(user_id))
 
-# Crear tablas de la base de datos
+# Inicializar base de datos y crear tablas
+init_db(app)
+
+# Crear usuario de prueba si no existe
 with app.app_context():
     try:
-        logger.debug("Creando tablas de la base de datos...")
-        import models
-        db.create_all()
-        logger.info("Tablas creadas correctamente")
-
-        # Crear usuario de prueba si no existe
-        from models import User
         if not User.query.filter_by(username='demo_user').first():
             demo_user = User(username='demo_user', email='demo@example.com')
             demo_user.set_password('demo12345')
             db.session.add(demo_user)
             db.session.commit()
             logger.info("Usuario de prueba creado correctamente")
-
     except Exception as e:
-        logger.error(f"Error al crear tablas: {str(e)}")
-        raise
+        logger.error(f"Error al crear usuario de prueba: {str(e)}")
+        db.session.rollback()
 
 # Inicializar el resto de las extensiones después de la base de datos
 try:

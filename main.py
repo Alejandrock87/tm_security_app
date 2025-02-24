@@ -35,7 +35,8 @@ if __name__ == '__main__':
             host='0.0.0.0',
             port=port,
             debug=True,
-            use_reloader=False  # Disable reloader to prevent duplicate processes
+            use_reloader=False,  # Disable reloader to prevent duplicate processes
+            log_output=True      # Enable log output for better debugging
         )
         logger.info(f"Server successfully started and listening on port {port}")
     except Exception as e:

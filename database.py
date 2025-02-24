@@ -25,7 +25,8 @@ def init_db(app):
             logger.info("Database tables created successfully")
 
             # Verify tables exist
-            tables = db.engine.table_names()
+            inspector = db.inspect(db.engine)
+            tables = inspector.get_table_names()
             logger.info(f"Existing tables: {tables}")
 
             required_tables = {'user', 'incident', 'push_subscription', 'notification'}
