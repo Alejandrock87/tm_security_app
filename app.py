@@ -97,7 +97,7 @@ if __name__ == '__main__':
     try:
         # ALWAYS serve the app on port 5000
         socketio.run(app, 
-                    host='0.0.0.0',
+                    host='0.0.0.0', 
                     port=5000,
                     debug=debug_mode,
                     use_reloader=debug_mode,
