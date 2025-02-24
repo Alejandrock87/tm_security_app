@@ -140,13 +140,14 @@ def init_routes(app):
     @login_required
     def api_statistics():
         """
-        Generate statistics with caching and optimized queries
+        Generate statistics with optimized queries and better caching
         """
         try:
             logging.info("Iniciando generación de estadísticas")
 
             # Try to get statistics from cache first
-            cached_stats = cache.get('api_statistics_cache')
+            cache_key = 'api_statistics_cache'
+            cached_stats = cache.get(cache_key)
             if cached_stats:
                 logging.info("Retornando estadísticas desde caché")
                 return jsonify(cached_stats)
@@ -155,7 +156,7 @@ def init_routes(app):
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
 
-            # Build base query
+            # Build base query with indices
             base_query = Incident.query
 
             # Apply date filters if they exist
@@ -167,34 +168,50 @@ def init_routes(app):
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 base_query = base_query.filter(Incident.timestamp <= date_to_end)
 
-            # Execute queries in parallel using session
             try:
-                # Total incidents (using count for efficiency)
-                total_incidents = base_query.count()
-                logging.info(f"Total de incidentes encontrados: {total_incidents}")
-
-                # Incident types (using single query with grouping)
-                incident_types = db.session.query(
+                # Use a single optimized query for all statistics
+                stats = db.session.query(
+                    func.count(Incident.id).label('total'),
                     Incident.incident_type,
-                    func.count(Incident.id).label('count')
-                ).group_by(Incident.incident_type).all()
-                incident_types_dict = {t[0]: t[1] for t in incident_types}
-
-                # Station statistics (using single query with grouping)
-                station_counts = db.session.query(
                     Incident.nearest_station,
-                    func.count(Incident.id).label('count')
-                ).group_by(Incident.nearest_station).all()
-                station_counts_dict = {s[0]: s[1] for s in station_counts}
+                    func.extract('hour', Incident.timestamp).label('hour')
+                ).group_by(
+                    Incident.incident_type,
+                    Incident.nearest_station,
+                    func.extract('hour', Incident.timestamp)
+                ).all()
 
-                # Most dangerous hour (using efficient hour extraction)
-                hour_counts = db.session.query(
-                    func.extract('hour', Incident.timestamp).label('hour'),
-                    func.count(Incident.id).label('count')
-                ).group_by('hour').order_by(func.count(Incident.id).desc()).first()
-                most_dangerous_hour = f"{int(hour_counts[0]):02d}:00" if hour_counts else "-"
+                # Process results efficiently
+                total_incidents = 0
+                incident_types_dict = {}
+                station_counts_dict = {}
+                hour_counts = {}
 
-                # Calculate most affected station and most common type
+                for stat in stats:
+                    count = stat[0]
+                    incident_type = stat[1]
+                    station = stat[2]
+                    hour = int(stat[3])
+
+                    total_incidents += count
+
+                    # Aggregate incident types
+                    if incident_type not in incident_types_dict:
+                        incident_types_dict[incident_type] = 0
+                    incident_types_dict[incident_type] += count
+
+                    # Aggregate station counts
+                    if station not in station_counts_dict:
+                        station_counts_dict[station] = 0
+                    station_counts_dict[station] += count
+
+                    # Aggregate hour counts
+                    if hour not in hour_counts:
+                        hour_counts[hour] = 0
+                    hour_counts[hour] += count
+
+                # Calculate derived statistics
+                most_dangerous_hour = f"{max(hour_counts.items(), key=lambda x: x[1])[0]:02d}:00" if hour_counts else "-"
                 most_affected_station = max(station_counts_dict.items(), key=lambda x: x[1])[0] if station_counts_dict else "-"
                 most_common_type = max(incident_types_dict.items(), key=lambda x: x[1])[0] if incident_types_dict else "-"
 
@@ -208,8 +225,8 @@ def init_routes(app):
                     'top_stations': dict(sorted(station_counts_dict.items(), key=lambda x: x[1], reverse=True)[:5])
                 }
 
-                # Cache the results for 5 minutes
-                cache.set('api_statistics_cache', response_data, timeout=300)
+                # Cache results for 5 minutes
+                cache.set(cache_key, response_data, timeout=300)
                 logging.info("Estadísticas generadas y guardadas en caché")
 
                 return jsonify(response_data)
