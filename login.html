@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    <title>Iniciar sesión</title>
+    <!-- Bootstrap Dark Theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    
+  
+  <link rel="stylesheet" href="/static/css/login.css">
+
+</head>
+
+<body class="login">
+    
+
+    <!-- Contenedor para mensajes flash -->
+    <div id="flash-messages-container">
+        
+        
+        
+    </div>
+
+    <!-- Contenedor principal con scroll interno -->
+    <div class="main-content">
+        
+  <div class="auth-container">
+    <!-- Encabezado externo con ícono y título -->
+    <div class="auth-header-outside">
+      <i class="fas fa-bus"></i>
+      <h1>Transmilenio Security</h1>
+    </div>
+    <!-- Tarjeta con información del login -->
+    <div class="auth-card">
+      <h2>Bienvenido</h2>
+      <p class="auth-subtitle">Ingresa tus credenciales para acceder a la app</p>
+
+      <form action="/login" method="post" novalidate>
+        <input id="csrf_token" name="csrf_token" type="hidden" value="ImRkZDg2MTNmMWNiZGJhZThmYzcxM2ZjNTNmYTg3ZmFiZDM1NjBlZjgi.Z70Aaw.mUMgU2Z13tl9J7E3SspMjlFqOv8">
+
+        <div class="form-group">
+          <label for="username">Nombre de Usuario</label>
+          <div class="input-icon">
+            <i class="fas fa-user"></i>
+            <input class="auth-input" id="username" name="username" placeholder="Tu nombre de usuario" required type="text" value="">
+          </div>
+          
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input class="auth-input" id="password" name="password" placeholder="********" required type="password" value="">
+          </div>
+          
+        </div>
+
+        <div class="form-group remember-me">
+          <input class="remember-checkbox" id="remember_me" name="remember_me" type="checkbox" value="y">
+          <label for="remember_me">Recordarme</label>
+        </div>
+
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+
+        <button type="submit" class="auth-button">Iniciar Sesión</button>
+      </form>
+
+      <p class="register-text">
+        ¿No tienes una cuenta? <a href="/register">Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
+
+    </div>
+
+    
+
+    <!-- Modal de Notificaciones -->
+    
+
+    <!-- Scripts Globales -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/js/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar ServiceWorker:', error);
+                    });
+            });
+        }
+    </script>
+    
+    
+</body>
+</html>
