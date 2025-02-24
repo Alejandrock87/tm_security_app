@@ -1,19 +1,19 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify, json, session
 from flask_login import login_user, logout_user, current_user, login_required
+import logging
+from datetime import datetime, timedelta
+import os
+from sqlalchemy import exc as sql_exceptions
+from ml_models import predict_station_risk as ml_predict_station_risk
+from ml_models import predict_incident_type as ml_predict_incident_type
 from app import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
 from utils import send_notification, send_push_notification
-from datetime import datetime, timedelta
-import logging
 from models import User, Incident, PushSubscription
 from database import db
 from sqlalchemy import func
-import os
-from sqlalchemy import exc as sql_exceptions
-from ml_models import predict_station_risk as ml_predict_station_risk
-from ml_models import predict_incident_type as ml_predict_incident_type
 
 def init_routes(app):
     @app.route('/test')

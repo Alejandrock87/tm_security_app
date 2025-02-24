@@ -3,7 +3,7 @@ monkey.patch_all()
 
 import os
 import logging
-from flask import Flask
+from flask import Flask, request
 from flask_login import LoginManager
 from database import init_db, db
 from flask_caching import Cache
@@ -19,6 +19,14 @@ logger = logging.getLogger(__name__)
 # Crear la aplicación Flask
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+
+# Configuración adicional de sesión
+app.config.update(
+    SESSION_COOKIE_SECURE=False,  # Permitir cookies sin HTTPS en desarrollo
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    PERMANENT_SESSION_LIFETIME=1800  # 30 minutos
+)
 
 # Configurar Socket.IO con opciones específicas para gevent
 socketio = SocketIO(
@@ -37,10 +45,10 @@ socketio = SocketIO(
     reconnection_delay_max=5000
 )
 
-# Agregar manejador de eventos para debugging de Socket.IO
 @socketio.on('connect')
 def handle_connect():
     logger.info('Cliente conectado a Socket.IO')
+    logger.debug(f'Headers de conexión: {dict(request.headers) if request else "No headers"}')
 
 @socketio.on('disconnect')
 def handle_disconnect():
