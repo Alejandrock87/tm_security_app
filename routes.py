@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, jsonify, json
+from flask import render_template, flash, redirect, url_for, request, jsonify, json, session
 from flask_login import login_user, logout_user, current_user, login_required
 from app import cache
 from urllib.parse import urlparse
@@ -47,6 +47,69 @@ def init_routes(app):
             return redirect(next_page)
         return render_template('login.html', title='Iniciar sesión', form=form)
 
+    @app.route('/report_incident', methods=['GET', 'POST'])
+    @login_required
+    def report_incident():
+        # Logging detallado para diagnóstico
+        app.logger.info(f"Accessing report_incident. User: {current_user}, Remote addr: {request.remote_addr}")
+        app.logger.debug(f"Request headers: {dict(request.headers)}")
+        app.logger.debug(f"Session data: {dict(session)}")
+        app.logger.debug(f"User authenticated: {current_user.is_authenticated}")
+
+        form = IncidentReportForm()
+        try:
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
+                stations = [(feature['properties']['nombre_estacion'], 
+                            f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
+                           for feature in geojson_data['features']
+                           if 'nombre_estacion' in feature['properties']]
+                stations.sort(key=lambda x: x[0])
+                form.station.choices = [(s[0], s[1]) for s in stations]
+
+            if form.validate_on_submit():
+                app.logger.info("Form submitted and validated")
+                latitude = request.form.get('latitude')
+                longitude = request.form.get('longitude')
+                nearest_station = request.form.get('nearest_station')
+
+                if not all([latitude, longitude, nearest_station]):
+                    flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
+                    return redirect(url_for('report_incident'))
+
+                incident_date = form.incident_date.data or datetime.now().date()
+                incident_time = form.incident_time.data or datetime.now().time()
+
+                incident = Incident(
+                    incident_type=form.incident_type.data,
+                    description=form.description.data,
+                    latitude=float(latitude),
+                    longitude=float(longitude),
+                    user_id=current_user.id,
+                    nearest_station=form.station.data,
+                    timestamp=datetime.combine(incident_date, incident_time)
+                )
+
+                try:
+                    db.session.add(incident)
+                    db.session.commit()
+                    flash('¡Incidente reportado con éxito!')
+                    send_notification(incident.incident_type, incident.timestamp.isoformat())
+                    return redirect(url_for('home'))
+                except Exception as e:
+                    db.session.rollback()
+                    app.logger.error(f"Error al guardar el incidente: {str(e)}")
+                    flash('Error al guardar el incidente. Por favor, intente de nuevo.')
+                    return redirect(url_for('report_incident'))
+
+            app.logger.info("Rendering report_incident template")
+            return render_template('report_incident.html', title='Reportar incidente', form=form)
+
+        except Exception as e:
+            app.logger.error(f"Error general en report_incident: {str(e)}")
+            flash('Error al cargar la página. Por favor, intente de nuevo.')
+            return redirect(url_for('home'))
+
     @app.route('/logout')
     def logout():
         logout_user()
@@ -71,61 +134,6 @@ def init_routes(app):
     @login_required
     def home():
         return render_template('home.html', title='Inicio')
-
-    @app.route('/report_incident', methods=['GET', 'POST'])
-    @login_required
-    def report_incident():
-        app.logger.info(f"Accessing report_incident. User: {current_user}, Remote addr: {request.remote_addr}")
-        app.logger.debug(f"Request headers: {dict(request.headers)}")
-        app.logger.debug(f"Session data: {dict(session)}")
-
-        form = IncidentReportForm()
-        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-            geojson_data = json.load(f)
-            stations = [(feature['properties']['nombre_estacion'], 
-                        f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
-                       for feature in geojson_data['features']
-                       if 'nombre_estacion' in feature['properties']]
-            stations.sort(key=lambda x: x[0])
-            form.station.choices = [(s[0], s[1]) for s in stations]
-
-        if form.validate_on_submit():
-            latitude = request.form.get('latitude')
-            longitude = request.form.get('longitude')
-            nearest_station = request.form.get('nearest_station')
-
-            if not all([latitude, longitude, nearest_station]):
-                flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
-                return redirect(url_for('report_incident'))
-
-            # Asegurarse de que la fecha y hora no sean None antes de combinarlas
-            incident_date = form.incident_date.data or datetime.now().date()
-            incident_time = form.incident_time.data or datetime.now().time()
-
-            incident = Incident(
-                incident_type=form.incident_type.data,
-                description=form.description.data,
-                latitude=float(latitude),
-                longitude=float(longitude),
-                user_id=current_user.id,
-                nearest_station=form.station.data,
-                timestamp=datetime.combine(incident_date, incident_time)
-            )
-
-            try:
-                db.session.add(incident)
-                db.session.commit()
-                flash('¡Incidente reportado con éxito!')
-                send_notification(incident.incident_type, incident.timestamp.isoformat())
-                return redirect(url_for('home'))
-            except Exception as e:
-                db.session.rollback()
-                app.logger.error(f"Error al guardar el incidente: {str(e)}")
-                flash('Error al guardar el incidente. Por favor, intente de nuevo.')
-                return redirect(url_for('report_incident'))
-
-        app.logger.info("Rendering report_incident template")
-        return render_template('report_incident.html', title='Reportar incidente', form=form)
 
     @app.route('/dashboard')
     @login_required
@@ -427,7 +435,6 @@ def init_routes(app):
             return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
-
 
     return app
 
