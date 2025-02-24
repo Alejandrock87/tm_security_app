@@ -29,7 +29,7 @@ def init_db(app):
             tables = inspector.get_table_names()
             logger.info(f"Existing tables: {tables}")
 
-            required_tables = {'user', 'incident', 'push_subscription', 'notification'}
+            required_tables = {'users', 'incident', 'push_subscription', 'notification'}
             missing_tables = required_tables - set(tables)
 
             if missing_tables:

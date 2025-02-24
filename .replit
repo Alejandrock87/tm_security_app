@@ -26,6 +26,10 @@ args = "Build Command"
 task = "workflow.run"
 args = "Run Tests"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Generate Sample Data"
+
 [[workflows.workflow]]
 name = "Generate Station Icon"
 author = "agent"
@@ -66,6 +70,7 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+waitForPort = 5000
 
 [[workflows.workflow]]
 name = "Build Command"
@@ -94,6 +99,20 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python -m pytest tests/test_predictions.py -v"
+
+[[workflows.workflow]]
+name = "Generate Sample Data"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python generate_sample_data.py"
 
 [deployment]
 run = ["sh", "-c", "pip install -r requirements.txt"]

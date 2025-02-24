@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'user'  # Especificar explícitamente el nombre de la tabla
+    __tablename__ = 'users'  # Cambiado de 'user' a 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 class Incident(db.Model):
-    __tablename__ = 'incident'  # Especificar explícitamente el nombre de la tabla
+    __tablename__ = 'incident'
     id = db.Column(db.Integer, primary_key=True)
     __table_args__ = (
         db.Index('idx_incident_timestamp', 'timestamp'),
@@ -30,7 +30,7 @@ class Incident(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Actualizado a 'users.id'
     nearest_station = db.Column(db.String(100), nullable=False)
 
     def to_dict(self):
@@ -46,14 +46,14 @@ class Incident(db.Model):
         }
 
 class PushSubscription(db.Model):
-    __tablename__ = 'push_subscription'  # Especificar explícitamente el nombre de la tabla
+    __tablename__ = 'push_subscription'
     id = db.Column(db.Integer, primary_key=True)
     subscription_info = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Actualizado a 'users.id'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Notification(db.Model):
-    __tablename__ = 'notification'  # Especificar explícitamente el nombre de la tabla
+    __tablename__ = 'notification'
     id = db.Column(db.Integer, primary_key=True)
     incident_type = db.Column(db.String(100), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
