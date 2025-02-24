@@ -23,9 +23,9 @@ if __name__ == '__main__':
         port = 5000  # Always use port 5000 for Replit
         logger.info(f"Configured to run on port {port}")
 
-        # Temporarily use simple app.run instead of socketio.run for debugging
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
-        app.run(
+        socketio.run(
+            app,
             host='0.0.0.0',
             port=port,
             debug=True,

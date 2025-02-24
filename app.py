@@ -20,7 +20,6 @@ app = Flask(__name__)
 if not os.environ.get("FLASK_SECRET_KEY"):
     os.environ["FLASK_SECRET_KEY"] = secrets.token_hex(32)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
-logger.info("Secret key configurada correctamente")
 
 # Configurar CORS con opciones más específicas
 CORS(app, resources={
@@ -35,7 +34,6 @@ CORS(app, resources={
 # Configurar base de datos
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
-    logger.info("Construyendo DATABASE_URL desde variables de entorno")
     database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
@@ -50,25 +48,16 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["WTF_CSRF_ENABLED"] = True
 app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
-# Inicializar extensiones en orden específico
-logger.debug("Inicializando extensiones...")
+# Inicializar extensiones
 db.init_app(app)
-logger.info("SQLAlchemy inicializado")
-
-cache.init_app(app)
-logger.info("Cache inicializado")
-
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
-logger.info("Login manager inicializado")
-
+cache.init_app(app)
 socketio.init_app(app)
-logger.info("SocketIO inicializado")
 
 # Inicializar base de datos y crear tablas
 init_db(app)
-logger.info("Base de datos inicializada")
 
 # Importar modelos después de inicializar la base de datos
 from models import User
@@ -79,10 +68,8 @@ def load_user(user_id):
 
 # Importar e inicializar rutas después de que todo esté configurado
 try:
-    logger.debug("Importando e inicializando rutas...")
     from routes import init_routes
     init_routes(app)
-    logger.info("Rutas inicializadas correctamente")
 except Exception as e:
     logger.error(f"Error al inicializar rutas: {str(e)}")
     raise
