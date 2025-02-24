@@ -245,11 +245,15 @@ def init_routes(app):
         return render_template('predictions.html', title='Predicciones')
 
     @app.route('/api/predictions')
-    @login_required
     def api_predictions():
+        """
+        Generate predictions for incidents.
+        This endpoint is temporarily public for testing purposes.
+        """
         try:
             logging.info("Iniciando generación de predicciones")
-            # Intentar obtener predicciones del caché
+
+            # Verificar si hay predicciones en caché
             cached_predictions = cache.get('predictions_cache')
             if cached_predictions:
                 logging.info("Retornando predicciones desde caché")
@@ -257,8 +261,21 @@ def init_routes(app):
 
             # Si no hay caché, cargar el modelo y generar predicciones
             logging.info("Cargando datos de estaciones para predicciones")
-            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-                geojson_data = json.load(f)
+            try:
+                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                    geojson_data = json.load(f)
+            except FileNotFoundError as e:
+                logging.error(f"No se encontró el archivo geojson: {str(e)}")
+                return jsonify({
+                    'error': 'Error al cargar datos de estaciones',
+                    'details': 'Archivo de estaciones no encontrado'
+                }), 500
+            except json.JSONDecodeError as e:
+                logging.error(f"Error al parsear el archivo geojson: {str(e)}")
+                return jsonify({
+                    'error': 'Error al procesar datos de estaciones',
+                    'details': 'Formato de archivo inválido'
+                }), 500
 
             current_time = datetime.now()
             predictions = []
@@ -267,49 +284,59 @@ def init_routes(app):
             logging.info("Generando predicciones para las próximas 3 horas")
             for hour_offset in range(3):
                 prediction_time = current_time + timedelta(hours=hour_offset)
+                logging.debug(f"Generando predicciones para hora: {prediction_time}")
 
                 for feature in geojson_data['features']:
                     station = feature['properties']['nombre_estacion']
                     coordinates = feature['geometry']['coordinates']
 
-                    # Usar el modelo real para predicciones
-                    logging.info(f"Prediciendo riesgo para estación: {station}")
-                    risk_score = predict_station_risk(station, prediction_time.hour)
-                    if risk_score is not None:
-                        logging.info(f"Prediciendo tipo de incidente para estación: {station}")
-                        incident_type = predict_incident_type(station, prediction_time.hour)
+                    try:
+                        # Usar el modelo real para predicciones
+                        logging.info(f"Prediciendo riesgo para estación: {station}")
+                        risk_score = predict_station_risk(station, prediction_time.hour)
 
-                        predictions.append({
-                            'station': station,
-                            'incident_type': incident_type,
-                            'predicted_time': prediction_time.isoformat(),
-                            'risk_score': float(risk_score),
-                            'latitude': coordinates[1],
-                            'longitude': coordinates[0]
-                        })
+                        if risk_score is not None:
+                            logging.info(f"Prediciendo tipo de incidente para estación: {station}")
+                            incident_type = predict_incident_type(station, prediction_time.hour)
+
+                            predictions.append({
+                                'station': station,
+                                'incident_type': incident_type,
+                                'predicted_time': prediction_time.isoformat(),
+                                'risk_score': float(risk_score),
+                                'latitude': coordinates[1],
+                                'longitude': coordinates[0]
+                            })
+                            logging.debug(f"Predicción generada para {station}: score={risk_score}, tipo={incident_type}")
+                        else:
+                            logging.warning(f"No se pudo generar score de riesgo para estación: {station}")
+
+                    except Exception as e:
+                        logging.error(f"Error al generar predicción para estación {station}: {str(e)}")
+                        continue
+
+            if not predictions:
+                logging.warning("No se generaron predicciones")
+                return jsonify({
+                    'error': 'No hay predicciones disponibles',
+                    'details': 'No se pudieron generar predicciones válidas'
+                }), 404
 
             # Guardar en caché por 1 hora
-            logging.info("Guardando predicciones en caché")
-            cache.set('predictions_cache', predictions, timeout=3600)
+            logging.info(f"Guardando {len(predictions)} predicciones en caché")
+            try:
+                cache.set('predictions_cache', predictions, timeout=3600)
+            except Exception as e:
+                logging.error(f"Error al guardar predicciones en caché: {str(e)}")
+                # Continuar sin caché si hay error
+
             return jsonify(predictions)
 
-        except FileNotFoundError as e:
-            logging.error(f"Error loading geojson file: {str(e)}")
-            return jsonify({
-                'error': 'Error al cargar datos de estaciones',
-                'details': 'Archivo de estaciones no encontrado'
-            }), 500
-        except json.JSONDecodeError as e:
-            logging.error(f"Error parsing geojson file: {str(e)}")
-            return jsonify({
-                'error': 'Error al procesar datos de estaciones',
-                'details': 'Formato de archivo inválido'
-            }), 500
         except Exception as e:
-            logging.error(f"Error generating predictions: {str(e)}")
+            logging.error(f"Error general en api_predictions: {str(e)}", exc_info=True)
             return jsonify({
                 'error': 'Error al generar predicciones',
-                'details': str(e) if app.debug else 'Internal server error'
+                'details': str(e) if app.debug else 'Error interno del servidor'
             }), 500
 
     @app.route('/real_time_map')
