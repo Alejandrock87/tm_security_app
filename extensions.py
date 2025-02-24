@@ -14,11 +14,8 @@ cache = Cache(config={
 })
 socketio = SocketIO(
     cors_allowed_origins="*",
-    async_mode='gevent',
-    logger=True,
-    engineio_logger=True,
-    ping_timeout=60,
-    ping_interval=25
+    async_mode=None,  # Let SocketIO choose the best mode
+    logger=True
 )
 db = SQLAlchemy()
 login_manager = LoginManager()

@@ -14,8 +14,17 @@ logger.info("Starting application initialization...")
 
 @app.route('/health')
 def health_check():
-    logger.debug("Health check endpoint accessed")
-    return 'OK', 200
+    """Health check endpoint to verify server status"""
+    try:
+        # Verificar la conexión a la base de datos
+        from extensions import db
+        db.session.execute("SELECT 1")
+        db.session.commit()
+        logger.info("Health check passed - Database connection successful")
+        return 'OK', 200
+    except Exception as e:
+        logger.error(f"Health check failed: {str(e)}")
+        return 'Error', 500
 
 if __name__ == '__main__':
     try:
@@ -24,12 +33,11 @@ if __name__ == '__main__':
         logger.info(f"Configured to run on port {port}")
 
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
-        socketio.run(
-            app,
+        # Temporarily use app.run instead of socketio.run for basic functionality
+        app.run(
             host='0.0.0.0',
             port=port,
-            debug=True,
-            use_reloader=False  # Disable reloader to prevent duplicate processes
+            debug=True
         )
         logger.info(f"Server successfully started and listening on port {port}")
     except Exception as e:

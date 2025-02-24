@@ -2,8 +2,8 @@ import random
 from datetime import datetime, timedelta
 from flask import Flask
 import os
-from models import User, Incident, db
 import logging
+from models import User, Incident, db
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -15,7 +15,10 @@ def create_app():
     if not database_url:
         database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
 
-    logger.info(f"Conectando a la base de datos...")
+    # Log de conexión (ocultando credenciales)
+    safe_url = database_url.replace(os.environ.get('PGPASSWORD', ''), '****')
+    logger.info(f"Conectando a la base de datos: {safe_url}")
+
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
@@ -25,6 +28,15 @@ def populate_real_incident_data():
     app = create_app()
     with app.app_context():
         try:
+            # Verificar conexión a la base de datos
+            logger.info("Verificando conexión a la base de datos...")
+            db.session.execute("SELECT 1")
+            logger.info("Conexión a la base de datos establecida correctamente")
+
+            # Verificar número inicial de usuarios
+            initial_users = User.query.count()
+            logger.info(f"Número de usuarios antes de la inserción: {initial_users}")
+
             # Crear usuario de prueba
             logger.info("Intentando crear usuario de prueba...")
             user = User(username="sample_user", email="sample@example.com")
@@ -35,6 +47,9 @@ def populate_real_incident_data():
             logger.info("Usuario guardado exitosamente en la base de datos")
 
             # Verificar la creación del usuario
+            final_users = User.query.count()
+            logger.info(f"Número de usuarios después de la inserción: {final_users}")
+
             created_user = User.query.filter_by(username="sample_user").first()
             if not created_user:
                 logger.error("El usuario no se pudo crear correctamente")
@@ -44,6 +59,7 @@ def populate_real_incident_data():
             user_id = created_user.id
             logger.info(f"ID del usuario creado: {user_id}")
 
+            # Limpiar incidentes anteriores
             logger.info("Limpiando incidentes anteriores...")
             Incident.query.delete()
             db.session.commit()

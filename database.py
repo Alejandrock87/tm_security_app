@@ -1,7 +1,7 @@
 from extensions import db
 from sqlalchemy.orm import DeclarativeBase
 from contextlib import contextmanager
-from flask import current_app
+from sqlalchemy import text
 import logging
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,12 @@ def init_db(app):
         with app.app_context():
             # Import models here to avoid circular imports
             from models import User, Incident, PushSubscription, Notification
+
+            # Verify database connection first
+            logger.info("Verificando conexión a la base de datos...")
+            db.session.execute(text("SELECT 1"))
+            db.session.commit()
+            logger.info("Conexión a la base de datos verificada")
 
             # Create tables
             logger.info("Creating database tables...")
@@ -36,6 +42,8 @@ def init_db(app):
                 logger.error(f"Missing required tables: {missing_tables}")
                 raise Exception(f"Failed to create tables: {missing_tables}")
 
+            logger.info("Database initialization completed successfully")
+
     except Exception as e:
         logger.error(f"Database initialization failed: {str(e)}")
         raise
@@ -46,7 +54,8 @@ def transaction_context():
     try:
         yield
         db.session.commit()
-    except:
+    except Exception as e:
+        logger.error(f"Transaction error: {str(e)}")
         db.session.rollback()
         raise
     finally:

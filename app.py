@@ -1,10 +1,9 @@
 from flask import Flask, request
 from flask_cors import CORS
-from extensions import cache, socketio, db, login_manager
+from extensions import db, login_manager
 import os
 import logging
 import secrets
-from database import init_db
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -49,16 +48,17 @@ app.config["WTF_CSRF_ENABLED"] = True
 app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
 try:
-    # Inicializar extensiones
+    logger.info("Inicializando extensiones de Flask...")
+    # Inicializar solo las extensiones esenciales
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'login'
     login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
-    cache.init_app(app)
-    socketio.init_app(app)
+    logger.info("Extensiones básicas inicializadas correctamente")
 
     # Inicializar base de datos y crear tablas
     with app.app_context():
+        from database import init_db
         init_db(app)
         logger.info("Base de datos inicializada correctamente")
 
@@ -67,7 +67,11 @@ try:
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        try:
+            return User.query.get(int(user_id))
+        except Exception as e:
+            logger.error(f"Error loading user {user_id}: {str(e)}")
+            return None
 
     # Importar e inicializar rutas después de que todo esté configurado
     from routes import init_routes
