@@ -3,7 +3,7 @@ from app import app
 import json
 from datetime import datetime, timedelta
 import logging
-from models import User, db
+from models import User, db, Incident
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -40,7 +40,33 @@ def authenticated_client(test_client, test_user):
     }, follow_redirects=True)
     return test_client
 
-def test_predictions_endpoint(authenticated_client):
+@pytest.fixture
+def sample_incidents(test_client, test_user):
+    """Create sample incidents for testing predictions"""
+    with app.app_context():
+        # Crear 30 incidentes para una estación específica
+        station = "Pepe Sierra"
+        base_time = datetime.now() - timedelta(days=30)
+
+        for i in range(30):
+            incident = Incident(
+                incident_type="Hurto" if i % 2 == 0 else "Acoso",
+                description=f"Incidente de prueba {i}",
+                latitude=4.6097,  # Coordenadas de prueba para Bogotá
+                longitude=-74.0817,
+                user_id=test_user.id,
+                nearest_station=station,
+                timestamp=base_time + timedelta(days=i)
+            )
+            db.session.add(incident)
+
+        db.session.commit()
+        yield
+        # Limpiar datos de prueba
+        Incident.query.delete()
+        db.session.commit()
+
+def test_predictions_endpoint(authenticated_client, sample_incidents):
     """Test the predictions endpoint basic functionality"""
     logger.info("Testing predictions endpoint")
     response = authenticated_client.get('/api/predictions')
@@ -76,7 +102,7 @@ def test_predictions_error_handling(authenticated_client):
     assert 'error' in data
     assert 'details' in data
 
-def test_predictions_cache(authenticated_client):
+def test_predictions_cache(authenticated_client, sample_incidents):
     """Test prediction caching functionality"""
     logger.info("Testing predictions caching")
     # Primera llamada
@@ -92,7 +118,7 @@ def test_predictions_cache(authenticated_client):
     # Las respuestas deberían ser idénticas si se usa caché
     assert data1 == data2
 
-def test_prediction_data_validation(authenticated_client):
+def test_prediction_data_validation(authenticated_client, sample_incidents):
     """Test data validation in predictions"""
     logger.info("Testing prediction data validation")
     response = authenticated_client.get('/api/predictions')
