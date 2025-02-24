@@ -1,16 +1,15 @@
 import logging
+import os
+from app import app
 
 # Setup detailed logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Changed to DEBUG for more detailed logs
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
 logger = logging.getLogger(__name__)
 logger.info("Starting application initialization...")
-
-import os
-from app import app, socketio
 
 @app.route('/health')
 def health_check():
