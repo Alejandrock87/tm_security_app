@@ -76,10 +76,10 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python -c 'from app import app; from database import db; with app.app_context(): db.create_all()'"
+args = "pip install -r requirements.txt"
 
 [deployment]
-run = ["sh", "-c", "python -c 'from app import app; from database import db; with app.app_context(): db.create_all()'"]
+run = ["sh", "-c", "pip install -r requirements.txt"]
 
 [[ports]]
 localPort = 80
