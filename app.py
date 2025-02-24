@@ -48,30 +48,32 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["WTF_CSRF_ENABLED"] = True
 app.config["WTF_CSRF_SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
 
-# Inicializar extensiones
-db.init_app(app)
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
-cache.init_app(app)
-socketio.init_app(app)
-
-# Inicializar base de datos y crear tablas
-init_db(app)
-
-# Importar modelos después de inicializar la base de datos
-from models import User
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-# Importar e inicializar rutas después de que todo esté configurado
 try:
+    # Inicializar extensiones
+    db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+    login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
+    cache.init_app(app)
+    socketio.init_app(app)
+
+    # Inicializar base de datos y crear tablas
+    with app.app_context():
+        init_db(app)
+        logger.info("Base de datos inicializada correctamente")
+
+    # Importar modelos después de inicializar la base de datos
+    from models import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    # Importar e inicializar rutas después de que todo esté configurado
     from routes import init_routes
     init_routes(app)
-except Exception as e:
-    logger.error(f"Error al inicializar rutas: {str(e)}")
-    raise
+    logger.info("Aplicación Flask configurada completamente")
 
-logger.info("Aplicación Flask configurada completamente")
+except Exception as e:
+    logger.error(f"Error durante la inicialización de la aplicación: {str(e)}", exc_info=True)
+    raise
