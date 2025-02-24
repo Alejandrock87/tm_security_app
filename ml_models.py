@@ -19,9 +19,9 @@ def load_ml_dependencies():
     try:
         global np, pd, Pipeline, StandardScaler, OneHotEncoder, LabelEncoder
         global RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
-        global SMOTE, Sequential, LSTM, Dense, Dropout, BatchNormalization, Adam
-        global l2, EarlyStopping, ReduceLROnPlateau
-        global train_test_split, StratifiedKFold, cross_val_score
+        global Sequential, Dense, LSTM, Dropout, BatchNormalization
+        global Adam, l2, EarlyStopping, ReduceLROnPlateau
+        global train_test_split, StratifiedKFold, cross_val_score, SMOTE
 
         import numpy as np
         import pandas as pd
@@ -30,11 +30,18 @@ def load_ml_dependencies():
         from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
         from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
         from imblearn.over_sampling import SMOTE
-        from tensorflow.keras.models import Sequential
-        from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization
-        from tensorflow.keras.optimizers import Adam
-        from tensorflow.keras.regularizers import l2
-        from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+
+        # Tensorflow imports actualizados para 2.15
+        try:
+            from tensorflow.keras.models import Sequential
+            from tensorflow.keras.layers import Dense, LSTM, Dropout, BatchNormalization
+            from tensorflow.keras.optimizers.legacy import Adam  # Usar legacy optimizer para compatibilidad
+            from tensorflow.keras.regularizers import l2
+            from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+            logger.info("TensorFlow y Keras importados correctamente")
+        except ImportError as e:
+            logger.error(f"Error importando TensorFlow/Keras: {str(e)}")
+            return False
 
         return True
     except ImportError as e:
@@ -125,31 +132,39 @@ def prepare_rnn_data():
         return None, None, None
 
 def create_rnn_model(input_shape, num_classes):
+    """Create RNN model with updated TF 2.15 compatibility"""
     logging.info(f"Creating RNN model with input_shape={input_shape}, num_classes={num_classes}")
-    model = Sequential([
-        LSTM(64, return_sequences=True, 
-             input_shape=input_shape,
-             kernel_regularizer=l2(0.001)),
-        BatchNormalization(),
-        Dropout(0.2),
-        LSTM(64, return_sequences=True),
-        BatchNormalization(),
-        Dropout(0.3),
-        LSTM(32),
-        BatchNormalization(),
-        Dropout(0.2),
-        Dense(32, activation='relu'),
-        BatchNormalization(),
-        Dropout(0.2),
-        Dense(num_classes, activation='softmax')
-    ])
+    try:
+        model = Sequential([
+            LSTM(64, return_sequences=True, 
+                 input_shape=input_shape,
+                 kernel_regularizer=l2(0.001)),
+            BatchNormalization(),
+            Dropout(0.2),
+            LSTM(64, return_sequences=True),
+            BatchNormalization(),
+            Dropout(0.3),
+            LSTM(32),
+            BatchNormalization(),
+            Dropout(0.2),
+            Dense(32, activation='relu'),
+            BatchNormalization(),
+            Dropout(0.2),
+            Dense(num_classes, activation='softmax')
+        ])
 
-    model.compile(
-        optimizer=Adam(learning_rate=0.001),
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy']
-    )
-    return model
+        # Usar el optimizador legacy Adam para compatibilidad
+        optimizer = Adam(learning_rate=0.001)
+
+        model.compile(
+            optimizer=optimizer,
+            loss='sparse_categorical_crossentropy',
+            metrics=['accuracy']
+        )
+        return model
+    except Exception as e:
+        logger.error(f"Error creating RNN model: {str(e)}")
+        return None
 
 def train_model():
     X, y, num_classes = prepare_rnn_data()
@@ -359,25 +374,48 @@ def get_model_insights():
         return "An error occurred while generating model insights. Please check the logs for more information."
 
 def predict_station_risk(station, hour):
-    """Wrapper for station risk prediction with error handling"""
+    """Wrapper for station risk prediction with improved error handling and input validation"""
     try:
         if not load_ml_dependencies():
+            logger.error("Failed to load ML dependencies")
             return 0.5  # Return default risk score if dependencies fail
 
-        model, history = train_rnn_model()
-        if model is None:
+        # Validar entrada
+        if not isinstance(station, str) or not isinstance(hour, int):
+            logger.error(f"Invalid input types: station={type(station)}, hour={type(hour)}")
             return 0.5
 
-        # Preparar datos de entrada para la predicción
+        if hour < 0 or hour > 23:
+            logger.error(f"Invalid hour value: {hour}")
+            return 0.5
+
+        # Preparar datos de entrada
         input_data = prepare_prediction_data(station, hour)
         if input_data is None:
+            logger.error("Failed to prepare prediction data")
             return 0.5
 
-        predictions = model.predict(input_data)
-        # Tomar el máximo de las probabilidades como score de riesgo
-        risk_score = float(np.max(predictions[0]))
+        # Validar dimensiones
+        expected_shape = (1, 24, 7)  # (batch_size, sequence_length, features)
+        if input_data.shape != expected_shape:
+            logger.error(f"Invalid input shape: expected {expected_shape}, got {input_data.shape}")
+            return 0.5
 
-        return risk_score
+        model, _ = train_rnn_model()
+        if model is None:
+            logger.error("Failed to load or train model")
+            return 0.5
+
+        # Realizar predicción con manejo de errores de TF
+        try:
+            predictions = model.predict(input_data, verbose=0)
+            risk_score = float(np.max(predictions[0]))
+            logger.info(f"Successfully predicted risk score {risk_score} for station {station}")
+            return risk_score
+        except Exception as e:
+            logger.error(f"Error during model prediction: {str(e)}")
+            return 0.5
+
     except Exception as e:
         logger.error(f"Error in station risk prediction: {str(e)}")
         return 0.5
