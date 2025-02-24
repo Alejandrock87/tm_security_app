@@ -293,9 +293,24 @@ def init_routes(app):
             cache.set('predictions_cache', predictions, timeout=3600)
             return jsonify(predictions)
 
+        except FileNotFoundError as e:
+            logging.error(f"Error loading geojson file: {str(e)}")
+            return jsonify({
+                'error': 'Error al cargar datos de estaciones',
+                'details': 'Archivo de estaciones no encontrado'
+            }), 500
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing geojson file: {str(e)}")
+            return jsonify({
+                'error': 'Error al procesar datos de estaciones',
+                'details': 'Formato de archivo inválido'
+            }), 500
         except Exception as e:
             logging.error(f"Error generating predictions: {str(e)}")
-            return jsonify({'error': str(e)}), 500
+            return jsonify({
+                'error': 'Error al generar predicciones',
+                'details': str(e) if app.debug else 'Internal server error'
+            }), 500
 
     @app.route('/real_time_map')
     @login_required

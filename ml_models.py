@@ -445,37 +445,85 @@ def predict_incident_type(station, hour):
         return "Hurto"
 
 def prepare_prediction_data(station, hour):
+    """
+    Prepara y valida los datos para la predicción con manejo de errores mejorado.
+
+    Args:
+        station (str): Nombre de la estación
+        hour (int): Hora del día (0-23)
+
+    Returns:
+        numpy.ndarray or None: Datos preparados para el modelo o None si hay error
+    """
     try:
+        # Validación de entrada
+        if not isinstance(station, str):
+            logger.error(f"Invalid station type: expected str, got {type(station)}")
+            return None
+        if not isinstance(hour, int) or hour < 0 or hour > 23:
+            logger.error(f"Invalid hour value: {hour}")
+            return None
+
+        logger.info(f"Preparing prediction data for station: {station}, hour: {hour}")
+
         # Obtener datos históricos de la estación
         incidents = Incident.query.filter_by(nearest_station=station).order_by(Incident.timestamp.desc()).limit(24).all()
 
         if len(incidents) < 24:
-            logging.warning(f"Insufficient historical data for station {station}")
+            logger.warning(f"Insufficient historical data for station {station}. Found {len(incidents)} incidents, need 24")
             return None
 
-        # Preparar features
+        logger.debug(f"Found {len(incidents)} historical incidents for station {station}")
+
+        # Preparar features con validación
         sequence = []
-        for incident in incidents:
-            features = [
-                incident.timestamp.hour,
-                incident.timestamp.weekday(),
-                incident.timestamp.month,
-                incident.latitude,
-                incident.longitude,
-                1 if incident.timestamp.weekday() >= 5 else 0,
-                1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0
-            ]
-            sequence.append(features)
+        try:
+            # Calcular estadísticas para normalización
+            latitudes = [i.latitude for i in incidents]
+            longitudes = [i.longitude for i in incidents]
+            lat_mean, lat_std = np.mean(latitudes), np.std(latitudes)
+            lon_mean, lon_std = np.mean(longitudes), np.std(longitudes)
 
-        # Convertir a numpy array y normalizar si es necesario
-        sequence = np.array(sequence, dtype=np.float32)
+            for incident in incidents:
+                # Normalizar coordenadas
+                norm_lat = (incident.latitude - lat_mean) / (lat_std if lat_std > 0 else 1)
+                norm_lon = (incident.longitude - lon_mean) / (lon_std if lon_std > 0 else 1)
 
-        # Expandir dimensiones para match con formato de entrada del modelo
-        return np.expand_dims(sequence, axis=0)
+                features = [
+                    incident.timestamp.hour,
+                    incident.timestamp.weekday(),
+                    incident.timestamp.month,
+                    norm_lat,
+                    norm_lon,
+                    1 if incident.timestamp.weekday() >= 5 else 0,  # is_weekend
+                    1 if incident.timestamp.hour in [6,7,8,17,18,19] else 0  # is_peak_hour
+                ]
+                sequence.append(features)
+
+            # Validar que todos los features estén presentes
+            if not all(len(feat) == 7 for feat in sequence):
+                logger.error("Invalid feature vector length detected")
+                return None
+
+            # Convertir a numpy array y validar dimensiones
+            sequence = np.array(sequence, dtype=np.float32)
+            if sequence.shape != (24, 7):
+                logger.error(f"Invalid sequence shape: expected (24, 7), got {sequence.shape}")
+                return None
+
+            # Expandir dimensiones para match con formato de entrada del modelo
+            sequence = np.expand_dims(sequence, axis=0)
+            logger.info(f"Successfully prepared prediction data with shape {sequence.shape}")
+
+            return sequence
+
+        except Exception as e:
+            logger.error(f"Error processing features: {str(e)}")
+            return None
 
     except Exception as e:
-        logging.error(f"Error preparing prediction data: {str(e)}")
-        return None  
+        logger.error(f"Error preparing prediction data: {str(e)}")
+        return None
 
 def train_rnn_model():
     X, y, num_classes = prepare_rnn_data()
