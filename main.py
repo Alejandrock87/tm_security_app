@@ -7,11 +7,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-logger.info("Applying gevent monkey patching...")
-
-from gevent import monkey
-monkey.patch_all()
-logger.info("Monkey patching completed")
+logger.info("Starting application initialization...")
 
 import os
 from app import app, socketio
@@ -29,19 +25,14 @@ if __name__ == '__main__':
 
         # Configure logging for the server components
         logging.getLogger('werkzeug').setLevel(logging.DEBUG)
-        logging.getLogger('gevent').setLevel(logging.DEBUG)
         logging.getLogger('engineio').setLevel(logging.DEBUG)
         logging.getLogger('socketio').setLevel(logging.DEBUG)
 
         logger.info(f"Attempting to start server on 0.0.0.0:{port}...")
-        socketio.run(
-            app,
+        app.run(
             host='0.0.0.0',
             port=port,
-            debug=True,
-            use_reloader=False,
-            log_output=True,
-            allow_unsafe_werkzeug=True
+            debug=True
         )
         logger.info(f"Server successfully started and listening on port {port}")
     except Exception as e:

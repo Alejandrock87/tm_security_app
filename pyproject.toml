@@ -32,4 +32,6 @@ dependencies = [
     "pywebpush>=1.14.3",
     "imblearn>=0.0",
     "flask-cors>=5.0.1",
+    "pytest>=8.3.4",
+    "pytest-flask>=1.3.0",
 ]
