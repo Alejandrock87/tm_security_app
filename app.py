@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from extensions import init_extensions, cache, db, login_manager
+from extensions import init_extensions, cache, socketio, db, login_manager
 import os
 import logging
 

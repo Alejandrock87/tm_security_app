@@ -1,6 +1,6 @@
 import os
 import logging
-from app import app
+from app import app, socketio
 
 # Setup detailed logging
 logging.basicConfig(
@@ -22,12 +22,19 @@ if __name__ == '__main__':
 
         # Configure logging for the server components
         logging.getLogger('werkzeug').setLevel(logging.INFO)
+        logging.getLogger('gevent').setLevel(logging.INFO)
+        logging.getLogger('engineio').setLevel(logging.INFO)
+        logging.getLogger('socketio').setLevel(logging.INFO)
 
         logger.info("Initializing server...")
-        app.run(
-            host='0.0.0.0',
+        socketio.run(
+            app,
+            host='0.0.0.0',  # Explicitly bind to all interfaces
             port=port,
-            debug=True
+            debug=True,
+            use_reloader=False,
+            log_output=True,
+            allow_unsafe_werkzeug=True  # Allow Werkzeug to serve on 0.0.0.0
         )
         logger.info("Server started successfully")
     except Exception as e:
