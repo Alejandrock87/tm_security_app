@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from extensions import init_extensions, cache, socketio, db, login_manager
+from extensions import cache, socketio, db, login_manager
 import os
 import logging
 import secrets
@@ -38,8 +38,6 @@ if not database_url:
     logger.info("Construyendo DATABASE_URL desde variables de entorno")
     database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
 
-logger.debug(f"Intentando conectar a la base de datos...")
-
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_size": 5,
@@ -68,36 +66,10 @@ def load_user(user_id):
 # Inicializar base de datos y crear tablas
 init_db(app)
 
-# Crear usuario de prueba si no existe
-with app.app_context():
-    try:
-        if not User.query.filter_by(username='demo_user').first():
-            demo_user = User(username='demo_user', email='demo@example.com')
-            demo_user.set_password('demo12345')
-            db.session.add(demo_user)
-            db.session.commit()
-            logger.info("Usuario de prueba creado correctamente")
-    except Exception as e:
-        logger.error(f"Error al crear usuario de prueba: {str(e)}")
-        db.session.rollback()
-
-# Inicializar el resto de las extensiones después de la base de datos
-try:
-    logger.debug("Inicializando extensiones...")
-    cache.init_app(app)
-    socketio.init_app(
-        app,
-        async_mode='gevent',
-        cors_allowed_origins="*",
-        logger=True,
-        engineio_logger=True,
-        ping_timeout=60,
-        ping_interval=25
-    )
-    logger.info("Extensiones inicializadas correctamente")
-except Exception as e:
-    logger.error(f"Error al inicializar extensiones: {str(e)}")
-    raise
+# Inicializar extensiones
+logger.debug("Inicializando extensiones...")
+cache.init_app(app)
+db.init_app(app)
 
 # Importar e inicializar rutas después de que todo esté configurado
 try:
