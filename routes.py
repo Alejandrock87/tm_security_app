@@ -4,8 +4,7 @@ import logging
 from datetime import datetime, timedelta
 import os
 from sqlalchemy import exc as sql_exceptions
-from ml_models import predict_station_risk as ml_predict_station_risk
-from ml_models import predict_incident_type as ml_predict_incident_type
+from ml_models import predict_station_risk, predict_incident_type
 from app import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
@@ -262,28 +261,15 @@ def init_routes(app):
     @app.route('/predictions')
     @login_required
     def predictions():
-        from ml_models import get_model_insights # Lazy import here
         return render_template('predictions.html', title='Predicciones')
 
     @app.route('/api/predictions')
     @login_required
     def api_predictions():
         try:
-            # Intentar obtener predicciones del caché
-            cached_predictions = cache.get('predictions_cache')
-            if cached_predictions:
-                return jsonify(cached_predictions)
-
-            # Si no hay caché, cargar el modelo y generar predicciones
-            try:
-                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-                    geojson_data = json.load(f)
-            except Exception as e:
-                logging.error(f"Error loading geojson data: {str(e)}")
-                return jsonify({
-                    'error': 'No se pudieron cargar los datos de las estaciones',
-                    'predictions': []
-                }), 500
+            # Cargar datos de estaciones
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
 
             current_time = datetime.now()
             predictions = []
@@ -299,7 +285,6 @@ def init_routes(app):
                     if not all([station, coordinates]):
                         continue
 
-                    # Usar el modelo para predicciones
                     risk_score = predict_station_risk(station, prediction_time.hour)
                     incident_type = predict_incident_type(station, prediction_time.hour)
 
@@ -319,8 +304,6 @@ def init_routes(app):
                     'predictions': []
                 })
 
-            # Guardar en caché por 1 hora
-            cache.set('predictions_cache', predictions, timeout=3600)
             return jsonify(predictions)
 
         except Exception as e:
