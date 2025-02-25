@@ -261,12 +261,20 @@ def init_routes(app):
     @app.route('/predictions')
     @login_required
     def predictions():
-        return render_template('predictions.html', title='Predicciones')
+        app.logger.info("Accediendo a la página de predicciones")
+        try:
+            app.logger.debug("Usuario autenticado: %s", current_user.username if current_user else "No autenticado")
+            return render_template('predictions.html', title='Predicciones')
+        except Exception as e:
+            app.logger.error("Error al cargar la página de predicciones: %s", str(e))
+            flash("Error al cargar las predicciones. Por favor, intente de nuevo.")
+            return redirect(url_for('home'))
 
     @app.route('/api/predictions')
     @login_required
     def api_predictions():
         try:
+            app.logger.info("Solicitud de predicciones API recibida")
             # Cargar datos de estaciones
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
@@ -298,6 +306,7 @@ def init_routes(app):
                             'longitude': coordinates[0]
                         })
 
+            app.logger.info("Predicciones generadas exitosamente: %d predicciones", len(predictions))
             if not predictions:
                 return jsonify({
                     'message': 'No hay predicciones disponibles en este momento',
@@ -307,7 +316,7 @@ def init_routes(app):
             return jsonify(predictions)
 
         except Exception as e:
-            logging.error(f"Error generating predictions: {str(e)}")
+            app.logger.error("Error generando predicciones: %s", str(e))
             return jsonify({
                 'error': 'Error al generar predicciones',
                 'predictions': []
