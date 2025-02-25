@@ -117,7 +117,10 @@ function loadAndCheckPredictions() {
             }
 
             // Agregar cada predicción válida
-            data.forEach(checkAndAddPrediction);
+            data.forEach(prediction => {
+                console.log('Procesando predicción:', prediction);
+                checkAndAddPrediction(prediction);
+            });
         })
         .catch(error => {
             console.error('Error al cargar predicciones:', error);
@@ -140,9 +143,22 @@ function checkAndAddPrediction(prediction) {
     const now = new Date();
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
 
-    // Solo mostrar si falta entre 60 y 0 minutos
-    if (diffMinutes <= 60 && diffMinutes >= 0) {
+    console.log('Evaluando predicción:', {
+        station: prediction.station,
+        predicted_time: prediction.predicted_time,
+        current_time: now.toISOString(),
+        diff_minutes: diffMinutes
+    });
+
+    // Temporalmente relajamos la condición para debug
+    // if (diffMinutes <= 60 && diffMinutes >= 0) {
+    if (true) {  // Mostrar todas las predicciones durante debug
         const predictionsList = document.getElementById('predictionsList');
+        if (!predictionsList) {
+            console.error('No se encontró el elemento predictionsList');
+            return;
+        }
+
         const item = document.createElement('div');
         item.className = `prediction-item prediction-item-${getRiskClass(prediction.risk_score)}`;
 
@@ -155,7 +171,10 @@ function checkAndAddPrediction(prediction) {
             <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%</small>
         `;
 
+        console.log('Agregando elemento a la lista:', item);
         predictionsList.prepend(item);
+    } else {
+        console.log('Predicción fuera del rango de tiempo:', diffMinutes);
     }
 }
 
@@ -168,6 +187,13 @@ function showNotification(prediction) {
 
     if (diffMinutes <= 60 && diffMinutes >= 0 && notificationPermission) {
         try {
+            console.log('Creando notificación para:', {
+                station: prediction.station,
+                type: prediction.incident_type,
+                timeUntil: diffMinutes,
+                riskScore: prediction.risk_score
+            });
+
             const notification = new Notification('Alerta de Seguridad', {
                 body: `Posible ${prediction.incident_type} en ${prediction.station} en ${diffMinutes} minutos.\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%`,
                 icon: '/static/images/alert-icon.png'
@@ -177,9 +203,17 @@ function showNotification(prediction) {
                 window.focus();
                 this.close();
             };
+
+            console.log('Notificación creada exitosamente');
         } catch (error) {
             console.error('Error al mostrar notificación:', error);
         }
+    } else {
+        console.log('No se muestra notificación:', {
+            diffMinutes,
+            notificationPermission,
+            prediction
+        });
     }
 }
 

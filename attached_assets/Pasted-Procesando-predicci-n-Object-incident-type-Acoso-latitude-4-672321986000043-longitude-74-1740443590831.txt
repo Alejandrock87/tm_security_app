@@ -1,0 +1,104 @@
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.672321986000043, longitude: -74.05968009299994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.324979827430237, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.594784424000068, longitude: -74.11787732599998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.5327068667035489, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.571389421000049, longitude: -74.09860309099997, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.12213079356381416, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.678026526000053, longitude: -74.07362730899996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.647802789863855, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.578943134000042, longitude: -74.10737529199997, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.5394957670699125, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.557048002000045, longitude: -74.12185673899995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.3530688735826971, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.58629746400004, longitude: -74.09394127799999, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.24798285030234657, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.727336774000037, longitude: -74.07471853399994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.5624125873246228, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.628547635000075, longitude: -74.11867059099995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.21372914671692056, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.606058485000062, longitude: -74.07431521699993, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.31102564477625266, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.675047127000028, longitude: -74.11711210299995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.6688574500016334, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.57030338800007, longitude: -74.13038861699994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9595829166411879, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.609749515000033, longitude: -74.08677021099999, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.43549672732010036, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.648408212000049, longitude: -74.06488864899995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9799913575434004, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.654913098000065, longitude: -74.06303406099994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.4090430947529805, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.601126904000068, longitude: -74.07291850899998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7432334809674164, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.593563774000074, longitude: -74.12954471799998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.15748740335954728, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.70653676400002, longitude: -74.07114245399998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.410516403350522, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.568335771000022, longitude: -74.13541845699996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.8526897972736459, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.586229119000052, longitude: -74.08687745799995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7681251758500294, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.615247120000049, longitude: -74.06922645899994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7595711634231063, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.59505759700005, longitude: -74.08623538999996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7411417025171338, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.669008671000029, longitude: -74.11328001999993, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9675301355373822, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.595780869000066, longitude: -74.16497118999996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7387210980426456, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.590859591000026, longitude: -74.09025986399996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.4796470966690859, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.690899810000076, longitude: -74.08458429599995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.2208624902352741, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.637562375000073, longitude: -74.06680002099995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9604239889604292, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.633138657000075, longitude: -74.16457639899994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9966387065656337, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.582992294000064, longitude: -74.09941644899999, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.4308997583576579, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.696660860000065, longitude: -74.09147826799995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.5973374475579339, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.602579748000039, longitude: -74.06840142899995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.6852859813404334, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.721361282000032, longitude: -74.07475183799994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.6756096034320009, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.570974802000023, longitude: -74.12472268799996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.1933436475158883, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.676586303000022, longitude: -74.06713634699997, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.16943102550761263, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.604653502000076, longitude: -74.06733329099995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9931547200865058, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.60167503200006, longitude: -74.10261779699994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.7647040413531443, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.684571896000023, longitude: -74.06315759199998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.4761920570233249, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.625675196000032, longitude: -74.10463425599994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.792872173299036, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.576771526000073, longitude: -74.11437069599998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.3875729491800902, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.693290937000029, longitude: -74.06714143599999, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.6814267786918357, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.601042913000072, longitude: -74.07744132999994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.6984805760105351, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.596287396000037, longitude: -74.15687817599996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.24198579327608244, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.58598932600006, longitude: -74.20546373799993, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9742921176986873, …}
+Procesando predicción: 
+Object {incident_type: "Hurto", latitude: 4.595101679000038, longitude: -74.14740735299995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.4647726142709341, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.680465425000023, longitude: -74.06465010099998, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.741641023302914, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.699240790000033, longitude: -74.06983750499995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.72770483238527, …}
+Procesando predicción: 
+Object {incident_type: "Acoso", latitude: 4.590178073000061, longitude: -74.08430153299997, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.9046228044966159, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.597322288000043, longitude: -74.11062062099995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.898743334572812, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.564684361000047, longitude: -74.12553257599996, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.31099604278441584, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.73542638400005, longitude: -74.08085874499994, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.39608178632330393, …}
+Procesando predicción: 
+Object {incident_type: "Otro", latitude: 4.621575085000075, longitude: -74.06972279799999, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.5031000669963434, …}
+Procesando predicción: 
+Object {incident_type: "Accidente", latitude: 4.595577499000058, longitude: -74.14265063899995, predicted_time: "2025-02-25T00:32:53.959941", risk_score: 0.3276606825652009, …}

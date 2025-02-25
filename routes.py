@@ -447,6 +447,25 @@ def init_routes(app):
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
+    @app.route('/test_notification')
+    @login_required
+    def test_notification():
+        app.logger.info("Probando notificación")
+        try:
+            # Crear una predicción de prueba
+            test_prediction = {
+                'station': 'Estación de Prueba',
+                'incident_type': 'Prueba',
+                'predicted_time': datetime.now().isoformat(),
+                'risk_score': 0.8
+            }
+            # Emitir el evento de predicción
+            socketio.emit('prediction_alert', test_prediction)
+            return jsonify({'success': True, 'message': 'Notificación de prueba enviada'})
+        except Exception as e:
+            app.logger.error(f"Error al enviar notificación de prueba: {str(e)}")
+            return jsonify({'error': str(e)}), 500
+
     return app
 
 def predict_station_risk(station, hour):
