@@ -1,17 +1,17 @@
 import logging
-import random
 from datetime import datetime
+import random
+from flask import current_app
 import numpy as np
 import pandas as pd
 from database import db
 from models import Incident
-# Assuming a cache object is available in the environment.  Replace with actual implementation if necessary.
-cache = {} # Placeholder for cache.  Replace with actual cache implementation.
 
 def predict_station_risk(station, hour):
     """Función para predicción de riesgo por estación"""
     try:
-        # Intentar obtener del caché primero
+        # Intentar obtener del caché
+        cache = current_app.extensions['cache']
         cached_predictions = cache.get('predictions_cache')
         if cached_predictions and isinstance(cached_predictions, list):
             for prediction in cached_predictions:
@@ -20,7 +20,7 @@ def predict_station_risk(station, hour):
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
                     return prediction.get('risk_score')
 
-        # Si no está en caché, usar el modelo simplificado
+        # Si no está en caché, generar predicción
         return random.uniform(0.1, 0.9)
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
@@ -29,7 +29,8 @@ def predict_station_risk(station, hour):
 def predict_incident_type(station, hour):
     """Función para predicción de tipo de incidente"""
     try:
-        # Intentar obtener del caché primero
+        # Intentar obtener del caché
+        cache = current_app.extensions['cache']
         cached_predictions = cache.get('predictions_cache')
         if cached_predictions and isinstance(cached_predictions, list):
             for prediction in cached_predictions:
@@ -38,7 +39,7 @@ def predict_incident_type(station, hour):
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
                     return prediction.get('incident_type')
 
-        # Si no está en caché, usar lista predefinida
+        # Si no está en caché, usar tipos predefinidos
         incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
         return random.choice(incident_types)
     except Exception as e:

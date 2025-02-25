@@ -28,6 +28,14 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800  # 30 minutos
 )
 
+# Configurar cache con opciones específicas para mejor rendimiento
+cache = Cache(config={
+    'CACHE_TYPE': 'SimpleCache',
+    'CACHE_DEFAULT_TIMEOUT': 3600,  # 1 hora
+    'CACHE_THRESHOLD': 1000  # Máximo número de items en cache
+})
+cache.init_app(app)
+
 # Configurar Socket.IO con opciones específicas para gevent
 socketio = SocketIO(
     app,
@@ -45,6 +53,7 @@ socketio = SocketIO(
     reconnection_delay_max=5000
 )
 
+# Agregar logging para depuración de Socket.IO
 @socketio.on('connect')
 def handle_connect():
     logger.info('Cliente conectado a Socket.IO')
@@ -57,10 +66,6 @@ def handle_disconnect():
 @socketio.on_error()
 def handle_error(e):
     logger.error(f'Error en Socket.IO: {str(e)}')
-
-# Configurar cache
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-cache.init_app(app)
 
 # Configurar base de datos
 database_url = os.environ.get("DATABASE_URL")
