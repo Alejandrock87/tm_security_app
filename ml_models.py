@@ -355,29 +355,32 @@ def predict_station_risk(station, hour):
     try:
         # Intentar obtener del caché primero
         cached_predictions = cache.get('predictions_cache')
-        if cached_predictions:
+        if cached_predictions and isinstance(cached_predictions, list):
             for prediction in cached_predictions:
-                if prediction['station'] == station and prediction['predicted_time'].hour == hour:
-                    return prediction['risk_score']
+                if (prediction.get('station') == station and 
+                    isinstance(prediction.get('predicted_time'), str) and
+                    datetime.fromisoformat(prediction['predicted_time']).hour == hour):
+                    return prediction.get('risk_score')
 
-        # Si no está en caché, usar un valor por defecto
-        logging.warning(f"Using fallback prediction for station {station}")
-        import random
-        return random.uniform(0.1, 0.8)  # Valor razonable entre 0.1 y 0.8
+        # Si no está en caché, usar el modelo real
+        logging.warning(f"Predicción no encontrada en caché para estación {station}")
+        return None  # Indica que no hay predicción disponible
 
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
-        return 0.5  # Valor neutral por defecto
+        return None  # En caso de error, no devolver valor aleatorio
 
 def predict_incident_type(station, hour):
     """Wrapper para la función de predicción del tipo de incidente"""
     try:
         # Intentar obtener del caché primero
         cached_predictions = cache.get('predictions_cache')
-        if cached_predictions:
+        if cached_predictions and isinstance(cached_predictions, list):
             for prediction in cached_predictions:
-                if prediction['station'] == station and prediction['predicted_time'].hour == hour:
-                    return prediction['incident_type']
+                if (prediction.get('station') == station and 
+                    isinstance(prediction.get('predicted_time'), str) and
+                    datetime.fromisoformat(prediction['predicted_time']).hour == hour):
+                    return prediction.get('incident_type')
 
         # Si no está en caché, usar estadísticas históricas
         incidents = Incident.query.filter_by(nearest_station=station).all()
@@ -390,11 +393,11 @@ def predict_incident_type(station, hour):
                     incident_counts[incident.incident_type] = incident_counts.get(incident.incident_type, 0) + 1
                 return max(incident_counts.items(), key=lambda x: x[1])[0]
 
-        return "Hurto"  # Tipo por defecto si no hay datos
+        return None  # Indica que no hay predicción disponible
 
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
-        return "Hurto"  # Valor por defecto en caso de error
+        return None  # En caso de error, no devolver valor por defecto
 
 def prepare_prediction_data(station, hour):
     try:

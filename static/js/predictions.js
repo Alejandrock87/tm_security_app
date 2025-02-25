@@ -60,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para cargar y verificar predicciones desde la API
 function loadAndCheckPredictions() {
+    const predictionsList = document.getElementById('predictionsList');
+    predictionsList.innerHTML = '<div class="loading-message">Cargando predicciones...</div>';
+
     fetch('/api/predictions')
         .then(response => {
             if (!response.ok) {
@@ -67,21 +70,47 @@ function loadAndCheckPredictions() {
             }
             return response.json();
         })
-        .then(predictions => {
-            // Limpiar lista actual
-            const predictionsList = document.getElementById('predictionsList');
+        .then(data => {
             predictionsList.innerHTML = '';
 
+            if (data.error) {
+                predictionsList.innerHTML = `
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        ${data.error}
+                    </div>`;
+                return;
+            }
+
+            if (!data.length) {
+                predictionsList.innerHTML = `
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle"></i>
+                        No hay predicciones disponibles en este momento.
+                    </div>`;
+                return;
+            }
+
             // Agregar cada predicción válida
-            predictions.forEach(checkAndAddPrediction);
+            data.forEach(checkAndAddPrediction);
         })
         .catch(error => {
             console.error('Error al cargar predicciones:', error);
+            predictionsList.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Error al cargar las predicciones. Por favor, intente de nuevo más tarde.
+                </div>`;
         });
 }
 
 // Función para agregar una predicción a la lista si está dentro del rango de tiempo
 function checkAndAddPrediction(prediction) {
+    if (!prediction || !prediction.predicted_time) {
+        console.warn('Predicción inválida:', prediction);
+        return;
+    }
+
     const predTime = new Date(prediction.predicted_time);
     const now = new Date();
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));

@@ -275,8 +275,15 @@ def init_routes(app):
                 return jsonify(cached_predictions)
 
             # Si no hay caché, cargar el modelo y generar predicciones
-            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-                geojson_data = json.load(f)
+            try:
+                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                    geojson_data = json.load(f)
+            except Exception as e:
+                logging.error(f"Error loading geojson data: {str(e)}")
+                return jsonify({
+                    'error': 'No se pudieron cargar los datos de las estaciones',
+                    'predictions': []
+                }), 500
 
             current_time = datetime.now()
             predictions = []
@@ -286,14 +293,17 @@ def init_routes(app):
                 prediction_time = current_time + timedelta(hours=hour_offset)
 
                 for feature in geojson_data['features']:
-                    station = feature['properties']['nombre_estacion']
-                    coordinates = feature['geometry']['coordinates']
+                    station = feature['properties'].get('nombre_estacion')
+                    coordinates = feature['geometry'].get('coordinates')
 
-                    # Usar el modelo real para predicciones
+                    if not all([station, coordinates]):
+                        continue
+
+                    # Usar el modelo para predicciones
                     risk_score = predict_station_risk(station, prediction_time.hour)
-                    if risk_score is not None:
-                        incident_type = predict_incident_type(station, prediction_time.hour)
+                    incident_type = predict_incident_type(station, prediction_time.hour)
 
+                    if risk_score is not None and incident_type is not None:
                         predictions.append({
                             'station': station,
                             'incident_type': incident_type,
@@ -303,13 +313,22 @@ def init_routes(app):
                             'longitude': coordinates[0]
                         })
 
+            if not predictions:
+                return jsonify({
+                    'message': 'No hay predicciones disponibles en este momento',
+                    'predictions': []
+                })
+
             # Guardar en caché por 1 hora
             cache.set('predictions_cache', predictions, timeout=3600)
             return jsonify(predictions)
 
         except Exception as e:
             logging.error(f"Error generating predictions: {str(e)}")
-            return jsonify({'error': str(e)}), 500
+            return jsonify({
+                'error': 'Error al generar predicciones',
+                'predictions': []
+            }), 500
 
     @app.route('/real_time_map')
     @login_required
