@@ -161,6 +161,7 @@ function checkAndAddPrediction(prediction) {
 
 // Función para mostrar una notificación del navegador
 function showNotification(prediction) {
+    console.log('Intentando mostrar notificación para:', prediction);
     const predTime = new Date(prediction.predicted_time);
     const now = new Date();
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
@@ -169,9 +170,7 @@ function showNotification(prediction) {
         try {
             const notification = new Notification('Alerta de Seguridad', {
                 body: `Posible ${prediction.incident_type} en ${prediction.station} en ${diffMinutes} minutos.\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}%`,
-                icon: '/static/images/alert-icon.png',
-                tag: `prediction-${prediction.station}-${prediction.predicted_time}`, // Evitar duplicados
-                requireInteraction: true // La notificación permanece hasta que el usuario interactúe
+                icon: '/static/images/alert-icon.png'
             });
 
             notification.onclick = function() {
