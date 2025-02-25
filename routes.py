@@ -4,7 +4,6 @@ import logging
 from datetime import datetime, timedelta
 import os
 from sqlalchemy import exc as sql_exceptions
-from ml_models import predict_station_risk, predict_incident_type
 from app import cache
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
@@ -471,6 +470,7 @@ def init_routes(app):
 def predict_station_risk(station, hour):
     """Wrapper para la función de predicción del modelo real"""
     try:
+        from ml_models import predict_station_risk as ml_predict_station_risk
         return ml_predict_station_risk(station, hour)
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
@@ -481,6 +481,7 @@ def predict_station_risk(station, hour):
 def predict_incident_type(station, hour):
     """Wrapper para la función de predicción del tipo de incidente"""
     try:
+        from ml_models import predict_incident_type as ml_predict_incident_type
         return ml_predict_incident_type(station, hour)
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")

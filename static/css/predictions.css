@@ -144,6 +144,7 @@
   border-radius: 12px;
   padding: 1rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  color: var(--predictions-text);
 }
 
 .prediction-item:hover {
@@ -151,15 +152,21 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.prediction-title {
+.prediction-item h5 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--predictions-text);
   margin-bottom: 0.5rem;
 }
 
-.prediction-details {
-  font-size: 0.9rem;
+.prediction-item p {
+  font-size: 0.95rem;
+  color: var(--predictions-text);
+  margin-bottom: 0.5rem;
+}
+
+.prediction-item small {
+  font-size: 0.85rem;
   color: var(--predictions-text-secondary);
 }
 
@@ -173,6 +180,19 @@
 
 .prediction-item-info {
   border-left: 4px solid #3b82f6;
+}
+
+/* Asegurar que el texto sea visible en todos los estados */
+.prediction-item-danger,
+.prediction-item-warning,
+.prediction-item-info {
+  color: var(--predictions-text);
+}
+
+.prediction-item-danger small,
+.prediction-item-warning small,
+.prediction-item-info small {
+  color: var(--predictions-text-secondary);
 }
 
 @media (max-width: 768px) {
