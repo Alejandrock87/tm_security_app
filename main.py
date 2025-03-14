@@ -31,8 +31,15 @@ def check_port_availability(port):
 # Importar la aplicación Flask y SocketIO después del monkey patch
 from app import app, socketio
 
-# Configurar CORS
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Configurar CORS permitiendo todos los orígenes
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "allow_headers": "*",
+        "expose_headers": "*",
+        "supports_credentials": True
+    }
+})
 
 if __name__ == '__main__':
     try:
@@ -47,14 +54,14 @@ if __name__ == '__main__':
 
         # Iniciar el servidor con SocketIO
         logger.info("Starting SocketIO server...")
+        socketio.init_app(app, cors_allowed_origins="*")
         socketio.run(
             app,
             host='0.0.0.0',
             port=port,
             debug=True,
             use_reloader=False,
-            log_output=True,
-            cors_allowed_origins="*"  # Permitir conexiones WebSocket desde cualquier origen
+            log_output=True
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)

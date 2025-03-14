@@ -17467,3 +17467,683 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 22:03:34,173 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
 2025-03-14 22:03:59,198 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
 2025-03-14 22:03:59,292 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:04:22,566 - app - INFO - Index endpoint accessed
+2025-03-14 22:04:22,656 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:22] "GET / HTTP/1.1" 302 380 0.090550
+2025-03-14 22:04:22,834 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:22] "GET /home HTTP/1.1" 200 11369 0.091974
+2025-03-14 22:04:22,994 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:22] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001416
+2025-03-14 22:04:23,087 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:23] "GET /static/css/home.css HTTP/1.1" 304 215 0.001138
+2025-03-14 22:04:23,850 - app - INFO - Service Worker solicitado
+2025-03-14 22:04:23,851 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:04:23,851 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:23] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001572
+2025-03-14 22:04:24,007 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001125
+2025-03-14 22:04:24,010 - app - INFO - Index endpoint accessed
+2025-03-14 22:04:24,097 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET / HTTP/1.1" 302 380 0.086806
+2025-03-14 22:04:24,098 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.001110
+2025-03-14 22:04:24,106 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /static/js/notifications.js HTTP/1.1" 304 223 0.001010
+2025-03-14 22:04:24,109 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet OPEN data {'sid': 'exd9TFYXkJhf520LAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:04:24,110 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received request to upgrade to websocket
+2025-03-14 22:04:24,110 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Upgrade to websocket successful
+2025-03-14 22:04:24,199 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet MESSAGE data 0
+2025-03-14 22:04:24,199 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet MESSAGE data 0{"sid":"R0e4tfYBGS7WBDHCAAAD"}
+2025-03-14 22:04:24,208 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001013
+2025-03-14 22:04:24,210 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /static/icons/icon-192x192.png HTTP/1.1" 304 222 0.000925
+2025-03-14 22:04:24,356 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:04:24] "GET /home HTTP/1.1" 200 11369 0.086455
+2025-03-14 22:04:24,356 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:04:24,437 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:04:49,136 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:04:49,300 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:04:49,439 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:04:49,545 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:05:14,306 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:05:14,414 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:05:14,547 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:05:14,640 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:05:39,415 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:05:39,521 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:05:39,641 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:05:39,753 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:06:04,532 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:06:04,643 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:06:04,755 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:06:04,839 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:06:29,664 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:06:29,782 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:06:29,840 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:06:29,921 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:06:54,798 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:06:54,881 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:06:54,922 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:06:55,031 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:07:19,892 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:07:19,973 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:07:20,032 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:07:20,113 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:07:44,980 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:07:45,060 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:07:45,114 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:07:45,230 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:08:10,062 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:08:10,160 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:08:10,231 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:08:10,337 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:08:35,186 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:08:35,266 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:08:35,339 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:08:35,428 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:09:00,288 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:09:00,368 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:09:00,429 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:09:00,552 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:09:25,385 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:09:25,510 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:09:25,553 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:09:25,689 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:09:50,522 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:09:50,624 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:09:50,690 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:09:50,772 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:10:15,631 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:10:15,740 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:10:15,773 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:10:15,892 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:10:40,742 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:10:40,823 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:10:40,893 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:10:40,975 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:11:05,848 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:11:05,930 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:11:05,976 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:11:06,066 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:11:30,952 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:11:31,057 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:11:31,067 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:11:31,154 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:11:56,075 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:11:56,155 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:11:56,155 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:11:56,281 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:12:21,168 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:12:21,281 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:12:21,330 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:12:21,381 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:12:46,339 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:12:46,382 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:12:46,449 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:12:46,465 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:13:11,452 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:13:11,466 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:13:11,545 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:13:11,547 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:13:36,571 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:13:36,571 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:13:36,679 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:13:36,680 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:14:01,703 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:14:01,703 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:14:01,785 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:14:01,785 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:14:26,803 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:14:26,804 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:14:26,887 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:14:26,889 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:14:51,900 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:14:51,900 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:14:52,000 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:14:52,005 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:15:17,009 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:15:17,009 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:15:17,139 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:15:17,140 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:15:42,143 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:15:42,144 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:15:42,255 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:15:42,255 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:16:07,280 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:16:07,280 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:16:07,374 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:16:07,375 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:16:32,398 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:16:32,398 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:16:32,499 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:16:32,499 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:16:57,518 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:16:57,518 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:16:57,620 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:16:57,621 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:17:22,634 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:17:22,634 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:17:22,725 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:17:22,726 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:17:47,734 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:17:47,734 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:17:47,825 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:17:47,825 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:18:12,829 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:18:12,829 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:18:12,962 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:18:12,963 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:18:37,993 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:18:37,993 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:18:38,101 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:18:38,102 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:19:03,125 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:19:03,125 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:19:03,224 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:19:03,225 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:19:28,243 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:19:28,243 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:19:28,368 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:19:28,372 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:19:53,384 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:19:53,384 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:19:53,483 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:19:53,484 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:20:04,907 - engineio.server - ERROR - Invalid session bRW8q-mK-jlybbXgAAAO (further occurrences of this error will be logged with level INFO)
+2025-03-14 22:20:04,908 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:04] "GET /socket.io/?EIO=4&transport=polling&t=PMMhSb4&sid=bRW8q-mK-jlybbXgAAAO HTTP/1.1" 400 168 0.000490
+2025-03-14 22:20:04,917 - engineio.server - INFO - Invalid session bRW8q-mK-jlybbXgAAAO
+2025-03-14 22:20:04,917 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:04] "POST /socket.io/?EIO=4&transport=polling&t=PMMlZkl&sid=bRW8q-mK-jlybbXgAAAO HTTP/1.1" 400 283 0.000329
+2025-03-14 22:20:05,584 - engineio.server - INFO - C47szqRgHDjRu09lAAAE: Sending packet OPEN data {'sid': 'C47szqRgHDjRu09lAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:05,584 - engineio.server - INFO - C47szqRgHDjRu09lAAAE: Received request to upgrade to websocket
+2025-03-14 22:20:05,584 - engineio.server - INFO - C47szqRgHDjRu09lAAAE: Upgrade to websocket successful
+2025-03-14 22:20:05,588 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Sending packet OPEN data {'sid': 'ZCzLcw5XHmXsGhVXAAAF', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:05,588 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:05] "GET /socket.io/?EIO=4&transport=polling&t=PMMlZ_Q HTTP/1.1" 200 254 0.000475
+2025-03-14 22:20:05,670 - engineio.server - INFO - C47szqRgHDjRu09lAAAE: Received packet MESSAGE data 0
+2025-03-14 22:20:05,671 - engineio.server - INFO - C47szqRgHDjRu09lAAAE: Sending packet MESSAGE data 0{"sid":"RZrPvSYW91vpGH3gAAAG"}
+2025-03-14 22:20:05,678 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Received packet MESSAGE data 0
+2025-03-14 22:20:05,678 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Sending packet MESSAGE data 0{"sid":"KF-zYDlGfaRlwLaXAAAH"}
+2025-03-14 22:20:05,678 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:05] "POST /socket.io/?EIO=4&transport=polling&t=PMMla0q&sid=ZCzLcw5XHmXsGhVXAAAF HTTP/1.1" 200 258 0.000800
+2025-03-14 22:20:05,679 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:05] "GET /socket.io/?EIO=4&transport=polling&t=PMMla0s&sid=ZCzLcw5XHmXsGhVXAAAF HTTP/1.1" 200 189 0.000120
+2025-03-14 22:20:06,015 - engineio.server - ERROR - Invalid transport for session ZCzLcw5XHmXsGhVXAAAF (further occurrences of this error will be logged with level INFO)
+2025-03-14 22:20:09,916 - engineio.server - INFO - YCukNQ3SU8YLbL-7AAAI: Sending packet OPEN data {'sid': 'YCukNQ3SU8YLbL-7AAAI', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:09,916 - engineio.server - INFO - YCukNQ3SU8YLbL-7AAAI: Received request to upgrade to websocket
+2025-03-14 22:20:09,916 - engineio.server - INFO - YCukNQ3SU8YLbL-7AAAI: Upgrade to websocket successful
+2025-03-14 22:20:09,997 - engineio.server - INFO - YCukNQ3SU8YLbL-7AAAI: Received packet MESSAGE data 0
+2025-03-14 22:20:09,997 - engineio.server - INFO - YCukNQ3SU8YLbL-7AAAI: Sending packet MESSAGE data 0{"sid":"Bt3NK86yl-kXYbh5AAAJ"}
+2025-03-14 22:20:11,299 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:11] "GET /home HTTP/1.1" 302 605 0.001822
+2025-03-14 22:20:11,416 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:11] "GET /login?next=%2Fhome HTTP/1.1" 200 7441 0.024051
+2025-03-14 22:20:11,510 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:11] "GET /static/manifest.json HTTP/1.1" 200 1759 0.001018
+2025-03-14 22:20:11,773 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:11] "GET /static/css/login.css HTTP/1.1" 304 216 0.001185
+2025-03-14 22:20:11,839 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:11] "GET /static/css/custom.css HTTP/1.1" 304 216 0.005255
+2025-03-14 22:20:18,491 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:20:18,491 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:20:18,598 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:20:18,599 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:20:24,764 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:24] "POST /login HTTP/1.1" 302 859 1.599714
+2025-03-14 22:20:24,933 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:24] "POST /login HTTP/1.1" 302 859 0.167980
+2025-03-14 22:20:25,107 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:25] "GET /home HTTP/1.1" 200 12063 0.079027
+2025-03-14 22:20:25,217 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:25] "GET /static/manifest.json HTTP/1.1" 304 220 0.001020
+2025-03-14 22:20:25,230 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:25] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001143
+2025-03-14 22:20:25,488 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:25] "GET /static/css/home.css HTTP/1.1" 304 215 0.001114
+2025-03-14 22:20:25,839 - engineio.server - INFO - GUZsOFcTCMo5m07qAAAK: Sending packet OPEN data {'sid': 'GUZsOFcTCMo5m07qAAAK', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:25,839 - engineio.server - INFO - GUZsOFcTCMo5m07qAAAK: Received request to upgrade to websocket
+2025-03-14 22:20:25,840 - engineio.server - INFO - GUZsOFcTCMo5m07qAAAK: Upgrade to websocket successful
+2025-03-14 22:20:25,923 - engineio.server - INFO - GUZsOFcTCMo5m07qAAAK: Received packet MESSAGE data 0
+2025-03-14 22:20:25,927 - engineio.server - INFO - GUZsOFcTCMo5m07qAAAK: Sending packet MESSAGE data 0{"sid":"NPt-thIshcX5OojqAAAL"}
+2025-03-14 22:20:27,788 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 22:20:27,789 - app - DEBUG - Usuario autenticado: Diego
+2025-03-14 22:20:27,819 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:27] "GET /predictions HTTP/1.1" 200 13870 0.091008
+2025-03-14 22:20:27,969 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:27] "GET /static/manifest.json HTTP/1.1" 304 220 0.000988
+2025-03-14 22:20:27,984 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:27] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001179
+2025-03-14 22:20:28,029 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:28] "GET /static/js/predictions.js HTTP/1.1" 200 21567 0.001078
+2025-03-14 22:20:28,253 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:28] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.000924
+2025-03-14 22:20:28,467 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:28] "GET /api/stations HTTP/1.1" 200 20676 0.106528
+2025-03-14 22:20:28,528 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 22:20:30,011 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 22:20:30,041 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:30] "GET /api/predictions HTTP/1.1" 200 117827 1.572830
+2025-03-14 22:20:30,042 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Sending packet OPEN data {'sid': 'SngNrfIFzGKXjZ7_AAAM', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:30,042 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:30] "GET /socket.io/?EIO=4&transport=polling&t=PMMlfZC HTTP/1.1" 200 254 0.000562
+2025-03-14 22:20:30,043 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Sending packet OPEN data {'sid': '4CML1Sxd3qTyrzZQAAAN', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:20:30,043 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Received request to upgrade to websocket
+2025-03-14 22:20:30,043 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Upgrade to websocket successful
+2025-03-14 22:20:30,207 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Received packet MESSAGE data 0
+2025-03-14 22:20:30,211 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Sending packet MESSAGE data 0{"sid":"S1uhbNzvI38SHEENAAAO"}
+2025-03-14 22:20:30,211 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:30] "POST /socket.io/?EIO=4&transport=polling&t=PMMlg03&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 258 0.004490
+2025-03-14 22:20:30,212 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Received packet MESSAGE data 0
+2025-03-14 22:20:30,212 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Sending packet MESSAGE data 0{"sid":"w6-CZ6jFcjwKfH9KAAAP"}
+2025-03-14 22:20:30,212 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:30] "GET /socket.io/?EIO=4&transport=polling&t=PMMlg06&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 189 0.000126
+2025-03-14 22:20:30,526 - engineio.server - INFO - Invalid transport for session SngNrfIFzGKXjZ7_AAAM
+2025-03-14 22:20:30,589 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Sending packet PING data None
+2025-03-14 22:20:30,589 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:30] "GET /socket.io/?EIO=4&transport=polling&t=PMMla2F&sid=ZCzLcw5XHmXsGhVXAAAF HTTP/1.1" 200 157 24.823135
+2025-03-14 22:20:43,603 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:20:43,603 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:20:43,686 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:20:43,686 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:20:55,043 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Sending packet PING data None
+2025-03-14 22:20:55,043 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:55] "GET /socket.io/?EIO=4&transport=polling&t=PMMlg1a&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 157 24.741608
+2025-03-14 22:20:55,045 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Sending packet PING data None
+2025-03-14 22:20:55,138 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Received packet PONG data 
+2025-03-14 22:20:55,151 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Received packet PONG data 
+2025-03-14 22:20:55,152 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:20:55] "POST /socket.io/?EIO=4&transport=polling&t=PMMlm5g&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 258 0.000525
+2025-03-14 22:21:08,700 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:21:08,701 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:21:08,812 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:21:08,813 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:21:20,149 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Sending packet PING data None
+2025-03-14 22:21:20,153 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Sending packet PING data None
+2025-03-14 22:21:20,153 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:20] "GET /socket.io/?EIO=4&transport=polling&t=PMMlm5h&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 157 25.000883
+2025-03-14 22:21:20,237 - engineio.server - INFO - 4CML1Sxd3qTyrzZQAAAN: Received packet PONG data 
+2025-03-14 22:21:20,255 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Received packet PONG data 
+2025-03-14 22:21:20,256 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:20] "POST /socket.io/?EIO=4&transport=polling&t=PMMlsDy&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 258 0.000604
+2025-03-14 22:21:28,430 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 22:21:28,438 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 22:21:28,464 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:28] "GET /api/predictions HTTP/1.1" 200 117748 0.097226
+2025-03-14 22:21:33,782 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Client is gone, closing socket
+2025-03-14 22:21:33,782 - engineio.server - INFO - ZCzLcw5XHmXsGhVXAAAF: Client is gone, closing socket
+2025-03-14 22:21:33,814 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:21:33,814 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:21:33,896 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:21:33,897 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:21:40,754 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:40] "GET /socket.io/?EIO=4&transport=polling&t=PMMla2F&sid=ZCzLcw5XHmXsGhVXAAAF HTTP/1.1" 500 161 0.001922
+2025-03-14 22:21:40,756 - engineio.server - INFO - Invalid session ZCzLcw5XHmXsGhVXAAAF
+2025-03-14 22:21:40,756 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:40] "POST /socket.io/?EIO=4&transport=polling&t=PMMlx9h&sid=ZCzLcw5XHmXsGhVXAAAF HTTP/1.1" 400 283 0.000310
+2025-03-14 22:21:41,123 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Sending packet OPEN data {'sid': 'xFURy_xqtgLSuboEAAAQ', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:21:41,124 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:41] "GET /socket.io/?EIO=4&transport=polling&t=PMMlxKB HTTP/1.1" 200 254 0.000620
+2025-03-14 22:21:41,212 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Received packet MESSAGE data 0
+2025-03-14 22:21:41,212 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Sending packet MESSAGE data 0{"sid":"sb6cncXg3SgcPOTGAAAR"}
+2025-03-14 22:21:41,213 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:41] "POST /socket.io/?EIO=4&transport=polling&t=PMMlxLY&sid=xFURy_xqtgLSuboEAAAQ HTTP/1.1" 200 258 0.000807
+2025-03-14 22:21:41,213 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:41] "GET /socket.io/?EIO=4&transport=polling&t=PMMlxLa&sid=xFURy_xqtgLSuboEAAAQ HTTP/1.1" 200 189 0.001914
+2025-03-14 22:21:41,486 - engineio.server - INFO - Invalid transport for session xFURy_xqtgLSuboEAAAQ
+2025-03-14 22:21:41,964 - engineio.server - INFO - YhN_ll2HIPTlxbsyAAAS: Sending packet OPEN data {'sid': 'YhN_ll2HIPTlxbsyAAAS', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:21:41,964 - engineio.server - INFO - YhN_ll2HIPTlxbsyAAAS: Received request to upgrade to websocket
+2025-03-14 22:21:41,965 - engineio.server - INFO - YhN_ll2HIPTlxbsyAAAS: Upgrade to websocket successful
+2025-03-14 22:21:42,047 - engineio.server - INFO - YhN_ll2HIPTlxbsyAAAS: Received packet MESSAGE data 0
+2025-03-14 22:21:42,048 - engineio.server - INFO - YhN_ll2HIPTlxbsyAAAS: Sending packet MESSAGE data 0{"sid":"plIA9m8SHEEWN-1_AAAT"}
+2025-03-14 22:21:45,256 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Sending packet PING data None
+2025-03-14 22:21:45,257 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:45] "GET /socket.io/?EIO=4&transport=polling&t=PMMlsDz&sid=SngNrfIFzGKXjZ7_AAAM HTTP/1.1" 200 157 25.000573
+2025-03-14 22:21:46,148 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /notifications HTTP/1.1" 302 632 0.001136
+2025-03-14 22:21:46,236 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /login?next=%2Fnotifications HTTP/1.1" 200 7441 0.001952
+2025-03-14 22:21:46,336 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/manifest.json HTTP/1.1" 200 1759 0.000892
+2025-03-14 22:21:46,591 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/css/login.css HTTP/1.1" 200 4622 0.005232
+2025-03-14 22:21:46,593 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001170
+2025-03-14 22:21:46,694 - app - INFO - Service Worker solicitado
+2025-03-14 22:21:46,694 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:21:46,695 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001363
+2025-03-14 22:21:46,785 - app - INFO - Index endpoint accessed
+2025-03-14 22:21:46,786 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET / HTTP/1.1" 302 383 0.001063
+2025-03-14 22:21:46,788 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000754
+2025-03-14 22:21:46,790 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.000749
+2025-03-14 22:21:46,869 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/js/notifications.js HTTP/1.1" 304 223 0.001042
+2025-03-14 22:21:46,870 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1737 0.000669
+2025-03-14 22:21:46,916 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:46] "GET /login HTTP/1.1" 200 6869 0.001738
+2025-03-14 22:21:56,450 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:56] "POST /login HTTP/1.1" 302 863 0.165111
+2025-03-14 22:21:56,623 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:56] "GET /home HTTP/1.1" 200 12066 0.083037
+2025-03-14 22:21:56,735 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:56] "GET /static/manifest.json HTTP/1.1" 304 220 0.000926
+2025-03-14 22:21:57,002 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET /static/css/home.css HTTP/1.1" 304 215 0.000992
+2025-03-14 22:21:57,004 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000865
+2025-03-14 22:21:57,110 - app - INFO - Service Worker solicitado
+2025-03-14 22:21:57,111 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:21:57,111 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001623
+2025-03-14 22:21:57,208 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001385
+2025-03-14 22:21:57,210 - app - INFO - Index endpoint accessed
+2025-03-14 22:21:57,298 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET / HTTP/1.1" 302 380 0.088470
+2025-03-14 22:21:57,300 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:57] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.000982
+2025-03-14 22:21:57,374 - engineio.server - INFO - t3cucPAKf8AgLn14AAAU: Sending packet OPEN data {'sid': 't3cucPAKf8AgLn14AAAU', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:21:57,374 - engineio.server - INFO - t3cucPAKf8AgLn14AAAU: Received request to upgrade to websocket
+2025-03-14 22:21:57,374 - engineio.server - INFO - t3cucPAKf8AgLn14AAAU: Upgrade to websocket successful
+2025-03-14 22:21:57,456 - engineio.server - INFO - t3cucPAKf8AgLn14AAAU: Received packet MESSAGE data 0
+2025-03-14 22:21:57,457 - engineio.server - INFO - t3cucPAKf8AgLn14AAAU: Sending packet MESSAGE data 0{"sid":"wIN6xho5u6OlqVMCAAAV"}
+2025-03-14 22:21:58,919 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 22:21:58,919 - app - DEBUG - Usuario autenticado: Diego
+2025-03-14 22:21:58,941 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:58] "GET /predictions HTTP/1.1" 200 13870 0.083724
+2025-03-14 22:21:58,941 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:21:58,941 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:21:59,023 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:21:59,023 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:21:59,055 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/manifest.json HTTP/1.1" 304 220 0.001034
+2025-03-14 22:21:59,108 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/js/predictions.js HTTP/1.1" 200 21567 0.001153
+2025-03-14 22:21:59,349 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001149
+2025-03-14 22:21:59,351 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.000888
+2025-03-14 22:21:59,454 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Sending packet OPEN data {'sid': 'HZf9uXAZ9sbWmJCiAAAW', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:21:59,455 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /socket.io/?EIO=4&transport=polling&t=PMMl_ob HTTP/1.1" 200 254 0.000620
+2025-03-14 22:21:59,545 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /api/stations HTTP/1.1" 200 20676 0.089114
+2025-03-14 22:21:59,610 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 22:21:59,621 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 22:21:59,649 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /api/predictions HTTP/1.1" 200 117580 0.102989
+2025-03-14 22:21:59,651 - app - INFO - Service Worker solicitado
+2025-03-14 22:21:59,652 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:21:59,652 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001348
+2025-03-14 22:21:59,653 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Received packet MESSAGE data 0
+2025-03-14 22:21:59,653 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Sending packet MESSAGE data 0{"sid":"5Jxb1iS-fCFKyOfIAAAX"}
+2025-03-14 22:21:59,653 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "POST /socket.io/?EIO=4&transport=polling&t=PMMl_p-&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 200 258 0.000640
+2025-03-14 22:21:59,732 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Sending packet OPEN data {'sid': 'Z1MXf0Fwcs2_AeRiAAAY', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:21:59,732 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Received request to upgrade to websocket
+2025-03-14 22:21:59,732 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Upgrade to websocket successful
+2025-03-14 22:21:59,748 - app - INFO - Index endpoint accessed
+2025-03-14 22:21:59,830 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET / HTTP/1.1" 302 380 0.082655
+2025-03-14 22:21:59,831 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Received packet MESSAGE data 0
+2025-03-14 22:21:59,831 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Sending packet MESSAGE data 0{"sid":"7TiwndW-4AjgOxDJAAAZ"}
+2025-03-14 22:21:59,832 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.000864
+2025-03-14 22:21:59,833 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.000555
+2025-03-14 22:21:59,834 - engineio.server - INFO - Invalid transport for session HZf9uXAZ9sbWmJCiAAAW
+2025-03-14 22:21:59,835 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /socket.io/?EIO=4&transport=polling&t=PMMl_p_&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 200 189 0.000135
+2025-03-14 22:21:59,917 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000939
+2025-03-14 22:21:59,918 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:21:59] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.000700
+2025-03-14 22:22:06,130 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Sending packet PING data None
+2025-03-14 22:22:06,130 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:06] "GET /socket.io/?EIO=4&transport=polling&t=PMMlxMy&sid=xFURy_xqtgLSuboEAAAQ HTTP/1.1" 200 157 24.828274
+2025-03-14 22:22:24,026 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:22:24,026 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:22:24,128 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:22:24,129 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:22:24,456 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Sending packet PING data None
+2025-03-14 22:22:24,456 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:24] "GET /socket.io/?EIO=4&transport=polling&t=PMMl_vu&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 200 157 24.257745
+2025-03-14 22:22:24,595 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Received packet PONG data 
+2025-03-14 22:22:24,595 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:24] "POST /socket.io/?EIO=4&transport=polling&t=PMMm5xF&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 200 258 0.000679
+2025-03-14 22:22:24,733 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Sending packet PING data None
+2025-03-14 22:22:24,814 - engineio.server - INFO - Z1MXf0Fwcs2_AeRiAAAY: Received packet PONG data 
+2025-03-14 22:22:28,635 - engineio.server - INFO - 75bvBLAaX9uCR223AAAa: Sending packet OPEN data {'sid': '75bvBLAaX9uCR223AAAa', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:22:28,635 - engineio.server - INFO - 75bvBLAaX9uCR223AAAa: Received request to upgrade to websocket
+2025-03-14 22:22:28,635 - engineio.server - INFO - 75bvBLAaX9uCR223AAAa: Upgrade to websocket successful
+2025-03-14 22:22:28,718 - engineio.server - INFO - 75bvBLAaX9uCR223AAAa: Received packet MESSAGE data 0
+2025-03-14 22:22:28,719 - engineio.server - INFO - 75bvBLAaX9uCR223AAAa: Sending packet MESSAGE data 0{"sid":"MrK0BTcbC4BYB6zzAAAb"}
+2025-03-14 22:22:39,371 - app - INFO - Accessing report_incident. User: <User 4>, Remote addr: 172.31.128.49
+2025-03-14 22:22:39,371 - app - DEBUG - Request headers: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/134.0.6998.33 Mobile/15E148 Safari/604.1', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'es-419,es;q=0.9', 'Cookie': 'session=.eJwlzktqBDEMBNC7eJ2FPrbUnss0kiWREEige2YVcvcYsimoWhTvp5115f3eHs_rlW_t_Ij2aAABq8pnVjDSQpx4DC0d3dPNYJot4IOtKNxiUrcqdvTqypZ1qFSIojEzxOCaXiM5SVK977RCXgHHnDDSexwMRJTSaYaMtiGvO69_Td913Vedz-_P_NqDkqBYZ1oDVAQn7Tsph06l7rBJSAO1_f4BnJ8_sw.Z9SsBA.wHL5R_3dzPJ0PTi7KNRDOG4lVCE', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/predictions', 'Sec-Fetch-Dest': 'document', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'X-Forwarded-For': '181.61.208.87, 10.81.7.7', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 22:22:39,372 - app - DEBUG - Session data: {'_fresh': True, '_id': '00d0cffb9efd312c1191857f754bebaa09aac0383af2dbad924aff3b1bf473aef876fd671a3330d53f9bf5e3e26e7b426eaf13cd089905eb4d830222e6429d65', '_user_id': '4', 'csrf_token': '72616a432c50766192af16fb042f7bb0dba12517'}
+2025-03-14 22:22:39,372 - app - DEBUG - User authenticated: True
+2025-03-14 22:22:39,374 - app - INFO - Rendering report_incident template
+2025-03-14 22:22:39,408 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:39] "GET /report_incident HTTP/1.1" 200 35707 0.098893
+2025-03-14 22:22:39,517 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:39] "GET /static/manifest.json HTTP/1.1" 304 220 0.000951
+2025-03-14 22:22:39,795 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:39] "GET /static/css/report_incident.css HTTP/1.1" 304 225 0.001040
+2025-03-14 22:22:39,797 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:39] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000720
+2025-03-14 22:22:40,139 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /station_statistics HTTP/1.1" 200 501 0.189518
+2025-03-14 22:22:40,141 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/Estaciones_Troncales_de_TRANSMILENIO.geojson HTTP/1.1" 304 252 0.001208
+2025-03-14 22:22:40,142 - app - INFO - Service Worker solicitado
+2025-03-14 22:22:40,142 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:22:40,142 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001022
+2025-03-14 22:22:40,180 - engineio.server - INFO - _1HFtO_GnfeHoxGqAAAc: Sending packet OPEN data {'sid': '_1HFtO_GnfeHoxGqAAAc', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:22:40,180 - engineio.server - INFO - _1HFtO_GnfeHoxGqAAAc: Received request to upgrade to websocket
+2025-03-14 22:22:40,180 - engineio.server - INFO - _1HFtO_GnfeHoxGqAAAc: Upgrade to websocket successful
+2025-03-14 22:22:40,246 - app - INFO - Index endpoint accessed
+2025-03-14 22:22:40,328 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET / HTTP/1.1" 302 380 0.082552
+2025-03-14 22:22:40,329 - engineio.server - INFO - _1HFtO_GnfeHoxGqAAAc: Received packet MESSAGE data 0
+2025-03-14 22:22:40,329 - engineio.server - INFO - _1HFtO_GnfeHoxGqAAAc: Sending packet MESSAGE data 0{"sid":"h21ZlwPEXEZo1-JWAAAd"}
+2025-03-14 22:22:40,330 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.000923
+2025-03-14 22:22:40,332 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/icons/badge-icon.png HTTP/1.1" 404 363 0.000998
+2025-03-14 22:22:40,333 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.000703
+2025-03-14 22:22:40,413 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:40] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.001177
+2025-03-14 22:22:45,553 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:45] "GET /notifications HTTP/1.1" 200 18316 0.087479
+2025-03-14 22:22:45,666 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:45] "GET /static/manifest.json HTTP/1.1" 304 220 0.000965
+2025-03-14 22:22:45,721 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:45] "GET /static/js/notifications.js HTTP/1.1" 304 223 0.001011
+2025-03-14 22:22:45,959 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:45] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.001329
+2025-03-14 22:22:45,961 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:45] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000994
+2025-03-14 22:22:46,150 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:46] "GET /api/stations HTTP/1.1" 200 20676 0.086267
+2025-03-14 22:22:46,237 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:46] "GET /api/stations HTTP/1.1" 200 20676 0.086214
+2025-03-14 22:22:46,348 - engineio.server - INFO - OfrNLMfry1T3VkqrAAAe: Sending packet OPEN data {'sid': 'OfrNLMfry1T3VkqrAAAe', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:22:46,348 - engineio.server - INFO - OfrNLMfry1T3VkqrAAAe: Received request to upgrade to websocket
+2025-03-14 22:22:46,348 - engineio.server - INFO - OfrNLMfry1T3VkqrAAAe: Upgrade to websocket successful
+2025-03-14 22:22:46,410 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Sending packet OPEN data {'sid': 'yRwI8Y7PQpD5s7WLAAAf', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:22:46,410 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:46] "GET /socket.io/?EIO=4&transport=polling&t=PMMmBGH HTTP/1.1" 200 254 0.000592
+2025-03-14 22:22:46,476 - app - INFO - Parámetros recibidos en /api/notifications:
+2025-03-14 22:22:46,476 - app - INFO - - Troncal: Americas,Autonorte,Calle 26,Calle 6,Calle 80,Caracas,Cr 7-10,Eje Ambiental,NQS,Soacha,Suba,Tunal
+2025-03-14 22:22:46,476 - app - INFO - - Estación: 21 Ángeles,7 de Agosto,AV. 1 Mayo,AV. 39,AV. 68,AV. Américas - AV. Boyacá,AV. Boyacá,AV. Cali,AV. Chile,AV. ElDorado,AV. Jiménez - CL 13,AV. Jiménez - Caracas,Alcalá – Colegio S. Tomás Dominicos,Alquería,Av. Rojas – UNISALESIANA,Banderas,Biblioteca,Biblioteca Tintal,Bicentenario,Bosa,CAD,CAN,CC Paseo Villa del Río - Madelena,CDS - Carrera 32,Calle 100 - Marketmedios,Calle 106,Calle 127,Calle 142,Calle 146,Calle 161,Calle 187,Calle 19,Calle 22,Calle 26,Calle 34,Calle 40 Sur,Calle 45 - American School Way,Calle 57,Calle 63,Calle 72,Calle 75 - Zona M,Calle 76 - San Felipe,Calle 85,Campín - UAN,Carrera 43 - Comapan,Carrera 47,Carrera 53,Carrera 90,Centro Memoria,Ciudad Jardín - UAN,Ciudad Universitaria - Lotería de Bogotá,Comuneros,Concejo de Bogotá,Consuelo,Corferias,Country Sur,De La Sabana,Distrito Grafiti,El Tiempo – Cámara de Comercio de Bogotá,Escuela Militar,Ferias,Flores – Areandina,Fucha,General Santander,Gobernación,Granja - Kr 77,Gratamira,Guatoque - Veraguas,Hortúa,Hospital,Humedal Córdoba,Héroes,La Campiña,La Castellana,La Despensa,Las Aguas - Centro Colombo Americano,Las Nieves,León XIII,Mandalay,Marly,Marsella,Mazurén,Minuto de Dios,Modelia,Molinos,Movistar Arena,Museo Nacional,Museo del Oro,NQS - Calle 30 S,NQS - Calle 38A S,Nariño,Niza - Calle 127,Normandía,Olaya,Paloquemao,Parque,Patio Bonito,Pepe Sierra,Perdomo,Policarpa,Polo – FINCOMERCIO,Portal 20 de Julio,Portal 80,Portal Américas,Portal El Dorado,Portal Norte,Portal Suba,Portal Sur - JFK Coop. Financiera,Portal Tunal,Portal Usme,Pradera,Prado,Puente Aranda,Puentelargo,Quinta Paredes,Quirigua,Quiroga,Restrepo,Ricaurte - CL 13,Ricaurte - NQS,Rionegro,SENA,Salitre - El Greco,San Bernardo,San Diego,San Facon Carrera 22,San Martín,San Mateo - CC Unisur,San Victorino,Santa Isabel,Santa Lucía,Sevillana,Socorro,Suba - AV. Boyacá,Suba - Calle 100,Suba - Calle 116,Suba - Calle 95,Suba - TV. 91,Tercer Milenio,Terminal,Terreros - Hospital Cardio Vascular,Toberin - Foundever,Transversal 86,Tygua - San José,Universidad Nacional,Universidades – CityU,Venecia,Virrey,Zona Industrial
+2025-03-14 22:22:46,476 - app - INFO - - Tipo de incidente: Hurto,Hurto a mano armada,Cosquilleo,Ataque,Apertura de puertas,Sospechoso,Acoso
+2025-03-14 22:22:46,476 - app - INFO - Listas de filtros procesadas:
+2025-03-14 22:22:46,477 - app - INFO - - Troncales: ['Americas', 'Autonorte', 'Calle 26', 'Calle 6', 'Calle 80', 'Caracas', 'Cr 7-10', 'Eje Ambiental', 'NQS', 'Soacha', 'Suba', 'Tunal']
+2025-03-14 22:22:46,477 - app - INFO - - Estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:22:46,477 - app - INFO - - Tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:22:46,479 - app - INFO - Estaciones encontradas para troncales: ['Portal 20 de Julio', 'Portal Suba', 'Portal El Dorado', 'Portal 80', 'Portal Américas', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'AV. Chile', 'CAN', 'Campín - UAN', 'San Diego', 'Granja - Kr 77', 'Ricaurte - NQS', 'Quirigua', 'Calle 75 - Zona M', 'AV. Boyacá', 'Calle 40 Sur', 'AV. Américas - AV. Boyacá', 'Marsella', 'Niza - Calle 127', 'La Campiña', 'Transversal 86', 'Corferias', 'Guatoque - Veraguas', 'CDS - Carrera 32', 'Ciudad Universitaria - Lotería de Bogotá', 'Universidad Nacional', 'Av. Rojas – UNISALESIANA', 'Tercer Milenio', 'Concejo de Bogotá', 'NQS - Calle 38A S', '7 de Agosto', 'AV. 68', 'Distrito Grafiti', 'Polo – FINCOMERCIO', 'Tygua - San José', 'Quinta Paredes', 'Salitre - El Greco', 'Zona Industrial', 'León XIII', 'Paloquemao', 'Carrera 90', 'Gobernación', 'Terreros - Hospital Cardio Vascular', 'Escuela Militar', 'AV. Cali', 'Suba - TV. 91', 'Ricaurte - CL 13', 'Restrepo', 'Prado', 'Virrey', 'Toberin - Foundever', 'Pepe Sierra', 'Calle 100 - Marketmedios', 'Calle 142', 'Calle 187', 'Alcalá – Colegio S. Tomás Dominicos', 'Calle 146', 'Mandalay', 'Calle 127', 'Héroes', 'Calle 161', 'Calle 106', 'Mazurén', 'Calle 45 - American School Way', 'Carrera 53', 'La Castellana', 'AV. 1 Mayo', 'De La Sabana', 'La Despensa', 'Calle 72', 'Centro Memoria', 'Carrera 43 - Comapan', 'Consuelo', 'AV. Jiménez - Caracas', 'Comuneros', 'Calle 22', 'El Tiempo – Cámara de Comercio de Bogotá', 'Biblioteca Tintal', 'Ciudad Jardín - UAN', 'Bicentenario', 'Calle 57', 'AV. ElDorado', 'Calle 26', 'Alquería', 'Bosa', 'CAD', 'Banderas', 'Calle 19', 'AV. Jiménez - CL 13', 'Movistar Arena', 'AV. 39', 'Calle 76 - San Felipe', 'Calle 85', 'NQS - Calle 30 S', 'Country Sur', 'Carrera 47', 'Olaya', 'Molinos', 'Nariño', 'Gratamira', 'Pradera', 'Las Nieves', 'Modelia', 'Biblioteca', 'San Facon Carrera 22', 'Calle 63', 'Flores – Areandina', 'Museo del Oro', 'General Santander', 'Humedal Córdoba', 'Parque', 'Policarpa', 'Museo Nacional', 'Hospital', 'Normandía', 'Perdomo', 'Hortúa', 'Ferias', 'Marly', 'Patio Bonito', 'Fucha', 'Minuto de Dios', 'Las Aguas - Centro Colombo Americano', 'Suba - AV. Boyacá', 'Santa Lucía', 'San Martín', 'Universidades – CityU', 'Santa Isabel', 'Suba - Calle 95', 'Puente Aranda', 'Quiroga', 'Puentelargo', 'San Victorino', 'CC Paseo Villa del Río - Madelena', 'San Mateo - CC Unisur', 'Sevillana', 'Rionegro', 'Suba - Calle 116', 'San Bernardo', 'SENA', 'Socorro', '21 Ángeles', 'Calle 34', 'Venecia', 'Terminal', 'Portal Norte', 'Suba - Calle 100']
+2025-03-14 22:22:46,479 - app - INFO - Filtrando por estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:22:46,479 - app - INFO - Filtrando por tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:22:46,532 - app - INFO - Total de incidentes encontrados: 100
+2025-03-14 22:22:46,792 - app - INFO - Respuesta JSON generada exitosamente
+2025-03-14 22:22:46,814 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:46] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=Hurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 25239 0.401840
+2025-03-14 22:22:46,816 - engineio.server - INFO - OfrNLMfry1T3VkqrAAAe: Received packet MESSAGE data 0
+2025-03-14 22:22:46,818 - engineio.server - INFO - OfrNLMfry1T3VkqrAAAe: Sending packet MESSAGE data 0{"sid":"Dn-HBBTfzjkiDMH0AAAg"}
+2025-03-14 22:22:46,882 - app - INFO - Parámetros recibidos en /api/notifications:
+2025-03-14 22:22:46,883 - app - INFO - - Troncal: Americas,Autonorte,Calle 26,Calle 6,Calle 80,Caracas,Cr 7-10,Eje Ambiental,NQS,Soacha,Suba,Tunal
+2025-03-14 22:22:46,883 - app - INFO - - Estación: 21 Ángeles,7 de Agosto,AV. 1 Mayo,AV. 39,AV. 68,AV. Américas - AV. Boyacá,AV. Boyacá,AV. Cali,AV. Chile,AV. ElDorado,AV. Jiménez - CL 13,AV. Jiménez - Caracas,Alcalá – Colegio S. Tomás Dominicos,Alquería,Av. Rojas – UNISALESIANA,Banderas,Biblioteca,Biblioteca Tintal,Bicentenario,Bosa,CAD,CAN,CC Paseo Villa del Río - Madelena,CDS - Carrera 32,Calle 100 - Marketmedios,Calle 106,Calle 127,Calle 142,Calle 146,Calle 161,Calle 187,Calle 19,Calle 22,Calle 26,Calle 34,Calle 40 Sur,Calle 45 - American School Way,Calle 57,Calle 63,Calle 72,Calle 75 - Zona M,Calle 76 - San Felipe,Calle 85,Campín - UAN,Carrera 43 - Comapan,Carrera 47,Carrera 53,Carrera 90,Centro Memoria,Ciudad Jardín - UAN,Ciudad Universitaria - Lotería de Bogotá,Comuneros,Concejo de Bogotá,Consuelo,Corferias,Country Sur,De La Sabana,Distrito Grafiti,El Tiempo – Cámara de Comercio de Bogotá,Escuela Militar,Ferias,Flores – Areandina,Fucha,General Santander,Gobernación,Granja - Kr 77,Gratamira,Guatoque - Veraguas,Hortúa,Hospital,Humedal Córdoba,Héroes,La Campiña,La Castellana,La Despensa,Las Aguas - Centro Colombo Americano,Las Nieves,León XIII,Mandalay,Marly,Marsella,Mazurén,Minuto de Dios,Modelia,Molinos,Movistar Arena,Museo Nacional,Museo del Oro,NQS - Calle 30 S,NQS - Calle 38A S,Nariño,Niza - Calle 127,Normandía,Olaya,Paloquemao,Parque,Patio Bonito,Pepe Sierra,Perdomo,Policarpa,Polo – FINCOMERCIO,Portal 20 de Julio,Portal 80,Portal Américas,Portal El Dorado,Portal Norte,Portal Suba,Portal Sur - JFK Coop. Financiera,Portal Tunal,Portal Usme,Pradera,Prado,Puente Aranda,Puentelargo,Quinta Paredes,Quirigua,Quiroga,Restrepo,Ricaurte - CL 13,Ricaurte - NQS,Rionegro,SENA,Salitre - El Greco,San Bernardo,San Diego,San Facon Carrera 22,San Martín,San Mateo - CC Unisur,San Victorino,Santa Isabel,Santa Lucía,Sevillana,Socorro,Suba - AV. Boyacá,Suba - Calle 100,Suba - Calle 116,Suba - Calle 95,Suba - TV. 91,Tercer Milenio,Terminal,Terreros - Hospital Cardio Vascular,Toberin - Foundever,Transversal 86,Tygua - San José,Universidad Nacional,Universidades – CityU,Venecia,Virrey,Zona Industrial
+2025-03-14 22:22:46,883 - app - INFO - - Tipo de incidente: Hurto,Hurto a mano armada,Cosquilleo,Ataque,Apertura de puertas,Sospechoso,Acoso
+2025-03-14 22:22:46,883 - app - INFO - Listas de filtros procesadas:
+2025-03-14 22:22:46,884 - app - INFO - - Troncales: ['Americas', 'Autonorte', 'Calle 26', 'Calle 6', 'Calle 80', 'Caracas', 'Cr 7-10', 'Eje Ambiental', 'NQS', 'Soacha', 'Suba', 'Tunal']
+2025-03-14 22:22:46,884 - app - INFO - - Estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:22:46,884 - app - INFO - - Tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:22:46,886 - app - INFO - Estaciones encontradas para troncales: ['Portal 20 de Julio', 'Portal Suba', 'Portal El Dorado', 'Portal 80', 'Portal Américas', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'AV. Chile', 'CAN', 'Campín - UAN', 'San Diego', 'Granja - Kr 77', 'Ricaurte - NQS', 'Quirigua', 'Calle 75 - Zona M', 'AV. Boyacá', 'Calle 40 Sur', 'AV. Américas - AV. Boyacá', 'Marsella', 'Niza - Calle 127', 'La Campiña', 'Transversal 86', 'Corferias', 'Guatoque - Veraguas', 'CDS - Carrera 32', 'Ciudad Universitaria - Lotería de Bogotá', 'Universidad Nacional', 'Av. Rojas – UNISALESIANA', 'Tercer Milenio', 'Concejo de Bogotá', 'NQS - Calle 38A S', '7 de Agosto', 'AV. 68', 'Distrito Grafiti', 'Polo – FINCOMERCIO', 'Tygua - San José', 'Quinta Paredes', 'Salitre - El Greco', 'Zona Industrial', 'León XIII', 'Paloquemao', 'Carrera 90', 'Gobernación', 'Terreros - Hospital Cardio Vascular', 'Escuela Militar', 'AV. Cali', 'Suba - TV. 91', 'Ricaurte - CL 13', 'Restrepo', 'Prado', 'Virrey', 'Toberin - Foundever', 'Pepe Sierra', 'Calle 100 - Marketmedios', 'Calle 142', 'Calle 187', 'Alcalá – Colegio S. Tomás Dominicos', 'Calle 146', 'Mandalay', 'Calle 127', 'Héroes', 'Calle 161', 'Calle 106', 'Mazurén', 'Calle 45 - American School Way', 'Carrera 53', 'La Castellana', 'AV. 1 Mayo', 'De La Sabana', 'La Despensa', 'Calle 72', 'Centro Memoria', 'Carrera 43 - Comapan', 'Consuelo', 'AV. Jiménez - Caracas', 'Comuneros', 'Calle 22', 'El Tiempo – Cámara de Comercio de Bogotá', 'Biblioteca Tintal', 'Ciudad Jardín - UAN', 'Bicentenario', 'Calle 57', 'AV. ElDorado', 'Calle 26', 'Alquería', 'Bosa', 'CAD', 'Banderas', 'Calle 19', 'AV. Jiménez - CL 13', 'Movistar Arena', 'AV. 39', 'Calle 76 - San Felipe', 'Calle 85', 'NQS - Calle 30 S', 'Country Sur', 'Carrera 47', 'Olaya', 'Molinos', 'Nariño', 'Gratamira', 'Pradera', 'Las Nieves', 'Modelia', 'Biblioteca', 'San Facon Carrera 22', 'Calle 63', 'Flores – Areandina', 'Museo del Oro', 'General Santander', 'Humedal Córdoba', 'Parque', 'Policarpa', 'Museo Nacional', 'Hospital', 'Normandía', 'Perdomo', 'Hortúa', 'Ferias', 'Marly', 'Patio Bonito', 'Fucha', 'Minuto de Dios', 'Las Aguas - Centro Colombo Americano', 'Suba - AV. Boyacá', 'Santa Lucía', 'San Martín', 'Universidades – CityU', 'Santa Isabel', 'Suba - Calle 95', 'Puente Aranda', 'Quiroga', 'Puentelargo', 'San Victorino', 'CC Paseo Villa del Río - Madelena', 'San Mateo - CC Unisur', 'Sevillana', 'Rionegro', 'Suba - Calle 116', 'San Bernardo', 'SENA', 'Socorro', '21 Ángeles', 'Calle 34', 'Venecia', 'Terminal', 'Portal Norte', 'Suba - Calle 100']
+2025-03-14 22:22:46,887 - app - INFO - Filtrando por estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:22:46,887 - app - INFO - Filtrando por tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:22:46,933 - app - INFO - Total de incidentes encontrados: 100
+2025-03-14 22:22:47,164 - app - INFO - Respuesta JSON generada exitosamente
+2025-03-14 22:22:47,190 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:47] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=Hurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 25239 0.369478
+2025-03-14 22:22:47,192 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Received packet MESSAGE data 0
+2025-03-14 22:22:47,193 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Sending packet MESSAGE data 0{"sid":"cdX8KI92NB_sfxb0AAAh"}
+2025-03-14 22:22:47,193 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:47] "POST /socket.io/?EIO=4&transport=polling&t=PMMmBHd&sid=yRwI8Y7PQpD5s7WLAAAf HTTP/1.1" 200 258 0.000710
+2025-03-14 22:22:47,193 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:47] "GET /socket.io/?EIO=4&transport=polling&t=PMMmBHe&sid=yRwI8Y7PQpD5s7WLAAAf HTTP/1.1" 200 189 0.000111
+2025-03-14 22:22:47,194 - engineio.server - INFO - Invalid transport for session yRwI8Y7PQpD5s7WLAAAf
+2025-03-14 22:22:49,131 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:22:49,131 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:22:49,212 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:22:49,296 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:22:49,596 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Sending packet PING data None
+2025-03-14 22:22:49,598 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:22:49] "GET /socket.io/?EIO=4&transport=polling&t=PMMm5xG&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 200 157 25.001939
+2025-03-14 22:23:09,844 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 22:23:09,844 - app - DEBUG - Usuario autenticado: Diego
+2025-03-14 22:23:09,864 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:09] "GET /predictions HTTP/1.1" 200 13870 0.078413
+2025-03-14 22:23:09,962 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:09] "GET /static/manifest.json HTTP/1.1" 304 220 0.000849
+2025-03-14 22:23:09,969 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:09] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000857
+2025-03-14 22:23:10,026 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/js/predictions.js HTTP/1.1" 304 222 0.001034
+2025-03-14 22:23:10,219 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.001122
+2025-03-14 22:23:10,315 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet OPEN data {'sid': 'dmbEKvT5vkEMztQuAAAi', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:23:10,315 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /socket.io/?EIO=4&transport=polling&t=PMMmH5p HTTP/1.1" 200 254 0.000531
+2025-03-14 22:23:10,402 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /api/stations HTTP/1.1" 200 20676 0.084411
+2025-03-14 22:23:10,461 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 22:23:10,472 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 22:23:10,499 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /api/predictions HTTP/1.1" 200 117653 0.095977
+2025-03-14 22:23:10,500 - app - INFO - Service Worker solicitado
+2025-03-14 22:23:10,500 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:23:10,501 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001387
+2025-03-14 22:23:10,501 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Received packet MESSAGE data 0
+2025-03-14 22:23:10,502 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet MESSAGE data 0{"sid":"2wAIccJ90kWWwg7GAAAj"}
+2025-03-14 22:23:10,502 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "POST /socket.io/?EIO=4&transport=polling&t=PMMmH77&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 258 0.000754
+2025-03-14 22:23:10,594 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Sending packet OPEN data {'sid': 'c0BIOxRgnEJ6hc1cAAAk', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:23:10,594 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Received request to upgrade to websocket
+2025-03-14 22:23:10,595 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Upgrade to websocket successful
+2025-03-14 22:23:10,596 - app - INFO - Index endpoint accessed
+2025-03-14 22:23:10,674 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET / HTTP/1.1" 302 380 0.078531
+2025-03-14 22:23:10,674 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Received packet MESSAGE data 0
+2025-03-14 22:23:10,675 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Sending packet MESSAGE data 0{"sid":"sqDlxr9wLDkAnUo9AAAl"}
+2025-03-14 22:23:10,676 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.000873
+2025-03-14 22:23:10,677 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/icons/badge-icon.png HTTP/1.1" 404 363 0.000708
+2025-03-14 22:23:10,678 - engineio.server - INFO - Invalid transport for session dmbEKvT5vkEMztQuAAAi
+2025-03-14 22:23:10,679 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /socket.io/?EIO=4&transport=polling&t=PMMmH78&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 189 0.000111
+2025-03-14 22:23:10,763 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:10] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001019
+2025-03-14 22:23:11,411 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Sending packet PING data None
+2025-03-14 22:23:11,419 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:11] "GET /socket.io/?EIO=4&transport=polling&t=PMMmBUS&sid=yRwI8Y7PQpD5s7WLAAAf HTTP/1.1" 200 157 24.102684
+2025-03-14 22:23:14,215 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:23:14,295 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:23:14,297 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:23:14,425 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:23:27,020 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Client is gone, closing socket
+2025-03-14 22:23:27,020 - engineio.server - INFO - SngNrfIFzGKXjZ7_AAAM: Client is gone, closing socket
+2025-03-14 22:23:35,324 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet PING data None
+2025-03-14 22:23:35,325 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:35] "GET /socket.io/?EIO=4&transport=polling&t=PMMmHCs&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 157 24.275299
+2025-03-14 22:23:35,466 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Received packet PONG data 
+2025-03-14 22:23:35,466 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:35] "POST /socket.io/?EIO=4&transport=polling&t=PMMmNEQ&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 258 0.000621
+2025-03-14 22:23:35,593 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Client is gone, closing socket
+2025-03-14 22:23:35,593 - engineio.server - INFO - xFURy_xqtgLSuboEAAAQ: Client is gone, closing socket
+2025-03-14 22:23:35,595 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Sending packet PING data None
+2025-03-14 22:23:35,676 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Received packet PONG data 
+2025-03-14 22:23:39,299 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:23:39,385 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:23:39,426 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:23:39,508 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:23:52,776 - engineio.server - INFO - HZf9uXAZ9sbWmJCiAAAW: Client is gone, closing socket
+2025-03-14 22:23:52,776 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:23:52] "GET /socket.io/?EIO=4&transport=polling&t=PMMm5xG&sid=HZf9uXAZ9sbWmJCiAAAW HTTP/1.1" 400 164 85.001342
+2025-03-14 22:24:00,474 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet PING data None
+2025-03-14 22:24:00,475 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:00] "GET /socket.io/?EIO=4&transport=polling&t=PMMmNEb&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 157 25.010989
+2025-03-14 22:24:00,653 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Received packet PONG data 
+2025-03-14 22:24:00,653 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:00] "POST /socket.io/?EIO=4&transport=polling&t=PMMmTO3&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 258 0.000443
+2025-03-14 22:24:00,677 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Sending packet PING data None
+2025-03-14 22:24:00,756 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Received packet PONG data 
+2025-03-14 22:24:04,389 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:24:04,470 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:24:04,508 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:24:04,629 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:24:10,386 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 22:24:10,397 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 22:24:10,435 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:10] "GET /api/predictions HTTP/1.1" 200 117702 0.108195
+2025-03-14 22:24:25,661 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet PING data None
+2025-03-14 22:24:25,661 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:25] "GET /socket.io/?EIO=4&transport=polling&t=PMMmTO5&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 157 25.011153
+2025-03-14 22:24:25,758 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Sending packet PING data None
+2025-03-14 22:24:25,837 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Received packet PONG data 
+2025-03-14 22:24:25,838 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:25] "POST /socket.io/?EIO=4&transport=polling&t=PMMmZXd&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 258 0.000575
+2025-03-14 22:24:25,838 - engineio.server - INFO - c0BIOxRgnEJ6hc1cAAAk: Received packet PONG data 
+2025-03-14 22:24:26,612 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:26] "GET /notifications HTTP/1.1" 200 18316 0.078322
+2025-03-14 22:24:26,967 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:26] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001107
+2025-03-14 22:24:26,969 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:26] "GET /static/manifest.json HTTP/1.1" 304 220 0.001304
+2025-03-14 22:24:26,971 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:26] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.000862
+2025-03-14 22:24:27,026 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:27] "GET /static/js/notifications.js HTTP/1.1" 304 223 0.000978
+2025-03-14 22:24:27,198 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:27] "GET /api/stations HTTP/1.1" 200 20676 0.083202
+2025-03-14 22:24:27,280 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:27] "GET /api/stations HTTP/1.1" 200 20676 0.080792
+2025-03-14 22:24:27,393 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet OPEN data {'sid': 'Zv4RpZWekHovkYDoAAAm', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:24:27,393 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received request to upgrade to websocket
+2025-03-14 22:24:27,394 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Upgrade to websocket successful
+2025-03-14 22:24:27,459 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet OPEN data {'sid': '90qXIwHpz-avpiDwAAAn', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 22:24:27,460 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:27] "GET /socket.io/?EIO=4&transport=polling&t=PMMmZxB HTTP/1.1" 200 254 0.000585
+2025-03-14 22:24:27,629 - app - INFO - Parámetros recibidos en /api/notifications:
+2025-03-14 22:24:27,629 - app - INFO - - Troncal: Americas,Autonorte,Calle 26,Calle 6,Calle 80,Caracas,Cr 7-10,Eje Ambiental,NQS,Soacha,Suba,Tunal
+2025-03-14 22:24:27,629 - app - INFO - - Estación: 21 Ángeles,7 de Agosto,AV. 1 Mayo,AV. 39,AV. 68,AV. Américas - AV. Boyacá,AV. Boyacá,AV. Cali,AV. Chile,AV. ElDorado,AV. Jiménez - CL 13,AV. Jiménez - Caracas,Alcalá – Colegio S. Tomás Dominicos,Alquería,Av. Rojas – UNISALESIANA,Banderas,Biblioteca,Biblioteca Tintal,Bicentenario,Bosa,CAD,CAN,CC Paseo Villa del Río - Madelena,CDS - Carrera 32,Calle 100 - Marketmedios,Calle 106,Calle 127,Calle 142,Calle 146,Calle 161,Calle 187,Calle 19,Calle 22,Calle 26,Calle 34,Calle 40 Sur,Calle 45 - American School Way,Calle 57,Calle 63,Calle 72,Calle 75 - Zona M,Calle 76 - San Felipe,Calle 85,Campín - UAN,Carrera 43 - Comapan,Carrera 47,Carrera 53,Carrera 90,Centro Memoria,Ciudad Jardín - UAN,Ciudad Universitaria - Lotería de Bogotá,Comuneros,Concejo de Bogotá,Consuelo,Corferias,Country Sur,De La Sabana,Distrito Grafiti,El Tiempo – Cámara de Comercio de Bogotá,Escuela Militar,Ferias,Flores – Areandina,Fucha,General Santander,Gobernación,Granja - Kr 77,Gratamira,Guatoque - Veraguas,Hortúa,Hospital,Humedal Córdoba,Héroes,La Campiña,La Castellana,La Despensa,Las Aguas - Centro Colombo Americano,Las Nieves,León XIII,Mandalay,Marly,Marsella,Mazurén,Minuto de Dios,Modelia,Molinos,Movistar Arena,Museo Nacional,Museo del Oro,NQS - Calle 30 S,NQS - Calle 38A S,Nariño,Niza - Calle 127,Normandía,Olaya,Paloquemao,Parque,Patio Bonito,Pepe Sierra,Perdomo,Policarpa,Polo – FINCOMERCIO,Portal 20 de Julio,Portal 80,Portal Américas,Portal El Dorado,Portal Norte,Portal Suba,Portal Sur - JFK Coop. Financiera,Portal Tunal,Portal Usme,Pradera,Prado,Puente Aranda,Puentelargo,Quinta Paredes,Quirigua,Quiroga,Restrepo,Ricaurte - CL 13,Ricaurte - NQS,Rionegro,SENA,Salitre - El Greco,San Bernardo,San Diego,San Facon Carrera 22,San Martín,San Mateo - CC Unisur,San Victorino,Santa Isabel,Santa Lucía,Sevillana,Socorro,Suba - AV. Boyacá,Suba - Calle 100,Suba - Calle 116,Suba - Calle 95,Suba - TV. 91,Tercer Milenio,Terminal,Terreros - Hospital Cardio Vascular,Toberin - Foundever,Transversal 86,Tygua - San José,Universidad Nacional,Universidades – CityU,Venecia,Virrey,Zona Industrial
+2025-03-14 22:24:27,629 - app - INFO - - Tipo de incidente: Hurto,Hurto a mano armada,Cosquilleo,Ataque,Apertura de puertas,Sospechoso,Acoso
+2025-03-14 22:24:27,629 - app - INFO - Listas de filtros procesadas:
+2025-03-14 22:24:27,629 - app - INFO - - Troncales: ['Americas', 'Autonorte', 'Calle 26', 'Calle 6', 'Calle 80', 'Caracas', 'Cr 7-10', 'Eje Ambiental', 'NQS', 'Soacha', 'Suba', 'Tunal']
+2025-03-14 22:24:27,629 - app - INFO - - Estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:24:27,630 - app - INFO - - Tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:24:27,631 - app - INFO - Estaciones encontradas para troncales: ['Portal 20 de Julio', 'Portal Suba', 'Portal El Dorado', 'Portal 80', 'Portal Américas', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'AV. Chile', 'CAN', 'Campín - UAN', 'San Diego', 'Granja - Kr 77', 'Ricaurte - NQS', 'Quirigua', 'Calle 75 - Zona M', 'AV. Boyacá', 'Calle 40 Sur', 'AV. Américas - AV. Boyacá', 'Marsella', 'Niza - Calle 127', 'La Campiña', 'Transversal 86', 'Corferias', 'Guatoque - Veraguas', 'CDS - Carrera 32', 'Ciudad Universitaria - Lotería de Bogotá', 'Universidad Nacional', 'Av. Rojas – UNISALESIANA', 'Tercer Milenio', 'Concejo de Bogotá', 'NQS - Calle 38A S', '7 de Agosto', 'AV. 68', 'Distrito Grafiti', 'Polo – FINCOMERCIO', 'Tygua - San José', 'Quinta Paredes', 'Salitre - El Greco', 'Zona Industrial', 'León XIII', 'Paloquemao', 'Carrera 90', 'Gobernación', 'Terreros - Hospital Cardio Vascular', 'Escuela Militar', 'AV. Cali', 'Suba - TV. 91', 'Ricaurte - CL 13', 'Restrepo', 'Prado', 'Virrey', 'Toberin - Foundever', 'Pepe Sierra', 'Calle 100 - Marketmedios', 'Calle 142', 'Calle 187', 'Alcalá – Colegio S. Tomás Dominicos', 'Calle 146', 'Mandalay', 'Calle 127', 'Héroes', 'Calle 161', 'Calle 106', 'Mazurén', 'Calle 45 - American School Way', 'Carrera 53', 'La Castellana', 'AV. 1 Mayo', 'De La Sabana', 'La Despensa', 'Calle 72', 'Centro Memoria', 'Carrera 43 - Comapan', 'Consuelo', 'AV. Jiménez - Caracas', 'Comuneros', 'Calle 22', 'El Tiempo – Cámara de Comercio de Bogotá', 'Biblioteca Tintal', 'Ciudad Jardín - UAN', 'Bicentenario', 'Calle 57', 'AV. ElDorado', 'Calle 26', 'Alquería', 'Bosa', 'CAD', 'Banderas', 'Calle 19', 'AV. Jiménez - CL 13', 'Movistar Arena', 'AV. 39', 'Calle 76 - San Felipe', 'Calle 85', 'NQS - Calle 30 S', 'Country Sur', 'Carrera 47', 'Olaya', 'Molinos', 'Nariño', 'Gratamira', 'Pradera', 'Las Nieves', 'Modelia', 'Biblioteca', 'San Facon Carrera 22', 'Calle 63', 'Flores – Areandina', 'Museo del Oro', 'General Santander', 'Humedal Córdoba', 'Parque', 'Policarpa', 'Museo Nacional', 'Hospital', 'Normandía', 'Perdomo', 'Hortúa', 'Ferias', 'Marly', 'Patio Bonito', 'Fucha', 'Minuto de Dios', 'Las Aguas - Centro Colombo Americano', 'Suba - AV. Boyacá', 'Santa Lucía', 'San Martín', 'Universidades – CityU', 'Santa Isabel', 'Suba - Calle 95', 'Puente Aranda', 'Quiroga', 'Puentelargo', 'San Victorino', 'CC Paseo Villa del Río - Madelena', 'San Mateo - CC Unisur', 'Sevillana', 'Rionegro', 'Suba - Calle 116', 'San Bernardo', 'SENA', 'Socorro', '21 Ángeles', 'Calle 34', 'Venecia', 'Terminal', 'Portal Norte', 'Suba - Calle 100']
+2025-03-14 22:24:27,632 - app - INFO - Filtrando por estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:24:27,632 - app - INFO - Filtrando por tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:24:27,675 - app - INFO - Total de incidentes encontrados: 100
+2025-03-14 22:24:27,807 - app - INFO - Respuesta JSON generada exitosamente
+2025-03-14 22:24:27,828 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:27] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=Hurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 25239 0.365517
+2025-03-14 22:24:27,890 - app - INFO - Parámetros recibidos en /api/notifications:
+2025-03-14 22:24:27,890 - app - INFO - - Troncal: Americas,Autonorte,Calle 26,Calle 6,Calle 80,Caracas,Cr 7-10,Eje Ambiental,NQS,Soacha,Suba,Tunal
+2025-03-14 22:24:27,891 - app - INFO - - Estación: 21 Ángeles,7 de Agosto,AV. 1 Mayo,AV. 39,AV. 68,AV. Américas - AV. Boyacá,AV. Boyacá,AV. Cali,AV. Chile,AV. ElDorado,AV. Jiménez - CL 13,AV. Jiménez - Caracas,Alcalá – Colegio S. Tomás Dominicos,Alquería,Av. Rojas – UNISALESIANA,Banderas,Biblioteca,Biblioteca Tintal,Bicentenario,Bosa,CAD,CAN,CC Paseo Villa del Río - Madelena,CDS - Carrera 32,Calle 100 - Marketmedios,Calle 106,Calle 127,Calle 142,Calle 146,Calle 161,Calle 187,Calle 19,Calle 22,Calle 26,Calle 34,Calle 40 Sur,Calle 45 - American School Way,Calle 57,Calle 63,Calle 72,Calle 75 - Zona M,Calle 76 - San Felipe,Calle 85,Campín - UAN,Carrera 43 - Comapan,Carrera 47,Carrera 53,Carrera 90,Centro Memoria,Ciudad Jardín - UAN,Ciudad Universitaria - Lotería de Bogotá,Comuneros,Concejo de Bogotá,Consuelo,Corferias,Country Sur,De La Sabana,Distrito Grafiti,El Tiempo – Cámara de Comercio de Bogotá,Escuela Militar,Ferias,Flores – Areandina,Fucha,General Santander,Gobernación,Granja - Kr 77,Gratamira,Guatoque - Veraguas,Hortúa,Hospital,Humedal Córdoba,Héroes,La Campiña,La Castellana,La Despensa,Las Aguas - Centro Colombo Americano,Las Nieves,León XIII,Mandalay,Marly,Marsella,Mazurén,Minuto de Dios,Modelia,Molinos,Movistar Arena,Museo Nacional,Museo del Oro,NQS - Calle 30 S,NQS - Calle 38A S,Nariño,Niza - Calle 127,Normandía,Olaya,Paloquemao,Parque,Patio Bonito,Pepe Sierra,Perdomo,Policarpa,Polo – FINCOMERCIO,Portal 20 de Julio,Portal 80,Portal Américas,Portal El Dorado,Portal Norte,Portal Suba,Portal Sur - JFK Coop. Financiera,Portal Tunal,Portal Usme,Pradera,Prado,Puente Aranda,Puentelargo,Quinta Paredes,Quirigua,Quiroga,Restrepo,Ricaurte - CL 13,Ricaurte - NQS,Rionegro,SENA,Salitre - El Greco,San Bernardo,San Diego,San Facon Carrera 22,San Martín,San Mateo - CC Unisur,San Victorino,Santa Isabel,Santa Lucía,Sevillana,Socorro,Suba - AV. Boyacá,Suba - Calle 100,Suba - Calle 116,Suba - Calle 95,Suba - TV. 91,Tercer Milenio,Terminal,Terreros - Hospital Cardio Vascular,Toberin - Foundever,Transversal 86,Tygua - San José,Universidad Nacional,Universidades – CityU,Venecia,Virrey,Zona Industrial
+2025-03-14 22:24:27,891 - app - INFO - - Tipo de incidente: Hurto,Hurto a mano armada,Cosquilleo,Ataque,Apertura de puertas,Sospechoso,Acoso
+2025-03-14 22:24:27,891 - app - INFO - Listas de filtros procesadas:
+2025-03-14 22:24:27,891 - app - INFO - - Troncales: ['Americas', 'Autonorte', 'Calle 26', 'Calle 6', 'Calle 80', 'Caracas', 'Cr 7-10', 'Eje Ambiental', 'NQS', 'Soacha', 'Suba', 'Tunal']
+2025-03-14 22:24:27,891 - app - INFO - - Estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:24:27,892 - app - INFO - - Tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:24:27,894 - app - INFO - Estaciones encontradas para troncales: ['Portal 20 de Julio', 'Portal Suba', 'Portal El Dorado', 'Portal 80', 'Portal Américas', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'AV. Chile', 'CAN', 'Campín - UAN', 'San Diego', 'Granja - Kr 77', 'Ricaurte - NQS', 'Quirigua', 'Calle 75 - Zona M', 'AV. Boyacá', 'Calle 40 Sur', 'AV. Américas - AV. Boyacá', 'Marsella', 'Niza - Calle 127', 'La Campiña', 'Transversal 86', 'Corferias', 'Guatoque - Veraguas', 'CDS - Carrera 32', 'Ciudad Universitaria - Lotería de Bogotá', 'Universidad Nacional', 'Av. Rojas – UNISALESIANA', 'Tercer Milenio', 'Concejo de Bogotá', 'NQS - Calle 38A S', '7 de Agosto', 'AV. 68', 'Distrito Grafiti', 'Polo – FINCOMERCIO', 'Tygua - San José', 'Quinta Paredes', 'Salitre - El Greco', 'Zona Industrial', 'León XIII', 'Paloquemao', 'Carrera 90', 'Gobernación', 'Terreros - Hospital Cardio Vascular', 'Escuela Militar', 'AV. Cali', 'Suba - TV. 91', 'Ricaurte - CL 13', 'Restrepo', 'Prado', 'Virrey', 'Toberin - Foundever', 'Pepe Sierra', 'Calle 100 - Marketmedios', 'Calle 142', 'Calle 187', 'Alcalá – Colegio S. Tomás Dominicos', 'Calle 146', 'Mandalay', 'Calle 127', 'Héroes', 'Calle 161', 'Calle 106', 'Mazurén', 'Calle 45 - American School Way', 'Carrera 53', 'La Castellana', 'AV. 1 Mayo', 'De La Sabana', 'La Despensa', 'Calle 72', 'Centro Memoria', 'Carrera 43 - Comapan', 'Consuelo', 'AV. Jiménez - Caracas', 'Comuneros', 'Calle 22', 'El Tiempo – Cámara de Comercio de Bogotá', 'Biblioteca Tintal', 'Ciudad Jardín - UAN', 'Bicentenario', 'Calle 57', 'AV. ElDorado', 'Calle 26', 'Alquería', 'Bosa', 'CAD', 'Banderas', 'Calle 19', 'AV. Jiménez - CL 13', 'Movistar Arena', 'AV. 39', 'Calle 76 - San Felipe', 'Calle 85', 'NQS - Calle 30 S', 'Country Sur', 'Carrera 47', 'Olaya', 'Molinos', 'Nariño', 'Gratamira', 'Pradera', 'Las Nieves', 'Modelia', 'Biblioteca', 'San Facon Carrera 22', 'Calle 63', 'Flores – Areandina', 'Museo del Oro', 'General Santander', 'Humedal Córdoba', 'Parque', 'Policarpa', 'Museo Nacional', 'Hospital', 'Normandía', 'Perdomo', 'Hortúa', 'Ferias', 'Marly', 'Patio Bonito', 'Fucha', 'Minuto de Dios', 'Las Aguas - Centro Colombo Americano', 'Suba - AV. Boyacá', 'Santa Lucía', 'San Martín', 'Universidades – CityU', 'Santa Isabel', 'Suba - Calle 95', 'Puente Aranda', 'Quiroga', 'Puentelargo', 'San Victorino', 'CC Paseo Villa del Río - Madelena', 'San Mateo - CC Unisur', 'Sevillana', 'Rionegro', 'Suba - Calle 116', 'San Bernardo', 'SENA', 'Socorro', '21 Ángeles', 'Calle 34', 'Venecia', 'Terminal', 'Portal Norte', 'Suba - Calle 100']
+2025-03-14 22:24:27,894 - app - INFO - Filtrando por estaciones: ['21 Ángeles', '7 de Agosto', 'AV. 1 Mayo', 'AV. 39', 'AV. 68', 'AV. Américas - AV. Boyacá', 'AV. Boyacá', 'AV. Cali', 'AV. Chile', 'AV. ElDorado', 'AV. Jiménez - CL 13', 'AV. Jiménez - Caracas', 'Alcalá – Colegio S. Tomás Dominicos', 'Alquería', 'Av. Rojas – UNISALESIANA', 'Banderas', 'Biblioteca', 'Biblioteca Tintal', 'Bicentenario', 'Bosa', 'CAD', 'CAN', 'CC Paseo Villa del Río - Madelena', 'CDS - Carrera 32', 'Calle 100 - Marketmedios', 'Calle 106', 'Calle 127', 'Calle 142', 'Calle 146', 'Calle 161', 'Calle 187', 'Calle 19', 'Calle 22', 'Calle 26', 'Calle 34', 'Calle 40 Sur', 'Calle 45 - American School Way', 'Calle 57', 'Calle 63', 'Calle 72', 'Calle 75 - Zona M', 'Calle 76 - San Felipe', 'Calle 85', 'Campín - UAN', 'Carrera 43 - Comapan', 'Carrera 47', 'Carrera 53', 'Carrera 90', 'Centro Memoria', 'Ciudad Jardín - UAN', 'Ciudad Universitaria - Lotería de Bogotá', 'Comuneros', 'Concejo de Bogotá', 'Consuelo', 'Corferias', 'Country Sur', 'De La Sabana', 'Distrito Grafiti', 'El Tiempo – Cámara de Comercio de Bogotá', 'Escuela Militar', 'Ferias', 'Flores – Areandina', 'Fucha', 'General Santander', 'Gobernación', 'Granja - Kr 77', 'Gratamira', 'Guatoque - Veraguas', 'Hortúa', 'Hospital', 'Humedal Córdoba', 'Héroes', 'La Campiña', 'La Castellana', 'La Despensa', 'Las Aguas - Centro Colombo Americano', 'Las Nieves', 'León XIII', 'Mandalay', 'Marly', 'Marsella', 'Mazurén', 'Minuto de Dios', 'Modelia', 'Molinos', 'Movistar Arena', 'Museo Nacional', 'Museo del Oro', 'NQS - Calle 30 S', 'NQS - Calle 38A S', 'Nariño', 'Niza - Calle 127', 'Normandía', 'Olaya', 'Paloquemao', 'Parque', 'Patio Bonito', 'Pepe Sierra', 'Perdomo', 'Policarpa', 'Polo – FINCOMERCIO', 'Portal 20 de Julio', 'Portal 80', 'Portal Américas', 'Portal El Dorado', 'Portal Norte', 'Portal Suba', 'Portal Sur - JFK Coop. Financiera', 'Portal Tunal', 'Portal Usme', 'Pradera', 'Prado', 'Puente Aranda', 'Puentelargo', 'Quinta Paredes', 'Quirigua', 'Quiroga', 'Restrepo', 'Ricaurte - CL 13', 'Ricaurte - NQS', 'Rionegro', 'SENA', 'Salitre - El Greco', 'San Bernardo', 'San Diego', 'San Facon Carrera 22', 'San Martín', 'San Mateo - CC Unisur', 'San Victorino', 'Santa Isabel', 'Santa Lucía', 'Sevillana', 'Socorro', 'Suba - AV. Boyacá', 'Suba - Calle 100', 'Suba - Calle 116', 'Suba - Calle 95', 'Suba - TV. 91', 'Tercer Milenio', 'Terminal', 'Terreros - Hospital Cardio Vascular', 'Toberin - Foundever', 'Transversal 86', 'Tygua - San José', 'Universidad Nacional', 'Universidades – CityU', 'Venecia', 'Virrey', 'Zona Industrial']
+2025-03-14 22:24:27,895 - app - INFO - Filtrando por tipos: ['Hurto', 'Hurto a mano armada', 'Cosquilleo', 'Ataque', 'Apertura de puertas', 'Sospechoso', 'Acoso']
+2025-03-14 22:24:27,970 - app - INFO - Total de incidentes encontrados: 100
+2025-03-14 22:24:28,180 - app - INFO - Respuesta JSON generada exitosamente
+2025-03-14 22:24:28,202 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:28] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=Hurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 25239 0.372988
+2025-03-14 22:24:28,205 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received packet MESSAGE data 0
+2025-03-14 22:24:28,205 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet MESSAGE data 0{"sid":"SvRveaxV2p-6b44vAAAo"}
+2025-03-14 22:24:28,206 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Received packet MESSAGE data 0
+2025-03-14 22:24:28,206 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet MESSAGE data 0{"sid":"HOioJ_QFZR_nli1IAAAp"}
+2025-03-14 22:24:28,206 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:28] "POST /socket.io/?EIO=4&transport=polling&t=PMMmZyU&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 258 0.000728
+2025-03-14 22:24:28,207 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:28] "GET /socket.io/?EIO=4&transport=polling&t=PMMmZyV&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 189 0.000107
+2025-03-14 22:24:28,207 - engineio.server - INFO - Invalid transport for session 90qXIwHpz-avpiDwAAAn
+2025-03-14 22:24:29,471 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:24:29,594 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:24:29,630 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:24:29,727 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:24:44,210 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Client is gone, closing socket
+2025-03-14 22:24:44,210 - engineio.server - INFO - yRwI8Y7PQpD5s7WLAAAf: Client is gone, closing socket
+2025-03-14 22:24:50,845 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Sending packet PING data None
+2025-03-14 22:24:50,845 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:50] "GET /socket.io/?EIO=4&transport=polling&t=PMMmZXe&sid=dmbEKvT5vkEMztQuAAAi HTTP/1.1" 200 157 25.006731
+2025-03-14 22:24:52,396 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet PING data None
+2025-03-14 22:24:52,460 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet PING data None
+2025-03-14 22:24:52,461 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:52] "GET /socket.io/?EIO=4&transport=polling&t=PMMma9l&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 157 24.068459
+2025-03-14 22:24:52,554 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received packet PONG data 
+2025-03-14 22:24:52,576 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Received packet PONG data 
+2025-03-14 22:24:52,576 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:24:52] "POST /socket.io/?EIO=4&transport=polling&t=PMMmg3Q&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 258 0.000458
+2025-03-14 22:24:54,597 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:24:54,728 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:24:54,751 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:24:54,809 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:25:17,562 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet PING data None
+2025-03-14 22:25:17,577 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet PING data None
+2025-03-14 22:25:17,578 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:25:17] "GET /socket.io/?EIO=4&transport=polling&t=PMMmg3R&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 157 25.003103
+2025-03-14 22:25:17,739 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received packet PONG data 
+2025-03-14 22:25:17,816 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Received packet PONG data 
+2025-03-14 22:25:17,817 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:25:17] "POST /socket.io/?EIO=4&transport=polling&t=PMMmmCq&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 258 0.000449
+2025-03-14 22:25:19,754 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:25:19,810 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:25:19,834 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:25:19,935 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:25:42,742 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet PING data None
+2025-03-14 22:25:42,817 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet PING data None
+2025-03-14 22:25:42,817 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:25:42] "GET /socket.io/?EIO=4&transport=polling&t=PMMmmCs&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 157 25.009493
+2025-03-14 22:25:42,929 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received packet PONG data 
+2025-03-14 22:25:42,947 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Received packet PONG data 
+2025-03-14 22:25:42,948 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:25:42] "POST /socket.io/?EIO=4&transport=polling&t=PMMmsMR&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 258 0.000475
+2025-03-14 22:25:44,836 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:25:44,917 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:25:44,936 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:25:45,039 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:26:07,938 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Sending packet PING data None
+2025-03-14 22:26:07,948 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet PING data None
+2025-03-14 22:26:07,949 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:26:07] "GET /socket.io/?EIO=4&transport=polling&t=PMMmsMS&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 157 25.002820
+2025-03-14 22:26:08,121 - engineio.server - INFO - Zv4RpZWekHovkYDoAAAm: Received packet PONG data 
+2025-03-14 22:26:08,138 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Received packet PONG data 
+2025-03-14 22:26:08,138 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:26:08] "POST /socket.io/?EIO=4&transport=polling&t=PMMmyW2&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 258 0.000472
+2025-03-14 22:26:09,919 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:26:10,031 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:26:10,040 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:26:10,129 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:26:33,139 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Sending packet PING data None
+2025-03-14 22:26:33,140 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:26:33] "GET /socket.io/?EIO=4&transport=polling&t=PMMmyW3&sid=90qXIwHpz-avpiDwAAAn HTTP/1.1" 200 157 25.002965
+2025-03-14 22:26:33,990 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Client is gone, closing socket
+2025-03-14 22:26:33,990 - engineio.server - INFO - dmbEKvT5vkEMztQuAAAi: Client is gone, closing socket
+2025-03-14 22:26:35,033 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Sending packet PING data None
+2025-03-14 22:26:35,113 - engineio.server - INFO - exd9TFYXkJhf520LAAAC: Received packet PONG data 
+2025-03-14 22:26:35,130 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:26:35,212 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:27:00,213 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:27:00,294 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:27:25,311 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:27:25,413 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:27:50,041 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Client is gone, closing socket
+2025-03-14 22:27:50,041 - engineio.server - INFO - 90qXIwHpz-avpiDwAAAn: Client is gone, closing socket
+2025-03-14 22:27:50,414 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:27:50,499 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:28:15,505 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:28:15,587 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:28:40,588 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:28:40,669 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:29:05,695 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Sending packet PING data None
+2025-03-14 22:29:05,780 - engineio.server - INFO - aWmX3OPW6nQ6HhkuAAAA: Received packet PONG data 
+2025-03-14 22:29:25,474 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:29:25,475 - app - INFO - Inicializando base de datos...
+2025-03-14 22:29:26,075 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 22:29:26,075 - app - INFO - Configurando login manager...
+2025-03-14 22:29:26,076 - app - INFO - Login manager configurado correctamente
+2025-03-14 22:29:26,077 - app - INFO - Importando e inicializando rutas...
+2025-03-14 22:29:26,229 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 22:29:26,230 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 22:29:26,230 - __main__ - INFO - Starting Flask application
+2025-03-14 22:29:26,230 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 22:29:26,230 - __main__ - INFO - Testing server configuration...
+2025-03-14 22:29:26,233 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 22:29:26,234 - __main__ - INFO - Test response status: 200
+2025-03-14 22:29:26,234 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 22:30:33,327 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:30:33,327 - app - INFO - Inicializando base de datos...
+2025-03-14 22:30:33,849 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 22:30:33,849 - app - INFO - Configurando login manager...
+2025-03-14 22:30:33,850 - app - INFO - Login manager configurado correctamente
+2025-03-14 22:30:33,850 - app - INFO - Importando e inicializando rutas...
+2025-03-14 22:30:33,907 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 22:30:33,907 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 22:30:33,907 - __main__ - INFO - Starting Flask application
+2025-03-14 22:30:33,907 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 22:30:33,907 - __main__ - INFO - Testing server configuration...
+2025-03-14 22:30:33,909 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 22:30:33,910 - __main__ - INFO - Test response status: 200
+2025-03-14 22:30:33,910 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 22:30:33,910 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:30:34,260 - app - INFO - Index endpoint accessed
+2025-03-14 22:30:34,261 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:34] "GET / HTTP/1.1" 302 383 0.001856
+2025-03-14 22:30:34,410 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:34] "GET /login HTTP/1.1" 200 7034 0.034164
+2025-03-14 22:30:34,524 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:34] "GET /static/css/custom.css HTTP/1.1" 304 216 0.007001
+2025-03-14 22:30:34,608 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:34] "GET /static/css/login.css HTTP/1.1" 304 216 0.001418
+2025-03-14 22:30:35,348 - app - INFO - Service Worker solicitado
+2025-03-14 22:30:35,351 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:30:35,353 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/service-worker.js HTTP/1.1" 304 251 0.006205
+2025-03-14 22:30:35,454 - app - INFO - Index endpoint accessed
+2025-03-14 22:30:35,458 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET / HTTP/1.1" 302 568 0.004653
+2025-03-14 22:30:35,468 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/css/notifications.css HTTP/1.1" 200 19214 0.002732
+2025-03-14 22:30:35,516 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001292
+2025-03-14 22:30:35,544 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /login HTTP/1.1" 200 6869 0.002708
+2025-03-14 22:30:35,605 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/js/notifications.js HTTP/1.1" 200 32053 0.001244
+2025-03-14 22:30:35,671 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1736 0.001066
+2025-03-14 22:30:35,688 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001256

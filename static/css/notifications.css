@@ -847,3 +847,156 @@ h5 {
         max-height: 150px;
     }
 }
+
+/* In-app notifications */
+.in-app-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    z-index: 1050;
+    min-width: 300px;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.in-app-notification.fade-out {
+    animation: slideOut 0.3s ease-in-out forwards;
+}
+
+.in-app-notification h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.in-app-notification p {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+.in-app-notification.notification-info {
+    background-color: #2196F3;
+}
+
+.in-app-notification.notification-success {
+    background-color: #4CAF50;
+}
+
+.in-app-notification.notification-warning {
+    background-color: #ff9800;
+}
+
+.in-app-notification.notification-error {
+    background-color: #f44336;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+
+/* Notification Toggle Styles */
+.notification-toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.notification-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.notification-toggle .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.notification-toggle .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.notification-toggle input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+.notification-toggle input:focus + .slider {
+    box-shadow: 0 0 1px #4CAF50;
+}
+
+.notification-toggle input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Container para notificaciones */
+#notificationContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+#notificationContainer > * {
+    pointer-events: auto;
+}
+
+/* Estilo para botones deshabilitados */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Toast Container */
+#toastContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

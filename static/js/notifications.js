@@ -1,22 +1,10 @@
 // Registrar el Service Worker cuando se carga la página
-if ('serviceWorker' in navigator && 'PushManager' in window) {
+if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/static/service-worker.js', {
             scope: '/'
         }).then(registration => {
             console.log('Service Worker registrado:', registration);
-
-            // Verificar si el navegador soporta notificaciones
-            if (!('Notification' in window)) {
-                console.log('Este navegador no soporta notificaciones');
-                return;
-            }
-
-            // Verificar si ya tenemos permiso
-            if (Notification.permission === 'granted') {
-                // Actualizar UI para mostrar que las notificaciones están activas
-                updateNotificationUI(true);
-            }
         }).catch(error => {
             console.error('Error al registrar el Service Worker:', error);
             showToast('Error al registrar el servicio de notificaciones', 'error');
@@ -33,37 +21,12 @@ let selectedEstaciones = [];
 let stationsData = []; // Almacenar datos de estaciones
 let deferredPrompt = null;
 
-// Función para verificar la compatibilidad de notificaciones
+// Función para verificar la compatibilidad de notificaciones (simplificada)
 async function checkNotificationCompatibility() {
     try {
-        // Verificar soporte básico de notificaciones
-        if (!('Notification' in window)) {
-            throw new Error('Este navegador no soporta notificaciones');
-        }
-
-        // Verificar soporte de Service Workers
+        // Verificar soporte básico de Service Workers
         if (!('serviceWorker' in navigator)) {
-            throw new Error('Este navegador no soporta Service Workers, necesarios para las notificaciones');
-        }
-
-        // Verificar si es un dispositivo móvil
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (isMobile) {
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isAndroid = /Android/.test(navigator.userAgent);
-            const isChrome = /Chrome/.test(navigator.userAgent);
-
-            // En iOS, verificar soporte de PushManager
-            if (isIOS) {
-                if (!('PushManager' in window)) {
-                    throw new Error('Tu dispositivo iOS no soporta notificaciones push. Para recibir notificaciones, usa la aplicación desde un navegador compatible o desde un computador.');
-                }
-            }
-
-            // En Android, verificar si estamos en Chrome
-            if (isAndroid && !isChrome) {
-                throw new Error('Para recibir notificaciones en Android, por favor usa Chrome');
-            }
+            throw new Error('Este navegador no soporta Service Workers');
         }
 
         // Verificar registro de Service Worker
@@ -78,6 +41,89 @@ async function checkNotificationCompatibility() {
             supported: false,
             reason: error.message
         };
+    }
+}
+
+// Función para mostrar notificaciones en la aplicación
+function showInAppNotification(title, message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `in-app-notification notification-${type}`;
+    notification.innerHTML = `
+        <h4>${title}</h4>
+        <p>${message}</p>
+    `;
+
+    const container = document.getElementById('notificationContainer') || document.body;
+    container.appendChild(notification);
+
+    // Auto-ocultar después de 5 segundos
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => notification.remove(), 500);
+    }, 5000);
+}
+
+// Función para solicitar permisos de notificación
+async function requestNotificationPermission() {
+    const activateBtn = document.getElementById('activateNotifications');
+    if (!activateBtn) return;
+
+    const originalText = activateBtn.textContent;
+    activateBtn.disabled = true;
+    activateBtn.textContent = 'Activando notificaciones...';
+
+    try {
+        // Verificar compatibilidad
+        const compatibility = await checkNotificationCompatibility();
+        if (!compatibility.supported) {
+            showToast(compatibility.reason, 'warning');
+            activateBtn.textContent = 'Notificaciones No Disponibles';
+            activateBtn.classList.remove('btn-primary', 'btn-success');
+            activateBtn.classList.add('btn-warning');
+            activateBtn.disabled = true;
+            return;
+        }
+
+        // Activar notificaciones dentro de la app
+        notificationsEnabled = true;
+        updateButtonStates(true);
+        showInAppNotification(
+            'Notificaciones Activadas',
+            'Recibirás alertas de incidentes según tus preferencias'
+        );
+
+        // Guardar preferencia
+        localStorage.setItem('notificationsEnabled', 'true');
+
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(error.message, 'error');
+        updateButtonStates(false);
+    } finally {
+        activateBtn.disabled = false;
+        activateBtn.textContent = originalText;
+    }
+}
+
+// Función para actualizar el estado visual de los botones
+function updateButtonStates(notificationsEnabled) {
+    const activateBtn = document.getElementById('activateNotifications');
+    const saveBtn = document.getElementById('savePreferences');
+
+    if (!activateBtn || !saveBtn) return;
+
+    if (notificationsEnabled) {
+        activateBtn.textContent = 'Notificaciones Activadas';
+        activateBtn.classList.remove('btn-primary', 'btn-danger');
+        activateBtn.classList.add('btn-success');
+        activateBtn.disabled = true;
+        saveBtn.disabled = false;
+    } else {
+        activateBtn.textContent = 'Activar Notificaciones';
+        activateBtn.classList.remove('btn-success', 'btn-danger');
+        activateBtn.classList.add('btn-primary');
+        activateBtn.disabled = false;
+        saveBtn.disabled = true;
     }
 }
 
@@ -101,108 +147,6 @@ function showInstallPrompt() {
     }
 }
 
-// Función para actualizar el estado visual de los botones
-function updateButtonStates(notificationsEnabled) {
-    const activateBtn = document.getElementById('activateNotifications');
-    const saveBtn = document.getElementById('savePreferences');
-
-    if (!activateBtn || !saveBtn) return;
-
-    if (Notification.permission === 'denied') {
-        activateBtn.textContent = 'Notificaciones Bloqueadas';
-        activateBtn.classList.remove('btn-primary', 'btn-success');
-        activateBtn.classList.add('btn-danger');
-        activateBtn.disabled = true;
-        saveBtn.disabled = true;
-        showToast('Notificaciones bloqueadas. Revisa la configuración del navegador', 'warning');
-    } else if (notificationsEnabled) {
-        activateBtn.textContent = 'Notificaciones Activadas';
-        activateBtn.classList.remove('btn-primary', 'btn-danger');
-        activateBtn.classList.add('btn-success');
-        activateBtn.disabled = true;
-        saveBtn.disabled = false;
-    } else {
-        activateBtn.textContent = 'Activar Notificaciones';
-        activateBtn.classList.remove('btn-success', 'btn-danger');
-        activateBtn.classList.add('btn-primary');
-        activateBtn.disabled = false;
-        saveBtn.disabled = true;
-    }
-}
-
-// Función para solicitar permisos de notificación
-async function requestNotificationPermission() {
-    const activateBtn = document.getElementById('activateNotifications');
-    if (!activateBtn) return;
-
-    const originalText = activateBtn.textContent;
-    activateBtn.disabled = true;
-    activateBtn.textContent = 'Solicitando permisos...';
-
-    try {
-        // Verificar compatibilidad primero
-        const compatibility = await checkNotificationCompatibility();
-        if (!compatibility.supported) {
-            showToast(compatibility.reason, 'warning');
-            activateBtn.textContent = 'Notificaciones No Soportadas';
-            activateBtn.classList.remove('btn-primary', 'btn-success');
-            activateBtn.classList.add('btn-warning');
-            activateBtn.disabled = true;
-            return;
-        }
-
-        // Obtener permiso de notificaciones
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            try {
-                const registration = await navigator.serviceWorker.ready;
-                // Intentar suscribir a notificaciones push
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
-                });
-
-                // Enviar suscripción al servidor
-                const response = await fetch('/push/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(subscription)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Error al registrar la suscripción');
-                }
-
-                notificationsEnabled = true;
-                updateButtonStates(true);
-                showToast('Notificaciones activadas correctamente', 'success');
-
-                // Mostrar notificación de prueba si es posible
-                if (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) || ('PushManager' in window)) {
-                    new Notification('Notificaciones Activadas', {
-                        body: 'Recibirás alertas de incidentes según tus preferencias',
-                        icon: '/static/icons/notification-icon.png'
-                    });
-                }
-            } catch (error) {
-                console.error('Error al suscribir notificaciones push:', error);
-                throw new Error('Error al configurar notificaciones push');
-            }
-        } else {
-            throw new Error('Permiso de notificaciones denegado');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message, 'error');
-        updateButtonStates(false);
-    } finally {
-        activateBtn.disabled = false;
-        activateBtn.textContent = originalText;
-    }
-}
-
 // Event listener para beforeinstallprompt
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
@@ -215,15 +159,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Inicializando notificaciones...');
 
-        // Verificar estado inicial de notificaciones
-        const compatibility = await checkNotificationCompatibility();
-        if (compatibility.supported) {
-            if (Notification.permission === 'granted') {
-                notificationsEnabled = true;
-                updateButtonStates(true);
-            }
-        } else {
-            showToast(compatibility.reason, 'warning');
+        // Verificar estado guardado de notificaciones
+        notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+        if (notificationsEnabled) {
+            updateButtonStates(true);
         }
 
         // Cargar datos iniciales y configurar listeners
@@ -235,7 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupFilterEventListeners();
         initializeSocketIO();
 
-        // Aplicar filtros iniciales basados en preferencias guardadas
+        // Aplicar filtros iniciales
         applyNotificationFilters();
         updateFilterVisuals();
 
@@ -501,21 +440,24 @@ function initializeSocketIO() {
         socket.on('connect', () => {
             console.log('Conectado a Socket.IO');
         });
+
         socket.on('disconnect', () => {
             console.log('Desconectado del servidor Socket.IO');
         });
         socket.on('new_incident', (data) => {
-            const settings = getNotificationSettings();
-            if (!settings.enabled) return;
-            if (shouldShowNotification(data)) {
+            if (notificationsEnabled && shouldShowNotification(data)) {
+                showInAppNotification(
+                    'Nuevo Incidente',
+                    `${capitalizeFirstLetter(data.incident_type)} en ${data.nearest_station}`,
+                    'warning'
+                );
                 addNotification(data);
                 updateNotificationBadge(++notificationCount);
-                showBrowserNotification(data);
             }
         });
     } catch (error) {
         console.error('Error inicializando Socket.IO:', error);
-        showToast('Error al inicializar Socket.IO', 'error');
+        showToast('Error al inicializar notificaciones en tiempo real', 'error');
     }
 }
 
@@ -655,16 +597,6 @@ function shouldShowNotification(incident) {
     return troncalMatch && stationMatch && typeMatch;
 }
 
-// Función para mostrar notificaciones del navegador
-function showBrowserNotification(incident) {
-    if (shouldShowBrowserNotifications()) {
-        new Notification('Nuevo Incidente', {
-            body: `${capitalizeFirstLetter(incident.incident_type)} en ${incident.nearest_station}`,
-            icon: '/static/icons/notification-icon.png'
-        });
-    }
-}
-
 
 // Función para actualizar el estado visual de los filtros
 function updateFilterVisuals() {
@@ -773,10 +705,6 @@ function sanitizeId(text) {
     return text.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
 }
 
-// Función para determinar si se deben mostrar notificaciones del navegador
-function shouldShowBrowserNotifications() {
-    return 'Notification' in window && Notification.permission === 'granted';
-}
 
 const notificationBadge = document.getElementById('notification-badge');
 const notificationsList = document.getElementById('notificationList');
@@ -787,27 +715,6 @@ function getSelectedValues(prefGroupId) {
     return Array.from(checkedBoxes).map(cb => cb.value);
 }
 
-// Verificar estado inicial de notificaciones
-function checkInitialNotificationState() {
-    if ('Notification' in window) {
-        notificationsEnabled = Notification.permission === 'granted';
-        updateNotificationUI();
-    }
-}
-
-// Actualizar UI basado en estado de notificaciones
-function updateNotificationUI() {
-    const activateBtn = document.getElementById('activateNotifications');
-    const saveBtn = document.getElementById('savePreferences');
-    if (activateBtn) {
-        activateBtn.textContent = notificationsEnabled ?
-            'Notificaciones Activadas' : 'Activar Notificaciones';
-        activateBtn.disabled = notificationsEnabled;
-    }
-    if (saveBtn) {
-        saveBtn.disabled = !notificationsEnabled;
-    }
-}
 
 // Función para actualizar el historial de notificaciones
 async function updateNotificationHistory() {
