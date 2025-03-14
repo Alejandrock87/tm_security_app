@@ -35,9 +35,27 @@ async function loadMapData(filters = {}) {
 
         let stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
-        const incidentsByStation = groupIncidentsByStation(incidents);
 
-        // Filter stations based on selected filters
+        // Agrupar incidentes por estación
+        const incidentsByStation = {};
+        incidents.forEach(incident => {
+            if (!incidentsByStation[incident.nearest_station]) {
+                incidentsByStation[incident.nearest_station] = {
+                    total: incident.station_total_incidents,
+                    incidents: [],
+                    types: {}
+                };
+            }
+            incidentsByStation[incident.nearest_station].incidents.push(incident);
+
+            // Contar tipos de incidentes
+            if (!incidentsByStation[incident.nearest_station].types[incident.incident_type]) {
+                incidentsByStation[incident.nearest_station].types[incident.incident_type] = 0;
+            }
+            incidentsByStation[incident.nearest_station].types[incident.incident_type]++;
+        });
+
+        // Aplicar filtros
         if (filters.troncal && filters.troncal !== 'all') {
             stations = stations.filter(station => station.troncal === filters.troncal);
         }
@@ -60,14 +78,14 @@ async function loadMapData(filters = {}) {
             });
         }
 
-        // Clear existing markers
+        // Limpiar marcadores existentes
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
         displayStations(stations, incidentsByStation);
         updateChart(incidents);
 
-        // Adjust map view to show all filtered stations
+        // Ajustar vista del mapa
         if (stations.length > 0) {
             const bounds = L.latLngBounds(stations.map(station => [station.latitude, station.longitude]));
             map.fitBounds(bounds, { padding: [50, 50] });
@@ -77,7 +95,6 @@ async function loadMapData(filters = {}) {
         console.error('Error loading map data:', error);
         clearMarkers();
         showError('No hay datos disponibles para los filtros seleccionados');
-        //  Add more robust error handling here to check for specific HTTP status codes and provide more user-friendly messages.
     }
 }
 
@@ -113,9 +130,12 @@ function displayStations(stations, incidentsByStation) {
                 className: 'custom-div-icon',
                 html: `<div style="background-color: ${markerColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center;">
                         <span style="color: white; font-weight: bold;">T</span>
+                      </div>
+                      <div style="background-color: rgba(255,255,255,0.9); padding: 2px 4px; border-radius: 3px; margin-top: 2px; text-align: center;">
+                        <span style="font-size: 10px; font-weight: bold;">${stationData.total}</span>
                       </div>`,
-                iconSize: [30, 30],
-                iconAnchor: [15, 15]
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             })
         })
         .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
@@ -127,12 +147,6 @@ function displayStations(stations, incidentsByStation) {
 
         markers.push(marker);
     });
-
-    function getMarkerColor(totalIncidents) {
-        if (totalIncidents >= 50) return '#ff0000'; // Alto - Rojo
-        if (totalIncidents >= 20) return '#ffa500'; // Medio - Naranja
-        return '#008000'; // Bajo - Verde
-    }
 }
 
 function calculateSecurityLevel(totalIncidents) {
@@ -235,6 +249,12 @@ function updateChart(incidents) {
             }
         }
     });
+}
+
+function getMarkerColor(totalIncidents) {
+    if (totalIncidents >= 50) return '#ff0000'; // Alto - Rojo
+    if (totalIncidents >= 20) return '#ffa500'; // Medio - Naranja
+    return '#008000'; // Bajo - Verde
 }
 
 async function loadTroncales() {

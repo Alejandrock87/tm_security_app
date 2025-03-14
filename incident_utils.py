@@ -12,16 +12,34 @@ def get_incidents_for_map():
     Obtiene todos los incidentes para mostrar en el mapa.
     Retorna solo la información necesaria para la visualización.
     """
-    incidents = Incident.query.all()
-    return [{
-        'id': incident.id,
-        'incident_type': incident.incident_type,
-        'description': incident.description,
-        'latitude': incident.latitude,
-        'longitude': incident.longitude,
-        'timestamp': incident.timestamp.isoformat(),
-        'nearest_station': incident.nearest_station
-    } for incident in incidents]
+    try:
+        # Obtener estadísticas por estación
+        station_stats = db.session.query(
+            Incident.nearest_station,
+            func.count(Incident.id).label('total')
+        ).group_by(Incident.nearest_station)\
+         .order_by(desc(func.count(Incident.id)))\
+         .all()
+
+        # Crear diccionario de conteo por estación
+        station_counts = {stat.nearest_station: stat.total for stat in station_stats}
+
+        # Obtener todos los incidentes
+        incidents = Incident.query.all()
+
+        return [{
+            'id': incident.id,
+            'incident_type': incident.incident_type,
+            'description': incident.description,
+            'latitude': incident.latitude,
+            'longitude': incident.longitude,
+            'timestamp': incident.timestamp.isoformat(),
+            'nearest_station': incident.nearest_station,
+            'station_total_incidents': station_counts.get(incident.nearest_station, 0)
+        } for incident in incidents]
+    except Exception as e:
+        logging.error(f"Error in get_incidents_for_map: {str(e)}", exc_info=True)
+        return []
 
 def get_incident_statistics(date_from=None, date_to=None):
     """
