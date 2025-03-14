@@ -62,8 +62,34 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Modal de Notificaciones -->
     {% if current_user.is_authenticated and not request.endpoint in ['login', 'register'] %}
+    <!-- Navbar Inferior Fijo (~60px) -->
+    <nav class="navbar bottom-nav">
+        <div class="container-fluid d-flex justify-content-around">
+            <a class="nav-link text-center" href="{{ url_for('home') }}">
+                <i class="fas fa-home fa-lg"></i>
+                <span class="d-block small">Inicio</span>
+            </a>
+            <a class="nav-link text-center" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-map-marked-alt fa-lg"></i>
+                <span class="d-block small">Mapa</span>
+            </a>
+            <a class="nav-link text-center" href="{{ url_for('report_incident') }}">
+                <i class="fas fa-exclamation-triangle fa-lg"></i>
+                <span class="d-block small">Reportar</span>
+            </a>
+            <a class="nav-link text-center" href="{{ url_for('predictions') }}">
+                <i class="fas fa-brain fa-lg"></i>
+                <span class="d-block small">Predicciones</span>
+            </a>
+            <a class="nav-link text-center" href="{{ url_for('statistics') }}">
+                <i class="fas fa-chart-bar fa-lg"></i>
+                <span class="d-block small">Stats</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificaciones -->
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content bg-dark">
