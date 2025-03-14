@@ -53,7 +53,7 @@ function updateIncidentTypesList(incidentTypes) {
             .map(([type, count]) => `
                 <div class="list-item">
                     <span class="item-name">${type}</span>
-                    <span class="item-count">${count}</span>
+                    <span class="item-count">${parseInt(count)}</span>
                 </div>
             `).join('');
     }
@@ -65,11 +65,11 @@ function updateStationsList(topStations) {
     const stationsList = document.getElementById('stationsList');
     if (stationsList) {
         stationsList.innerHTML = Object.entries(topStations)
-            .sort(([,a], [,b]) => b - a)
-            .map(([station, count]) => `
+            .sort(([,a], [,b]) => b.total - a.total)
+            .map(([station, stats]) => `
                 <div class="list-item">
                     <span class="item-name">${station}</span>
-                    <span class="item-count">${count}</span>
+                    <span class="item-count">${parseInt(stats.total)}</span>
                 </div>
             `).join('');
     }
