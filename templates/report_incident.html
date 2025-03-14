@@ -129,7 +129,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <script>
-      // --- Script content remains unchanged ---
       let reportMap = null;
       let reportUserMarker = null;
       let reportNearestStationMarker = null;
@@ -148,10 +147,10 @@
       }
 
       function getStationSecurityColor(count) {
-          if (!count && count !== 0) return '#feca57'; // Color por defecto si no hay datos
-          if (count >= 50) return '#ff0000';  // Alto
-          if (count >= 20) return '#ffa500'; // Medio
-          return '#008000';                  // Bajo
+          if (!count && count !== 0) return '#feca57'; 
+          if (count >= 50) return '#ff0000';  
+          if (count >= 20) return '#ffa500'; 
+          return '#008000';                  
       }
 
       function handleStationChange(stationName) {
@@ -212,7 +211,6 @@
           const submitButton = document.getElementById('submit-button');
           const nearestStationInfo = document.getElementById('nearest-station-info');
 
-          // Establecer fecha y hora actuales
           const now = new Date();
           const dateInput = document.querySelector('input[name="incident_date"]');
           const timeInput = document.querySelector('input[name="incident_time"]');
@@ -224,7 +222,6 @@
           const minutes = String(now.getMinutes()).padStart(2, '0');
           timeInput.value = `${hours}:${minutes}`;
 
-          // Inicializar mapa con manejo de errores mejorado
           try {
               reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
               L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -234,7 +231,7 @@
               console.error('Error initializing map:', error);
               locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al cargar el mapa. Por favor, recargue la página.';
               locationStatus.classList.remove('alert-info');
-              location.classList.add('alert-danger');
+              locationStatus.classList.add('alert-danger');
               return;
           }
 
