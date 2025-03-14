@@ -1,5 +1,5 @@
-// Establecer conexión con Socket.IO
-let socket = io();
+// Establecer conexión con Socket.IO (declaración en base.html)
+//let socket = io(); // Eliminada porque ya está declarada globalmente
 let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
 let selectedFilter = 'all';
 let selectedTroncales = [];
