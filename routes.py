@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, jsonify, json, session, send_from_directory
+from flask import render_template, flash, redirect, url_for, request, jsonify, json, session
 from flask_login import login_user, logout_user, current_user, login_required
 import logging
 from datetime import datetime, timedelta
@@ -15,20 +15,6 @@ from sqlalchemy import func
 from sqlalchemy.sql import desc
 
 def init_routes(app):
-    # Add route for service worker
-    @app.route('/static/service-worker.js')
-    def service_worker():
-        try:
-            app.logger.info("Service Worker solicitado")
-            response = send_from_directory('static', 'service-worker.js')
-            # Add header to allow root scope for service worker
-            response.headers['Service-Worker-Allowed'] = '/'
-            app.logger.info("Service Worker enviado con header Service-Worker-Allowed")
-            return response
-        except Exception as e:
-            app.logger.error(f"Error al servir Service Worker: {str(e)}")
-            raise
-
     @app.route('/test')
     def test():
         app.logger.info("Test endpoint accessed")

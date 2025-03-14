@@ -4,7 +4,6 @@ monkey.patch_all()
 import os
 import logging
 import socket
-from flask_cors import CORS
 
 # Configurar logging
 logging.basicConfig(
@@ -31,16 +30,6 @@ def check_port_availability(port):
 # Importar la aplicación Flask y SocketIO después del monkey patch
 from app import app, socketio
 
-# Configurar CORS permitiendo todos los orígenes
-CORS(app, resources={
-    r"/*": {
-        "origins": "*",
-        "allow_headers": "*",
-        "expose_headers": "*",
-        "supports_credentials": True
-    }
-})
-
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
@@ -54,7 +43,6 @@ if __name__ == '__main__':
 
         # Iniciar el servidor con SocketIO
         logger.info("Starting SocketIO server...")
-        socketio.init_app(app, cors_allowed_origins="*")
         socketio.run(
             app,
             host='0.0.0.0',
