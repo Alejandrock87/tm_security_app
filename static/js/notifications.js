@@ -1,3 +1,28 @@
+// Registrar el Service Worker cuando se carga la página
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/js/service-worker.js', {
+            scope: '/'
+        }).then(registration => {
+            console.log('Service Worker registrado:', registration);
+
+            // Verificar si el navegador soporta notificaciones
+            if (!('Notification' in window)) {
+                console.log('Este navegador no soporta notificaciones');
+                return;
+            }
+
+            // Verificar si ya tenemos permiso
+            if (Notification.permission === 'granted') {
+                // Actualizar UI para mostrar que las notificaciones están activas
+                updateNotificationUI(true);
+            }
+        }).catch(error => {
+            console.error('Error al registrar el Service Worker:', error);
+        });
+    });
+}
+
 // Variables globales
 let notificationsEnabled = false;
 let socket = null;
@@ -6,8 +31,9 @@ let selectedTroncales = [];
 let selectedEstaciones = [];
 let stationsData = []; // Almacenar datos de estaciones
 
+// Función para verificar la compatibilidad de notificaciones
 function checkNotificationCompatibility() {
-    // Verificar si el navegador soporta notificaciones
+    // Verificar soporte básico de notificaciones
     if (!('Notification' in window)) {
         return {
             supported: false,
@@ -15,26 +41,39 @@ function checkNotificationCompatibility() {
         };
     }
 
+    // Verificar soporte de Service Workers
+    if (!('serviceWorker' in navigator)) {
+        return {
+            supported: false,
+            reason: 'Este navegador no soporta Service Workers, necesarios para las notificaciones'
+        };
+    }
+
     // Verificar si es un dispositivo móvil
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
-        // Verificar si es iOS
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        if (isIOS) {
+
+        // En iOS, verificar soporte de PushManager antes de rechazar
+        if (isIOS && !('PushManager' in window)) {
             return {
                 supported: false,
-                reason: 'Las notificaciones no están soportadas en iOS. Por favor, usa un navegador de escritorio.'
+                reason: 'Tu dispositivo iOS no soporta notificaciones push. Para recibir notificaciones, usa la aplicación desde un navegador compatible o desde un computador.'
             };
         }
-        // En Android, verificar si el navegador soporta service workers
-        if (!('serviceWorker' in navigator)) {
+
+        // En Android, verificar si estamos en Chrome
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isChrome = /Chrome/.test(navigator.userAgent);
+        if (isAndroid && !isChrome) {
             return {
                 supported: false,
-                reason: 'Tu navegador móvil no soporta las notificaciones. Por favor, usa Chrome para Android o un navegador de escritorio.'
+                reason: 'Para recibir notificaciones en Android, por favor usa Chrome'
             };
         }
     }
 
+    // Si llegamos aquí, el dispositivo soporta notificaciones
     return {
         supported: true
     };
@@ -316,29 +355,53 @@ async function requestNotificationPermission() {
             return;
         }
 
-        if (Notification.permission === 'denied') {
-            activateBtn.textContent = 'Notificaciones Bloqueadas';
-            activateBtn.classList.remove('btn-primary', 'btn-success');
-            activateBtn.classList.add('btn-danger');
-            showToast('Por favor, desbloquea las notificaciones en la configuración de tu navegador', 'warning');
-            return;
-        }
-
         activateBtn.textContent = 'Solicitando permisos...';
         activateBtn.disabled = true;
 
+        // Registrar Service Worker si no está registrado
+        if (!('serviceWorker' in navigator)) {
+            throw new Error('Service Worker no soportado');
+        }
+
+        const registration = await navigator.serviceWorker.ready;
+
+        // Solicitar permiso de notificaciones
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
-            notificationsEnabled = true;
-            updateButtonStates(true);
-            showToast('Notificaciones activadas correctamente', 'success');
-
-            // Solo mostrar notificación de prueba en dispositivos compatibles
-            if (!(/iPad|iPhone|iPod/.test(navigator.userAgent))) {
-                new Notification('Notificaciones Activadas', {
-                    body: 'Recibirás alertas de incidentes según tus preferencias',
-                    icon: '/static/icons/notification-icon.png'
+            try {
+                // Intentar suscribir a notificaciones push
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
                 });
+
+                // Enviar suscripción al servidor
+                const response = await fetch('/push/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(subscription)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al registrar la suscripción');
+                }
+
+                notificationsEnabled = true;
+                updateButtonStates(true);
+                showToast('Notificaciones activadas correctamente', 'success');
+
+                // Mostrar notificación de prueba si es posible
+                if (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) || ('PushManager' in window)) {
+                    new Notification('Notificaciones Activadas', {
+                        body: 'Recibirás alertas de incidentes según tus preferencias',
+                        icon: '/static/icons/notification-icon.png'
+                    });
+                }
+            } catch (error) {
+                console.error('Error al suscribir notificaciones push:', error);
+                throw new Error('Error al configurar notificaciones push');
             }
         } else {
             throw new Error('Permiso de notificaciones denegado');
@@ -349,6 +412,7 @@ async function requestNotificationPermission() {
         updateButtonStates(false);
     } finally {
         activateBtn.disabled = false;
+        activateBtn.textContent = originalText;
     }
 }
 
@@ -724,86 +788,6 @@ function updateNotificationUI() {
     }
     if (saveBtn) {
         saveBtn.disabled = !notificationsEnabled;
-    }
-}
-
-// Inicializar Service Worker sin solicitar permisos
-async function initializeServiceWorker() {
-    try {
-        if ('serviceWorker' in navigator) {
-            const registration = await navigator.serviceWorker.register('/service-worker.js');
-            console.log('Service Worker registrado:', registration);
-            checkInitialNotificationState();
-            loadPreferences();
-            setupFilterEventListeners();
-            return registration;
-        }
-    } catch (error) {
-        console.error('Error al registrar Service Worker:', error);
-        showToast("Error al inicializar las notificaciones", "error");
-    }
-}
-
-// Verificar estado actual de notificaciones
-function checkNotificationStatus() {
-    if ('Notification' in window) {
-        notificationsEnabled = Notification.permission === 'granted';
-        updateUI();
-    }
-}
-
-// Actualizar UI basado en el estado
-function updateUI() {
-    const activateBtn = document.getElementById('activateNotifications');
-    const preferencesBtn = document.getElementById('savePreferences');
-    if (activateBtn) {
-        activateBtn.textContent = notificationsEnabled ?
-            'Notificaciones Activadas' : 'Activar Notificaciones';
-        activateBtn.disabled = notificationsEnabled;
-    }
-    if (preferencesBtn) {
-        preferencesBtn.disabled = !notificationsEnabled;
-    }
-}
-
-
-// Función para registrar el Service Worker
-async function registerServiceWorker() {
-    try {
-        if (!('serviceWorker' in navigator)) {
-            throw new Error('Service Worker no soportado');
-        }
-        const registration = await navigator.serviceWorker.register('/service-worker.js');
-        console.log('Service Worker registrado:', registration);
-        return registration;
-    } catch (error) {
-        console.error('Error al registrar Service Worker:', error);
-        throw error;
-    }
-}
-
-// Función para suscribir a notificaciones push
-async function subscribeToPushNotifications() {
-    try {
-        const registration = await navigator.serviceWorker.ready;
-        const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
-        });
-        const response = await fetch('/push/subscribe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(subscription)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to subscribe to push notifications');
-        }
-        return subscription;
-    } catch (error) {
-        console.error('Error en suscripción push:', error);
-        throw error;
     }
 }
 

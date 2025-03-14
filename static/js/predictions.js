@@ -1,3 +1,146 @@
+// Importar la función de compatibilidad
+async function checkNotificationCompatibility() {
+    // Verificar soporte básico de notificaciones
+    if (!('Notification' in window)) {
+        return {
+            supported: false,
+            reason: 'Este navegador no soporta notificaciones'
+        };
+    }
+
+    // Verificar soporte de Service Workers
+    if (!('serviceWorker' in navigator)) {
+        return {
+            supported: false,
+            reason: 'Este navegador no soporta Service Workers, necesarios para las notificaciones'
+        };
+    }
+
+    // Verificar si es un dispositivo móvil
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+        // En iOS, verificar soporte de PushManager antes de rechazar
+        if (isIOS && !('PushManager' in window)) {
+            return {
+                supported: false,
+                reason: 'Tu dispositivo iOS no soporta notificaciones push. Para recibir notificaciones, usa la aplicación desde un navegador compatible o desde un computador.'
+            };
+        }
+
+        // En Android, verificar si estamos en Chrome
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isChrome = /Chrome/.test(navigator.userAgent);
+        if (isAndroid && !isChrome) {
+            return {
+                supported: false,
+                reason: 'Para recibir notificaciones en Android, por favor usa Chrome'
+            };
+        }
+    }
+
+    return {
+        supported: true
+    };
+}
+
+// Función para inicializar notificaciones
+async function initializeNotifications() {
+    const notificationToggle = document.getElementById('notificationToggle');
+
+    // Verificar compatibilidad primero
+    const compatibility = await checkNotificationCompatibility();
+    if (!compatibility.supported) {
+        if (notificationToggle) {
+            notificationToggle.checked = false;
+            notificationToggle.disabled = true;
+            notificationToggle.parentElement.title = compatibility.reason;
+        }
+        return;
+    }
+
+    // Si las notificaciones ya están habilitadas, activar el toggle
+    if (Notification.permission === 'granted') {
+        if (notificationToggle) {
+            notificationToggle.checked = true;
+        }
+    }
+
+    // Configurar el evento change del toggle
+    if (notificationToggle) {
+        notificationToggle.addEventListener('change', async function() {
+            try {
+                if (this.checked) {
+                    // Registrar Service Worker si no está registrado
+                    if (!('serviceWorker' in navigator)) {
+                        throw new Error('Service Worker no soportado');
+                    }
+
+                    const registration = await navigator.serviceWorker.ready;
+
+                    // Solicitar permiso de notificaciones
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        try {
+                            // Intentar suscribir a notificaciones push
+                            const subscription = await registration.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
+                            });
+
+                            // Enviar suscripción al servidor
+                            const response = await fetch('/push/subscribe', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(subscription)
+                            });
+
+                            if (!response.ok) {
+                                throw new Error('Error al registrar la suscripción');
+                            }
+
+                            // Emitir evento de suscripción
+                            socket.emit('subscribe_notifications', {
+                                userId: getUserId(),
+                                filter: {
+                                    type: selectedFilter,
+                                    troncales: selectedTroncales,
+                                    estaciones: selectedEstaciones
+                                }
+                            });
+
+                            // Mostrar notificación de prueba si es posible
+                            if (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) || ('PushManager' in window)) {
+                                new Notification('Alertas Activadas', {
+                                    body: 'Recibirás alertas de predicciones según tus preferencias',
+                                    icon: '/static/icons/notification-icon.png'
+                                });
+                            }
+                        } catch (error) {
+                            console.error('Error al suscribir notificaciones push:', error);
+                            this.checked = false;
+                            throw new Error('Error al configurar notificaciones push');
+                        }
+                    } else {
+                        this.checked = false;
+                        throw new Error('Permiso de notificaciones denegado');
+                    }
+                } else {
+                    // Desuscribirse de notificaciones
+                    socket.emit('unsubscribe_notifications', { userId: getUserId() });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                this.checked = false;
+                alert(error.message || 'Error al configurar las notificaciones');
+            }
+        });
+    }
+}
+
 // Establecer conexión con Socket.IO
 let socket = io();
 let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
@@ -9,7 +152,7 @@ let stationsData = []; // Almacenar datos de estaciones
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Inicializando página de predicciones...');
     initializeFilters();
-    initializeNotifications();
+    initializeNotifications();  // Inicializar notificaciones
     loadAndCheckPredictions();
     setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
 });
@@ -192,44 +335,6 @@ function getSelectedValues(type) {
     return Array.from(checkboxes).map(cb => cb.value);
 }
 
-// Inicializar notificaciones
-function initializeNotifications() {
-    const notificationToggle = document.getElementById('notificationToggle');
-
-    if (notificationPermission) {
-        notificationToggle.checked = true;
-    }
-
-    notificationToggle.addEventListener('change', async function() {
-        if (this.checked) {
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    notificationPermission = true;
-                    localStorage.setItem('notificationPermission', 'true');
-                    socket.emit('subscribe_notifications', {
-                        userId: getUserId(),
-                        filter: {
-                            type: selectedFilter,
-                            troncales: selectedTroncales,
-                            estaciones: selectedEstaciones
-                        }
-                    });
-                } else {
-                    notificationToggle.checked = false;
-                    alert('Para recibir notificaciones, necesitas permitirlas en la configuración de tu navegador');
-                }
-            } catch (error) {
-                console.error('Error al solicitar permisos:', error);
-                notificationToggle.checked = false;
-            }
-        } else {
-            notificationPermission = false;
-            localStorage.setItem('notificationPermission', 'false');
-            socket.emit('unsubscribe_notifications', { userId: getUserId() });
-        }
-    });
-}
 
 // Función para filtrar predicciones
 function filterPredictions(predictions) {
