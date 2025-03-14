@@ -1,13 +1,11 @@
-from gevent import monkey
-monkey.patch_all()
-
 import os
 import logging
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_login import LoginManager
 from database import init_db, db
 from flask_caching import Cache
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 # Configurar logging
 logging.basicConfig(
@@ -31,6 +29,15 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
     PERMANENT_SESSION_LIFETIME=1800
 )
+
+# Configurar CORS con opciones más permisivas para desarrollo
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"]
+    }
+})
 
 # Configurar cache
 cache = Cache(config={
@@ -91,6 +98,12 @@ except Exception as e:
 def load_user(user_id):
     from models import User
     return User.query.get(int(user_id))
+
+@app.route('/health')
+def health():
+    """Endpoint simple para verificar el estado del servidor"""
+    logger.info(f"Health check endpoint accessed from IP: {request.remote_addr}")
+    return jsonify({"status": "ok", "message": "Server is running"}), 200
 
 # Importar e inicializar rutas
 try:

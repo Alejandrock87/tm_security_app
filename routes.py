@@ -14,12 +14,6 @@ from database import db
 from sqlalchemy import func
 
 def init_routes(app):
-    @app.route('/health')
-    def health():
-        """Endpoint simple para verificar el estado del servidor"""
-        app.logger.info("Health check endpoint accessed")
-        return jsonify({"status": "ok", "message": "Server is running"}), 200
-
     @app.route('/test')
     def test():
         app.logger.info("Test endpoint accessed")
