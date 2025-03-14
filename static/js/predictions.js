@@ -1,144 +1,169 @@
 // Importar la función de compatibilidad
 async function checkNotificationCompatibility() {
-    // Verificar soporte básico de notificaciones
-    if (!('Notification' in window)) {
-        return {
-            supported: false,
-            reason: 'Este navegador no soporta notificaciones'
-        };
-    }
-
-    // Verificar soporte de Service Workers
-    if (!('serviceWorker' in navigator)) {
-        return {
-            supported: false,
-            reason: 'Este navegador no soporta Service Workers, necesarios para las notificaciones'
-        };
-    }
-
-    // Verificar si es un dispositivo móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-        // En iOS, verificar soporte de PushManager antes de rechazar
-        if (isIOS && !('PushManager' in window)) {
-            return {
-                supported: false,
-                reason: 'Tu dispositivo iOS no soporta notificaciones push. Para recibir notificaciones, usa la aplicación desde un navegador compatible o desde un computador.'
-            };
+    try {
+        // Verificar soporte básico de notificaciones
+        if (!('Notification' in window)) {
+            throw new Error('Este navegador no soporta notificaciones');
         }
 
-        // En Android, verificar si estamos en Chrome
-        const isAndroid = /Android/.test(navigator.userAgent);
-        const isChrome = /Chrome/.test(navigator.userAgent);
-        if (isAndroid && !isChrome) {
-            return {
-                supported: false,
-                reason: 'Para recibir notificaciones en Android, por favor usa Chrome'
-            };
+        // Verificar soporte de Service Workers
+        if (!('serviceWorker' in navigator)) {
+            throw new Error('Este navegador no soporta Service Workers, necesarios para las notificaciones');
         }
-    }
 
-    return {
-        supported: true
-    };
+        // Verificar si es un dispositivo móvil
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+            // En iOS, verificar soporte de PushManager antes de rechazar
+            if (isIOS && !('PushManager' in window)) {
+                throw new Error('Tu dispositivo iOS no soporta notificaciones push. Para recibir notificaciones, usa la aplicación desde un navegador compatible o desde un computador.');
+            }
+
+            // En Android, verificar si estamos en Chrome
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const isChrome = /Chrome/.test(navigator.userAgent);
+            if (isAndroid && !isChrome) {
+                throw new Error('Para recibir notificaciones en Android, por favor usa Chrome');
+            }
+        }
+
+        // Verificar registro de Service Worker
+        const registration = await navigator.serviceWorker.ready;
+        if (!registration) {
+            throw new Error('Service Worker no está registrado');
+        }
+
+        return { supported: true };
+    } catch (error) {
+        return {
+            supported: false,
+            reason: error.message
+        };
+    }
 }
 
 // Función para inicializar notificaciones
 async function initializeNotifications() {
     const notificationToggle = document.getElementById('notificationToggle');
+    console.log('Inicializando notificaciones en predictions.js...');
+
+    // Verificar que el toggle existe
+    if (!notificationToggle) {
+        console.error('Toggle de notificaciones no encontrado');
+        return;
+    }
 
     // Verificar compatibilidad primero
     const compatibility = await checkNotificationCompatibility();
+    console.log('Resultado de compatibilidad:', compatibility);
+
     if (!compatibility.supported) {
-        if (notificationToggle) {
-            notificationToggle.checked = false;
-            notificationToggle.disabled = true;
-            notificationToggle.parentElement.title = compatibility.reason;
-        }
+        notificationToggle.checked = false;
+        notificationToggle.disabled = true;
+        notificationToggle.parentElement.title = compatibility.reason;
+        showToast(compatibility.reason, 'warning');
         return;
     }
 
     // Si las notificaciones ya están habilitadas, activar el toggle
     if (Notification.permission === 'granted') {
-        if (notificationToggle) {
-            notificationToggle.checked = true;
-        }
+        notificationToggle.checked = true;
+        notificationPermission = true;
     }
 
     // Configurar el evento change del toggle
-    if (notificationToggle) {
-        notificationToggle.addEventListener('change', async function() {
-            try {
-                if (this.checked) {
-                    // Registrar Service Worker si no está registrado
-                    if (!('serviceWorker' in navigator)) {
-                        throw new Error('Service Worker no soportado');
-                    }
+    notificationToggle.addEventListener('change', async function() {
+        try {
+            if (this.checked) {
+                // Registrar Service Worker si no está registrado
+                const registration = await navigator.serviceWorker.ready;
 
-                    const registration = await navigator.serviceWorker.ready;
+                // Solicitar permiso de notificaciones
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    try {
+                        // Intentar suscribir a notificaciones push
+                        const subscription = await registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
+                        });
 
-                    // Solicitar permiso de notificaciones
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        try {
-                            // Intentar suscribir a notificaciones push
-                            const subscription = await registration.pushManager.subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: await (await fetch('/api/vapid-public-key')).text()
-                            });
+                        // Enviar suscripción al servidor
+                        const response = await fetch('/push/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(subscription)
+                        });
 
-                            // Enviar suscripción al servidor
-                            const response = await fetch('/push/subscribe', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(subscription)
-                            });
-
-                            if (!response.ok) {
-                                throw new Error('Error al registrar la suscripción');
-                            }
-
-                            // Emitir evento de suscripción
-                            socket.emit('subscribe_notifications', {
-                                userId: getUserId(),
-                                filter: {
-                                    type: selectedFilter,
-                                    troncales: selectedTroncales,
-                                    estaciones: selectedEstaciones
-                                }
-                            });
-
-                            // Mostrar notificación de prueba si es posible
-                            if (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) || ('PushManager' in window)) {
-                                new Notification('Alertas Activadas', {
-                                    body: 'Recibirás alertas de predicciones según tus preferencias',
-                                    icon: '/static/icons/notification-icon.png'
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Error al suscribir notificaciones push:', error);
-                            this.checked = false;
-                            throw new Error('Error al configurar notificaciones push');
+                        if (!response.ok) {
+                            throw new Error('Error al registrar la suscripción');
                         }
-                    } else {
+
+                        notificationPermission = true;
+                        localStorage.setItem('notificationPermission', 'true');
+
+                        // Emitir evento de suscripción
+                        socket.emit('subscribe_notifications', {
+                            userId: getUserId(),
+                            filter: {
+                                type: selectedFilter,
+                                troncales: selectedTroncales,
+                                estaciones: selectedEstaciones
+                            }
+                        });
+
+                        showToast('Notificaciones activadas correctamente', 'success');
+
+                        // Mostrar notificación de prueba si es posible
+                        if (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) || ('PushManager' in window)) {
+                            new Notification('Alertas Activadas', {
+                                body: 'Recibirás alertas de predicciones según tus preferencias',
+                                icon: '/static/icons/notification-icon.png'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error al suscribir notificaciones push:', error);
                         this.checked = false;
-                        throw new Error('Permiso de notificaciones denegado');
+                        throw new Error('Error al configurar notificaciones push');
                     }
                 } else {
-                    // Desuscribirse de notificaciones
-                    socket.emit('unsubscribe_notifications', { userId: getUserId() });
+                    this.checked = false;
+                    throw new Error('Permiso de notificaciones denegado');
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                this.checked = false;
-                alert(error.message || 'Error al configurar las notificaciones');
+            } else {
+                // Desuscribirse de notificaciones
+                notificationPermission = false;
+                localStorage.setItem('notificationPermission', 'false');
+                socket.emit('unsubscribe_notifications', { userId: getUserId() });
+                showToast('Notificaciones desactivadas', 'info');
             }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            this.checked = false;
+            showToast(error.message || 'Error al configurar las notificaciones', 'error');
+        }
+    });
+}
+
+// Función para mostrar mensajes toast
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+
+    const container = document.getElementById('toastContainer');
+    if (!container) {
+        const newContainer = document.createElement('div');
+        newContainer.id = 'toastContainer';
+        document.body.appendChild(newContainer);
     }
+
+    document.getElementById('toastContainer').appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
 // Establecer conexión con Socket.IO

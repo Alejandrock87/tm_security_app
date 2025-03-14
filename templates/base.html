@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1e293b">
@@ -18,6 +18,13 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-192x192.png') }}">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icons/icon-192x192.png') }}">
     <link rel="icon" type="image/png" sizes="512x512" href="{{ url_for('static', filename='icons/icon-512x512.png') }}">
+
+    <!-- iOS Splash Screen Images -->
+    <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='icons/splash-640x1136.png') }}" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='icons/splash-750x1334.png') }}" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='icons/splash-1242x2208.png') }}" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='icons/splash-1125x2436.png') }}" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='icons/splash-1536x2048.png') }}" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio: 2)">
 
     <title>{{ title if title else 'Transmilenio Security' }}</title>
 
@@ -161,6 +168,14 @@
                 }
             });
         }
+
+        // Prompt de instalación PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Mostrar un botón o UI para instalar la PWA si lo deseas
+        });
 
         // Verificar si se está ejecutando como PWA
         if (window.matchMedia('(display-mode: standalone)').matches) {
