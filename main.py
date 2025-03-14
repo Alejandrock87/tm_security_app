@@ -4,6 +4,7 @@ monkey.patch_all()
 import os
 import logging
 import socket
+from flask_cors import CORS
 
 # Configurar logging
 logging.basicConfig(
@@ -30,6 +31,9 @@ def check_port_availability(port):
 # Importar la aplicación Flask y SocketIO después del monkey patch
 from app import app, socketio
 
+# Configurar CORS
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
@@ -49,7 +53,8 @@ if __name__ == '__main__':
             port=port,
             debug=True,
             use_reloader=False,
-            log_output=True
+            log_output=True,
+            cors_allowed_origins="*"  # Permitir conexiones WebSocket desde cualquier origen
         )
     except Exception as e:
         logger.error(f"Failed to start server: {str(e)}", exc_info=True)
