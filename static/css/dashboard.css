@@ -2,7 +2,7 @@
 .dashboard-content {
   background-color: #feca57;
   margin: 0; 
-  padding-bottom: 1rem; /* Espacio inferior si deseas */
+  padding-bottom: 1rem;
 }
 
 /* Contenedor interno */
@@ -72,6 +72,10 @@
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* Mapa ocupa casi todo el alto */
@@ -196,24 +200,121 @@
   height: 100%;
 }
 
+/* Estilos para el mapa y sus elementos */
+.map-card {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#map {
+  flex: 1;
+  width: 100%;
+  border-radius: 12px;
+  background-color: #ffffff;
+  margin-bottom: 0rem;
+}
+
+/* Estilos para los popups de las estaciones */
+.station-popup {
+  padding: 10px;
+  max-width: 250px;
+}
+
+.station-popup h3 {
+  margin: 0 0 10px 0;
+  color: #2d3436;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.station-popup p {
+  margin: 5px 0;
+  color: #2d3436;
+  font-size: 14px;
+}
+
+.station-popup h4 {
+  margin: 10px 0 5px 0;
+  color: #2d3436;
+  font-size: 14px;
+}
+
+.security-level-alto {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.security-level-medio {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.security-level-bajo {
+  color: #008000;
+  font-weight: bold;
+}
+
+.total-high {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.total-medium {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.total-low {
+  color: #008000;
+  font-weight: bold;
+}
+
+.incident-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+
+.incident-list li {
+  margin: 3px 0;
+  padding: 2px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Estilos para los marcadores personalizados */
+.custom-div-icon {
+  background: none;
+  border: none;
+}
+
 /* Responsivo */
 @media (max-width: 768px) {
   .map-card {
-    height: 350px; /* un poco menor en móvil */
+    height: 350px;
   }
-  .dashboard-row {
-    flex-direction: column;
+
+  .station-popup {
+    max-width: 200px;
   }
-  .dashboard-left-col, .dashboard-right-col {
-    flex: 1 1 100%;
+
+  .station-popup h3 {
+    font-size: 14px;
   }
-  .icon-over-title i {
-    font-size: 1.75rem;
+
+  .station-popup p,
+  .station-popup h4 {
+    font-size: 12px;
   }
-  .dashboard-title {
-    font-size: 1.5rem;
-  }
-  .filters-title {
-    font-size: 1.25rem;
+
+  .incident-list {
+    font-size: 11px;
   }
 }

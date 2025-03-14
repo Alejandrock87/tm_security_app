@@ -19,22 +19,16 @@ function initMap() {
 
 async function loadMapData(filters = {}) {
     try {
+        console.log("Iniciando carga de datos del mapa...");
         const [stationsResponse, incidentsResponse] = await Promise.all([
             fetch('/api/stations'),
             fetch(`/incidents${buildQueryString(filters)}`)
         ]);
 
-        function buildQueryString(filters) {
-            if (!filters || Object.keys(filters).length === 0) return '';
-            const params = new URLSearchParams();
-            Object.entries(filters).forEach(([key, value]) => {
-                if (value && value !== 'all') params.append(key, value);
-            });
-            return params.toString() ? `?${params.toString()}` : '';
-        }
-
         let stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
+        console.log("Datos de estaciones recibidos:", stations);
+        console.log("Datos de incidentes recibidos:", incidents);
 
         // Agrupar incidentes por estación
         const incidentsByStation = {};
@@ -55,6 +49,8 @@ async function loadMapData(filters = {}) {
             incidentsByStation[incident.nearest_station].types[incident.incident_type]++;
         });
 
+        console.log("Incidentes agrupados por estación:", incidentsByStation);
+
         // Aplicar filtros
         if (filters.troncal && filters.troncal !== 'all') {
             stations = stations.filter(station => station.troncal === filters.troncal);
@@ -63,19 +59,11 @@ async function loadMapData(filters = {}) {
             stations = stations.filter(station => station.nombre === filters.station);
         }
         if (filters.incidentType && filters.incidentType !== 'all') {
-            stations = stations.filter(station => 
+            stations = stations.filter(station =>
                 incidentsByStation[station.nombre]?.incidents?.some(
                     incident => incident.incident_type === filters.incidentType
                 )
             );
-        }
-        if (filters.securityLevel && filters.securityLevel !== 'all') {
-            stations = stations.filter(station => {
-                const stationData = incidentsByStation[station.nombre];
-                if (!stationData) return false;
-                const securityLevel = calculateSecurityLevel(stationData.total);
-                return securityLevel === filters.securityLevel;
-            });
         }
 
         // Limpiar marcadores existentes
@@ -122,26 +110,36 @@ function groupIncidentsByStation(incidents) {
 function displayStations(stations, incidentsByStation) {
     stations.forEach(station => {
         const stationData = incidentsByStation[station.nombre] || { total: 0, types: {} };
-        const securityLevel = calculateSecurityLevel(stationData.total);
-        const markerColor = getMarkerColor(stationData.total);
+        const totalIncidents = parseInt(stationData.total) || 0;
+        const securityLevel = calculateSecurityLevel(totalIncidents);
+        const markerColor = getMarkerColor(totalIncidents);
+
+        console.log(`Procesando estación: ${station.nombre}`);
+        console.log(`Total de incidentes: ${totalIncidents}`);
+        console.log(`Nivel de seguridad: ${securityLevel}`);
+        console.log(`Color asignado: ${markerColor}`);
 
         const marker = L.marker([station.latitude, station.longitude], {
             icon: L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div style="background-color: ${markerColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: white; font-weight: bold;">T</span>
+                html: `<div style="background-color: ${markerColor}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">${station.nombre.slice(0, 2).toUpperCase()}</span>
                       </div>
-                      <div style="background-color: rgba(255,255,255,0.9); padding: 2px 4px; border-radius: 3px; margin-top: 2px; text-align: center;">
-                        <span style="font-size: 10px; font-weight: bold;">${stationData.total}</span>
+                      <div style="background-color: rgba(255,255,255,0.9); padding: 2px 4px; border-radius: 3px; margin-top: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">
+                        <span style="font-size: 11px; font-weight: bold;">${station.nombre}</span><br>
+                        <span style="font-size: 11px; color: ${markerColor};">${totalIncidents} incidentes</span>
                       </div>`,
-                iconSize: [30, 42],
-                iconAnchor: [15, 42]
+                iconSize: [30, 70],
+                iconAnchor: [15, 70],
+                popupAnchor: [0, -70]
             })
         })
         .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
         .addTo(map);
 
         marker.on('click', () => {
+            console.log(`Estación clickeada: ${station.nombre}`);
+            console.log(`Datos de la estación:`, stationData);
             updateChart(stationData.incidents || []);
         });
 
@@ -156,17 +154,22 @@ function calculateSecurityLevel(totalIncidents) {
 }
 
 function createStationPopup(stationName, data, securityLevel) {
-    const typesHtml = Object.entries(data.types)
+    const typesHtml = Object.entries(data.types || {})
+        .sort(([,a], [,b]) => b - a) // Ordenar por cantidad de incidentes
         .map(([type, count]) => `<li>${type}: ${count} reportes</li>`)
         .join('');
+
+    const totalIncidents = parseInt(data.total) || 0;
+    const colorClass = totalIncidents >= 50 ? 'high' : 
+                      totalIncidents >= 20 ? 'medium' : 'low';
 
     return `
         <div class="station-popup">
             <h3>${stationName}</h3>
-            <p><strong>Total de reportes:</strong> ${data.total}</p>
+            <p><strong>Total de reportes:</strong> <span class="total-${colorClass}">${totalIncidents}</span></p>
             <p><strong>Nivel de inseguridad:</strong> <span class="security-level-${securityLevel.toLowerCase()}">${securityLevel}</span></p>
             <h4>Tipos de incidentes:</h4>
-            <ul>${typesHtml}</ul>
+            <ul class="incident-list">${typesHtml}</ul>
         </div>
     `;
 }
@@ -255,6 +258,15 @@ function getMarkerColor(totalIncidents) {
     if (totalIncidents >= 50) return '#ff0000'; // Alto - Rojo
     if (totalIncidents >= 20) return '#ffa500'; // Medio - Naranja
     return '#008000'; // Bajo - Verde
+}
+
+function buildQueryString(filters) {
+    if (!filters || Object.keys(filters).length === 0) return '';
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== 'all') params.append(key, value);
+    });
+    return params.toString() ? `?${params.toString()}` : '';
 }
 
 async function loadTroncales() {
@@ -368,11 +380,15 @@ function resetFilters() {
     loadMapData();
 }
 
-// Event listeners for filters
-document.addEventListener('DOMContentLoaded', function() {
-    loadTroncales();
 
-    document.getElementById('troncalFilter').addEventListener('change', function() {
-        loadStations(this.value);
-    });
-});
+// Event listeners for filters (redundant, removed one)
+
+function clearMarkers() {
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+}
+
+function showError(message) {
+    // Implement your error display logic here
+    alert(message); // A simple alert for now.  Replace with more sophisticated error handling.
+}

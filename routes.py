@@ -12,6 +12,7 @@ from utils import send_notification, send_push_notification
 from models import User, Incident, PushSubscription
 from database import db
 from sqlalchemy import func
+from sqlalchemy.sql import desc
 
 def init_routes(app):
     @app.route('/test')
@@ -31,15 +32,12 @@ def init_routes(app):
     def dashboard():
         app.logger.info("Dashboard endpoint accessed")
         try:
-            # Primero intentemos solo obtener los datos básicos sin caché
-            app.logger.info("Obteniendo datos frescos del dashboard")
-
-            # Obtener datos de incidentes para el mapa
+            # Obtener datos de incidentes para el mapa usando la misma función que statistics
             app.logger.info("Intentando obtener incidentes para el mapa")
             incidents = get_incidents_for_map()
             app.logger.info(f"Obtenidos {len(incidents)} incidentes para el mapa")
 
-            # Obtener estadísticas
+            # Obtener estadísticas usando la misma función que la página statistics
             app.logger.info("Intentando obtener estadísticas")
             statistics = get_incident_statistics()
             app.logger.info(f"Estadísticas obtenidas: {statistics}")
@@ -421,13 +419,24 @@ def init_routes(app):
 
         if troncal:
             stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                                   for feature in geojson_data['features']
-                                   if feature['properties'].get('troncal_estacion') == troncal]
+                               for feature in geojson_data['features']
+                               if feature['properties'].get('troncal_estacion') == troncal]
             query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
         if station:
             query = query.filter(Incident.nearest_station == station)
         if incident_type:
             query = query.filter(Incident.incident_type == incident_type)
+
+        # Obtener estadísticas por estación usando la misma lógica que statistics
+        station_stats = db.session.query(
+            Incident.nearest_station,
+            func.count(Incident.id).label('total')
+        ).group_by(Incident.nearest_station)\
+         .order_by(desc(func.count(Incident.id)))\
+         .all()
+
+        # Crear diccionario de conteo por estación
+        station_counts = {stat.nearest_station: stat.total for stat in station_stats}
 
         incidents = query.all()
         return jsonify([{
@@ -437,7 +446,8 @@ def init_routes(app):
             'longitude': i.longitude,
             'timestamp': i.timestamp.isoformat(),
             'nearest_station': i.nearest_station,
-            'description': i.description
+            'description': i.description,
+            'station_total_incidents': station_counts.get(i.nearest_station, 0)
         } for i in incidents])
 
     @app.route('/api/vapid-public-key')

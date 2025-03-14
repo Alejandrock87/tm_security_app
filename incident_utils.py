@@ -13,7 +13,7 @@ def get_incidents_for_map():
     Retorna solo la información necesaria para la visualización.
     """
     try:
-        # Obtener estadísticas por estación
+        # Obtener estadísticas por estación usando la misma lógica que get_incident_statistics
         station_stats = db.session.query(
             Incident.nearest_station,
             func.count(Incident.id).label('total')
@@ -27,6 +27,7 @@ def get_incidents_for_map():
         # Obtener todos los incidentes
         incidents = Incident.query.all()
 
+        # Procesar cada incidente incluyendo el total de su estación
         return [{
             'id': incident.id,
             'incident_type': incident.incident_type,
@@ -37,6 +38,7 @@ def get_incidents_for_map():
             'nearest_station': incident.nearest_station,
             'station_total_incidents': station_counts.get(incident.nearest_station, 0)
         } for incident in incidents]
+
     except Exception as e:
         logging.error(f"Error in get_incidents_for_map: {str(e)}", exc_info=True)
         return []
