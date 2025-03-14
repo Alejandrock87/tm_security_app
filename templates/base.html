@@ -119,6 +119,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+        // Variables globales
+        var socket;
+
         // Registro del Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -162,28 +165,31 @@
             }
         }
 
-        // Configuración de Socket.IO
-        const socket = io({
-            transports: ['websocket', 'polling'],
-            reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 1000
-        });
+        // Inicializar Socket.IO después de que el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuración de Socket.IO
+            socket = io({
+                transports: ['websocket', 'polling'],
+                reconnection: true,
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000
+            });
 
-        socket.on('connect', () => {
-            console.log('Conectado al servidor Socket.IO');
-        });
+            socket.on('connect', () => {
+                console.log('Conectado al servidor Socket.IO');
+            });
 
-        socket.on('newNotification', (notification) => {
-            showNotification({ message: notification });
-        });
+            socket.on('newNotification', (notification) => {
+                showNotification({ message: notification });
+            });
 
-        // Ocultar alertas flash después de 5s
-        document.querySelectorAll('.floating-alert').forEach(alert => {
-            setTimeout(() => {
-                alert.classList.add('hide');
-                setTimeout(() => alert.remove(), 500);
-            }, 5000);
+            // Ocultar alertas flash después de 5s
+            document.querySelectorAll('.floating-alert').forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.add('hide');
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            });
         });
     </script>
     {% block scripts %}{% endblock %}

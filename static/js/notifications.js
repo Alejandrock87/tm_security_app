@@ -1,6 +1,6 @@
 // Variables globales
 let notificationsEnabled = false;
-let socket = null;
+// let socket = null; // Eliminado porque socket ya está definido globalmente en base.html
 let notificationCount = 0;
 let selectedTroncales = [];
 let selectedEstaciones = [];
@@ -15,38 +15,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]);
 
         setupFilterEventListeners();
-        initializeSocketIO();
+        // initializeSocketIO(); // Eliminado porque ya se inicializa en base.html
 
         // Aplicar filtros iniciales basados en preferencias guardadas
         applyNotificationFilters();
         updateFilterVisuals();
 
         // Agregar manejadores de eventos para los acordeones al cargar el documento
-        // Configurar acordeón principal
-        const accordionHeader = document.querySelector('.accordion-header');
-        if (accordionHeader) {
-            accordionHeader.addEventListener('click', function() {
-                const target = this.getAttribute('data-target');
-                const content = document.querySelector(target);
-                if (content) {
-                    content.classList.toggle('show');
-                    this.setAttribute('aria-expanded', content.classList.contains('show'));
-                }
-            });
-        }
-
-        // Configurar acordeones de secciones
-        document.querySelectorAll('.section-header').forEach(header => {
-            header.addEventListener('click', function() {
-                const target = this.getAttribute('data-target');
-                const content = document.querySelector(target);
-                if (content) {
-                    content.classList.toggle('show');
-                    this.setAttribute('aria-expanded', content.classList.contains('show'));
-                }
-            });
-        });
-
+        setupAccordionHandlers();
 
     } catch (error) {
         console.error('Error en inicialización:', error);
@@ -58,15 +34,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 function updateButtonStates(notificationsEnabled) {
     const activateBtn = document.getElementById('activateNotifications');
     const saveBtn = document.getElementById('savePreferences');
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-    if (Notification.permission === 'denied') {
+    if (Notification.permission === 'denied' && !isIOS) {
         activateBtn.textContent = 'Notificaciones Bloqueadas';
         activateBtn.classList.remove('btn-primary', 'btn-success');
         activateBtn.classList.add('btn-danger');
         saveBtn.disabled = true;
         showToast('Notificaciones bloqueadas. Revisa la configuración del navegador', 'warning');
     } else if (notificationsEnabled) {
-        activateBtn.textContent = 'Notificaciones Activadas';
+        activateBtn.textContent = isIOS ?
+            'Notificaciones In-App Activadas' : 'Notificaciones Activadas';
         activateBtn.classList.remove('btn-primary', 'btn-danger');
         activateBtn.classList.add('btn-success');
         saveBtn.disabled = false;
@@ -83,8 +61,28 @@ function showToast(message, type) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
-    document.getElementById('toastContainer').appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+
+    // Asegurar que el contenedor existe
+    let toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toastContainer';
+        document.body.appendChild(toastContainer);
+    }
+
+    toastContainer.appendChild(toast);
+
+    // Forzar reflow para asegurar la animación
+    toast.offsetHeight;
+
+    // Añadir clase para mostrar con animación
+    toast.classList.add('show');
+
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // Implement the missing loadStations function
@@ -269,28 +267,56 @@ function updateSelectAllState(groupId) {
 async function requestNotificationPermission() {
     const activateBtn = document.getElementById('activateNotifications');
     const originalText = activateBtn.textContent;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     try {
         activateBtn.textContent = 'Activando notificaciones...';
         activateBtn.disabled = true;
 
-        notificationsEnabled = true;
-        updateButtonStates(true);
-        showToast('Notificaciones activadas correctamente', 'success');
+        // En iOS, las notificaciones push no están soportadas en Safari
+        if (isIOS) {
+            // Activar solo notificaciones in-app para iOS
+            notificationsEnabled = true;
+            updateButtonStates(true);
+            showToast('Notificaciones in-app activadas para iOS', 'success');
 
-        // Mostrar una notificación de ejemplo
-        showInAppNotification({
-            incident_type: 'Sistema',
-            nearest_station: 'General',
-            description: 'Las notificaciones están activadas. Recibirás alertas de incidentes según tus preferencias.',
-            timestamp: new Date()
-        });
+            // Mostrar mensaje específico para iOS
+            showInAppNotification({
+                incident_type: 'Sistema',
+                nearest_station: 'General',
+                description: 'Las notificaciones in-app están activadas. Recibirás alertas dentro de la aplicación.',
+                timestamp: new Date()
+            });
+        } else {
+            // Para otros dispositivos, intentar notificaciones push
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notificationsEnabled = true;
+                    updateButtonStates(true);
+                    showToast('Notificaciones activadas correctamente', 'success');
+
+                    showInAppNotification({
+                        incident_type: 'Sistema',
+                        nearest_station: 'General',
+                        description: 'Las notificaciones están activadas. Recibirás alertas de incidentes según tus preferencias.',
+                        timestamp: new Date()
+                    });
+                } else {
+                    throw new Error('Permiso de notificaciones denegado');
+                }
+            } else {
+                throw new Error('Tu navegador no soporta notificaciones');
+            }
+        }
     } catch (error) {
         console.error('Error:', error);
         showToast(error.message, 'error');
         updateButtonStates(false);
     } finally {
         activateBtn.disabled = false;
+        activateBtn.textContent = notificationsEnabled ?
+            'Notificaciones Activadas' : originalText;
     }
 }
 
@@ -354,30 +380,6 @@ function getNotificationSettings() {
     };
 }
 
-// Inicialización de Socket.IO
-function initializeSocketIO() {
-    try {
-        socket = io();
-        socket.on('connect', () => {
-            console.log('Conectado a Socket.IO');
-        });
-        socket.on('disconnect', () => {
-            console.log('Desconectado del servidor Socket.IO');
-        });
-        socket.on('new_incident', (data) => {
-            const settings = getNotificationSettings();
-            if (!settings.enabled) return;
-            if (shouldShowNotification(data)) {
-                addNotification(data);
-                updateNotificationBadge(++notificationCount);
-                showBrowserNotification(data);
-            }
-        });
-    } catch (error) {
-        console.error('Error inicializando Socket.IO:', error);
-        showToast('Error al inicializar Socket.IO', 'error');
-    }
-}
 
 // Configuración de eventos en los filtros de historial
 function setupFilterEventListeners() {
@@ -472,7 +474,6 @@ function setupFilterEventListeners() {
 }
 
 
-
 // Función para obtener preferencias almacenadas
 function getNotificationSettings() {
     const stored = localStorage.getItem('notificationPreferences');
@@ -517,32 +518,37 @@ function shouldShowNotification(incident) {
 
 // Función para mostrar notificaciones in-app
 function showInAppNotification(notification) {
-    const toastContainer = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = 'toast toast-info show';
+    const notificationList = document.getElementById('notifications-list');
+    if (notificationList) {
+        const notificationItem = document.createElement('div');
+        notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
 
-    const timestamp = new Date(notification.timestamp).toLocaleString();
-    toast.innerHTML = `
-        <div class="toast-header">
-            <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
-            <small class="ms-auto">${timestamp}</small>
-        </div>
-        <div class="toast-body">
-            Estación: ${notification.nearest_station}
-            ${notification.description ? `<br>${notification.description}` : ''}
-        </div>
-    `;
+        const timestamp = new Date(notification.timestamp).toLocaleString();
+        notificationItem.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="notification-content">
+                    <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+                    <p class="mb-1">Estación: ${notification.nearest_station}</p>
+                    ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
+                </div>
+                <small class="text-muted">${timestamp}</small>
+            </div>
+        `;
 
-    toastContainer.appendChild(toast);
+        // Insertar al principio de la lista
+        notificationList.insertBefore(notificationItem, notificationList.firstChild);
 
-    // Incrementar contador de notificaciones
-    updateNotificationBadge(++notificationCount);
+        // Actualizar contador
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            const count = parseInt(badge.textContent || '0') + 1;
+            badge.textContent = count;
+            badge.style.display = 'inline-block';
+        }
 
-    // Remover la notificación después de 5 segundos
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 5000);
+        // También mostrar un toast
+        showToast(`Nuevo incidente en ${notification.nearest_station}`, 'info');
+    }
 }
 
 // Reemplazar la función anterior de showBrowserNotification
@@ -856,7 +862,7 @@ async function updateNotificationHistory() {
                     <strong>Estación:</strong> ${notification.nearest_station}
                     <span class="troncal-info">(${notification.troncal})</span>
                 </p>
-                ${notification.description ? 
+                ${notification.description ?
                     `<p class="incident-description">${notification.description}</p>` : ''}
             `;
 
@@ -872,8 +878,35 @@ async function updateNotificationHistory() {
 // Configurar el botón "Mostrar todas"
 document.querySelector('.show-all-notifications')?.addEventListener('click', function() {
     this.classList.toggle('active');
-    this.innerHTML = this.classList.contains('active') 
+    this.innerHTML = this.classList.contains('active')
         ? '<i class="fas fa-filter"></i> Mostrar según preferencias'
         : '<i class="fas fa-filter"></i> Mostrar todas';
     updateNotificationHistory();
 });
+
+function setupAccordionHandlers(){
+    // Configurar acordeón principal
+    const accordionHeader = document.querySelector('.accordion-header');
+    if (accordionHeader) {
+        accordionHeader.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            const content = document.querySelector(target);
+            if (content) {
+                content.classList.toggle('show');
+                this.setAttribute('aria-expanded', content.classList.contains('show'));
+            }
+        });
+    }
+
+    // Configurar acordeones de secciones
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            const content = document.querySelector(target);
+            if (content) {
+                content.classList.toggle('show');
+                this.setAttribute('aria-expanded', content.classList.contains('show'));
+            }
+        });
+    });
+}
