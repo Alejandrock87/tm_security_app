@@ -133,7 +133,10 @@ function updateStationsChart(stationsData) {
     if (!stationsData) return;
 
     const ctx = document.getElementById('stationsChart').getContext('2d');
-    const data = Object.entries(stationsData).sort(([,a], [,b]) => b - a);
+    // Ordenar usando parseInt para comparar numéricamente
+    const data = Object.entries(stationsData)
+        .sort(([, a], [, b]) => parseInt(b.total) - parseInt(a.total))
+        .slice(0, 10); // Mostrar top 10 estaciones para mejor visualización
 
     // Destruir gráfica existente si existe
     if (window.stationsChart instanceof Chart) {
@@ -146,7 +149,7 @@ function updateStationsChart(stationsData) {
             labels: data.map(([station]) => station),
             datasets: [{
                 label: 'Número de Incidentes',
-                data: data.map(([,count]) => count),
+                data: data.map(([, stats]) => parseInt(stats.total)),
                 backgroundColor: '#36A2EB',
                 borderColor: '#2563EB',
                 borderWidth: 1
@@ -159,6 +162,7 @@ function updateStationsChart(stationsData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
+                        stepSize: 1,
                         color: '#2d3436'
                     }
                 },
@@ -171,6 +175,11 @@ function updateStationsChart(stationsData) {
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => `Incidentes: ${context.raw}`
+                    }
                 }
             }
         }
