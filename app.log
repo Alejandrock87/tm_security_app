@@ -409,3 +409,224 @@ INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a
 INFO:werkzeug:[33mPress CTRL+C to quit[0m
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 09:14:44] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 09:14:45] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+2025-03-14 01:21:26,476 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:21:26,482 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:21:26,561 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:21:26,561 - app - DEBUG - Configurando login manager...
+2025-03-14 01:21:26,561 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:21:26,561 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:21:26,999 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:21:26,999 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:21:27,224 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:21:27,225 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:21:27,619 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:27,619 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:27,620 - app - INFO - Index endpoint accessed
+2025-03-14 01:21:27,620 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:21:27,707 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:27] "GET / HTTP/1.1" 302 380 0.087940
+2025-03-14 01:21:27,834 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:27,835 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:27,836 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:21:27,928 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:27] "GET /home HTTP/1.1" 200 8521 0.094053
+2025-03-14 01:21:27,929 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:27,930 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:27,930 - app - INFO - Index endpoint accessed
+2025-03-14 01:21:27,930 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:21:28,008 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET / HTTP/1.1" 302 380 0.078702
+2025-03-14 01:21:28,062 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,063 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,068 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET /static/css/home.css HTTP/1.1" 304 215 0.005183
+2025-03-14 01:21:28,068 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,068 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,069 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001054
+2025-03-14 01:21:28,107 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,107 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,108 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:21:28,186 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET /home HTTP/1.1" 200 8521 0.078975
+2025-03-14 01:21:28,332 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,332 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,334 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001812
+2025-03-14 01:21:28,341 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,342 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,343 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:28] "GET /static/css/home.css HTTP/1.1" 304 215 0.001520
+2025-03-14 01:21:28,949 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:28,949 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:28,950 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:21:28,950 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:21:28,950 - engineio.server - INFO - -irGLR1z3D5Ixg7cAAAA: Sending packet OPEN data {'sid': '-irGLR1z3D5Ixg7cAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:21:28,951 - engineio.server - INFO - -irGLR1z3D5Ixg7cAAAA: Received request to upgrade to websocket
+2025-03-14 01:21:28,951 - engineio.server - INFO - -irGLR1z3D5Ixg7cAAAA: Upgrade to websocket successful
+2025-03-14 01:21:29,043 - engineio.server - INFO - -irGLR1z3D5Ixg7cAAAA: Received packet MESSAGE data 0
+2025-03-14 01:21:29,045 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:21:29,045 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'i7eehu8Fiv2BFinVIYh+Yw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.1.37', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:21:29,045 - engineio.server - INFO - -irGLR1z3D5Ixg7cAAAA: Sending packet MESSAGE data 0{"sid":"WVFInkWqNFlSrkAxAAAB"}
+2025-03-14 01:21:29,340 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:29,340 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:29,340 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:21:29,341 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:21:29,341 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Sending packet OPEN data {'sid': 'by67KVFlSqBRnNYeAAAC', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:21:29,341 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Received request to upgrade to websocket
+2025-03-14 01:21:29,341 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Upgrade to websocket successful
+2025-03-14 01:21:29,433 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Received packet MESSAGE data 0
+2025-03-14 01:21:29,435 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:21:29,435 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'yDYN8qC8c9nK12zTV2t5nQ==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.7.4', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:21:29,435 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Sending packet MESSAGE data 0{"sid":"-aONNsP8m4qeK0ntAAAD"}
+2025-03-14 01:21:36,302 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:21:36,302 - geventwebsocket.handler - DEBUG - Failed to write closing frame -> closing socket
+2025-03-14 01:21:36,303 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:21:36,303 - app - INFO - Cliente desconectado de Socket.IO
+2025-03-14 01:21:36,604 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:36,604 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:36,605 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:21:36,683 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:36] "GET /home HTTP/1.1" 200 8521 0.079299
+2025-03-14 01:21:36,815 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:36,815 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:36,817 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:36] "GET /static/css/home.css HTTP/1.1" 304 215 0.001728
+2025-03-14 01:21:36,830 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:36,830 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:36,831 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:21:36] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001635
+2025-03-14 01:21:37,857 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:21:37,857 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:21:37,857 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:21:37,857 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:21:37,858 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Sending packet OPEN data {'sid': 'FyPvKTBsQdLPiV3mAAAE', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:21:37,858 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Received request to upgrade to websocket
+2025-03-14 01:21:37,858 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Upgrade to websocket successful
+2025-03-14 01:21:37,952 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Received packet MESSAGE data 0
+2025-03-14 01:21:37,953 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:21:37,954 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'JdthQeBjUsYul+AZSnhttw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.3.21', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:21:37,954 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Sending packet MESSAGE data 0{"sid":"UzxD6i57w2UG-D1iAAAF"}
+2025-03-14 01:21:54,342 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Sending packet PING data None
+2025-03-14 01:21:54,488 - engineio.server - INFO - by67KVFlSqBRnNYeAAAC: Received packet PONG data 
+2025-03-14 01:22:02,863 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Sending packet PING data None
+2025-03-14 01:22:02,981 - engineio.server - INFO - FyPvKTBsQdLPiV3mAAAE: Received packet PONG data 
+2025-03-14 01:22:15,950 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:22:15,951 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:22:16,003 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:22:16,003 - app - DEBUG - Configurando login manager...
+2025-03-14 01:22:16,003 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:22:16,003 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:22:16,461 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:22:16,461 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:22:16,507 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:22:16,507 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:22:16,908 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:16,908 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:16,909 - app - INFO - Index endpoint accessed
+2025-03-14 01:22:16,909 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:17,001 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET / HTTP/1.1" 302 380 0.093303
+2025-03-14 01:22:17,115 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,115 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,115 - app - INFO - Index endpoint accessed
+2025-03-14 01:22:17,116 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:17,199 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET / HTTP/1.1" 302 380 0.084558
+2025-03-14 01:22:17,200 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,200 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,201 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:17,301 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /home HTTP/1.1" 200 8521 0.101579
+2025-03-14 01:22:17,459 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,459 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,466 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /static/css/home.css HTTP/1.1" 304 215 0.007772
+2025-03-14 01:22:17,467 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,467 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,468 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:17,551 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /home HTTP/1.1" 200 8521 0.083715
+2025-03-14 01:22:17,552 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,552 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,553 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001681
+2025-03-14 01:22:17,681 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,681 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,682 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001819
+2025-03-14 01:22:17,683 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:17,683 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:17,685 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:17] "GET /static/css/home.css HTTP/1.1" 304 215 0.001496
+2025-03-14 01:22:18,560 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:18,561 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:18,562 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:22:18,562 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:22:18,562 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Sending packet OPEN data {'sid': 'ylT6SaNkz-ajpcyjAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:22:18,562 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Received request to upgrade to websocket
+2025-03-14 01:22:18,563 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Upgrade to websocket successful
+2025-03-14 01:22:18,651 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Received packet MESSAGE data 0
+2025-03-14 01:22:18,652 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:22:18,653 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': '4FTv0rJkHsANdA2+9wqmiw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.6.3', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:22:18,653 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Sending packet MESSAGE data 0{"sid":"sdQp4ZwHsjuHzembAAAB"}
+2025-03-14 01:22:19,222 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:19,223 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:19,223 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:22:19,223 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:22:19,223 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Sending packet OPEN data {'sid': 'nb89qG-x569BSVWnAAAC', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:22:19,223 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Received request to upgrade to websocket
+2025-03-14 01:22:19,224 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Upgrade to websocket successful
+2025-03-14 01:22:19,313 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Received packet MESSAGE data 0
+2025-03-14 01:22:19,314 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:22:19,315 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'Cue9mMm3s/d3eQkIvbgRvw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.6.3', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:22:19,315 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Sending packet MESSAGE data 0{"sid":"6a8Nanm_pMBe8xSOAAAD"}
+2025-03-14 01:22:43,569 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Sending packet PING data None
+2025-03-14 01:22:43,668 - engineio.server - INFO - ylT6SaNkz-ajpcyjAAAA: Received packet PONG data 
+2025-03-14 01:22:44,225 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Sending packet PING data None
+2025-03-14 01:22:44,376 - engineio.server - INFO - nb89qG-x569BSVWnAAAC: Received packet PONG data 
+2025-03-14 01:22:48,090 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:22:48,090 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:22:48,166 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:22:48,166 - app - DEBUG - Configurando login manager...
+2025-03-14 01:22:48,166 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:22:48,167 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:22:48,639 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:22:48,639 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:22:48,789 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:22:48,789 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:22:48,804 - __main__ - INFO - Starting Flask application
+2025-03-14 01:22:48,804 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:22:49,315 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,316 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,317 - app - INFO - Index endpoint accessed
+2025-03-14 01:22:49,318 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:49,408 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET / HTTP/1.1" 302 380 0.093153
+2025-03-14 01:22:49,502 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,502 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,503 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:49,601 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET /home HTTP/1.1" 200 8521 0.098954
+2025-03-14 01:22:49,611 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,611 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,612 - app - INFO - Index endpoint accessed
+2025-03-14 01:22:49,613 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:49,693 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET / HTTP/1.1" 302 380 0.081819
+2025-03-14 01:22:49,714 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,714 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,720 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET /static/css/home.css HTTP/1.1" 304 215 0.006245
+2025-03-14 01:22:49,764 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,764 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,766 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET /static/css/custom.css HTTP/1.1" 304 216 0.002200
+2025-03-14 01:22:49,837 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:49,837 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:49,838 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:22:49,920 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:49] "GET /home HTTP/1.1" 200 8521 0.082934
+2025-03-14 01:22:50,020 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:50,020 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:50,022 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:50] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001537
+2025-03-14 01:22:50,030 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:50,030 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:50,031 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:22:50] "GET /static/css/home.css HTTP/1.1" 304 215 0.001312
+2025-03-14 01:22:50,673 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:50,673 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:50,674 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:22:50,674 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:22:50,674 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet OPEN data {'sid': 'Rb2OFIFOtworqte1AAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:22:50,674 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received request to upgrade to websocket
+2025-03-14 01:22:50,675 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Upgrade to websocket successful
+2025-03-14 01:22:50,763 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet MESSAGE data 0
+2025-03-14 01:22:50,764 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:22:50,764 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'hUB3UNeZB3RSGNYRZYsydQ==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.7.4', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:22:50,764 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet MESSAGE data 0{"sid":"Ss4MlAlOkaH9gdMMAAAB"}
+2025-03-14 01:22:51,055 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:22:51,055 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:22:51,055 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:22:51,055 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:22:51,056 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Sending packet OPEN data {'sid': '81Rdy7pQBWCRD9UNAAAC', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:22:51,056 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Received request to upgrade to websocket
+2025-03-14 01:22:51,056 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Upgrade to websocket successful
+2025-03-14 01:22:51,143 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Received packet MESSAGE data 0
+2025-03-14 01:22:51,145 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:22:51,145 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': '3nwhr35AWtbewGxbMCdQrw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.9.14', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:22:51,145 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Sending packet MESSAGE data 0{"sid":"8D6jusfflonyul0JAAAD"}

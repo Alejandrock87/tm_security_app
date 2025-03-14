@@ -8,9 +8,17 @@ from flask import request
 from flask_cors import CORS
 
 # Setup detailed logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log')
+    ]
+)
 logger = logging.getLogger(__name__)
 
-# Enable CORS for the Flask app
+# Enable CORS
 CORS(app, resources={
     r"/*": {
         "origins": "*",
@@ -29,11 +37,11 @@ if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
         port = int(os.getenv('PORT', 5000))
-        logger.info(f"Configured to run on port {port}")
+        logger.info(f"Server will start on port {port}")
 
         socketio.run(
             app,
-            host='0.0.0.0',
+            host='0.0.0.0',  # Ensure we're listening on all interfaces
             port=port,
             debug=True,
             use_reloader=False,

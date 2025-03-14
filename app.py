@@ -9,24 +9,20 @@ from database import init_db, db
 from flask_caching import Cache
 from flask_socketio import SocketIO
 
-# Configurar logging más detallado
+# Configurar logging
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log')
+    ]
 )
 logger = logging.getLogger(__name__)
 
 # Crear la aplicación Flask
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
-
-# Configurar logging específico de Flask
-app.logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-app.logger.addHandler(handler)
 
 # Configuración adicional de sesión
 app.config.update(
@@ -36,29 +32,21 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800  # 30 minutos
 )
 
-# Configurar cache con opciones específicas para mejor rendimiento
+# Configurar cache
 cache = Cache(config={
     'CACHE_TYPE': 'SimpleCache',
-    'CACHE_DEFAULT_TIMEOUT': 3600,  # 1 hora
-    'CACHE_THRESHOLD': 1000  # Máximo número de items en cache
+    'CACHE_DEFAULT_TIMEOUT': 3600,
+    'CACHE_THRESHOLD': 1000
 })
 cache.init_app(app)
 
-# Configurar Socket.IO con opciones específicas para gevent
+# Configurar Socket.IO
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
     async_mode='gevent',
     logger=True,
-    engineio_logger=True,
-    ping_timeout=5,
-    ping_interval=25,
-    manage_session=False,
-    always_connect=True,
-    reconnection=True,
-    reconnection_attempts=5,
-    reconnection_delay=1000,
-    reconnection_delay_max=5000
+    engineio_logger=True
 )
 
 # Agregar logging para depuración de Socket.IO
@@ -80,8 +68,6 @@ database_url = os.environ.get("DATABASE_URL")
 if not database_url:
     logger.info("Construyendo DATABASE_URL desde variables de entorno")
     database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
-
-logger.debug(f"Intentando conectar a la base de datos...")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
