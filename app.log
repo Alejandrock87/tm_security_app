@@ -3115,3 +3115,26 @@ DETAIL:  Key (user_id)=(5) is not present in table "users".
 2025-03-14 06:39:18,607 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:18] "GET /login HTTP/1.1" 200 4022 0.017228
 2025-03-14 06:39:18,720 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:18] "GET /static/css/login.css HTTP/1.1" 304 216 0.004276
 2025-03-14 06:39:18,722 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:18] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001144
+2025-03-14 06:39:28,151 - app - INFO - Index endpoint accessed
+2025-03-14 06:39:28,152 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:28] "GET / HTTP/1.1" 302 383 0.001607
+2025-03-14 06:39:28,274 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:28] "GET /login HTTP/1.1" 200 4022 0.001634
+2025-03-14 06:39:28,397 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:28] "GET /static/css/login.css HTTP/1.1" 304 216 0.001025
+2025-03-14 06:39:28,399 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:39:28] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001322
+2025-03-14 06:44:59,427 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 06:44:59,427 - app - INFO - Inicializando base de datos...
+2025-03-14 06:45:00,515 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 06:45:00,515 - app - INFO - Configurando login manager...
+2025-03-14 06:45:00,515 - app - INFO - Login manager configurado correctamente
+2025-03-14 06:45:00,516 - app - INFO - Importando e inicializando rutas...
+2025-03-14 06:45:00,549 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 06:45:00,549 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 06:45:00,549 - __main__ - INFO - Starting Flask application
+2025-03-14 06:45:00,549 - __main__ - INFO - Server will start on port 5000
+2025-03-14 06:45:00,550 - __main__ - INFO - Testing server configuration...
+2025-03-14 06:45:00,558 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 06:45:00,559 - __main__ - INFO - Test response status: 200
+2025-03-14 06:45:01,398 - app - INFO - Index endpoint accessed
+2025-03-14 06:45:01,399 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:45:01] "GET / HTTP/1.1" 302 383 0.001666
+2025-03-14 06:45:01,509 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:45:01] "GET /login HTTP/1.1" 200 4022 0.021750
+2025-03-14 06:45:01,924 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:45:01] "GET /static/css/login.css HTTP/1.1" 304 216 0.003948
+2025-03-14 06:45:01,998 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:45:01] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001035
