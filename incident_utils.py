@@ -38,17 +38,10 @@ def get_incident_statistics(date_from=None, date_to=None):
         # Total de incidentes
         total_incidents = base_query.count()
 
-        # Estadísticas por estación
+        # Estadísticas por estación usando expresiones case más simples
         station_stats = db.session.query(
             Incident.nearest_station,
-            func.count(Incident.id).label('total'),
-            func.sum(case([(Incident.incident_type == 'Hurto', 1)], else_=0)).label('hurtos'),
-            func.sum(case([(Incident.incident_type == 'Acoso', 1)], else_=0)).label('acosos'),
-            func.sum(case([(Incident.incident_type == 'Cosquilleo', 1)], else_=0)).label('cosquilleos'),
-            func.sum(case([(Incident.incident_type == 'Ataque', 1)], else_=0)).label('ataques'),
-            func.sum(case([(Incident.incident_type == 'Apertura de puertas', 1)], else_=0)).label('aperturas'),
-            func.sum(case([(Incident.incident_type == 'Hurto a mano armada', 1)], else_=0)).label('hurtos_armados'),
-            func.sum(case([(Incident.incident_type == 'Sospechoso', 1)], else_=0)).label('sospechosos')
+            func.count(Incident.id).label('total')
         ).group_by(Incident.nearest_station)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
@@ -69,12 +62,26 @@ def get_incident_statistics(date_from=None, date_to=None):
          .order_by(desc('count'))\
          .first()
 
+        # Obtener estadísticas detalladas por tipo de incidente para cada estación
+        detailed_stats = {}
+        for stat in station_stats:
+            station_incidents = base_query.filter(Incident.nearest_station == stat.nearest_station)
+            incident_counts = {}
+            for incident_type in ['Hurto', 'Acoso', 'Cosquilleo', 'Ataque', 
+                                'Apertura de puertas', 'Hurto a mano armada', 'Sospechoso']:
+                count = station_incidents.filter(Incident.incident_type == incident_type).count()
+                incident_counts[incident_type.lower().replace(' ', '_')] = count
+
+            detailed_stats[stat.nearest_station] = {
+                'total': stat.total,
+                **incident_counts
+            }
+
         # Formatear resultados
         most_dangerous_hour = f"{int(dangerous_hour.hour):02d}:00" if dangerous_hour else "No data"
         most_common_type = incidents_by_type[0].incident_type if incidents_by_type else "No data"
         most_affected_station = station_stats[0].nearest_station if station_stats else "No data"
 
-        # Construir respuesta
         return {
             'total_incidents': total_incidents,
             'most_affected_station': most_affected_station,
@@ -85,18 +92,11 @@ def get_incident_statistics(date_from=None, date_to=None):
                 for incident in incidents_by_type
             },
             'top_stations': {
-                stat.nearest_station: {
-                    'total': int(stat.total or 0),
-                    'hurtos': int(stat.hurtos or 0),
-                    'acosos': int(stat.acosos or 0),
-                    'cosquilleos': int(stat.cosquilleos or 0),
-                    'ataques': int(stat.ataques or 0),
-                    'aperturas': int(stat.aperturas or 0),
-                    'hurtos_armados': int(stat.hurtos_armados or 0),
-                    'sospechosos': int(stat.sospechosos or 0)
-                } for stat in station_stats[:10]  # Limitar a las 10 estaciones principales
+                station: stats
+                for station, stats in detailed_stats.items()
             }
         }
+
     except Exception as e:
         print(f"Error in get_incident_statistics: {str(e)}")
         return {
