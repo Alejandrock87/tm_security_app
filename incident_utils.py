@@ -25,18 +25,25 @@ def get_incident_statistics(date_from=None, date_to=None):
     # Total de incidentes
     total_incidents = query.count()
 
+    # Incidentes por tipo y estación
+    station_stats = db.session.query(
+        Incident.nearest_station,
+        func.count(Incident.id).label('total'),
+        func.count(func.case([(Incident.incident_type == 'Hurto', 1)])).label('hurtos'),
+        func.count(func.case([(Incident.incident_type == 'Acoso', 1)])).label('acosos'),
+        func.count(func.case([(Incident.incident_type == 'Cosquilleo', 1)])).label('cosquilleos'),
+        func.count(func.case([(Incident.incident_type == 'Ataque', 1)])).label('ataques'),
+        func.count(func.case([(Incident.incident_type == 'Apertura de puertas', 1)])).label('aperturas'),
+        func.count(func.case([(Incident.incident_type == 'Hurto a mano armada', 1)])).label('hurtos_armados'),
+        func.count(func.case([(Incident.incident_type == 'Sospechoso', 1)])).label('sospechosos')
+    ).group_by(Incident.nearest_station)\
+    .order_by(desc('total')).all()
+
     # Incidentes por tipo
     incidents_by_type = db.session.query(
         Incident.incident_type,
         func.count(Incident.id).label('count')
     ).group_by(Incident.incident_type).all()
-
-    # Estación más afectada
-    top_stations = db.session.query(
-        Incident.nearest_station,
-        func.count(Incident.id).label('count')
-    ).group_by(Incident.nearest_station)\
-    .order_by(desc('count')).all()
 
     # Hora más peligrosa
     dangerous_hours = db.session.query(
@@ -50,28 +57,27 @@ def get_incident_statistics(date_from=None, date_to=None):
     # Tipo más común
     most_common_type = max(incidents_by_type, key=lambda x: x[1])[0] if incidents_by_type else "No data"
 
+    # Estación más afectada
+    most_affected_station = station_stats[0][0] if station_stats else "No data"
+
     return {
         'total_incidents': total_incidents,
-        'most_affected_station': top_stations[0][0] if top_stations else "No data",
+        'most_affected_station': most_affected_station,
         'most_dangerous_hour': most_dangerous_hour,
         'most_common_type': most_common_type,
         'incident_types': {incident_type: count for incident_type, count in incidents_by_type},
-        'top_stations': {station: count for station, count in top_stations[:10]}
+        'top_stations': {stat[0]: {
+            'total': stat[1],
+            'hurtos': stat[2],
+            'acosos': stat[3],
+            'cosquilleos': stat[4],
+            'ataques': stat[5],
+            'aperturas': stat[6],
+            'hurtos_armados': stat[7],
+            'sospechosos': stat[8]
+        } for stat in station_stats[:10]}
     }
 
 def get_station_statistics():
     """Obtiene estadísticas detalladas por estación"""
-    station_stats = db.session.query(
-        Incident.nearest_station,
-        func.count(Incident.id).label('total'),
-        func.jsonb_object_agg(
-            Incident.incident_type,
-            func.count(Incident.id)
-        ).label('type_counts')
-    ).group_by(Incident.nearest_station).all()
-
-    return {
-        'stations': {
-            stat.nearest_station: stat.total for stat in station_stats
-        }
-    }
+    return get_incident_statistics()

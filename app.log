@@ -2113,3 +2113,247 @@ DETAIL:  Key (user_id)=(5) is not present in table "users".
 2025-03-14 02:03:32,259 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Upgrade to websocket successful
 2025-03-14 02:03:32,347 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet MESSAGE data 0
 2025-03-14 02:03:32,347 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet MESSAGE data 0{"sid":"k4RcbxAMg6ax9zzhAAAB"}
+2025-03-14 02:03:38,540 - app - INFO - Index endpoint accessed
+2025-03-14 02:03:38,622 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:03:38] "GET / HTTP/1.1" 302 380 0.081565
+2025-03-14 02:03:38,843 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:03:38] "GET /home HTTP/1.1" 200 8521 0.082098
+2025-03-14 02:03:39,022 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:03:39] "GET /static/css/home.css HTTP/1.1" 304 215 0.001063
+2025-03-14 02:03:39,024 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:03:39] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001040
+2025-03-14 02:03:39,878 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet OPEN data {'sid': 'xpiYsJEmkmwyA6YWAAAC', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 02:03:39,879 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received request to upgrade to websocket
+2025-03-14 02:03:39,879 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Upgrade to websocket successful
+2025-03-14 02:03:39,967 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet MESSAGE data 0
+2025-03-14 02:03:39,968 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet MESSAGE data 0{"sid":"b0B3v3yMlm5rXWljAAAD"}
+2025-03-14 02:03:57,265 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:03:57,348 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:04:04,882 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:04:04,967 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:04:22,349 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:04:22,441 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:04:29,976 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:04:30,061 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:04:47,447 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:04:47,557 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:04:55,065 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:04:55,166 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:05:12,558 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:05:12,650 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:05:20,174 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:05:20,290 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:05:37,655 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:05:37,780 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:05:45,294 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:05:45,418 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:06:02,781 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:06:02,864 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:06:10,427 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:06:10,511 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:06:27,870 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:06:28,004 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:06:35,515 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:06:35,652 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:06:53,005 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:06:53,134 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:07:00,661 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:07:00,756 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:07:18,140 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:07:18,224 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:07:25,761 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:07:25,850 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:07:43,226 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:07:43,311 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:07:50,858 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:07:50,960 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:08:08,318 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:08:08,453 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:08:15,964 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:08:16,051 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:08:33,455 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:08:33,553 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:08:41,059 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:08:41,160 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:08:58,560 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:08:58,645 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:09:06,164 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:09:06,274 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:09:23,647 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:09:23,740 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:09:31,283 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:09:31,366 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:09:48,747 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:09:48,874 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:09:56,371 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:09:56,474 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:10:13,876 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:10:13,961 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:10:21,483 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:10:21,567 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:10:38,968 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:10:39,055 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:10:46,571 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:10:46,659 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:11:04,057 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:11:04,194 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:11:11,667 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:11:11,751 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:11:29,201 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:11:29,292 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:11:36,756 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:11:36,877 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:11:54,294 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:11:54,381 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:12:01,885 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:12:01,972 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:12:19,388 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:12:19,503 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:12:26,977 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:12:27,101 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:12:44,505 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:12:44,594 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:12:52,110 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:12:52,216 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:13:09,603 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:13:09,754 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:13:17,221 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:13:17,307 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:13:34,757 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:13:34,842 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:13:42,314 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:13:42,411 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:13:59,850 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:13:59,934 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:14:07,416 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:14:07,554 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:14:24,937 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:14:25,021 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:14:32,562 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:14:32,657 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:14:50,029 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:14:50,138 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:14:57,664 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:14:57,785 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:15:15,141 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:15:15,286 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:15:22,786 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:15:22,900 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:15:40,294 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:15:40,448 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:15:47,906 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:15:48,043 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:16:05,452 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:16:05,535 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:16:13,044 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:16:13,185 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:16:30,544 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:16:30,680 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:16:38,191 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:16:38,276 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:16:55,684 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:16:55,769 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:17:03,277 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:17:03,368 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:17:20,778 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:17:20,891 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:17:28,374 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:17:28,495 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:17:45,895 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:17:46,002 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:17:53,496 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:17:53,589 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:18:11,011 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:18:11,096 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:18:18,596 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:18:18,681 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:18:36,100 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:18:36,194 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:18:43,683 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:18:43,767 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:19:01,203 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:19:01,298 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:19:08,774 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:19:08,915 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:19:26,302 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:19:26,397 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:19:33,917 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:19:34,037 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:19:51,406 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:19:51,522 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:19:59,043 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:19:59,126 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:20:16,526 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:20:16,626 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:20:24,128 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:20:24,213 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:20:41,635 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:20:41,811 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:20:49,220 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:20:49,324 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:21:06,816 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:21:06,930 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:21:14,327 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:21:14,413 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:21:31,940 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:21:32,056 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:21:39,420 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:21:39,550 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:21:57,061 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:21:57,201 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:22:04,552 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:22:04,657 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:22:22,211 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:22:22,344 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:22:29,665 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:22:29,749 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:22:47,349 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:22:47,436 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:22:54,752 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:22:54,908 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:23:12,446 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:23:12,581 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:23:19,916 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:23:20,000 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:23:37,586 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:23:37,708 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:23:45,003 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:23:45,116 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:24:02,718 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:24:02,830 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:24:10,124 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:24:10,248 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:24:27,836 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:24:27,944 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:24:35,251 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:24:35,334 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:24:52,955 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Sending packet PING data None
+2025-03-14 02:24:53,042 - engineio.server - INFO - rxZf6Aayeyiue1MuAAAA: Received packet PONG data 
+2025-03-14 02:25:00,342 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Sending packet PING data None
+2025-03-14 02:25:00,447 - engineio.server - INFO - xpiYsJEmkmwyA6YWAAAC: Received packet PONG data 
+2025-03-14 02:25:18,415 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 02:25:18,415 - app - INFO - Inicializando base de datos...
+2025-03-14 02:25:19,478 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 02:25:19,479 - app - INFO - Configurando login manager...
+2025-03-14 02:25:19,479 - app - INFO - Login manager configurado correctamente
+2025-03-14 02:25:19,479 - app - INFO - Importando e inicializando rutas...
+2025-03-14 02:25:19,524 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 02:25:19,524 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 02:25:19,526 - __main__ - INFO - Starting Flask application
+2025-03-14 02:25:19,526 - __main__ - INFO - Server will start on port 5000
+2025-03-14 02:25:20,517 - app - INFO - Index endpoint accessed
+2025-03-14 02:25:20,518 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:20] "GET / HTTP/1.1" 302 383 0.001796
+2025-03-14 02:25:20,639 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:20] "GET /login HTTP/1.1" 200 4187 0.020660
+2025-03-14 02:25:21,216 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:21] "GET /static/css/custom.css HTTP/1.1" 304 216 0.005651
+2025-03-14 02:25:21,304 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:21] "GET /static/css/login.css HTTP/1.1" 304 216 0.001323
+2025-03-14 02:25:54,898 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 02:25:54,898 - app - INFO - Inicializando base de datos...
+2025-03-14 02:25:55,386 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 02:25:55,386 - app - INFO - Configurando login manager...
+2025-03-14 02:25:55,387 - app - INFO - Login manager configurado correctamente
+2025-03-14 02:25:55,387 - app - INFO - Importando e inicializando rutas...
+2025-03-14 02:25:55,422 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 02:25:55,423 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 02:25:55,425 - __main__ - INFO - Starting Flask application
+2025-03-14 02:25:55,425 - __main__ - INFO - Server will start on port 5000
+2025-03-14 02:25:56,559 - app - INFO - Index endpoint accessed
+2025-03-14 02:25:56,561 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:56] "GET / HTTP/1.1" 302 568 0.002224
+2025-03-14 02:25:56,951 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:56] "GET /login HTTP/1.1" 200 4022 0.029711
+2025-03-14 02:25:57,551 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:57] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004242
+2025-03-14 02:25:57,676 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:57] "GET /static/css/login.css HTTP/1.1" 304 216 0.001217
