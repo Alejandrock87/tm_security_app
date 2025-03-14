@@ -25,31 +25,17 @@ def get_incident_statistics(date_from=None, date_to=None):
     # Total de incidentes
     total_incidents = query.count()
 
-    # Incidentes por tipo y estación usando la sintaxis correcta de CASE
+    # Incidentes por tipo y estación usando subconsultas
     station_stats = db.session.query(
         Incident.nearest_station,
         func.count(Incident.id).label('total'),
-        func.count(case([
-            (Incident.incident_type == 'Hurto', Incident.id)
-        ])).label('hurtos'),
-        func.count(case([
-            (Incident.incident_type == 'Acoso', Incident.id)
-        ])).label('acosos'),
-        func.count(case([
-            (Incident.incident_type == 'Cosquilleo', Incident.id)
-        ])).label('cosquilleos'),
-        func.count(case([
-            (Incident.incident_type == 'Ataque', Incident.id)
-        ])).label('ataques'),
-        func.count(case([
-            (Incident.incident_type == 'Apertura de puertas', Incident.id)
-        ])).label('aperturas'),
-        func.count(case([
-            (Incident.incident_type == 'Hurto a mano armada', Incident.id)
-        ])).label('hurtos_armados'),
-        func.count(case([
-            (Incident.incident_type == 'Sospechoso', Incident.id)
-        ])).label('sospechosos')
+        func.count(func.nullif(Incident.incident_type != 'Hurto', True)).label('hurtos'),
+        func.count(func.nullif(Incident.incident_type != 'Acoso', True)).label('acosos'),
+        func.count(func.nullif(Incident.incident_type != 'Cosquilleo', True)).label('cosquilleos'),
+        func.count(func.nullif(Incident.incident_type != 'Ataque', True)).label('ataques'),
+        func.count(func.nullif(Incident.incident_type != 'Apertura de puertas', True)).label('aperturas'),
+        func.count(func.nullif(Incident.incident_type != 'Hurto a mano armada', True)).label('hurtos_armados'),
+        func.count(func.nullif(Incident.incident_type != 'Sospechoso', True)).label('sospechosos')
     ).group_by(Incident.nearest_station)\
     .order_by(desc('total')).all()
 
