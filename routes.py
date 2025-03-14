@@ -197,11 +197,14 @@ def init_routes(app):
     @login_required
     def api_statistics():
         try:
+            app.logger.info("Endpoint /api/statistics accessed")
             query = Incident.query
 
             # Obtener parámetros de fecha
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
+
+            app.logger.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
             # Aplicar filtros de fecha si existen
             if date_from:
@@ -212,73 +215,33 @@ def init_routes(app):
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 query = query.filter(Incident.timestamp <= date_to_end)
 
-            incidents = query.all()
+            # Obtener estadísticas usando la función actualizada
+            app.logger.info("Obteniendo estadísticas de incidentes...")
+            statistics = get_incident_statistics(date_from_obj if date_from else None, 
+                                              date_to_end if date_to else None)
 
-            if not incidents:
+            app.logger.info(f"Estadísticas obtenidas: {statistics}")
+
+            if not statistics['total_incidents']:
+                app.logger.warning("No se encontraron incidentes para los filtros especificados")
                 return jsonify({
                     'total_incidents': 0,
                     'incident_types': {},
                     'most_affected_station': '-',
                     'most_common_type': '-',
                     'most_dangerous_hour': '-',
-                    'hourly_stats': {},
                     'top_stations': {}
                 })
 
-            total_incidents = len(incidents)
-            incident_types = {}
-            station_counts = {}
-            hourly_stats = {}
+            app.logger.info(f"Retornando datos - Total de incidentes: {statistics['total_incidents']}")
+            app.logger.info(f"Estación más afectada: {statistics['most_affected_station']}")
+            app.logger.info(f"Tipos de incidentes: {statistics['incident_types']}")
+            app.logger.info(f"Top estaciones: {statistics['top_stations']}")
 
-            for incident in incidents:
-                # Contar tipos de incidentes
-                if incident.incident_type not in incident_types:
-                    incident_types[incident.incident_type] = 0
-                incident_types[incident.incident_type] += 1
-
-                # Contar incidentes por estación
-                if incident.nearest_station not in station_counts:
-                    station_counts[incident.nearest_station] = 0
-                station_counts[incident.nearest_station] += 1
-
-                # Estadísticas por hora y día
-                day = incident.timestamp.strftime('%A')
-                hour = incident.timestamp.strftime('%H')
-                if day not in hourly_stats:
-                    hourly_stats[day] = {}
-                if hour not in hourly_stats[day]:
-                    hourly_stats[day][hour] = 0
-                hourly_stats[day][hour] += 1
-
-            # Encontrar la estación más afectada
-            most_affected_station = max(station_counts.items(), key=lambda x: x[1])[0]
-
-            # Encontrar el tipo más común
-            most_common_type = max(incident_types.items(), key=lambda x: x[1])[0]
-
-            # Encontrar la hora más peligrosa
-            most_dangerous_hour = None
-            max_incidents = 0
-            for day in hourly_stats:
-                for hour in hourly_stats[day]:
-                    if hourly_stats[day][hour] > max_incidents:
-                        max_incidents = hourly_stats[day][hour]
-                        most_dangerous_hour = f"{hour}:00"
-
-            # Obtener top 5 estaciones
-            top_stations = dict(sorted(station_counts.items(), key=lambda x: x[1], reverse=True)[:5])
-
-            return jsonify({
-                'total_incidents': total_incidents,
-                'incident_types': incident_types,
-                'most_affected_station': most_affected_station,
-                'most_common_type': most_common_type,
-                'most_dangerous_hour': most_dangerous_hour,
-                'hourly_stats': hourly_stats,
-                'top_stations': top_stations
-            })
+            return jsonify(statistics)
 
         except Exception as e:
+            app.logger.error(f"Error en /api/statistics: {str(e)}", exc_info=True)
             return jsonify({'error': str(e)}), 500
 
     @app.route('/model_insights')

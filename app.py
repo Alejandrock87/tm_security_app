@@ -46,7 +46,9 @@ socketio = SocketIO(
     cors_allowed_origins="*",
     async_mode='gevent',
     logger=True,
-    engineio_logger=True
+    engineio_logger=True,
+    ping_timeout=60,
+    ping_interval=25
 )
 
 # Configurar base de datos

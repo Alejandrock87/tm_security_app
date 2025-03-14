@@ -2357,3 +2357,73 @@ DETAIL:  Key (user_id)=(5) is not present in table "users".
 2025-03-14 02:25:56,951 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:56] "GET /login HTTP/1.1" 200 4022 0.029711
 2025-03-14 02:25:57,551 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:57] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004242
 2025-03-14 02:25:57,676 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:25:57] "GET /static/css/login.css HTTP/1.1" 304 216 0.001217
+2025-03-14 02:50:37,248 - app - INFO - Index endpoint accessed
+2025-03-14 02:50:37,249 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:50:37] "GET / HTTP/1.1" 302 383 0.001281
+2025-03-14 02:50:37,373 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:50:37] "GET /login HTTP/1.1" 200 4022 0.001648
+2025-03-14 02:50:37,784 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:50:37] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001455
+2025-03-14 02:50:38,090 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:50:38] "GET /static/css/login.css HTTP/1.1" 304 216 0.001460
+2025-03-14 02:51:07,438 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:07] "POST /login HTTP/1.1" 302 861 0.866226
+2025-03-14 02:51:07,772 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:07] "GET /home HTTP/1.1" 200 9215 0.100712
+2025-03-14 02:51:07,976 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:07] "GET /static/css/home.css HTTP/1.1" 304 215 0.001282
+2025-03-14 02:51:08,008 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:08] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001360
+2025-03-14 02:51:09,292 - engineio.server - INFO - djkcPWFnOlfj9M8LAAAA: Sending packet OPEN data {'sid': 'djkcPWFnOlfj9M8LAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 02:51:09,293 - engineio.server - INFO - djkcPWFnOlfj9M8LAAAA: Received request to upgrade to websocket
+2025-03-14 02:51:09,293 - engineio.server - INFO - djkcPWFnOlfj9M8LAAAA: Upgrade to websocket successful
+2025-03-14 02:51:09,388 - engineio.server - INFO - djkcPWFnOlfj9M8LAAAA: Received packet MESSAGE data 0
+2025-03-14 02:51:09,389 - engineio.server - INFO - djkcPWFnOlfj9M8LAAAA: Sending packet MESSAGE data 0{"sid":"Hx6WzL6oHMDDGTjaAAAB"}
+2025-03-14 02:51:12,191 - root - INFO - Obteniendo datos para el panel de control
+2025-03-14 02:51:12,499 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:12] "GET /dashboard HTTP/1.1" 500 62175 0.373000
+2025-03-14 02:51:12,616 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:12] "GET /dashboard?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 6288 0.009217
+2025-03-14 02:51:12,726 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:51:12] "GET /dashboard?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 10287 0.002083
+2025-03-14 02:52:30,840 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 02:52:30,844 - app - INFO - Inicializando base de datos...
+2025-03-14 02:52:31,474 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 02:52:31,480 - app - INFO - Configurando login manager...
+2025-03-14 02:52:31,480 - app - INFO - Login manager configurado correctamente
+2025-03-14 02:52:31,480 - app - INFO - Importando e inicializando rutas...
+2025-03-14 02:52:31,686 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 02:52:31,686 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 02:52:31,717 - __main__ - INFO - Starting Flask application
+2025-03-14 02:52:31,718 - __main__ - INFO - Server will start on port 5000
+2025-03-14 02:52:32,248 - app - INFO - Index endpoint accessed
+2025-03-14 02:52:32,346 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:52:32] "GET / HTTP/1.1" 302 380 0.099371
+2025-03-14 02:52:32,564 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:52:32] "GET /home HTTP/1.1" 200 8521 0.106865
+2025-03-14 02:52:32,698 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:52:32] "GET /static/css/home.css HTTP/1.1" 304 215 0.005799
+2025-03-14 02:52:32,700 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:52:32] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001062
+2025-03-14 02:52:33,821 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet OPEN data {'sid': 'P4M_E_Y0tTbvdPO5AAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 02:52:33,822 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received request to upgrade to websocket
+2025-03-14 02:52:33,822 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Upgrade to websocket successful
+2025-03-14 02:52:33,957 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet MESSAGE data 0
+2025-03-14 02:52:33,958 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet MESSAGE data 0{"sid":"swuQREFO_yW7dcfHAAAB"}
+2025-03-14 02:52:58,828 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:52:58,911 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:53:23,922 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:53:24,152 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:53:49,168 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:53:49,254 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:54:14,255 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:54:14,340 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:54:39,347 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:54:39,439 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:55:03,518 - __main__ - INFO - Health check endpoint accessed
+2025-03-14 02:55:03,519 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-03-14 02:55:03] "GET /health HTTP/1.1" 200 149 0.001041
+2025-03-14 02:55:04,440 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:55:04,591 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:55:21,961 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-03-14 02:55:21] "GET /api/statistics HTTP/1.1" 302 641 0.001729
+2025-03-14 02:55:29,599 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Sending packet PING data None
+2025-03-14 02:55:29,699 - engineio.server - INFO - P4M_E_Y0tTbvdPO5AAAA: Received packet PONG data 
+2025-03-14 02:55:50,530 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 02:55:50,534 - app - INFO - Inicializando base de datos...
+2025-03-14 02:55:51,111 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 02:55:51,111 - app - INFO - Configurando login manager...
+2025-03-14 02:55:51,112 - app - INFO - Login manager configurado correctamente
+2025-03-14 02:55:51,112 - app - INFO - Importando e inicializando rutas...
+2025-03-14 02:55:51,273 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 02:55:51,274 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 02:55:51,290 - __main__ - INFO - Starting Flask application
+2025-03-14 02:55:51,290 - __main__ - INFO - Server will start on port 5000
+2025-03-14 02:55:51,651 - app - INFO - Index endpoint accessed
+2025-03-14 02:55:51,765 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:55:51] "GET / HTTP/1.1" 302 380 0.115376
+2025-03-14 02:55:52,032 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:55:52] "GET /home HTTP/1.1" 200 8521 0.104202
+2025-03-14 02:55:52,185 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:55:52] "GET /static/css/home.css HTTP/1.1" 304 215 0.005425
+2025-03-14 02:55:52,200 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 02:55:52] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001087
