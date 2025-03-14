@@ -4,7 +4,6 @@ monkey.patch_all()
 
 import os
 import logging
-import socket
 
 # Configurar logging
 logging.basicConfig(
@@ -17,17 +16,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Verificar disponibilidad del puerto
-def check_port_availability(port):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.bind(('0.0.0.0', port))
-        sock.close()
-        return True
-    except:
-        sock.close()
-        return False
-
 # Importar la aplicación Flask y SocketIO después del monkey patch
 try:
     from app import app, socketio
@@ -39,16 +27,14 @@ except Exception as e:
 if __name__ == '__main__':
     try:
         logger.info("Iniciando aplicación Flask")
-        port = 5000  # Forzar puerto 5000 para Replit
+        port = 5000
         logger.info(f"Intentando iniciar servidor en puerto {port}")
 
-        # Iniciar el servidor con SocketIO
-        logger.info("Iniciando servidor SocketIO...")
         socketio.run(
             app,
             host='0.0.0.0',
             port=port,
-            debug=True,
+            debug=False,  # Deshabilitado para evitar problemas con gevent
             use_reloader=False,
             log_output=True
         )

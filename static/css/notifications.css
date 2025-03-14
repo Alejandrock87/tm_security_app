@@ -1,7 +1,7 @@
 /* Toast notifications */
 .toast {
     position: fixed;
-    bottom: 80px; /* Ajustado para evitar la barra de navegación inferior */
+    bottom: 20px;
     right: 20px;
     padding: 15px;
     border-radius: 8px;
@@ -28,17 +28,15 @@
     border-left: 4px solid #2196F3; 
 }
 
-/* Toast container */
+/* Toast container - Ajustado para dispositivos móviles */
 #toastContainer {
     position: fixed;
-    bottom: 80px; /* Ajustado para evitar la barra de navegación inferior */
+    bottom: 20px;
     right: 20px;
-    z-index: 1050; /* Incrementado para estar sobre otros elementos */
+    z-index: 1050;
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
-    /* Asegurar que no toque la barra superior */
-    padding-top: 70px;
 }
 
 /* Responsive adjustments */
@@ -51,14 +49,14 @@
     }
 }
 
-/* Responsive adjustments */
+/* Ajustes específicos para dispositivos móviles */
 @media (max-width: 768px) {
     .toast {
         width: calc(100% - 40px);
         min-width: auto;
         max-width: none;
         margin: 0 20px;
-        bottom: 70px; /* Ajustado para dispositivos móviles */
+        bottom: 70px; /* Ajustado para evitar la barra de navegación inferior */
     }
 
     #toastContainer {
@@ -74,15 +72,15 @@
     }
 }
 
-/* iOS específico */
+/* Ajustes específicos para iOS */
 @supports (-webkit-touch-callout: none) {
     .toast {
-        bottom: calc(85px + env(safe-area-inset-bottom, 20px)); /* Ajuste extra para dispositivos iOS */
+        bottom: calc(70px + env(safe-area-inset-bottom, 20px));
         padding-bottom: env(safe-area-inset-bottom, 15px);
     }
 
     #toastContainer {
-        bottom: calc(85px + env(safe-area-inset-bottom, 20px));
+        bottom: calc(70px + env(safe-area-inset-bottom, 20px));
         padding-bottom: env(safe-area-inset-bottom, 20px);
     }
 
@@ -129,7 +127,7 @@
 }
 
 /* Variables y configuración base */
-::root {
+:root {
     --notification-primary: #1a73e8;
     --notification-bg: #feca57;
     --notification-card: #ffffff;

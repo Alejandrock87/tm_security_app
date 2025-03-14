@@ -6,6 +6,7 @@ from database import init_db, db
 from flask_caching import Cache
 from flask_socketio import SocketIO
 from flask_cors import CORS
+from datetime import datetime
 
 # Configurar logging
 logging.basicConfig(
@@ -98,8 +99,32 @@ try:
     # Endpoint de health check con logging detallado
     @app.route('/health')
     def health():
-        logger.info(f"Health check accedido - IP: {request.remote_addr}, Headers: {dict(request.headers)}")
-        return jsonify({"status": "ok", "message": "Server is running"}), 200
+        try:
+            logger.info(f"Health check accedido - IP: {request.remote_addr}")
+            logger.info(f"Headers: {dict(request.headers)}")
+            logger.info(f"Host: {request.host}")
+
+            # Verificar conexión a la base de datos
+            db.session.execute('SELECT 1')
+            db_status = "connected"
+        except Exception as e:
+            logger.error(f"Error en health check - DB: {str(e)}")
+            db_status = "error"
+
+        response = {
+            "status": "ok",
+            "message": "Server is running",
+            "timestamp": datetime.now().isoformat(),
+            "database": db_status,
+            "request": {
+                "ip": request.remote_addr,
+                "host": request.host,
+                "method": request.method
+            }
+        }
+
+        logger.info(f"Health check response: {response}")
+        return jsonify(response), 200
 
     # Importar e inicializar rutas
     from routes import init_routes
