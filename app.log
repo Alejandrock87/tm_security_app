@@ -10056,3 +10056,51 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 17:18:54,852 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:18:54] "GET /login?next=%2Fapi%2Fpredictions HTTP/1.1" 200 4594 0.002316
 2025-03-14 17:18:57,500 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
 2025-03-14 17:18:57,588 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:19:03,334 - app - INFO - Index endpoint accessed
+2025-03-14 17:19:03,335 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:19:03] "GET / HTTP/1.1" 302 383 0.001432
+2025-03-14 17:19:03,431 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:19:03] "GET /login HTTP/1.1" 200 4022 0.001367
+2025-03-14 17:19:03,620 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:19:03] "GET /static/css/login.css HTTP/1.1" 304 216 0.001141
+2025-03-14 17:19:03,622 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:19:03] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001148
+2025-03-14 17:19:05,855 - engineio.server - INFO - m9KZA29NOGDRoQsvAAAQ: Sending packet PING data None
+2025-03-14 17:19:05,855 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:19:05] "GET /socket.io/?EIO=4&transport=polling&t=PMLgZTn&sid=m9KZA29NOGDRoQsvAAAQ HTTP/1.1" 200 157 24.973872
+2025-03-14 17:19:22,589 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:19:22,709 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:19:47,717 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:19:47,802 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:20:11,218 - engineio.server - INFO - m9KZA29NOGDRoQsvAAAQ: Client is gone, closing socket
+2025-03-14 17:20:11,218 - engineio.server - INFO - m9KZA29NOGDRoQsvAAAQ: Client is gone, closing socket
+2025-03-14 17:20:12,805 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:20:12,933 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:20:37,937 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:20:38,026 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:21:03,048 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:21:03,144 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:21:28,161 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:21:28,246 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:21:53,259 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:21:53,388 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:22:18,413 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:22:18,516 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:22:43,519 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:22:43,608 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:23:08,633 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Sending packet PING data None
+2025-03-14 17:23:08,757 - engineio.server - INFO - Em4AZ5S8_76kO9BFAAAA: Received packet PONG data 
+2025-03-14 17:23:17,128 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 17:23:17,129 - app - INFO - Inicializando base de datos...
+2025-03-14 17:23:18,381 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 17:23:18,381 - app - INFO - Configurando login manager...
+2025-03-14 17:23:18,382 - app - INFO - Login manager configurado correctamente
+2025-03-14 17:23:18,382 - app - INFO - Importando e inicializando rutas...
+2025-03-14 17:23:18,552 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 17:23:18,552 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 17:23:18,552 - __main__ - INFO - Starting Flask application
+2025-03-14 17:23:18,552 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 17:23:18,552 - __main__ - INFO - Testing server configuration...
+2025-03-14 17:23:18,558 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 17:23:18,558 - __main__ - INFO - Test response status: 200
+2025-03-14 17:23:18,559 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 17:23:19,227 - app - INFO - Index endpoint accessed
+2025-03-14 17:23:19,229 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:23:19] "GET / HTTP/1.1" 302 383 0.002706
+2025-03-14 17:23:19,388 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:23:19] "GET /login HTTP/1.1" 200 4022 0.025297
+2025-03-14 17:23:19,588 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:23:19] "GET /static/css/login.css HTTP/1.1" 304 216 0.004616
+2025-03-14 17:23:38,868 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:23:38] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001471

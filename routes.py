@@ -291,6 +291,13 @@ def init_routes(app):
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
 
+            # Crear mapeo de estaciones a troncales
+            station_to_troncal = {
+                feature['properties']['nombre_estacion']: feature['properties'].get('troncal_estacion', 'N/A')
+                for feature in geojson_data['features']
+                if 'nombre_estacion' in feature['properties']
+            }
+
             current_time = datetime.now()
             predictions = []
 
@@ -301,6 +308,7 @@ def init_routes(app):
                 for feature in geojson_data['features']:
                     station = feature['properties'].get('nombre_estacion')
                     coordinates = feature['geometry'].get('coordinates')
+                    troncal = feature['properties'].get('troncal_estacion', 'N/A')
 
                     if not all([station, coordinates]):
                         continue
@@ -311,6 +319,7 @@ def init_routes(app):
                     if risk_score is not None and incident_type is not None:
                         predictions.append({
                             'station': station,
+                            'troncal': troncal,
                             'incident_type': incident_type,
                             'predicted_time': prediction_time.isoformat(),
                             'risk_score': float(risk_score),
@@ -318,19 +327,14 @@ def init_routes(app):
                             'longitude': coordinates[0]
                         })
 
-            app.logger.info("Predicciones generadas exitosamente: %d predicciones", len(predictions))
-            if not predictions:
-                return jsonify({
-                    'message': 'No hay predicciones disponibles en este momento',
-                    'predictions': []
-                })
-
+            app.logger.info(f"Predicciones generadas exitosamente: {len(predictions)} predicciones")
             return jsonify(predictions)
 
         except Exception as e:
-            app.logger.error("Error generando predicciones: %s", str(e))
+            app.logger.error(f"Error generando predicciones: {str(e)}")
             return jsonify({
                 'error': 'Error al generar predicciones',
+                'message': str(e),
                 'predictions': []
             }), 500
 

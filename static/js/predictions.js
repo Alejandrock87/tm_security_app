@@ -146,7 +146,7 @@ function filterPredictions(predictions) {
     return predictions.filter(prediction => {
         if (selectedFilter === 'troncales') {
             return selectedTroncales.length === 0 || 
-                   selectedTroncales.some(troncal => prediction.station.includes(troncal));
+                   selectedTroncales.includes(prediction.troncal);
         } else if (selectedFilter === 'estaciones') {
             return selectedEstaciones.length === 0 || 
                    selectedEstaciones.includes(prediction.station);
@@ -186,7 +186,9 @@ function loadAndCheckPredictions() {
 
     fetch('/api/predictions')
         .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
@@ -200,6 +202,10 @@ function loadAndCheckPredictions() {
                         ${data.error}
                     </div>`;
                 return;
+            }
+
+            if (!Array.isArray(data)) {
+                throw new Error('Formato de datos inválido');
             }
 
             const filteredPredictions = filterPredictions(data);
@@ -226,6 +232,9 @@ function loadAndCheckPredictions() {
                     </div>
                     <p class="mb-1">Posible ${prediction.incident_type}</p>
                     <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})</small>
+                    <div class="station-info">
+                        <small class="text-muted">Troncal: ${prediction.troncal || 'N/A'}</small>
+                    </div>
                 `;
 
                 predictionsList.appendChild(item);
@@ -236,7 +245,7 @@ function loadAndCheckPredictions() {
             predictionsList.innerHTML = `
                 <div class="alert alert-danger" role="alert">
                     <i class="fas fa-exclamation-circle"></i>
-                    Error al cargar las predicciones. Por favor, intente de nuevo más tarde.
+                    Error al cargar las predicciones: ${error.message}
                 </div>`;
         });
 }
