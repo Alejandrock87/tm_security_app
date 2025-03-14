@@ -1,3 +1,4 @@
+# Monkey patch debe ser lo primero
 from gevent import monkey
 monkey.patch_all()
 
@@ -28,21 +29,21 @@ def check_port_availability(port):
         return False
 
 # Importar la aplicación Flask y SocketIO después del monkey patch
-from app import app, socketio
+try:
+    from app import app, socketio
+    logger.info("Aplicación Flask y SocketIO importados correctamente")
+except Exception as e:
+    logger.error(f"Error al importar app: {str(e)}", exc_info=True)
+    raise
 
 if __name__ == '__main__':
     try:
-        logger.info("Starting Flask application")
-        port = int(os.environ.get('PORT', 5000))
-        logger.info(f"Attempting to start server on port {port}")
-
-        # No verificamos el puerto ya que Replit maneja esto internamente
-        logger.info("Testing server configuration...")
-        test_response = app.test_client().get('/health')
-        logger.info(f"Test response status: {test_response.status_code}")
+        logger.info("Iniciando aplicación Flask")
+        port = 5000  # Forzar puerto 5000 para Replit
+        logger.info(f"Intentando iniciar servidor en puerto {port}")
 
         # Iniciar el servidor con SocketIO
-        logger.info("Starting SocketIO server...")
+        logger.info("Iniciando servidor SocketIO...")
         socketio.run(
             app,
             host='0.0.0.0',
@@ -52,5 +53,5 @@ if __name__ == '__main__':
             log_output=True
         )
     except Exception as e:
-        logger.error(f"Failed to start server: {str(e)}", exc_info=True)
+        logger.error(f"Error al iniciar servidor: {str(e)}", exc_info=True)
         raise

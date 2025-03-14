@@ -271,34 +271,20 @@ async function requestNotificationPermission() {
     const originalText = activateBtn.textContent;
 
     try {
-        if (!('Notification' in window)) {
-            showToast('Este navegador no soporta notificaciones', 'error');
-            return;
-        }
-
-        if (Notification.permission === 'denied') {
-            activateBtn.textContent = 'Notificaciones Bloqueadas';
-            activateBtn.classList.remove('btn-primary', 'btn-success');
-            activateBtn.classList.add('btn-danger');
-            showToast('Por favor, desbloquea las notificaciones en la configuración de tu navegador', 'warning');
-            return;
-        }
-
-        activateBtn.textContent = 'Solicitando permisos...';
+        activateBtn.textContent = 'Activando notificaciones...';
         activateBtn.disabled = true;
 
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            notificationsEnabled = true;
-            updateButtonStates(true);
-            showToast('Notificaciones activadas correctamente', 'success');
-            new Notification('Notificaciones Activadas', {
-                body: 'Recibirás alertas de incidentes según tus preferencias',
-                icon: '/static/icons/notification-icon.png'
-            });
-        } else {
-            throw new Error('Permiso de notificaciones denegado');
-        }
+        notificationsEnabled = true;
+        updateButtonStates(true);
+        showToast('Notificaciones activadas correctamente', 'success');
+
+        // Mostrar una notificación de ejemplo
+        showInAppNotification({
+            incident_type: 'Sistema',
+            nearest_station: 'General',
+            description: 'Las notificaciones están activadas. Recibirás alertas de incidentes según tus preferencias.',
+            timestamp: new Date()
+        });
     } catch (error) {
         console.error('Error:', error);
         showToast(error.message, 'error');
@@ -529,14 +515,39 @@ function shouldShowNotification(incident) {
     return troncalMatch && stationMatch && typeMatch;
 }
 
-// Función para mostrar notificaciones del navegador
+// Función para mostrar notificaciones in-app
+function showInAppNotification(notification) {
+    const toastContainer = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-info show';
+
+    const timestamp = new Date(notification.timestamp).toLocaleString();
+    toast.innerHTML = `
+        <div class="toast-header">
+            <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+            <small class="ms-auto">${timestamp}</small>
+        </div>
+        <div class="toast-body">
+            Estación: ${notification.nearest_station}
+            ${notification.description ? `<br>${notification.description}` : ''}
+        </div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Incrementar contador de notificaciones
+    updateNotificationBadge(++notificationCount);
+
+    // Remover la notificación después de 5 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+// Reemplazar la función anterior de showBrowserNotification
 function showBrowserNotification(incident) {
-    if (shouldShowBrowserNotifications()) {
-        new Notification('Nuevo Incidente', {
-            body: `${capitalizeFirstLetter(incident.incident_type)} en ${incident.nearest_station}`,
-            icon: '/static/icons/notification-icon.png'
-        });
-    }
+    showInAppNotification(incident);
 }
 
 

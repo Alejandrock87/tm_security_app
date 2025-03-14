@@ -196,39 +196,64 @@ function getSelectedValues(type) {
 function initializeNotifications() {
     const notificationToggle = document.getElementById('notificationToggle');
 
-    if (notificationPermission) {
+    if (localStorage.getItem('inAppNotificationsEnabled') === 'true') {
         notificationToggle.checked = true;
     }
 
-    notificationToggle.addEventListener('change', async function() {
+    notificationToggle.addEventListener('change', function() {
         if (this.checked) {
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    notificationPermission = true;
-                    localStorage.setItem('notificationPermission', 'true');
-                    socket.emit('subscribe_notifications', {
-                        userId: getUserId(),
-                        filter: {
-                            type: selectedFilter,
-                            troncales: selectedTroncales,
-                            estaciones: selectedEstaciones
-                        }
-                    });
-                } else {
-                    notificationToggle.checked = false;
-                    alert('Para recibir notificaciones, necesitas permitirlas en la configuración de tu navegador');
+            localStorage.setItem('inAppNotificationsEnabled', 'true');
+            showInAppNotification({
+                title: 'Notificaciones Activadas',
+                message: 'Recibirás alertas de predicciones en tiempo real',
+                type: 'success'
+            });
+            socket.emit('subscribe_notifications', {
+                userId: getUserId(),
+                filter: {
+                    type: selectedFilter,
+                    troncales: selectedTroncales,
+                    estaciones: selectedEstaciones
                 }
-            } catch (error) {
-                console.error('Error al solicitar permisos:', error);
-                notificationToggle.checked = false;
-            }
+            });
         } else {
-            notificationPermission = false;
-            localStorage.setItem('notificationPermission', 'false');
+            localStorage.setItem('inAppNotificationsEnabled', 'false');
             socket.emit('unsubscribe_notifications', { userId: getUserId() });
         }
     });
+}
+
+// Función para mostrar notificaciones in-app
+function showInAppNotification(notification) {
+    const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${notification.type || 'info'} show`;
+
+    toast.innerHTML = `
+        <div class="toast-header">
+            <strong>${notification.title || 'Alerta'}</strong>
+            <small>${new Date().toLocaleTimeString()}</small>
+        </div>
+        <div class="toast-body">
+            ${notification.message}
+        </div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Remover la notificación después de 5 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+// Crear contenedor de notificaciones si no existe
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.id = 'toastContainer';
+    document.body.appendChild(container);
+    return container;
 }
 
 // Función para filtrar predicciones
@@ -351,28 +376,22 @@ function loadAndCheckPredictions() {
         });
 }
 
-// Función para verificar y enviar notificación si es necesario
+// Función para verificar y mostrar notificación de predicción
 function checkAndNotify(prediction) {
-    if (!notificationPermission) return;
+    if (localStorage.getItem('inAppNotificationsEnabled') !== 'true') return;
 
     const now = new Date();
     const predTime = new Date(prediction.predicted_time);
     const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
 
-    // Notificar cuando falte aproximadamente una hora (entre 59 y 61 minutos)
+    // Notificar cuando falte aproximadamente una hora
     if (diffMinutes >= 59 && diffMinutes <= 61) {
         const riskInfo = getRiskInfo(prediction.risk_score);
-        const notification = new Notification('Alerta de Seguridad', {
-            body: `Posible ${prediction.incident_type} en ${prediction.station}\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})\nEn aproximadamente 1 hora`,
-            icon: '/static/icons/notification-icon.png',
-            badge: '/static/icons/badge-icon.png',
-            vibrate: [200, 100, 200]
+        showInAppNotification({
+            title: 'Alerta de Predicción',
+            message: `Posible ${prediction.incident_type} en ${prediction.station}\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})\nEn aproximadamente 1 hora`,
+            type: riskInfo.class
         });
-
-        notification.onclick = function() {
-            window.focus();
-            this.close();
-        };
     }
 }
 
