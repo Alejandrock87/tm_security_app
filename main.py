@@ -8,14 +8,6 @@ from flask import request
 from flask_cors import CORS
 
 # Setup detailed logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('app.log')
-    ]
-)
 logger = logging.getLogger(__name__)
 
 # Enable CORS for the Flask app
