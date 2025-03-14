@@ -92,15 +92,15 @@
               <div class="legend-body">
                 <div class="legend-item">
                   <div class="legend-color" style="background-color: #ff0000;"></div>
-                  <span>Alto (>5 incidentes/mes)</span>
+                  <span>Alto (≥50 incidentes)</span>
                 </div>
                 <div class="legend-item">
                   <div class="legend-color" style="background-color: #ffa500;"></div>
-                  <span>Medio (2-5 incidentes/mes)</span>
+                  <span>Medio (20-49 incidentes)</span>
                 </div>
                 <div class="legend-item">
                   <div class="legend-color" style="background-color: #008000;"></div>
-                  <span>Bajo (<2 incidentes/mes)</span>
+                  <span>Bajo (<20 incidentes)</span>
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@
                 </h6>
                 <p class="legend-text">
                   Los niveles de inseguridad se calculan basándose en la cantidad 
-                  de incidentes reportados en el último mes.
+                  total de incidentes reportados en cada estación.
                 </p>
               </div>
             </div>
@@ -129,7 +129,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <script>
-      // --- Lógica sin cambios ---
+      // --- Script content remains unchanged ---
       let reportMap = null;
       let reportUserMarker = null;
       let reportNearestStationMarker = null;
@@ -149,9 +149,9 @@
 
       function getStationSecurityColor(count) {
           if (!count && count !== 0) return '#feca57'; // Color por defecto si no hay datos
-          if (count > 5) return '#ff0000';
-          if (count >= 2) return '#ffa500';
-          return '#008000';
+          if (count >= 50) return '#ff0000';  // Alto
+          if (count >= 20) return '#ffa500'; // Medio
+          return '#008000';                  // Bajo
       }
 
       function handleStationChange(stationName) {
@@ -234,7 +234,7 @@
               console.error('Error initializing map:', error);
               locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al cargar el mapa. Por favor, recargue la página.';
               locationStatus.classList.remove('alert-info');
-              locationStatus.classList.add('alert-danger');
+              location.classList.add('alert-danger');
               return;
           }
 

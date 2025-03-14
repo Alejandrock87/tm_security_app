@@ -343,15 +343,67 @@ def init_routes(app):
     @app.route('/api/stations')
     @login_required
     def api_stations():
-        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-            geojson_data = json.load(f)
-            stations = [{
-                'nombre': feature['properties']['nombre_estacion'],
-                'troncal': feature['properties'].get('troncal_estacion', 'N/A'),
-                'latitude': feature['geometry']['coordinates'][1],
-                'longitude': feature['geometry']['coordinates'][0]
-            } for feature in geojson_data['features']]
-        return jsonify(stations)
+        try:
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
+                stations = [{
+                    'nombre': feature['properties']['nombre_estacion'],
+                    'troncal': feature['properties'].get('troncal_estacion', 'N/A'),
+                    'latitude': feature['geometry']['coordinates'][1],
+                    'longitude': feature['geometry']['coordinates'][0]
+                } for feature in geojson_data['features']]
+                return jsonify(stations)
+        except Exception as e:
+            app.logger.error(f"Error en /api/stations: {str(e)}")
+            return jsonify({'error': 'Error al cargar las estaciones'}), 500
+
+    @app.route('/incidents')
+    @login_required
+    def get_incidents():
+        try:
+            query = Incident.query
+            troncal = request.args.get('troncal')
+            station = request.args.get('station')
+            incident_type = request.args.get('incident_type')
+
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
+
+            if troncal and troncal != 'all':
+                stations_for_troncal = [feature['properties']['nombre_estacion'] 
+                                   for feature in geojson_data['features']
+                                   if feature['properties'].get('troncal_estacion') == troncal]
+                query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
+            if station and station != 'all':
+                query = query.filter(Incident.nearest_station == station)
+            if incident_type and incident_type != 'all':
+                query = query.filter(Incident.incident_type == incident_type)
+
+            # Obtener estadísticas por estación usando la misma lógica que statistics
+            station_stats = db.session.query(
+                Incident.nearest_station,
+                func.count(Incident.id).label('total')
+            ).group_by(Incident.nearest_station)\
+             .order_by(desc(func.count(Incident.id)))\
+             .all()
+
+            # Crear diccionario de conteo por estación
+            station_counts = {stat.nearest_station: stat.total for stat in station_stats}
+
+            incidents = query.all()
+            return jsonify([{
+                'id': i.id,
+                'incident_type': i.incident_type,
+                'latitude': i.latitude,
+                'longitude': i.longitude,
+                'timestamp': i.timestamp.isoformat(),
+                'nearest_station': i.nearest_station,
+                'description': i.description,
+                'station_total_incidents': station_counts.get(i.nearest_station, 0)
+            } for i in incidents])
+        except Exception as e:
+            app.logger.error(f"Error en /incidents: {str(e)}")
+            return jsonify({'error': 'Error al cargar los incidentes'}), 500
 
     @app.route('/route/<route_id>')
     @login_required
@@ -404,50 +456,6 @@ def init_routes(app):
             'nearest_station': i.nearest_station,
             'timestamp': i.timestamp.isoformat(),
             'description': i.description
-        } for i in incidents])
-
-    @app.route('/incidents')
-    @login_required
-    def get_incidents():
-        query = Incident.query
-        troncal = request.args.get('troncal')
-        station = request.args.get('station')
-        incident_type = request.args.get('incident_type')
-
-        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-            geojson_data = json.load(f)
-
-        if troncal:
-            stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                               for feature in geojson_data['features']
-                               if feature['properties'].get('troncal_estacion') == troncal]
-            query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
-        if station:
-            query = query.filter(Incident.nearest_station == station)
-        if incident_type:
-            query = query.filter(Incident.incident_type == incident_type)
-
-        # Obtener estadísticas por estación usando la misma lógica que statistics
-        station_stats = db.session.query(
-            Incident.nearest_station,
-            func.count(Incident.id).label('total')
-        ).group_by(Incident.nearest_station)\
-         .order_by(desc(func.count(Incident.id)))\
-         .all()
-
-        # Crear diccionario de conteo por estación
-        station_counts = {stat.nearest_station: stat.total for stat in station_stats}
-
-        incidents = query.all()
-        return jsonify([{
-            'id': i.id,
-            'incident_type': i.incident_type,
-            'latitude': i.latitude,
-            'longitude': i.longitude,
-            'timestamp': i.timestamp.isoformat(),
-            'nearest_station': i.nearest_station,
-            'description': i.description,
-            'station_total_incidents': station_counts.get(i.nearest_station, 0)
         } for i in incidents])
 
     @app.route('/api/vapid-public-key')

@@ -21,9 +21,23 @@ async function loadMapData(filters = {}) {
     try {
         console.log("Iniciando carga de datos del mapa...");
         const [stationsResponse, incidentsResponse] = await Promise.all([
-            fetch('/api/stations'),
-            fetch(`/incidents${buildQueryString(filters)}`)
+            fetch('/api/stations', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }),
+            fetch(`/incidents${buildQueryString(filters)}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
         ]);
+
+        if (!stationsResponse.ok || !incidentsResponse.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
 
         let stations = await stationsResponse.json();
         const incidents = await incidentsResponse.json();
@@ -49,8 +63,6 @@ async function loadMapData(filters = {}) {
             incidentsByStation[incident.nearest_station].types[incident.incident_type]++;
         });
 
-        console.log("Incidentes agrupados por estación:", incidentsByStation);
-
         // Aplicar filtros
         if (filters.troncal && filters.troncal !== 'all') {
             stations = stations.filter(station => station.troncal === filters.troncal);
@@ -65,10 +77,16 @@ async function loadMapData(filters = {}) {
                 )
             );
         }
+        if (filters.securityLevel && filters.securityLevel !== 'all') {
+            stations = stations.filter(station => {
+                const totalIncidents = incidentsByStation[station.nombre]?.total || 0;
+                const level = calculateSecurityLevel(totalIncidents);
+                return level === filters.securityLevel;
+            });
+        }
 
         // Limpiar marcadores existentes
-        markers.forEach(marker => map.removeLayer(marker));
-        markers = [];
+        clearMarkers();
 
         displayStations(stations, incidentsByStation);
         updateChart(incidents);
@@ -82,7 +100,10 @@ async function loadMapData(filters = {}) {
     } catch (error) {
         console.error('Error loading map data:', error);
         clearMarkers();
-        showError('No hay datos disponibles para los filtros seleccionados');
+        showError('Error al cargar los datos. Por favor, recarga la página o inicia sesión nuevamente.');
+        if (error.message.includes('<!DOCTYPE') || error.message.includes('Unexpected token')) {
+            window.location.href = '/login';
+        }
     }
 }
 
@@ -125,7 +146,7 @@ function displayStations(stations, incidentsByStation) {
                 html: `<div style="background-color: ${markerColor}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                         <span style="color: white; font-weight: bold; font-size: 14px;">🚍</span>
                       </div>
-                      <div style="background-color: rgba(255,255,255,0.95); padding: 2px 4px; border-radius: 3px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; margin-top: 0; z-index: 1000; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                      <div style="background-color: rgba(255,255,255,0.95); padding: 2px 4px; border-radius: 3px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; position: absolute; left: 50%; transform: translateX(-50%); top: 34px; margin-top: 0; z-index: 1000; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
                         <span style="font-size: 11px; font-weight: bold; color: #2d3436;">${station.nombre}</span>
                       </div>`,
                 iconSize: [30, 70],
@@ -270,7 +291,17 @@ function buildQueryString(filters) {
 
 async function loadTroncales() {
     try {
-        const response = await fetch('/api/stations');
+        const response = await fetch('/api/stations', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las troncales');
+        }
+
         const stations = await response.json();
         const troncales = [...new Set(stations.map(station => station.troncal))]
             .filter(Boolean)
@@ -288,12 +319,27 @@ async function loadTroncales() {
         await loadStations();
     } catch (error) {
         console.error('Error loading troncales:', error);
+        showError('Error al cargar las troncales. Por favor, recarga la página.');
+        // Si es un error de autenticación, redirigir al login
+        if (error.message.includes('<!DOCTYPE') || error.message.includes('Unexpected token')) {
+            window.location.href = '/login';
+        }
     }
 }
 
 async function loadStations(troncal = 'all') {
     try {
-        const response = await fetch('/api/stations');
+        const response = await fetch('/api/stations', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las estaciones');
+        }
+
         const stations = await response.json();
         let filteredStations = stations;
 
@@ -312,7 +358,11 @@ async function loadStations(troncal = 'all') {
             });
     } catch (error) {
         console.error('Error loading stations:', error);
-        throw error;
+        showError('Error al cargar las estaciones. Por favor, recarga la página.');
+        // Si es un error de autenticación, redirigir al login
+        if (error.message.includes('<!DOCTYPE') || error.message.includes('Unexpected token')) {
+            window.location.href = '/login';
+        }
     }
 }
 

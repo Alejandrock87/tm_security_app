@@ -45,10 +45,11 @@ def get_incidents_for_map():
 
 def get_incident_statistics(date_from=None, date_to=None):
     """
-    Obtiene estadísticas detalladas de incidentes.
+    Obtiene estadísticas detalladas de incidentes con filtros de fecha opcionales.
     """
     try:
         logging.info("Iniciando obtención de estadísticas de incidentes")
+        logging.info(f"Filtros de fecha - desde: {date_from}, hasta: {date_to}")
 
         # Construir la consulta base con filtros de fecha
         base_query = Incident.query
@@ -65,6 +66,9 @@ def get_incident_statistics(date_from=None, date_to=None):
         station_stats = db.session.query(
             Incident.nearest_station,
             func.count(Incident.id).label('total')
+        ).filter(
+            *([Incident.timestamp >= date_from] if date_from else []),
+            *([Incident.timestamp <= date_to] if date_to else [])
         ).group_by(Incident.nearest_station)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
@@ -75,6 +79,9 @@ def get_incident_statistics(date_from=None, date_to=None):
         incidents_by_type = db.session.query(
             Incident.incident_type,
             func.count(Incident.id).label('count')
+        ).filter(
+            *([Incident.timestamp >= date_from] if date_from else []),
+            *([Incident.timestamp <= date_to] if date_to else [])
         ).group_by(Incident.incident_type)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
@@ -84,6 +91,9 @@ def get_incident_statistics(date_from=None, date_to=None):
         hour_stats = db.session.query(
             hour_column.label('hour'),
             func.count(Incident.id).label('count')
+        ).filter(
+            *([Incident.timestamp >= date_from] if date_from else []),
+            *([Incident.timestamp <= date_to] if date_to else [])
         ).group_by(hour_column)\
          .order_by(desc(func.count(Incident.id)))\
          .first()

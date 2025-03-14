@@ -22,25 +22,29 @@ async function loadStatistics() {
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
-        updateSummaryCards(data);
-        updateIncidentTypesChart(data.incident_types);
-        updateStationsChart(data.top_stations);
+        updateAllStatistics(data);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
         showError('Error al cargar las estadísticas');
     }
 }
 
-function updateSummaryCards(data) {
+function updateAllStatistics(data) {
     if (!data) return;
 
+    // Actualizar tarjetas de resumen
     document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
     document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
     document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
     document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
 
+    // Actualizar listas detalladas
     updateIncidentTypesList(data.incident_types);
     updateStationsList(data.top_stations);
+
+    // Actualizar gráficas
+    updateIncidentTypesChart(data.incident_types);
+    updateStationsChart(data.top_stations);
 }
 
 function updateIncidentTypesList(incidentTypes) {
@@ -82,7 +86,6 @@ function updateIncidentTypesChart(incidentTypes) {
     const data = Object.entries(incidentTypes);
     const total = data.reduce((sum, [,count]) => sum + count, 0);
 
-    // Destruir gráfica existente si existe
     if (window.incidentTypesChart instanceof Chart) {
         window.incidentTypesChart.destroy();
     }
@@ -133,12 +136,10 @@ function updateStationsChart(stationsData) {
     if (!stationsData) return;
 
     const ctx = document.getElementById('stationsChart').getContext('2d');
-    // Ordenar usando parseInt para comparar numéricamente
     const data = Object.entries(stationsData)
         .sort(([, a], [, b]) => parseInt(b.total) - parseInt(a.total))
-        .slice(0, 10); // Mostrar top 10 estaciones para mejor visualización
+        .slice(0, 10);
 
-    // Destruir gráfica existente si existe
     if (window.stationsChart instanceof Chart) {
         window.stationsChart.destroy();
     }
@@ -212,13 +213,14 @@ async function applyQuickFilter(period) {
 
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
-        const data = await response.json();
 
-        if (response.ok) {
-            updateSummaryCards(data);
-            updateIncidentTypesChart(data.incident_types);
-            updateStationsChart(data.top_stations);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
         }
+
+        const data = await response.json();
+        updateAllStatistics(data);
+
     } catch (error) {
         console.error('Error al aplicar filtro:', error);
         showError('Error al cargar los datos filtrados');
