@@ -7,7 +7,7 @@ from app import app, socketio
 from flask import request
 from flask_cors import CORS
 
-# Setup detailed logging
+# Configurar logging
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Enable CORS
+# Configurar CORS
 CORS(app, resources={
     r"/*": {
         "origins": "*",
@@ -27,7 +27,6 @@ CORS(app, resources={
     }
 })
 
-# Add health check route
 @app.route('/health')
 def health_check():
     logger.info("Health check endpoint accessed")
@@ -41,7 +40,7 @@ if __name__ == '__main__':
 
         socketio.run(
             app,
-            host='0.0.0.0',  # Ensure we're listening on all interfaces
+            host='0.0.0.0',
             port=port,
             debug=True,
             use_reloader=False,

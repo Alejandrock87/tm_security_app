@@ -630,3 +630,480 @@ INFO:werkzeug:172.31.196.25 - - [14/Oct/2024 09:14:45] "[36mGET /static/css/cus
 2025-03-14 01:22:51,145 - app - INFO - Cliente conectado a Socket.IO
 2025-03-14 01:22:51,145 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': '3nwhr35AWtbewGxbMCdQrw==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.9.14', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
 2025-03-14 01:22:51,145 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Sending packet MESSAGE data 0{"sid":"8D6jusfflonyul0JAAAD"}
+2025-03-14 01:23:15,681 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:23:15,766 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:23:16,057 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Sending packet PING data None
+2025-03-14 01:23:16,152 - engineio.server - INFO - 81Rdy7pQBWCRD9UNAAAC: Received packet PONG data 
+2025-03-14 01:23:17,409 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:17,409 - geventwebsocket.handler - DEBUG - Failed to write closing frame -> closing socket
+2025-03-14 01:23:17,409 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:17,410 - app - INFO - Cliente desconectado de Socket.IO
+2025-03-14 01:23:17,419 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:17,419 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:17,420 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:23:17,482 - app - INFO - Accessing report_incident. User: <User 5>, Remote addr: 172.31.128.65
+2025-03-14 01:23:17,482 - app - DEBUG - Request headers: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/home', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.3.21', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:23:17,483 - app - DEBUG - Session data: {'_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '5', 'csrf_token': 'd0347dd7dc757296f5695d7e3b58c8f397563735'}
+2025-03-14 01:23:17,483 - app - DEBUG - User authenticated: True
+2025-03-14 01:23:17,493 - geventwebsocket.handler - DEBUG - Failed to write closing frame -> closing socket
+2025-03-14 01:23:17,493 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:17,494 - app - INFO - Rendering report_incident template
+2025-03-14 01:23:17,531 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:17] "GET /report_incident HTTP/1.1" 200 33016 0.111987
+2025-03-14 01:23:17,664 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:17,664 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:17,665 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:17] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001621
+2025-03-14 01:23:17,716 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:17,716 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:17,717 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:17] "GET /static/css/report_incident.css HTTP/1.1" 304 225 0.001612
+2025-03-14 01:23:18,420 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:18,420 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:18,421 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:23:18,605 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:18] "GET /station_statistics HTTP/1.1" 200 501 0.185270
+2025-03-14 01:23:18,606 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:18,606 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:18,607 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:18] "GET /static/Estaciones_Troncales_de_TRANSMILENIO.geojson HTTP/1.1" 304 252 0.001274
+2025-03-14 01:23:18,687 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:18,687 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:18,687 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:23:18,687 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:23:18,688 - engineio.server - INFO - fRdWvMfi6kzdq-SPAAAE: Sending packet OPEN data {'sid': 'fRdWvMfi6kzdq-SPAAAE', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:23:18,688 - engineio.server - INFO - fRdWvMfi6kzdq-SPAAAE: Received request to upgrade to websocket
+2025-03-14 01:23:18,688 - engineio.server - INFO - fRdWvMfi6kzdq-SPAAAE: Upgrade to websocket successful
+2025-03-14 01:23:18,779 - engineio.server - INFO - fRdWvMfi6kzdq-SPAAAE: Received packet MESSAGE data 0
+2025-03-14 01:23:18,780 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:23:18,781 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'NtbSEW1GauJHQbxok4lIrA==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.9.14', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:23:18,781 - engineio.server - INFO - fRdWvMfi6kzdq-SPAAAE: Sending packet MESSAGE data 0{"sid":"W_LcuustRFmMqDOPAAAF"}
+2025-03-14 01:23:22,441 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:22,441 - geventwebsocket.handler - DEBUG - Failed to write closing frame -> closing socket
+2025-03-14 01:23:22,441 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:22,442 - app - INFO - Cliente desconectado de Socket.IO
+2025-03-14 01:23:22,443 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:22,443 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:22,443 - geventwebsocket.handler - DEBUG - Can only upgrade connection if using GET method.
+2025-03-14 01:23:22,443 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:23:22,504 - app - INFO - Accessing report_incident. User: <User 5>, Remote addr: 172.31.128.65
+2025-03-14 01:23:22,505 - app - DEBUG - Request headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': '269', 'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'max-age=0', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OEkQ.cMe3IoJRL_0ozlq_12QqgaJaRHU', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/report_incident', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.6.3', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:23:22,505 - app - DEBUG - Session data: {'_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '5', 'csrf_token': 'd0347dd7dc757296f5695d7e3b58c8f397563735'}
+2025-03-14 01:23:22,505 - app - DEBUG - User authenticated: True
+2025-03-14 01:23:22,514 - geventwebsocket.handler - DEBUG - Failed to write closing frame -> closing socket
+2025-03-14 01:23:22,514 - geventwebsocket.handler - DEBUG - Closed WebSocket
+2025-03-14 01:23:22,515 - app - INFO - Form submitted and validated
+2025-03-14 01:23:22,515 - app - DEBUG - Form data: ImmutableMultiDict([('csrf_token', 'ImQwMzQ3ZGQ3ZGM3NTcyOTZmNTY5NWQ3ZTNiNThjOGYzOTc1NjM3MzUi.Z9OFBQ.anfddtrAawCEzlk8lx5CCDxcySw'), ('latitude', '4.801079'), ('longitude', '-74.094287'), ('nearest_station', 'Portal Suba'), ('incident_type', 'Hurto'), ('description', ''), ('incident_date', '2025-03-14'), ('incident_time', '20:23'), ('station', 'Portal Suba')])
+2025-03-14 01:23:22,515 - app - DEBUG - Location data - Lat: 4.801079, Long: -74.094287, Station: Portal Suba
+2025-03-14 01:23:22,516 - app - DEBUG - Created incident object: {'id': None, 'incident_type': 'Hurto', 'description': '', 'latitude': 4.801079, 'longitude': -74.094287, 'timestamp': '2025-03-14T20:23:00', 'user_id': 5, 'nearest_station': 'Portal Suba'}
+2025-03-14 01:23:22,558 - app - ERROR - Error al guardar el incidente: (psycopg2.errors.ForeignKeyViolation) insert or update on table "incident" violates foreign key constraint "incident_user_id_fkey"
+DETAIL:  Key (user_id)=(5) is not present in table "users".
+
+[SQL: INSERT INTO incident (incident_type, description, latitude, longitude, timestamp, user_id, nearest_station) VALUES (%(incident_type)s, %(description)s, %(latitude)s, %(longitude)s, %(timestamp)s, %(user_id)s, %(nearest_station)s) RETURNING incident.id]
+[parameters: {'incident_type': 'Hurto', 'description': '', 'latitude': 4.801079, 'longitude': -74.094287, 'timestamp': datetime.datetime(2025, 3, 14, 20, 23), 'user_id': 5, 'nearest_station': 'Portal Suba'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.ForeignKeyViolation: insert or update on table "incident" violates foreign key constraint "incident_user_id_fkey"
+DETAIL:  Key (user_id)=(5) is not present in table "users".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 100, in report_incident
+    db.session.commit()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py", line 597, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2028, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1313, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1288, in _prepare_impl
+    self.session.flush()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4352, in flush
+    self._flush(objects)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4487, in _flush
+    with util.safe_reraise():
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4448, in _flush
+    flush_context.execute()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.ForeignKeyViolation) insert or update on table "incident" violates foreign key constraint "incident_user_id_fkey"
+DETAIL:  Key (user_id)=(5) is not present in table "users".
+
+[SQL: INSERT INTO incident (incident_type, description, latitude, longitude, timestamp, user_id, nearest_station) VALUES (%(incident_type)s, %(description)s, %(latitude)s, %(longitude)s, %(timestamp)s, %(user_id)s, %(nearest_station)s) RETURNING incident.id]
+[parameters: {'incident_type': 'Hurto', 'description': '', 'latitude': 4.801079, 'longitude': -74.094287, 'timestamp': datetime.datetime(2025, 3, 14, 20, 23), 'user_id': 5, 'nearest_station': 'Portal Suba'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-14 01:23:22,597 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:22] "POST /report_incident HTTP/1.1" 302 914 0.154108
+2025-03-14 01:23:22,712 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:22,712 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:22,713 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:23:22,809 - app - INFO - Accessing report_incident. User: <User 5>, Remote addr: 172.31.128.65
+2025-03-14 01:23:22,810 - app - DEBUG - Request headers: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'max-age=0', 'Cookie': 'session=.eJwlj8FuwyAMhl8Fca4qAhhD77vvPlWRwaaN1iUSJL1Uffcx7fTr-yzZ_l96rg_qd-n68vXSah-hf6R3uok-6Y_WtqbooW4HNaam5KGWtSws6y5n9TmGlZ5bOw27_znFotZDnttZX9_X09jepN_1ZW-HDFpYX7TlylSysRCFvRFfZSKmiIFjFgB2FKC6kilUP_ksKSYDhhFt8YjMGXByguB9ImuFE8foqrGlmhjRe5qmZCoUttknpDyBtVCFjASREEev-ejS_r-BgaW3Ou_bt6xDsHF-HEEuCGhTqBASMIrLEEusLiEEhw70-xd2W1-s.Z9OFCg.S8-eECE0Alp2XxDpO2Kmv9ybOwM', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/report_incident', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.6.3', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:23:22,810 - app - DEBUG - Session data: {'_flashes': [('message', 'Error al guardar el incidente. Por favor, intente de nuevo.')], '_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '5', 'csrf_token': 'd0347dd7dc757296f5695d7e3b58c8f397563735'}
+2025-03-14 01:23:22,810 - app - DEBUG - User authenticated: True
+2025-03-14 01:23:22,813 - app - INFO - Rendering report_incident template
+2025-03-14 01:23:22,835 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:22] "GET /report_incident HTTP/1.1" 200 33741 0.123272
+2025-03-14 01:23:23,021 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:23,022 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:23,025 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:23] "GET /static/css/report_incident.css HTTP/1.1" 304 225 0.004297
+2025-03-14 01:23:23,029 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:23,030 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:23,033 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:23] "GET /static/css/custom.css HTTP/1.1" 304 216 0.003654
+2025-03-14 01:23:23,633 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:23,634 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:23,637 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:23:23,802 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:23] "GET /station_statistics HTTP/1.1" 200 501 0.168420
+2025-03-14 01:23:23,803 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:23,803 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:23,805 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:23:23] "GET /static/Estaciones_Troncales_de_TRANSMILENIO.geojson HTTP/1.1" 304 252 0.002138
+2025-03-14 01:23:23,894 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:23:23,895 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:23:23,895 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:23:23,895 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:23:23,895 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet OPEN data {'sid': 'wKIg4xOEL16bXZOLAAAG', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:23:23,895 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received request to upgrade to websocket
+2025-03-14 01:23:23,896 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Upgrade to websocket successful
+2025-03-14 01:23:23,986 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet MESSAGE data 0
+2025-03-14 01:23:23,986 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:23:23,987 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OFCg.2S_3umXSm9fDe6EESu9-cwf6cIA', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'xgHuuKrQuCRaTP4TzrpEkQ==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.7.4', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:23:23,987 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet MESSAGE data 0{"sid":"XKxb4fHuLaPDmmslAAAH"}
+2025-03-14 01:23:40,767 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:23:40,899 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:23:48,902 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet PING data None
+2025-03-14 01:23:48,990 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet PONG data 
+2025-03-14 01:24:05,905 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:24:05,996 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:24:13,995 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet PING data None
+2025-03-14 01:24:14,102 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet PONG data 
+2025-03-14 01:24:30,997 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:24:31,085 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:24:39,111 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet PING data None
+2025-03-14 01:24:39,212 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet PONG data 
+2025-03-14 01:24:56,088 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:24:56,176 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:25:04,216 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet PING data None
+2025-03-14 01:25:04,313 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet PONG data 
+2025-03-14 01:25:21,177 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:25:21,292 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:25:29,322 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Sending packet PING data None
+2025-03-14 01:25:29,412 - engineio.server - INFO - wKIg4xOEL16bXZOLAAAG: Received packet PONG data 
+2025-03-14 01:25:46,298 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Sending packet PING data None
+2025-03-14 01:25:46,384 - engineio.server - INFO - Rb2OFIFOtworqte1AAAA: Received packet PONG data 
+2025-03-14 01:25:49,194 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:25:49,194 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:25:49,273 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:25:49,273 - app - DEBUG - Configurando login manager...
+2025-03-14 01:25:49,274 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:25:49,274 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:25:49,695 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:25:49,695 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:25:49,872 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:25:49,872 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:25:49,888 - __main__ - INFO - Starting Flask application
+2025-03-14 01:25:49,888 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:25:50,372 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,373 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,374 - app - INFO - Index endpoint accessed
+2025-03-14 01:25:50,374 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:25:50,460 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:50] "GET / HTTP/1.1" 302 380 0.088177
+2025-03-14 01:25:50,589 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,589 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,590 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:25:50,684 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:50] "GET /home HTTP/1.1" 200 8521 0.094984
+2025-03-14 01:25:50,691 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,691 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,692 - app - INFO - Index endpoint accessed
+2025-03-14 01:25:50,692 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:25:50,769 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:50] "GET / HTTP/1.1" 302 380 0.077722
+2025-03-14 01:25:50,811 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,811 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,817 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:50] "GET /static/css/custom.css HTTP/1.1" 304 216 0.006211
+2025-03-14 01:25:50,818 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,818 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,819 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:50] "GET /static/css/home.css HTTP/1.1" 304 215 0.001488
+2025-03-14 01:25:50,989 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:50,990 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:50,990 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:25:51,067 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:51] "GET /home HTTP/1.1" 200 8521 0.077865
+2025-03-14 01:25:51,184 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:51,184 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:51,186 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:51] "GET /static/css/home.css HTTP/1.1" 304 215 0.001803
+2025-03-14 01:25:51,189 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:51,190 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:51,191 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:25:51] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001373
+2025-03-14 01:25:52,438 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:52,438 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:52,438 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:25:52,439 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:25:52,439 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Sending packet OPEN data {'sid': 'gD7mhTsEpFxvp4qHAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:25:52,439 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Received request to upgrade to websocket
+2025-03-14 01:25:52,439 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Upgrade to websocket successful
+2025-03-14 01:25:52,583 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Received packet MESSAGE data 0
+2025-03-14 01:25:52,585 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:25:52,585 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OFCg.2S_3umXSm9fDe6EESu9-cwf6cIA', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'Yjpcxhch2CEJHadg2PYWlQ==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.5.16', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:25:52,585 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Sending packet MESSAGE data 0{"sid":"VAnim27tDVUuGYQhAAAB"}
+2025-03-14 01:25:52,967 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:25:52,968 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:25:52,968 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-14 01:25:52,968 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+2025-03-14 01:25:52,968 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Sending packet OPEN data {'sid': '9-dLCmYfutFjkGdeAAAC', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-14 01:25:52,968 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Received request to upgrade to websocket
+2025-03-14 01:25:52,969 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Upgrade to websocket successful
+2025-03-14 01:25:53,059 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Received packet MESSAGE data 0
+2025-03-14 01:25:53,060 - app - INFO - Cliente conectado a Socket.IO
+2025-03-14 01:25:53,061 - app - DEBUG - Headers de conexión: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'no-cache', 'Connection': 'Upgrade', 'Cookie': 'session=.eJwljjtOBTEMAO-SmiLxJ7bfZVZObAuEBNLuexXi7qxEOdPM_LSjzrze2-N5vvKtHR_RHg2iwvfqwJpBPalyeLjKDF3JHOiTC_fyWTRopal17iECm0QiFsvAFCYyB8iwUMXqsKurCpGPYb14Bywy8TUYgCu958yc2u6R15Xn_w3fuK-zjuf3Z37dIjrSHZHYwgI2i6dxSOJi3VpowhMFuf3-AYKnP4U.Z9OFCg.2S_3umXSm9fDe6EESu9-cwf6cIA', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Pragma': 'no-cache', 'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits', 'Sec-Websocket-Key': 'uPkVfTUtlFa/6eFtfRwm7g==', 'Sec-Websocket-Version': '13', 'Upgrade': 'websocket', 'X-Forwarded-For': '181.61.208.87, 10.81.1.37', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 01:25:53,061 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Sending packet MESSAGE data 0{"sid":"VACLosSkspB4M_TWAAAD"}
+2025-03-14 01:26:13,529 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:26:13,529 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:26:13,564 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:26:13,564 - app - DEBUG - Configurando login manager...
+2025-03-14 01:26:13,564 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:26:13,564 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:26:14,021 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:26:14,022 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:26:14,064 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:26:14,064 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:26:17,445 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Sending packet PING data None
+2025-03-14 01:26:17,584 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Received packet PONG data 
+2025-03-14 01:26:17,970 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Sending packet PING data None
+2025-03-14 01:26:18,087 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Received packet PONG data 
+2025-03-14 01:26:42,587 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Sending packet PING data None
+2025-03-14 01:26:42,696 - engineio.server - INFO - gD7mhTsEpFxvp4qHAAAA: Received packet PONG data 
+2025-03-14 01:26:43,087 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Sending packet PING data None
+2025-03-14 01:26:43,223 - engineio.server - INFO - 9-dLCmYfutFjkGdeAAAC: Received packet PONG data 
+2025-03-14 01:27:09,625 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:27:09,626 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:27:09,694 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:27:09,694 - app - DEBUG - Configurando login manager...
+2025-03-14 01:27:09,694 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:27:09,695 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:27:10,174 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:27:10,175 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:27:10,209 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:27:10,209 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:27:10,211 - __main__ - INFO - Starting Flask application
+2025-03-14 01:27:10,211 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:27:10,589 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:10,590 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:10,590 - app - INFO - Index endpoint accessed
+2025-03-14 01:27:10,591 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:10,682 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:10] "GET / HTTP/1.1" 302 383 0.092741
+2025-03-14 01:27:10,776 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:10,777 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:10,777 - app - INFO - Index endpoint accessed
+2025-03-14 01:27:10,777 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:10,860 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:10] "GET / HTTP/1.1" 302 383 0.083878
+2025-03-14 01:27:10,861 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:10,861 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:10,862 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:10,980 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:10] "GET /login HTTP/1.1" 200 4022 0.118355
+2025-03-14 01:27:11,068 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:11,069 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:11,070 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:11,156 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:11] "GET /login HTTP/1.1" 200 4022 0.088135
+2025-03-14 01:27:11,157 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:11,158 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:11,165 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:11] "GET /static/css/custom.css HTTP/1.1" 304 216 0.007114
+2025-03-14 01:27:11,165 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:11,168 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:11,170 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:11] "GET /static/css/login.css HTTP/1.1" 304 216 0.004377
+2025-03-14 01:27:11,264 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:11,264 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:11,267 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:11] "GET /static/css/custom.css HTTP/1.1" 304 216 0.002385
+2025-03-14 01:27:11,269 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:11,269 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:11,272 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:11] "GET /static/css/login.css HTTP/1.1" 304 216 0.002075
+2025-03-14 01:27:20,191 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:27:20,191 - app - DEBUG - Inicializando base de datos...
+2025-03-14 01:27:20,232 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:27:20,232 - app - DEBUG - Configurando login manager...
+2025-03-14 01:27:20,232 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:27:20,232 - app - DEBUG - Creando tablas de la base de datos...
+2025-03-14 01:27:20,705 - app - INFO - Tablas creadas correctamente
+2025-03-14 01:27:20,706 - app - DEBUG - Importando e inicializando rutas...
+2025-03-14 01:27:20,740 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:27:20,740 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:27:20,742 - __main__ - INFO - Starting Flask application
+2025-03-14 01:27:20,742 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:27:21,268 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,269 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,269 - app - INFO - Index endpoint accessed
+2025-03-14 01:27:21,270 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:21,364 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET / HTTP/1.1" 302 383 0.096261
+2025-03-14 01:27:21,365 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,365 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,366 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:21,450 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /report_incident HTTP/1.1" 302 841 0.085406
+2025-03-14 01:27:21,465 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,466 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,467 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:21,570 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /login HTTP/1.1" 200 4022 0.104598
+2025-03-14 01:27:21,571 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,571 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,572 - app - DEBUG - Cargando usuario con ID: 5
+2025-03-14 01:27:21,658 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /login?next=%2Freport_incident HTTP/1.1" 200 4722 0.086968
+2025-03-14 01:27:21,729 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,729 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,734 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /static/css/custom.css HTTP/1.1" 304 216 0.005060
+2025-03-14 01:27:21,756 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,756 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,757 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /static/css/login.css HTTP/1.1" 304 216 0.001363
+2025-03-14 01:27:21,843 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,843 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,844 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001683
+2025-03-14 01:27:21,924 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:21,924 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:21,926 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:21] "GET /static/css/login.css HTTP/1.1" 304 216 0.001674
+2025-03-14 01:27:52,445 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:27:52,446 - app - INFO - Inicializando base de datos...
+2025-03-14 01:27:52,941 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:27:52,942 - app - INFO - Configurando login manager...
+2025-03-14 01:27:52,942 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:27:52,942 - app - INFO - Importando e inicializando rutas...
+2025-03-14 01:27:52,976 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:27:52,976 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:27:52,978 - __main__ - INFO - Starting Flask application
+2025-03-14 01:27:52,979 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:27:53,725 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:53,726 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:53,726 - app - INFO - Index endpoint accessed
+2025-03-14 01:27:53,819 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:53] "GET / HTTP/1.1" 302 383 0.094081
+2025-03-14 01:27:54,007 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,008 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,104 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /login HTTP/1.1" 200 4022 0.096925
+2025-03-14 01:27:54,105 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,105 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,106 - app - INFO - Index endpoint accessed
+2025-03-14 01:27:54,187 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET / HTTP/1.1" 302 383 0.081972
+2025-03-14 01:27:54,223 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,223 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,228 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004950
+2025-03-14 01:27:54,228 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,228 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,229 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /static/css/login.css HTTP/1.1" 304 216 0.001052
+2025-03-14 01:27:54,316 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,316 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,398 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /login HTTP/1.1" 200 4022 0.082389
+2025-03-14 01:27:54,549 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,550 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,551 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /static/css/login.css HTTP/1.1" 304 216 0.001575
+2025-03-14 01:27:54,551 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:27:54,552 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:27:54,552 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:27:54] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000870
+2025-03-14 01:29:12,262 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:29:12,262 - app - INFO - Inicializando base de datos...
+2025-03-14 01:29:12,751 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:29:12,751 - app - INFO - Configurando login manager...
+2025-03-14 01:29:12,751 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:29:12,752 - app - INFO - Importando e inicializando rutas...
+2025-03-14 01:29:12,798 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:29:12,798 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:29:12,801 - __main__ - INFO - Starting Flask application
+2025-03-14 01:29:12,801 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:29:13,116 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,116 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,117 - app - INFO - Index endpoint accessed
+2025-03-14 01:29:13,211 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET / HTTP/1.1" 302 383 0.094854
+2025-03-14 01:29:13,298 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,298 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,299 - app - INFO - Index endpoint accessed
+2025-03-14 01:29:13,383 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET / HTTP/1.1" 302 383 0.084656
+2025-03-14 01:29:13,384 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,384 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,494 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET /login HTTP/1.1" 200 4022 0.109936
+2025-03-14 01:29:13,494 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,494 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,495 - app - INFO - Index endpoint accessed
+2025-03-14 01:29:13,579 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET / HTTP/1.1" 302 383 0.084305
+2025-03-14 01:29:13,590 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,590 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,676 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET /login HTTP/1.1" 200 4022 0.086375
+2025-03-14 01:29:13,802 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,802 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,887 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET /login HTTP/1.1" 200 4022 0.085088
+2025-03-14 01:29:13,888 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,888 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,894 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET /static/css/custom.css HTTP/1.1" 304 216 0.006385
+2025-03-14 01:29:13,916 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:13,916 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:13,918 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:13] "GET /static/css/login.css HTTP/1.1" 304 216 0.002073
+2025-03-14 01:29:14,012 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:14,012 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:14,013 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:14] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001681
+2025-03-14 01:29:14,077 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:29:14,077 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:29:14,078 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:29:14] "GET /static/css/login.css HTTP/1.1" 304 216 0.001804
+2025-03-14 01:30:20,709 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 01:30:20,709 - app - INFO - Inicializando base de datos...
+2025-03-14 01:30:21,199 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 01:30:21,199 - app - INFO - Configurando login manager...
+2025-03-14 01:30:21,200 - app - INFO - Login manager configurado correctamente
+2025-03-14 01:30:21,200 - app - INFO - Importando e inicializando rutas...
+2025-03-14 01:30:21,392 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 01:30:21,392 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 01:30:21,394 - __main__ - INFO - Starting Flask application
+2025-03-14 01:30:21,395 - __main__ - INFO - Server will start on port 5000
+2025-03-14 01:30:21,749 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:21,750 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:21,751 - app - INFO - Index endpoint accessed
+2025-03-14 01:30:21,845 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:21] "GET / HTTP/1.1" 302 383 0.095637
+2025-03-14 01:30:21,936 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:21,936 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,038 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /login HTTP/1.1" 200 4022 0.101348
+2025-03-14 01:30:22,038 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,039 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,039 - app - INFO - Index endpoint accessed
+2025-03-14 01:30:22,123 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET / HTTP/1.1" 302 383 0.084157
+2025-03-14 01:30:22,139 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,139 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,144 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004720
+2025-03-14 01:30:22,207 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,208 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,209 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /static/css/login.css HTTP/1.1" 304 216 0.001575
+2025-03-14 01:30:22,229 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,229 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,319 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /login HTTP/1.1" 200 4022 0.090831
+2025-03-14 01:30:22,457 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,458 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,459 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001500
+2025-03-14 01:30:22,460 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-14 01:30:22,460 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-14 01:30:22,461 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 01:30:22] "GET /static/css/login.css HTTP/1.1" 304 216 0.001087

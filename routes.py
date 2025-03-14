@@ -84,11 +84,32 @@ def init_routes(app):
                 incident_time = form.incident_time.data or datetime.now().time()
 
                 try:
+                    # Verificar que el usuario existe
+                    user = User.query.get(current_user.id)
+                    if not user:
+                        app.logger.error(f"Usuario no encontrado: ID {current_user.id}")
+                        flash('Error de autenticación. Por favor, inicie sesión nuevamente.')
+                        return redirect(url_for('login'))
+
+                    # Log valores antes de la conversión
+                    app.logger.debug(f"Converting latitude: {latitude} and longitude: {longitude} to float")
+
+                    # Validar que los valores sean convertibles a float
+                    try:
+                        float_lat = float(latitude)
+                        float_lon = float(longitude)
+                        app.logger.debug(f"Converted values - Lat: {float_lat}, Long: {float_lon}")
+                    except ValueError as ve:
+                        app.logger.error(f"Error converting coordinates to float: {str(ve)}")
+                        flash('Error en el formato de las coordenadas. Por favor, intente de nuevo.')
+                        return redirect(url_for('report_incident'))
+
+                    # Crear el incidente con validación de tipos
                     incident = Incident(
                         incident_type=form.incident_type.data,
                         description=form.description.data,
-                        latitude=float(latitude),
-                        longitude=float(longitude),
+                        latitude=float_lat,
+                        longitude=float_lon,
                         user_id=current_user.id,
                         nearest_station=form.station.data,
                         timestamp=datetime.combine(incident_date, incident_time)
@@ -97,12 +118,18 @@ def init_routes(app):
                     app.logger.debug(f"Created incident object: {incident.to_dict()}")
 
                     db.session.add(incident)
+                    app.logger.debug("Added incident to session, attempting commit")
                     db.session.commit()
                     app.logger.info("Incident saved successfully")
 
                     flash('¡Incidente reportado con éxito!')
                     send_notification(incident.incident_type, incident.timestamp.isoformat())
                     return redirect(url_for('home'))
+                except ValueError as e:
+                    db.session.rollback()
+                    app.logger.error(f"Error de formato en los datos: {str(e)}", exc_info=True)
+                    flash('Error en el formato de los datos. Por favor, verifique la información ingresada.')
+                    return redirect(url_for('report_incident'))
                 except Exception as e:
                     db.session.rollback()
                     app.logger.error(f"Error al guardar el incidente: {str(e)}", exc_info=True)

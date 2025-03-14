@@ -26,10 +26,10 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 
 # Configuración adicional de sesión
 app.config.update(
-    SESSION_COOKIE_SECURE=False,  # Permitir cookies sin HTTPS en desarrollo
+    SESSION_COOKIE_SECURE=False,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
-    PERMANENT_SESSION_LIFETIME=1800  # 30 minutos
+    PERMANENT_SESSION_LIFETIME=1800
 )
 
 # Configurar cache
@@ -49,20 +49,6 @@ socketio = SocketIO(
     engineio_logger=True
 )
 
-# Agregar logging para depuración de Socket.IO
-@socketio.on('connect')
-def handle_connect():
-    logger.info('Cliente conectado a Socket.IO')
-    logger.debug(f'Headers de conexión: {dict(request.headers) if request else "No headers"}')
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    logger.info('Cliente desconectado de Socket.IO')
-
-@socketio.on_error()
-def handle_error(e):
-    logger.error(f'Error en Socket.IO: {str(e)}')
-
 # Configurar base de datos
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
@@ -78,8 +64,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Inicializar base de datos
 try:
-    logger.debug("Inicializando base de datos...")
+    logger.info("Inicializando base de datos...")
     init_db(app)
+    with app.app_context():
+        import models
+        db.create_all()
     logger.info("Base de datos inicializada correctamente")
 except Exception as e:
     logger.error(f"Error al inicializar la base de datos: {str(e)}")
@@ -87,7 +76,7 @@ except Exception as e:
 
 # Inicializar login manager
 try:
-    logger.debug("Configurando login manager...")
+    logger.info("Configurando login manager...")
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
@@ -98,24 +87,12 @@ except Exception as e:
 
 @login_manager.user_loader
 def load_user(user_id):
-    logger.debug(f"Cargando usuario con ID: {user_id}")
     from models import User
     return User.query.get(int(user_id))
 
-# Crear tablas de la base de datos
-with app.app_context():
-    try:
-        logger.debug("Creando tablas de la base de datos...")
-        import models
-        db.create_all()
-        logger.info("Tablas creadas correctamente")
-    except Exception as e:
-        logger.error(f"Error al crear tablas: {str(e)}")
-        raise
-
 # Importar e inicializar rutas
 try:
-    logger.debug("Importando e inicializando rutas...")
+    logger.info("Importando e inicializando rutas...")
     from routes import init_routes
     init_routes(app)
     logger.info("Rutas inicializadas correctamente")
