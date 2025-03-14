@@ -2,9 +2,10 @@
 Utilidades para el manejo y análisis de incidentes.
 """
 from models import Incident
-from sqlalchemy import func, desc, case, extract
+from sqlalchemy import func, desc, extract
 from database import db
 from datetime import datetime
+import logging
 
 def get_incidents_for_map():
     """
@@ -24,10 +25,11 @@ def get_incidents_for_map():
 
 def get_incident_statistics(date_from=None, date_to=None):
     """
-    Obtiene estadísticas detalladas de incidentes por estación.
-    Incluye conteos por tipo de incidente y métricas generales.
+    Obtiene estadísticas detalladas de incidentes.
     """
     try:
+        logging.info("Iniciando obtención de estadísticas de incidentes")
+
         # Construir la consulta base con filtros de fecha
         base_query = Incident.query
         if date_from:
@@ -37,8 +39,9 @@ def get_incident_statistics(date_from=None, date_to=None):
 
         # Total de incidentes
         total_incidents = base_query.count()
+        logging.info(f"Total de incidentes encontrados: {total_incidents}")
 
-        # Estadísticas por estación usando expresiones case más simples
+        # Estadísticas por estación
         station_stats = db.session.query(
             Incident.nearest_station,
             func.count(Incident.id).label('total')
@@ -46,59 +49,60 @@ def get_incident_statistics(date_from=None, date_to=None):
          .order_by(desc(func.count(Incident.id)))\
          .all()
 
+        logging.info(f"Estadísticas por estación obtenidas: {len(station_stats)} estaciones")
+
         # Conteo por tipo de incidente
         incidents_by_type = db.session.query(
             Incident.incident_type,
             func.count(Incident.id).label('count')
         ).group_by(Incident.incident_type)\
-         .order_by(desc('count'))\
+         .order_by(desc(func.count(Incident.id)))\
          .all()
 
         # Análisis de hora más peligrosa
-        dangerous_hour = db.session.query(
-            extract('hour', Incident.timestamp).label('hour'),
+        hour_column = extract('hour', Incident.timestamp)
+        hour_stats = db.session.query(
+            hour_column.label('hour'),
             func.count(Incident.id).label('count')
-        ).group_by('hour')\
-         .order_by(desc('count'))\
+        ).group_by(hour_column)\
+         .order_by(desc(func.count(Incident.id)))\
          .first()
 
-        # Obtener estadísticas detalladas por tipo de incidente para cada estación
+        # Procesar estadísticas detalladas por estación
         detailed_stats = {}
         for stat in station_stats:
-            station_incidents = base_query.filter(Incident.nearest_station == stat.nearest_station)
-            incident_counts = {}
-            for incident_type in ['Hurto', 'Acoso', 'Cosquilleo', 'Ataque', 
-                                'Apertura de puertas', 'Hurto a mano armada', 'Sospechoso']:
-                count = station_incidents.filter(Incident.incident_type == incident_type).count()
-                incident_counts[incident_type.lower().replace(' ', '_')] = count
+            station_incidents = base_query.filter(
+                Incident.nearest_station == stat.nearest_station
+            )
+            type_counts = {}
+            for incident in ['Hurto', 'Acoso', 'Cosquilleo', 'Ataque', 
+                           'Apertura de puertas', 'Hurto a mano armada', 'Sospechoso']:
+                count = station_incidents.filter(
+                    Incident.incident_type == incident
+                ).count()
+                type_counts[incident.lower().replace(' ', '_')] = count
 
             detailed_stats[stat.nearest_station] = {
                 'total': stat.total,
-                **incident_counts
+                **type_counts
             }
 
-        # Formatear resultados
-        most_dangerous_hour = f"{int(dangerous_hour.hour):02d}:00" if dangerous_hour else "No data"
-        most_common_type = incidents_by_type[0].incident_type if incidents_by_type else "No data"
-        most_affected_station = station_stats[0].nearest_station if station_stats else "No data"
+        logging.info("Estadísticas procesadas exitosamente")
 
         return {
             'total_incidents': total_incidents,
-            'most_affected_station': most_affected_station,
-            'most_dangerous_hour': most_dangerous_hour,
-            'most_common_type': most_common_type,
+            'most_affected_station': station_stats[0].nearest_station if station_stats else "No data",
+            'most_dangerous_hour': f"{int(hour_stats.hour):02d}:00" if hour_stats else "No data",
+            'most_common_type': incidents_by_type[0].incident_type if incidents_by_type else "No data",
             'incident_types': {
                 incident.incident_type: incident.count 
                 for incident in incidents_by_type
             },
-            'top_stations': {
-                station: stats
-                for station, stats in detailed_stats.items()
-            }
+            'top_stations': detailed_stats
         }
 
     except Exception as e:
-        print(f"Error in get_incident_statistics: {str(e)}")
+        logging.error(f"Error in get_incident_statistics: {str(e)}", exc_info=True)
         return {
             'total_incidents': 0,
             'most_affected_station': "Error",
@@ -107,10 +111,3 @@ def get_incident_statistics(date_from=None, date_to=None):
             'incident_types': {},
             'top_stations': {}
         }
-
-def get_station_statistics():
-    """
-    Obtiene estadísticas detalladas por estación.
-    Es un wrapper de get_incident_statistics para mantener compatibilidad.
-    """
-    return get_incident_statistics()

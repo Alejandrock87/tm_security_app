@@ -27,24 +27,34 @@ def init_routes(app):
             return redirect(url_for('home'))
         return redirect(url_for('login'))
 
-    # Temporary removal of @login_required for testing
     @app.route('/dashboard')
     def dashboard():
-        logging.info("Dashboard endpoint accessed")
+        app.logger.info("Dashboard endpoint accessed")
         try:
-            cached_data = cache.get('dashboard_data')
-            if not cached_data:
-                app.logger.info("Getting fresh dashboard data")
-                cached_data = {
-                    'incidents': get_incidents_for_map(),
-                    'statistics': get_incident_statistics() or {},
-                    'trends': [],
-                    'model_insights': {}
-                }
-                app.logger.debug(f"Dashboard data: {cached_data}")
-            return render_template('dashboard.html', **cached_data)
+            # Primero intentemos solo obtener los datos básicos sin caché
+            app.logger.info("Obteniendo datos frescos del dashboard")
+
+            # Obtener datos de incidentes para el mapa
+            app.logger.info("Intentando obtener incidentes para el mapa")
+            incidents = get_incidents_for_map()
+            app.logger.info(f"Obtenidos {len(incidents)} incidentes para el mapa")
+
+            # Obtener estadísticas
+            app.logger.info("Intentando obtener estadísticas")
+            statistics = get_incident_statistics()
+            app.logger.info(f"Estadísticas obtenidas: {statistics}")
+
+            data = {
+                'incidents': incidents,
+                'statistics': statistics or {},
+                'trends': [],
+                'model_insights': {}
+            }
+
+            app.logger.info("Renderizando template dashboard.html")
+            return render_template('dashboard.html', **data)
         except Exception as e:
-            app.logger.error(f"Error in dashboard: {str(e)}", exc_info=True)
+            app.logger.error(f"Error en dashboard: {str(e)}", exc_info=True)
             return jsonify({"error": str(e)}), 500
 
     @app.route('/login', methods=['GET', 'POST'])

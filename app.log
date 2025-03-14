@@ -3367,3 +3367,131 @@ Traceback (most recent call last):
   File "/home/runner/workspace/main.py", line 48, in <module>
     raise Exception(f"Neither port {port} nor {alternative_port} are available")
 Exception: Neither port 5000 nor 5000 are available
+2025-03-14 06:59:15,214 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 06:59:15,220 - app - INFO - Inicializando base de datos...
+2025-03-14 06:59:15,825 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 06:59:15,826 - app - INFO - Configurando login manager...
+2025-03-14 06:59:15,826 - app - INFO - Login manager configurado correctamente
+2025-03-14 06:59:15,827 - app - INFO - Importando e inicializando rutas...
+2025-03-14 06:59:16,547 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 06:59:16,549 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 06:59:16,549 - __main__ - INFO - Starting Flask application
+2025-03-14 06:59:16,551 - __main__ - INFO - Server will start on port 5000
+2025-03-14 06:59:16,552 - __main__ - INFO - Testing server configuration...
+2025-03-14 06:59:16,561 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 06:59:16,562 - __main__ - INFO - Test response status: 200
+2025-03-14 06:59:16,984 - app - INFO - Index endpoint accessed
+2025-03-14 06:59:17,075 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:59:17] "GET / HTTP/1.1" 302 380 0.091556
+2025-03-14 06:59:17,264 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:59:17] "GET /home HTTP/1.1" 200 8521 0.100151
+2025-03-14 06:59:17,534 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:59:17] "GET /static/css/custom.css HTTP/1.1" 304 216 0.005372
+2025-03-14 06:59:17,538 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 06:59:17] "GET /static/css/home.css HTTP/1.1" 304 215 0.001069
+2025-03-14 06:59:18,434 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Sending packet OPEN data {'sid': 'i-XlBikuH0FDqHBLAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 06:59:18,435 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Received request to upgrade to websocket
+2025-03-14 06:59:18,435 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Upgrade to websocket successful
+2025-03-14 06:59:18,544 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Received packet MESSAGE data 0
+2025-03-14 06:59:18,544 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Sending packet MESSAGE data 0{"sid":"TmotQcYsnx7Z-tEUAAAB"}
+2025-03-14 06:59:43,461 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Sending packet PING data None
+2025-03-14 06:59:43,577 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Received packet PONG data 
+2025-03-14 07:00:08,603 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Sending packet PING data None
+2025-03-14 07:00:08,703 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Received packet PONG data 
+2025-03-14 07:00:33,719 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Sending packet PING data None
+2025-03-14 07:00:33,842 - engineio.server - INFO - i-XlBikuH0FDqHBLAAAA: Received packet PONG data 
+2025-03-14 07:01:00,562 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:01:00,566 - app - INFO - Inicializando base de datos...
+2025-03-14 07:01:01,245 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:01:01,245 - app - INFO - Configurando login manager...
+2025-03-14 07:01:01,245 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:01:01,246 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:01:01,400 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:01:01,400 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:01:01,400 - __main__ - INFO - Starting Flask application
+2025-03-14 07:01:01,400 - __main__ - INFO - Server will start on port 5000
+2025-03-14 07:01:01,401 - __main__ - ERROR - Port 5000 is not available!
+2025-03-14 07:01:01,401 - __main__ - ERROR - Failed to start server: Neither port 5000 nor 5000 are available
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 48, in <module>
+    raise Exception(f"Neither port {port} nor {alternative_port} are available")
+Exception: Neither port 5000 nor 5000 are available
+2025-03-14 07:01:36,454 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:01:36,457 - app - INFO - Inicializando base de datos...
+2025-03-14 07:01:37,053 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:01:37,054 - app - INFO - Configurando login manager...
+2025-03-14 07:01:37,054 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:01:37,055 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:01:37,184 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:01:37,184 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:01:37,184 - __main__ - INFO - Starting Flask application
+2025-03-14 07:01:37,185 - __main__ - INFO - Server will start on port 5000
+2025-03-14 07:01:37,185 - __main__ - ERROR - Port 5000 is not available!
+2025-03-14 07:01:37,185 - __main__ - ERROR - Failed to start server: Neither port 5000 nor 5000 are available
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 48, in <module>
+    raise Exception(f"Neither port {port} nor {alternative_port} are available")
+Exception: Neither port 5000 nor 5000 are available
+2025-03-14 07:02:14,027 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:02:14,031 - app - INFO - Inicializando base de datos...
+2025-03-14 07:02:14,744 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:02:14,744 - app - INFO - Configurando login manager...
+2025-03-14 07:02:14,744 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:02:14,745 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:02:15,041 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:02:15,041 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:02:15,041 - __main__ - INFO - Starting Flask application
+2025-03-14 07:02:15,041 - __main__ - INFO - Server will start on port 5000
+2025-03-14 07:02:15,042 - __main__ - INFO - Testing server configuration...
+2025-03-14 07:02:15,045 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 07:02:15,046 - __main__ - INFO - Test response status: 200
+2025-03-14 07:02:15,870 - app - INFO - Index endpoint accessed
+2025-03-14 07:02:15,969 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:02:15] "GET / HTTP/1.1" 302 380 0.100784
+2025-03-14 07:02:16,210 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:02:16] "GET /home HTTP/1.1" 200 8521 0.110059
+2025-03-14 07:02:16,338 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:02:16] "GET /static/css/custom.css HTTP/1.1" 304 216 0.007182
+2025-03-14 07:02:16,435 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:02:16] "GET /static/css/home.css HTTP/1.1" 304 215 0.001106
+2025-03-14 07:02:17,524 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Sending packet OPEN data {'sid': 'lYP94ltBQaSaLzPMAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:02:17,524 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Received request to upgrade to websocket
+2025-03-14 07:02:17,524 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Upgrade to websocket successful
+2025-03-14 07:02:17,616 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Received packet MESSAGE data 0
+2025-03-14 07:02:17,617 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Sending packet MESSAGE data 0{"sid":"4rNCnBDXAwftlB-IAAAB"}
+2025-03-14 07:02:42,550 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Sending packet PING data None
+2025-03-14 07:02:42,656 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Received packet PONG data 
+2025-03-14 07:03:07,681 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Sending packet PING data None
+2025-03-14 07:03:07,770 - engineio.server - INFO - lYP94ltBQaSaLzPMAAAA: Received packet PONG data 
+2025-03-14 07:03:34,652 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:03:34,652 - app - INFO - Inicializando base de datos...
+2025-03-14 07:03:35,191 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:03:35,192 - app - INFO - Configurando login manager...
+2025-03-14 07:03:35,192 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:03:35,193 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:03:35,237 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:03:35,237 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:03:35,237 - __main__ - INFO - Starting Flask application
+2025-03-14 07:03:35,238 - __main__ - INFO - Server will start on port 5000
+2025-03-14 07:03:35,238 - __main__ - ERROR - Port 5000 is not available!
+2025-03-14 07:03:35,238 - __main__ - ERROR - Failed to start server: Neither port 5000 nor 5000 are available
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 48, in <module>
+    raise Exception(f"Neither port {port} nor {alternative_port} are available")
+Exception: Neither port 5000 nor 5000 are available
+2025-03-14 07:04:03,789 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:04:03,793 - app - INFO - Inicializando base de datos...
+2025-03-14 07:04:04,386 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:04:04,386 - app - INFO - Configurando login manager...
+2025-03-14 07:04:04,386 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:04:04,387 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:04:04,560 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:04:04,560 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:04:04,560 - __main__ - INFO - Starting Flask application
+2025-03-14 07:04:04,560 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 07:04:04,560 - __main__ - INFO - Testing server configuration...
+2025-03-14 07:04:04,564 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 07:04:04,564 - __main__ - INFO - Test response status: 200
+2025-03-14 07:04:04,565 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 07:04:04,990 - app - INFO - Index endpoint accessed
+2025-03-14 07:04:05,090 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:04:05] "GET / HTTP/1.1" 302 380 0.100487
+2025-03-14 07:04:05,295 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:04:05] "GET /home HTTP/1.1" 200 8521 0.107474
+2025-03-14 07:04:05,445 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:04:05] "GET /static/css/custom.css HTTP/1.1" 304 216 0.006929
+2025-03-14 07:04:05,555 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:04:05] "GET /static/css/home.css HTTP/1.1" 304 215 0.001323
+2025-03-14 07:04:06,870 - engineio.server - INFO - QSJovvwrSZ3WKktNAAAA: Sending packet OPEN data {'sid': 'QSJovvwrSZ3WKktNAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:04:06,870 - engineio.server - INFO - QSJovvwrSZ3WKktNAAAA: Received request to upgrade to websocket
+2025-03-14 07:04:06,871 - engineio.server - INFO - QSJovvwrSZ3WKktNAAAA: Upgrade to websocket successful
+2025-03-14 07:04:06,983 - engineio.server - INFO - QSJovvwrSZ3WKktNAAAA: Received packet MESSAGE data 0
+2025-03-14 07:04:06,984 - engineio.server - INFO - QSJovvwrSZ3WKktNAAAA: Sending packet MESSAGE data 0{"sid":"POqBcO-oKqQRlB7dAAAB"}
