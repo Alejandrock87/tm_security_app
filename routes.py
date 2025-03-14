@@ -67,9 +67,14 @@ def init_routes(app):
 
             if form.validate_on_submit():
                 app.logger.info("Form submitted and validated")
+                # Log form data for debugging
+                app.logger.debug(f"Form data: {request.form}")
+
                 latitude = request.form.get('latitude')
                 longitude = request.form.get('longitude')
                 nearest_station = request.form.get('nearest_station')
+
+                app.logger.debug(f"Location data - Lat: {latitude}, Long: {longitude}, Station: {nearest_station}")
 
                 if not all([latitude, longitude, nearest_station]):
                     flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
@@ -78,25 +83,29 @@ def init_routes(app):
                 incident_date = form.incident_date.data or datetime.now().date()
                 incident_time = form.incident_time.data or datetime.now().time()
 
-                incident = Incident(
-                    incident_type=form.incident_type.data,
-                    description=form.description.data,
-                    latitude=float(latitude),
-                    longitude=float(longitude),
-                    user_id=current_user.id,
-                    nearest_station=form.station.data,
-                    timestamp=datetime.combine(incident_date, incident_time)
-                )
-
                 try:
+                    incident = Incident(
+                        incident_type=form.incident_type.data,
+                        description=form.description.data,
+                        latitude=float(latitude),
+                        longitude=float(longitude),
+                        user_id=current_user.id,
+                        nearest_station=form.station.data,
+                        timestamp=datetime.combine(incident_date, incident_time)
+                    )
+
+                    app.logger.debug(f"Created incident object: {incident.to_dict()}")
+
                     db.session.add(incident)
                     db.session.commit()
+                    app.logger.info("Incident saved successfully")
+
                     flash('¡Incidente reportado con éxito!')
                     send_notification(incident.incident_type, incident.timestamp.isoformat())
                     return redirect(url_for('home'))
                 except Exception as e:
                     db.session.rollback()
-                    app.logger.error(f"Error al guardar el incidente: {str(e)}")
+                    app.logger.error(f"Error al guardar el incidente: {str(e)}", exc_info=True)
                     flash('Error al guardar el incidente. Por favor, intente de nuevo.')
                     return redirect(url_for('report_incident'))
 
@@ -104,7 +113,7 @@ def init_routes(app):
             return render_template('report_incident.html', title='Reportar incidente', form=form)
 
         except Exception as e:
-            app.logger.error(f"Error general en report_incident: {str(e)}")
+            app.logger.error(f"Error general en report_incident: {str(e)}", exc_info=True)
             flash('Error al cargar la página. Por favor, intente de nuevo.')
             return redirect(url_for('home'))
 
