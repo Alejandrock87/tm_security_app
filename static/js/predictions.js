@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFilters();
     initializeNotifications();
     loadAndCheckPredictions();
-    setInterval(loadAndCheckPredictions, 60000);
+    setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
 });
 
 // Inicializar filtros
@@ -141,6 +141,16 @@ function initializeNotifications() {
 
 // Función para filtrar predicciones
 function filterPredictions(predictions) {
+    // Primero filtrar por tiempo - solo mostrar predicciones dentro de la próxima hora
+    const now = new Date();
+    const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+
+    predictions = predictions.filter(prediction => {
+        const predTime = new Date(prediction.predicted_time);
+        return predTime >= now && predTime <= oneHourFromNow;
+    });
+
+    // Luego aplicar filtros de usuario
     if (selectedFilter === 'all') return predictions;
 
     return predictions.filter(prediction => {
@@ -195,15 +205,6 @@ function loadAndCheckPredictions() {
             console.log('Predicciones recibidas:', data);
             predictionsList.innerHTML = '';
 
-            if (data.error) {
-                predictionsList.innerHTML = `
-                    <div class="alert alert-warning" role="alert">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        ${data.error}
-                    </div>`;
-                return;
-            }
-
             if (!Array.isArray(data)) {
                 throw new Error('Formato de datos inválido');
             }
@@ -214,10 +215,15 @@ function loadAndCheckPredictions() {
                 predictionsList.innerHTML = `
                     <div class="alert alert-info" role="alert">
                         <i class="fas fa-info-circle"></i>
-                        No hay predicciones disponibles para los filtros seleccionados.
+                        No hay predicciones disponibles para la próxima hora con los filtros seleccionados.
                     </div>`;
                 return;
             }
+
+            // Ordenar predicciones por tiempo
+            filteredPredictions.sort((a, b) => 
+                new Date(a.predicted_time) - new Date(b.predicted_time)
+            );
 
             filteredPredictions.forEach(prediction => {
                 console.log('Procesando predicción:', prediction);
@@ -238,6 +244,9 @@ function loadAndCheckPredictions() {
                 `;
 
                 predictionsList.appendChild(item);
+
+                // Verificar si es momento de notificar (1 hora antes)
+                checkAndNotify(prediction);
             });
         })
         .catch(error => {
@@ -250,22 +259,29 @@ function loadAndCheckPredictions() {
         });
 }
 
-// Función para mostrar una notificación
-function showNotification(prediction) {
+// Función para verificar y enviar notificación si es necesario
+function checkAndNotify(prediction) {
     if (!notificationPermission) return;
 
-    const riskInfo = getRiskInfo(prediction.risk_score);
-    const notification = new Notification('Alerta de Seguridad', {
-        body: `Posible ${prediction.incident_type} en ${prediction.station}\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})`,
-        icon: '/static/icons/notification-icon.png',
-        badge: '/static/icons/badge-icon.png',
-        vibrate: [200, 100, 200]
-    });
+    const now = new Date();
+    const predTime = new Date(prediction.predicted_time);
+    const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
 
-    notification.onclick = function() {
-        window.focus();
-        this.close();
-    };
+    // Notificar cuando falte aproximadamente una hora (entre 59 y 61 minutos)
+    if (diffMinutes >= 59 && diffMinutes <= 61) {
+        const riskInfo = getRiskInfo(prediction.risk_score);
+        const notification = new Notification('Alerta de Seguridad', {
+            body: `Posible ${prediction.incident_type} en ${prediction.station}\nNivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})\nEn aproximadamente 1 hora`,
+            icon: '/static/icons/notification-icon.png',
+            badge: '/static/icons/badge-icon.png',
+            vibrate: [200, 100, 200]
+        });
+
+        notification.onclick = function() {
+            window.focus();
+            this.close();
+        };
+    }
 }
 
 // Función para obtener el tiempo restante hasta el incidente
