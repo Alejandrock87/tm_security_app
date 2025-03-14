@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timedelta
 from database import db
 from models import Incident
-from ml_models import train_model, predict_station_risk, predict_incident_type
+from ml_models import VALID_INCIDENT_TYPES, train_model, predict_station_risk, predict_incident_type
 
 """
 Programador de Reentrenamiento del Modelo de Predicción
@@ -29,21 +29,11 @@ logging.basicConfig(level=logging.INFO)
 
 PREDICTIONS_CACHE_FILE = 'predictions_cache.json'
 MODEL_CACHE_FILE = 'model_cache.pkl'
-VALID_INCIDENT_TYPES = ['Hurto', 'Acoso']  # Definir tipos válidos de incidentes
+
 
 def generate_weekly_predictions():
     """
     Genera predicciones para la próxima semana para todas las estaciones.
-
-    Proceso:
-    1. Carga datos de estaciones del archivo GeoJSON
-    2. Para cada estación y cada hora:
-        - Predice nivel de riesgo
-        - Predice tipo de incidente más probable
-    3. Almacena predicciones en caché
-
-    Returns:
-        bool: True si las predicciones se generaron exitosamente
     """
     predictions = []
     try:
@@ -67,7 +57,6 @@ def generate_weekly_predictions():
                     risk_score = predict_station_risk(station, pred_time.hour)
                     incident_type = predict_incident_type(station, pred_time.hour)
 
-                    # Solo agregar predicciones con tipos de incidentes válidos
                     if risk_score is not None and incident_type in VALID_INCIDENT_TYPES:
                         predictions.append({
                             'station': station,
@@ -80,13 +69,14 @@ def generate_weekly_predictions():
 
         # Guardar predicciones en caché por 24 horas
         from app import cache
-        cache.set('predictions_cache', predictions, timeout=24*3600)
+        cache.set('predictions_cache', predictions, timeout=24 * 3600)
 
         logging.info(f"Generated {len(predictions)} predictions for the next week")
         return True
     except Exception as e:
         logging.error(f"Error generating predictions: {str(e)}")
         return False
+
 
 def check_model_health():
     """
@@ -113,6 +103,7 @@ def check_model_health():
     except Exception as e:
         logging.error(f"Error en verificación de salud del modelo: {str(e)}")
         return False
+
 
 def retrain_model_job():
     """
@@ -142,6 +133,7 @@ def retrain_model_job():
         logging.error(f"Error during model retraining: {str(e)}")
         logging.exception("Detailed error traceback:")
 
+
 def run_scheduler():
     """
     Inicia y ejecuta el programador de tareas.
@@ -166,6 +158,7 @@ def run_scheduler():
     while True:
         schedule.run_pending()
         time.sleep(60)
+
 
 if __name__ == "__main__":
     run_scheduler()

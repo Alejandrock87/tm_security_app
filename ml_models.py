@@ -65,6 +65,7 @@ CARACTERÍSTICAS DEL MODELO:
 import logging
 from datetime import datetime
 import random
+import math
 from flask import current_app
 import numpy as np
 import pandas as pd
@@ -86,14 +87,20 @@ El sistema utiliza un modelo simplificado basado en:
 - Tipo de incidentes más frecuentes
 """
 
+# Definir tipos de incidentes válidos
+VALID_INCIDENT_TYPES = [
+    'Hurto',
+    'Hurto a mano armada',
+    'Cosquilleo',
+    'Ataque',
+    'Apertura de puertas',
+    'Sospechoso',
+    'Acoso'
+]
+
 def predict_station_risk(station, hour):
     """
     Predice el nivel de riesgo para una estación específica en una hora determinada.
-
-    El riesgo se calcula considerando:
-    - Historial de incidentes de la estación
-    - Hora del día (horas pico vs no pico)
-    - Patrones históricos de incidentes
 
     Args:
         station (str): Nombre de la estación
@@ -114,9 +121,13 @@ def predict_station_risk(station, hour):
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
                     return prediction.get('risk_score')
 
-        # Si no está en caché, generar predicción (actualmente simulada)
-        # TODO: Implementar modelo de ML real aquí
-        return random.uniform(0.1, 0.9)
+        # Si no está en caché, generar predicción temporal
+        # TODO: Implementar modelo RNN real aquí
+        base_risk = random.uniform(0.3, 0.8)  # Riesgo base más realista
+        time_factor = 1 + 0.2 * math.sin(hour * math.pi / 12)  # Factor de hora del día
+        risk_score = min(0.95, max(0.1, base_risk * time_factor))  # Normalizar entre 0.1 y 0.95
+
+        return risk_score
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
         return None
@@ -124,11 +135,6 @@ def predict_station_risk(station, hour):
 def predict_incident_type(station, hour):
     """
     Predice el tipo de incidente más probable para una estación y hora específicas.
-
-    La predicción se basa en:
-    - Tipos de incidentes más comunes en la estación
-    - Patrones temporales de tipos de incidentes
-    - Correlaciones entre hora y tipo de incidente
 
     Args:
         station (str): Nombre de la estación
@@ -149,9 +155,30 @@ def predict_incident_type(station, hour):
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
                     return prediction.get('incident_type')
 
-        # Si no está en caché, usar solo tipos válidos
-        incident_types = ['Hurto', 'Acoso']  # Solo tipos válidos
-        return random.choice(incident_types)
+        # Si no está en caché, usar weighted random choice basado en estadísticas típicas
+        weights = {
+            'Hurto': 0.3,           # 30% probabilidad
+            'Cosquilleo': 0.2,      # 20% probabilidad
+            'Hurto a mano armada': 0.1,  # 10% probabilidad
+            'Acoso': 0.15,          # 15% probabilidad
+            'Sospechoso': 0.1,      # 10% probabilidad
+            'Ataque': 0.1,          # 10% probabilidad
+            'Apertura de puertas': 0.05   # 5% probabilidad
+        }
+
+        # Ajustar probabilidades según la hora
+        if 6 <= hour <= 9 or 17 <= hour <= 20:  # Horas pico
+            weights['Hurto'] *= 1.2
+            weights['Cosquilleo'] *= 1.3
+        elif 22 <= hour or hour <= 4:  # Horas nocturnas
+            weights['Hurto a mano armada'] *= 1.5
+            weights['Ataque'] *= 1.2
+
+        # Normalizar pesos
+        total = sum(weights.values())
+        normalized_weights = [w/total for w in weights.values()]
+
+        return random.choices(list(weights.keys()), normalized_weights)[0]
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
         return None
