@@ -21,6 +21,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         applyNotificationFilters();
         updateFilterVisuals();
 
+        // Agregar manejadores de eventos para los acordeones al cargar el documento
+        // Configurar acordeón principal
+        const accordionHeader = document.querySelector('.accordion-header');
+        if (accordionHeader) {
+            accordionHeader.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                const content = document.querySelector(target);
+                if (content) {
+                    content.classList.toggle('show');
+                    this.setAttribute('aria-expanded', content.classList.contains('show'));
+                }
+            });
+        }
+
+        // Configurar acordeones de secciones
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                const content = document.querySelector(target);
+                if (content) {
+                    content.classList.toggle('show');
+                    this.setAttribute('aria-expanded', content.classList.contains('show'));
+                }
+            });
+        });
+
+
     } catch (error) {
         console.error('Error en inicialización:', error);
         showToast("Error al inicializar la página", "error");

@@ -17,143 +17,157 @@
     <!-- Configuración de Notificaciones -->
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5>Preferencias de Notificaciones</h5>
-            <p class="text-dark mb-3">Configura qué tipo de alertas quieres recibir y de qué estaciones.</p>
+        <div class="card preferences-card">
+          <div class="card-header accordion-header" data-toggle="collapse" data-target="#preferencesContent">
+            <h5 class="mb-0">
+              <i class="fas fa-caret-down"></i>
+              Preferencias de Notificaciones
+            </h5>
+          </div>
+          <div id="preferencesContent" class="collapse show">
+            <div class="card-body">
+              <p class="text-dark mb-3">Configura qué tipo de alertas quieres recibir y de qué estaciones.</p>
 
-            <div class="row">
               <!-- Troncales -->
-              <div class="col-12 mb-3">
-                <label for="troncalPreference">Troncales:</label>
-                <div class="select-all-container">
-                  <input class="form-check-input" type="checkbox" id="selectAllTroncales">
-                  <label class="form-check-label" for="selectAllTroncales">
-                    Todas las troncales
-                  </label>
+              <div class="preference-section">
+                <div class="section-header" data-toggle="collapse" data-target="#troncalesContent">
+                  <h6><i class="fas fa-caret-right"></i> Troncales</h6>
                 </div>
-                <div class="preferences-group" id="troncalPreference">
-                  <!-- Opciones dinámicas se añadirán aquí vía JavaScript -->
+                <div id="troncalesContent" class="collapse show">
+                  <div class="select-all-container">
+                    <input class="form-check-input" type="checkbox" id="selectAllTroncales">
+                    <label class="form-check-label" for="selectAllTroncales">
+                      Todas las troncales
+                    </label>
+                  </div>
+                  <div class="preferences-group" id="troncalPreference">
+                    <!-- Opciones dinámicas se añadirán aquí vía JavaScript -->
+                  </div>
                 </div>
               </div>
 
               <!-- Estaciones -->
-              <div class="col-12 mb-3">
-                <label for="stationPreference">Estaciones:</label>
-                <div class="search-box mb-2">
-                  <input type="text" id="estacionSearch" placeholder="Buscar estación..." class="search-input">
+              <div class="preference-section">
+                <div class="section-header" data-toggle="collapse" data-target="#estacionesContent">
+                  <h6><i class="fas fa-caret-right"></i> Estaciones</h6>
                 </div>
-                <div class="select-all-container">
-                  <input class="form-check-input" type="checkbox" id="selectAllEstaciones">
-                  <label class="form-check-label" for="selectAllEstaciones">
-                    Todas las estaciones
-                  </label>
-                </div>
-                <div class="preferences-group" id="stationPreference">
-                  <!-- Opciones dinámicas se añadirán aquí vía JavaScript -->
+                <div id="estacionesContent" class="collapse show">
+                  <div class="search-box mb-2">
+                    <input type="text" id="estacionSearch" placeholder="Buscar estación..." class="search-input">
+                  </div>
+                  <div class="select-all-container">
+                    <input class="form-check-input" type="checkbox" id="selectAllEstaciones">
+                    <label class="form-check-label" for="selectAllEstaciones">
+                      Todas las estaciones
+                    </label>
+                  </div>
+                  <div class="preferences-group" id="stationPreference">
+                    <!-- Opciones dinámicas se añadirán aquí vía JavaScript -->
+                  </div>
                 </div>
               </div>
 
               <!-- Tipos de Incidente -->
-              <div class="col-12">
-                <label for="typePreference">Tipos de Incidente:</label>
-                <div class="select-all-container">
-                  <input class="form-check-input" type="checkbox" id="selectAllTypes">
-                  <label class="form-check-label" for="selectAllTypes">
-                    Todos los tipos
-                  </label>
+              <div class="preference-section">
+                <div class="section-header" data-toggle="collapse" data-target="#incidentesContent">
+                  <h6><i class="fas fa-caret-right"></i> Tipos de Incidente</h6>
                 </div>
-                <div class="preferences-group" id="typePreference">
-                  <!-- Opciones estáticas de ejemplo -->
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Hurto" id="typeHurto">
-                    <label class="form-check-label" for="typeHurto">Hurto</label>
+                <div id="incidentesContent" class="collapse show">
+                  <div class="select-all-container">
+                    <input class="form-check-input" type="checkbox" id="selectAllTypes">
+                    <label class="form-check-label" for="selectAllTypes">
+                      Todos los tipos
+                    </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Hurto a mano armada" id="typeHurtoArmada">
-                    <label class="form-check-label" for="typeHurtoArmada">Hurto a mano armada</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Cosquilleo" id="typeCosquilleo">
-                    <label class="form-check-label" for="typeCosquilleo">Cosquilleo</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Ataque" id="typeAtaque">
-                    <label class="form-check-label" for="typeAtaque">Ataque</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Apertura de puertas" id="typeApertura">
-                    <label class="form-check-label" for="typeApertura">Apertura de puertas</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Sospechoso" id="typeSospechoso">
-                    <label class="form-check-label" for="typeSospechoso">Sospechoso</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Acoso" id="typeAcoso">
-                    <label class="form-check-label" for="typeAcoso">Acoso</label>
+                  <div class="preferences-group" id="typePreference">
+                    <!-- Opciones estáticas -->
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Hurto" id="typeHurto">
+                      <label class="form-check-label" for="typeHurto">Hurto</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Hurto a mano armada" id="typeHurtoArmada">
+                      <label class="form-check-label" for="typeHurtoArmada">Hurto a mano armada</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Cosquilleo" id="typeCosquilleo">
+                      <label class="form-check-label" for="typeCosquilleo">Cosquilleo</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Ataque" id="typeAtaque">
+                      <label class="form-check-label" for="typeAtaque">Ataque</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Apertura de puertas" id="typeApertura">
+                      <label class="form-check-label" for="typeApertura">Apertura de puertas</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Sospechoso" id="typeSospechoso">
+                      <label class="form-check-label" for="typeSospechoso">Sospechoso</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Acoso" id="typeAcoso">
+                      <label class="form-check-label" for="typeAcoso">Acoso</label>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="notification-controls mt-3">
-              <button id="activateNotifications" class="btn btn-primary w-100 mb-2" onclick="requestNotificationPermission()">
-                Activar Notificaciones
-              </button>
-              <button id="savePreferences" class="btn btn-success w-100" onclick="saveNotificationPreferences()">
-                Guardar Preferencias
-              </button>
+              <div class="notification-controls mt-3">
+                <button id="activateNotifications" class="btn btn-primary w-100 mb-2" onclick="requestNotificationPermission()">
+                  Activar Notificaciones
+                </button>
+                <button id="savePreferences" class="btn btn-success w-100" onclick="saveNotificationPreferences()">
+                  Guardar Preferencias
+                </button>
+              </div>
+              <div class="notification-info mt-2">
+                <small class="text-dark">
+                  Las notificaciones te mantendrán informado sobre incidentes en las estaciones seleccionadas.
+                  Tu selección se guardará incluso si cierras el navegador.
+                </small>
+              </div>
             </div>
-            <div class="notification-info mt-2">
-              <small class="text-dark">
-                Las notificaciones te mantendrán informado sobre incidentes en las estaciones seleccionadas.
-                Tu selección se guardará incluso si cierras el navegador.
-              </small>
-            </div>
-          </div><!-- /.card-body -->
-        </div><!-- /.card -->
-      </div><!-- /.col (Preferencias) -->
-    </div><!-- /.row (Configuración de Notificaciones) -->
-
-    <!-- Historial de Notificaciones -->
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h2>Historial de Notificaciones</h2>
-                    <div class="notification-filters mb-3">
-                        <h5>Filtrar Historial</h5>
-                        <div class="filter-controls mb-2">
-                            <button class="btn btn-outline-primary btn-sm show-all-notifications">
-                                <i class="fas fa-filter"></i>
-                                Mostrar todas
-                            </button>
-                        </div>
-                        <div class="scroll-container">
-                            <button class="filter-chip active" data-filter="all">Según preferencias</button>
-                            <button class="filter-chip" data-filter="troncal">Troncales</button>
-                            <button class="filter-chip" data-filter="station">Estaciones</button>
-                            <button class="filter-chip" data-filter="type">Tipos</button>
-                        </div>
-                    </div>
-                    <div id="notificationList" class="notification-list">
-                        <!-- Notificaciones se cargarán dinámicamente aquí -->
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Historial de Notificaciones -->
+      <div class="col-12 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h2>Historial de Notificaciones</h2>
+            <div class="notification-filters mb-3">
+              <h5>Filtrar Historial</h5>
+              <div class="filter-controls mb-2">
+                <button class="btn btn-outline-primary btn-sm show-all-notifications">
+                  <i class="fas fa-filter"></i>
+                  Mostrar todas
+                </button>
+              </div>
+              <div class="scroll-container">
+                <button class="filter-chip active" data-filter="all">Según preferencias</button>
+                <button class="filter-chip" data-filter="troncal">Troncales</button>
+                <button class="filter-chip" data-filter="station">Estaciones</button>
+                <button class="filter-chip" data-filter="type">Tipos</button>
+              </div>
+            </div>
+            <div id="notificationList" class="notification-list">
+              <!-- Notificaciones se cargarán dinámicamente aquí -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-  </div><!-- /.container.notifications-page -->
-</div><!-- /.main-content.notifications-wrapper -->
-
-<!-- Contenedor para Toastr u otras notificaciones emergentes -->
+<!-- Contenedor para Toastr -->
 <div id="toastContainer"></div>
 
 <!-- Badge para contar notificaciones -->
 <span id="notification-badge" class="notification-badge">0</span>
 
-<!-- JavaScript de Notificaciones -->
+<!-- JavaScript -->
 <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 {% endblock %}
