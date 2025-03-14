@@ -18147,3 +18147,21 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 22:30:35,605 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/js/notifications.js HTTP/1.1" 200 32053 0.001244
 2025-03-14 22:30:35,671 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1736 0.001066
 2025-03-14 22:30:35,688 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:30:35] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001256
+2025-03-14 22:31:18,366 - app - INFO - Index endpoint accessed
+2025-03-14 22:31:18,367 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:18] "GET / HTTP/1.1" 302 383 0.001381
+2025-03-14 22:31:18,472 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:18] "GET /login HTTP/1.1" 200 6869 0.001970
+2025-03-14 22:31:18,643 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:18] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001319
+2025-03-14 22:31:18,681 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:18] "GET /static/css/login.css HTTP/1.1" 304 216 0.001199
+2025-03-14 22:31:19,187 - app - INFO - Service Worker solicitado
+2025-03-14 22:31:19,188 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 22:31:19,188 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/service-worker.js HTTP/1.1" 304 251 0.002067
+2025-03-14 22:31:19,279 - app - INFO - Index endpoint accessed
+2025-03-14 22:31:19,279 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET / HTTP/1.1" 302 383 0.001348
+2025-03-14 22:31:19,281 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001009
+2025-03-14 22:31:19,284 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.002143
+2025-03-14 22:31:19,365 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/js/notifications.js HTTP/1.1" 206 401 0.001201
+2025-03-14 22:31:19,374 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1736 0.001005
+2025-03-14 22:31:19,377 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /login HTTP/1.1" 200 6869 0.001733
+2025-03-14 22:31:19,448 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/js/notifications.js HTTP/1.1" 206 21321 0.001256
+2025-03-14 22:31:19,476 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001089
+2025-03-14 22:31:19,499 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 22:31:19] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.001025
