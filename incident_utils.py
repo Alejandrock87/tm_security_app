@@ -1,6 +1,7 @@
 from models import Incident
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from database import db
+from datetime import datetime
 
 def get_incidents_for_map():
     incidents = Incident.query.all()
@@ -9,23 +10,68 @@ def get_incidents_for_map():
         'incident_type': incident.incident_type,
         'latitude': incident.latitude,
         'longitude': incident.longitude,
-        'timestamp': incident.timestamp.isoformat()
+        'timestamp': incident.timestamp.isoformat(),
+        'nearest_station': incident.nearest_station
     } for incident in incidents]
 
-def get_incident_statistics():
-    total_incidents = Incident.query.count()
-    incidents_by_day = db.session.query(
-        func.date(Incident.timestamp).label('date'),
-        func.count(Incident.id).label('count')
-    ).group_by(func.date(Incident.timestamp)).all()
+def get_incident_statistics(date_from=None, date_to=None):
+    query = Incident.query
 
+    if date_from:
+        query = query.filter(Incident.timestamp >= date_from)
+    if date_to:
+        query = query.filter(Incident.timestamp <= date_to)
+
+    # Total de incidentes
+    total_incidents = query.count()
+
+    # Incidentes por tipo
     incidents_by_type = db.session.query(
         Incident.incident_type,
         func.count(Incident.id).label('count')
     ).group_by(Incident.incident_type).all()
 
+    # Estación más afectada
+    top_stations = db.session.query(
+        Incident.nearest_station,
+        func.count(Incident.id).label('count')
+    ).group_by(Incident.nearest_station)\
+    .order_by(desc('count')).all()
+
+    # Hora más peligrosa
+    dangerous_hours = db.session.query(
+        func.extract('hour', Incident.timestamp).label('hour'),
+        func.count(Incident.id).label('count')
+    ).group_by('hour')\
+    .order_by(desc('count')).first()
+
+    most_dangerous_hour = f"{int(dangerous_hours[0]):02d}:00" if dangerous_hours else "No data"
+
+    # Tipo más común
+    most_common_type = max(incidents_by_type, key=lambda x: x[1])[0] if incidents_by_type else "No data"
+
     return {
         'total_incidents': total_incidents,
-        'incidents_by_day': [{'date': str(day.date), 'count': day.count} for day in incidents_by_day],
-        'incidents_by_type': {incident_type: count for incident_type, count in incidents_by_type}
+        'most_affected_station': top_stations[0][0] if top_stations else "No data",
+        'most_dangerous_hour': most_dangerous_hour,
+        'most_common_type': most_common_type,
+        'incident_types': {incident_type: count for incident_type, count in incidents_by_type},
+        'top_stations': {station: count for station, count in top_stations[:10]}
+    }
+
+def get_station_statistics():
+    """Obtiene estadísticas detalladas por estación"""
+    station_stats = db.session.query(
+        Incident.nearest_station,
+        func.count(Incident.id).label('total'),
+        func.jsonb_object_agg(
+            Incident.incident_type,
+            func.count(Incident.id)
+        ).label('type_counts')
+    ).group_by(Incident.nearest_station).all()
+
+    return {
+        'stations': {
+            stat.nearest_station: stat.total for stat in station_stats
+        }
     }

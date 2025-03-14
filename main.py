@@ -9,7 +9,7 @@ from flask_cors import CORS
 
 # Configurar logging
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
@@ -35,7 +35,7 @@ def health_check():
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application")
-        port = int(os.getenv('PORT', 5000))
+        port = 5000  # Forzar puerto 5000
         logger.info(f"Server will start on port {port}")
 
         socketio.run(
