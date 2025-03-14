@@ -1,3 +1,67 @@
+"""
+Sistema de Predicción basado en RNN para TransMilenio
+---------------------------------------------------
+
+ARQUITECTURA PLANIFICADA:
+------------------------
+1. Red Neuronal Recurrente (RNN) con capas LSTM/GRU
+   - Entrada: Secuencias temporales de incidentes
+   - Capas ocultas: LSTM/GRU para capturar patrones temporales
+   - Salida: Predicción de riesgo y tipo de incidente
+
+IMPORTACIONES NECESARIAS:
+------------------------
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+
+PREPARACIÓN DE DATOS:
+--------------------
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+import pandas as pd
+import numpy as np
+
+EVALUACIÓN Y MÉTRICAS:
+---------------------
+from sklearn.metrics import (
+    accuracy_score, 
+    classification_report,
+    confusion_matrix, 
+    roc_auc_score
+)
+
+CARACTERÍSTICAS DEL MODELO:
+-------------------------
+1. Arquitectura:
+   - Capa de entrada LSTM (128 unidades)
+   - Dropout (0.2) para prevenir overfitting
+   - Capa LSTM adicional (64 unidades)
+   - Dropout (0.2)
+   - Capa Dense para predicción de riesgo
+   - Capa Dense con softmax para tipo de incidente
+
+2. Hiperparámetros:
+   - Batch size: 32
+   - Épocas: 100 con early stopping
+   - Optimizer: Adam con learning rate adaptativo
+   - Loss: Binary crossentropy (riesgo) y 
+          Categorical crossentropy (tipo)
+
+3. Validación:
+   - Cross-validation con k=5
+   - Early stopping con paciencia=10
+   - Model checkpointing para mejor modelo
+
+4. Métricas de Evaluación:
+   - Accuracy
+   - ROC AUC
+   - F1-Score
+   - Matriz de Confusión
+"""
+
 import logging
 from datetime import datetime
 import random
@@ -10,7 +74,6 @@ from models import Incident
 """
 Sistema de Predicción de Incidentes de Seguridad para TransMilenio
 ----------------------------------------------------------------
-
 Este módulo implementa las funciones principales para:
 1. Predicción de riesgo por estación
 2. Predicción de tipos de incidentes
@@ -182,5 +245,38 @@ def prepare_prediction_data(station, hour):
     return None
 
 def train_rnn_model():
-    """Placeholder para futura implementación de modelo RNN"""
-    return None, None
+    """
+    Implementación futura del modelo RNN.
+
+    Proceso:
+    1. Preparación de datos:
+       - Carga de datos históricos
+       - Normalización de features
+       - Codificación de variables categóricas
+       - Creación de secuencias temporales
+
+    2. Arquitectura del modelo:
+       model = Sequential([
+           LSTM(128, return_sequences=True),
+           Dropout(0.2),
+           LSTM(64),
+           Dropout(0.2),
+           Dense(32, activation='relu'),
+           Dense(1, activation='sigmoid')  # riesgo
+       ])
+
+    3. Entrenamiento:
+       - Optimizer: Adam
+       - Loss: Binary crossentropy
+       - Métricas: Accuracy, AUC
+       - Callbacks: EarlyStopping, ModelCheckpoint
+
+    4. Evaluación:
+       - Validación cruzada
+       - Análisis de curvas ROC
+       - Matriz de confusión
+
+    Returns:
+        tuple: (modelo entrenado, importancia de características)
+    """
+    return None, None  # Placeholder hasta implementación
