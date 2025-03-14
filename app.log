@@ -16276,3 +16276,103 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 21:32:26,491 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:32:26] "GET /static/css/login.css HTTP/1.1" 304 216 0.001242
 2025-03-14 21:32:27,192 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:32:27] "GET /static/css/login.css HTTP/1.1" 200 4622 0.001339
 2025-03-14 21:32:27,360 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:32:27] "GET /static/js/service-worker.js HTTP/1.1" 304 224 0.001568
+2025-03-14 21:33:52,955 - app - INFO - Index endpoint accessed
+2025-03-14 21:33:52,956 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:33:52] "GET / HTTP/1.1" 302 383 0.001244
+2025-03-14 21:33:53,053 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:33:53] "GET /login HTTP/1.1" 200 5289 0.002297
+2025-03-14 21:33:53,171 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:33:53] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001267
+2025-03-14 21:33:53,271 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:33:53] "GET /static/css/login.css HTTP/1.1" 304 216 0.001177
+2025-03-14 21:33:53,867 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:33:53] "GET /static/js/service-worker.js HTTP/1.1" 304 224 0.001159
+2025-03-14 21:34:17,159 - engineio.server - ERROR - Invalid session fRb78vP_9fn0zfWnAAAh (further occurrences of this error will be logged with level INFO)
+2025-03-14 21:34:17,160 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:17] "POST /socket.io/?EIO=4&transport=polling&t=PMMb4wC&sid=fRb78vP_9fn0zfWnAAAh HTTP/1.1" 400 283 0.000463
+2025-03-14 21:34:17,222 - engineio.server - INFO - Invalid session fRb78vP_9fn0zfWnAAAh
+2025-03-14 21:34:17,222 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:17] "GET /socket.io/?EIO=4&transport=polling&t=PMMYSff&sid=fRb78vP_9fn0zfWnAAAh HTTP/1.1" 400 168 0.000496
+2025-03-14 21:34:18,064 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Sending packet OPEN data {'sid': 'Ogl1rUojAiD0VwGEAAAA', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 21:34:18,065 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:18] "GET /socket.io/?EIO=4&transport=polling&t=PMMb5E0 HTTP/1.1" 200 254 0.000692
+2025-03-14 21:34:18,203 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Received packet MESSAGE data 0
+2025-03-14 21:34:18,204 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Sending packet MESSAGE data 0{"sid":"FweHi6IdLRqk7C-CAAAB"}
+2025-03-14 21:34:18,204 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:18] "POST /socket.io/?EIO=4&transport=polling&t=PMMb5GB&sid=Ogl1rUojAiD0VwGEAAAA HTTP/1.1" 200 258 0.001329
+2025-03-14 21:34:18,205 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:18] "GET /socket.io/?EIO=4&transport=polling&t=PMMb5GB.0&sid=Ogl1rUojAiD0VwGEAAAA HTTP/1.1" 200 189 0.000174
+2025-03-14 21:34:18,209 - engineio.server - INFO - iJ5dUbnMe9A2JuVdAAAC: Sending packet OPEN data {'sid': 'iJ5dUbnMe9A2JuVdAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 21:34:18,209 - engineio.server - INFO - iJ5dUbnMe9A2JuVdAAAC: Received request to upgrade to websocket
+2025-03-14 21:34:18,209 - engineio.server - INFO - iJ5dUbnMe9A2JuVdAAAC: Upgrade to websocket successful
+2025-03-14 21:34:18,297 - engineio.server - INFO - iJ5dUbnMe9A2JuVdAAAC: Received packet MESSAGE data 0
+2025-03-14 21:34:18,298 - engineio.server - INFO - iJ5dUbnMe9A2JuVdAAAC: Sending packet MESSAGE data 0{"sid":"irj4IFMxgg8nXVr_AAAD"}
+2025-03-14 21:34:18,498 - engineio.server - ERROR - Invalid transport for session Ogl1rUojAiD0VwGEAAAA (further occurrences of this error will be logged with level INFO)
+2025-03-14 21:34:19,749 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:19] "GET /notifications HTTP/1.1" 302 632 0.001172
+2025-03-14 21:34:19,841 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:19] "GET /login?next=%2Fnotifications HTTP/1.1" 200 5861 0.002202
+2025-03-14 21:34:19,979 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:19] "GET /static/manifest.json HTTP/1.1" 200 1625 0.001050
+2025-03-14 21:34:20,285 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:20] "GET /static/css/custom.css HTTP/1.1" 304 216 0.002161
+2025-03-14 21:34:20,408 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:20] "GET /static/css/login.css HTTP/1.1" 304 216 0.001147
+2025-03-14 21:34:20,556 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:20] "GET /static/js/service-worker.js HTTP/1.1" 200 4767 0.001120
+2025-03-14 21:34:20,813 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:20] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1737 0.001019
+2025-03-14 21:34:43,087 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Sending packet PING data None
+2025-03-14 21:34:43,088 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:34:43] "GET /socket.io/?EIO=4&transport=polling&t=PMMb5Hb&sid=Ogl1rUojAiD0VwGEAAAA HTTP/1.1" 200 157 24.789500
+2025-03-14 21:36:18,128 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Client is gone, closing socket
+2025-03-14 21:36:18,128 - engineio.server - INFO - Ogl1rUojAiD0VwGEAAAA: Client is gone, closing socket
+2025-03-14 21:39:16,416 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 21:39:16,416 - app - INFO - Inicializando base de datos...
+2025-03-14 21:39:17,543 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 21:39:17,543 - app - INFO - Configurando login manager...
+2025-03-14 21:39:17,544 - app - INFO - Login manager configurado correctamente
+2025-03-14 21:39:17,544 - app - INFO - Importando e inicializando rutas...
+2025-03-14 21:39:17,582 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 21:39:17,583 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 21:39:17,583 - __main__ - INFO - Starting Flask application
+2025-03-14 21:39:17,583 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 21:39:17,584 - __main__ - INFO - Testing server configuration...
+2025-03-14 21:39:17,586 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 21:39:17,587 - __main__ - INFO - Test response status: 200
+2025-03-14 21:39:17,587 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 21:39:18,486 - app - INFO - Index endpoint accessed
+2025-03-14 21:39:18,486 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:18] "GET / HTTP/1.1" 302 383 0.001519
+2025-03-14 21:39:18,606 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:18] "GET /login HTTP/1.1" 200 5286 0.031077
+2025-03-14 21:39:18,721 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:18] "GET /static/css/custom.css HTTP/1.1" 304 216 0.005961
+2025-03-14 21:39:18,807 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:18] "GET /static/css/login.css HTTP/1.1" 304 216 0.001152
+2025-03-14 21:39:19,547 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/service-worker.js HTTP/1.1" 200 4795 0.001356
+2025-03-14 21:39:19,660 - app - INFO - Index endpoint accessed
+2025-03-14 21:39:19,661 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET / HTTP/1.1" 302 383 0.001825
+2025-03-14 21:39:19,662 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000971
+2025-03-14 21:39:19,719 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.001212
+2025-03-14 21:39:19,750 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/js/notifications.js HTTP/1.1" 200 35810 0.001467
+2025-03-14 21:39:19,754 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /login HTTP/1.1" 200 5286 0.002269
+2025-03-14 21:39:19,812 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1737 0.001163
+2025-03-14 21:39:19,843 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.001345
+2025-03-14 21:39:19,898 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.001259
+2025-03-14 21:39:19,963 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:39:19] "GET /static/icons/badge-icon.png HTTP/1.1" 404 363 0.001098
+2025-03-14 21:40:03,434 - app - INFO - Test endpoint accessed
+2025-03-14 21:40:03,436 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-03-14 21:40:03] "HEAD /test HTTP/1.1" 200 140 0.001688
+2025-03-14 21:41:59,275 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 21:41:59,276 - app - INFO - Inicializando base de datos...
+2025-03-14 21:41:59,815 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 21:41:59,815 - app - INFO - Configurando login manager...
+2025-03-14 21:41:59,816 - app - INFO - Login manager configurado correctamente
+2025-03-14 21:41:59,817 - app - INFO - Importando e inicializando rutas...
+2025-03-14 21:41:59,865 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 21:41:59,865 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 21:41:59,866 - __main__ - INFO - Starting Flask application
+2025-03-14 21:41:59,866 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 21:41:59,866 - __main__ - INFO - Testing server configuration...
+2025-03-14 21:41:59,868 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 21:41:59,868 - __main__ - INFO - Test response status: 200
+2025-03-14 21:41:59,868 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 21:42:00,441 - app - INFO - Index endpoint accessed
+2025-03-14 21:42:00,442 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:00] "GET / HTTP/1.1" 302 383 0.001645
+2025-03-14 21:42:00,592 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:00] "GET /login HTTP/1.1" 200 5783 0.029803
+2025-03-14 21:42:01,017 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004398
+2025-03-14 21:42:01,057 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/css/login.css HTTP/1.1" 304 216 0.001269
+2025-03-14 21:42:01,409 - app - INFO - Service Worker solicitado
+2025-03-14 21:42:01,410 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 21:42:01,411 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/service-worker.js HTTP/1.1" 304 251 0.001738
+2025-03-14 21:42:01,540 - app - INFO - Index endpoint accessed
+2025-03-14 21:42:01,541 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET / HTTP/1.1" 302 568 0.001640
+2025-03-14 21:42:01,543 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/css/notifications.css HTTP/1.1" 304 223 0.000913
+2025-03-14 21:42:01,545 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000783
+2025-03-14 21:42:01,691 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/js/notifications.js HTTP/1.1" 304 223 0.001225
+2025-03-14 21:42:01,692 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/icons/icon-192x192.png HTTP/1.1" 200 1736 0.000674
+2025-03-14 21:42:01,693 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /login HTTP/1.1" 200 5618 0.001277
+2025-03-14 21:42:01,783 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/icons/notification-icon.png HTTP/1.1" 404 363 0.001011
+2025-03-14 21:42:01,784 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/icons/icon-512x512.png HTTP/1.1" 404 363 0.000576
+2025-03-14 21:42:01,830 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 21:42:01] "GET /static/icons/badge-icon.png HTTP/1.1" 404 363 0.000877
+2025-03-14 21:42:53,313 - app - INFO - Service Worker solicitado
+2025-03-14 21:42:53,315 - app - INFO - Service Worker enviado con header Service-Worker-Allowed
+2025-03-14 21:42:53,319 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-03-14 21:42:53] "HEAD /static/service-worker.js HTTP/1.1" 200 355 0.005948
