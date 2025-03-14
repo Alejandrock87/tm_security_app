@@ -93,27 +93,39 @@ async function loadStations() {
     }
 }
 
-// Función para cargar preferencias
+// Función para cargar preferencias guardadas
 async function loadPreferences() {
     try {
-        const response = await fetch('/api/stations');
-        if (!response.ok) {
-            throw new Error('Error al obtener las estaciones');
-        }
-        const stations = await response.json();
-        console.log('Datos de estaciones recibidos:', stations);
+        const settings = getNotificationSettings();
+        const stations = await fetch('/api/stations').then(r => r.json());
+
+        // Extraer troncales y estaciones únicas
         const troncales = [...new Set(stations.map(station => station.troncal))]
             .filter(troncal => troncal && troncal !== 'N/A')
             .sort();
-        console.log('Troncales extraídas:', troncales);
+
         const estaciones = [...new Set(stations.map(station => station.nombre))]
             .filter(nombre => nombre && nombre.trim() !== '')
             .sort();
-        console.log('Estaciones extraídas:', estaciones);
-        const settings = getNotificationSettings();
-        populateCheckboxGroup('troncalPreference', troncales, settings.troncal);
-        populateCheckboxGroup('stationPreference', estaciones, settings.station);
-        setIncidentTypePreferences(settings.incidentType);
+
+        // Actualizar variables globales con las preferencias guardadas
+        selectedTroncales = settings.troncal || [];
+        selectedEstaciones = settings.station || [];
+        notificationsEnabled = settings.enabled || false;
+
+        // Poblar los grupos de checkboxes
+        populateCheckboxGroup('troncalPreference', troncales, selectedTroncales);
+        updateEstacionesCheckboxes(stations);
+        setIncidentTypePreferences(settings.incidentType || []);
+
+        // Actualizar estados de "Seleccionar todo"
+        updateSelectAllState('troncalPreference');
+        updateSelectAllState('stationPreference');
+        updateSelectAllState('typePreference');
+
+        // Actualizar estado de los botones
+        updateButtonStates(notificationsEnabled);
+
     } catch (error) {
         console.error('Error loading preferences:', error);
         showToast('Error al cargar las preferencias', 'error');
@@ -182,33 +194,46 @@ function updateEstacionesCheckboxes(data) {
     }
 
     selectAllEstaciones.disabled = false;
+
+    // Obtener las estaciones previamente seleccionadas
+    const settings = getNotificationSettings();
+    const savedStations = settings.station || [];
+
     filteredStations.forEach(station => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'form-check';
         const itemId = `stationPreference-${sanitizeId(station.nombre)}`;
+        const isChecked = savedStations.includes(station.nombre);
+
         itemDiv.innerHTML = `
-            <input class="form-check-input" type="checkbox" value="${station.nombre}" id="${itemId}">
+            <input class="form-check-input" type="checkbox" value="${station.nombre}" 
+                   id="${itemId}" ${isChecked ? 'checked' : ''}>
             <label class="form-check-label" for="${itemId}">${station.nombre}</label>
         `;
         estacionesCheckboxes.appendChild(itemDiv);
     });
+
+    // Actualizar estado del checkbox "Seleccionar todo"
+    const allChecked = document.querySelectorAll('#stationPreference .form-check-input:checked').length ===
+        document.querySelectorAll('#stationPreference .form-check-input').length;
+    selectAllEstaciones.checked = allChecked;
 }
 
-// Función para obtener valores seleccionados
+// Función para obtener valores seleccionados de un grupo
 function getSelectedValues(groupId) {
-    const checkboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`);
+    const checkboxes = document.querySelectorAll(`#${groupId} .form-check-input:checked`);
     return Array.from(checkboxes).map(cb => cb.value);
 }
 
 // Función para actualizar estado de "Seleccionar todo"
 function updateSelectAllState(groupId) {
     const selectAllId = groupId === 'troncalPreference' ? 'selectAllTroncales' :
-                       groupId === 'stationPreference' ? 'selectAllEstaciones' : 'selectAllTypes';
+        groupId === 'stationPreference' ? 'selectAllEstaciones' : 'selectAllTypes';
     const selectAll = document.getElementById(selectAllId);
-    const checkboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]:not([disabled])`);
-    const checkedBoxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked:not([disabled])`);
 
     if (selectAll) {
+        const checkboxes = document.querySelectorAll(`#${groupId} .form-check-input:not([disabled])`);
+        const checkedBoxes = document.querySelectorAll(`#${groupId} .form-check-input:checked:not([disabled])`);
         selectAll.checked = checkboxes.length > 0 && checkboxes.length === checkedBoxes.length;
     }
 }
@@ -264,21 +289,38 @@ async function saveNotificationPreferences() {
     try {
         saveBtn.textContent = 'Guardando...';
         saveBtn.disabled = true;
+
+        // Obtener valores actuales
         const preferences = {
             troncal: getSelectedValues('troncalPreference'),
             station: getSelectedValues('stationPreference'),
-            incidentType: getSelectedValues('typePreference')
+            incidentType: getSelectedValues('typePreference'),
+            enabled: notificationsEnabled
         };
+
+        // Actualizar variables globales
+        selectedTroncales = preferences.troncal;
+        selectedEstaciones = preferences.station;
+
+        // Guardar en localStorage
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-        await new Promise(resolve => setTimeout(resolve, 500));
+
         showToast('Preferencias guardadas correctamente', 'success');
         saveBtn.textContent = '¡Guardado!';
-        saveBtn.classList.add('btn-success');
+        saveBtn.classList.remove('btn-primary');
+        saveBtn.classList.add('btn-success', 'saved');
+
+        // Restaurar estado original del botón después de 2 segundos
         setTimeout(() => {
             saveBtn.textContent = originalText;
-            saveBtn.classList.remove('btn-success');
+            saveBtn.classList.remove('btn-success', 'saved');
+            saveBtn.classList.add('btn-primary');
             saveBtn.disabled = false;
         }, 2000);
+
+        //Actualizar el historial de notificaciones
+        updateNotificationHistory();
+
 
     } catch (error) {
         console.error('Error al guardar preferencias:', error);
@@ -288,9 +330,15 @@ async function saveNotificationPreferences() {
     }
 }
 
-// Función para sanitizar IDs
-function sanitizeId(text) {
-    return text.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+// Función para obtener preferencias almacenadas
+function getNotificationSettings() {
+    const stored = localStorage.getItem('notificationPreferences');
+    return stored ? JSON.parse(stored) : {
+        troncal: [],
+        station: [],
+        incidentType: [],
+        enabled: false
+    };
 }
 
 // Inicialización de Socket.IO
@@ -326,7 +374,7 @@ function setupFilterEventListeners() {
     const selectAllTypes = document.getElementById('selectAllTypes');
 
     if (selectAllTroncales) {
-        selectAllTroncales.addEventListener('change', function() {
+        selectAllTroncales.addEventListener('change', async function() {
             const checkboxes = document.querySelectorAll('#troncalPreference .form-check-input');
             const isChecked = this.checked;
             checkboxes.forEach(checkbox => {
@@ -334,34 +382,49 @@ function setupFilterEventListeners() {
             });
             selectedTroncales = isChecked ? Array.from(checkboxes).map(cb => cb.value) : [];
             updateEstacionesCheckboxes(stationsData);
-            savePreferencesState();
+            await saveNotificationPreferences(); // Guardar cambios automáticamente
         });
     }
 
     if (selectAllEstaciones) {
-        selectAllEstaciones.addEventListener('change', function() {
+        selectAllEstaciones.addEventListener('change', async function() {
             const checkboxes = document.querySelectorAll('#stationPreference .form-check-input:not([disabled])');
             const isChecked = this.checked;
             checkboxes.forEach(checkbox => {
                 checkbox.checked = isChecked;
             });
             selectedEstaciones = isChecked ? Array.from(checkboxes).map(cb => cb.value) : [];
-            savePreferencesState();
+            await saveNotificationPreferences(); // Guardar cambios automáticamente
         });
     }
 
     if (selectAllTypes) {
-        selectAllTypes.addEventListener('change', function() {
+        selectAllTypes.addEventListener('change', async function() {
             const checkboxes = document.querySelectorAll('#typePreference .form-check-input');
             const isChecked = this.checked;
             checkboxes.forEach(checkbox => {
-                if (checkbox !== this) {
-                    checkbox.checked = isChecked;
-                }
+                checkbox.checked = isChecked;
             });
-            savePreferencesState();
+            await saveNotificationPreferences(); // Guardar cambios automáticamente
         });
     }
+
+    // Agregar listeners para cambios individuales
+    document.querySelectorAll('.preferences-group .form-check-input').forEach(checkbox => {
+        checkbox.addEventListener('change', async function() {
+            const group = this.closest('.preferences-group');
+            updateSelectAllState(group.id);
+
+            if (group.id === 'troncalPreference') {
+                selectedTroncales = getSelectedValues('troncalPreference');
+                updateEstacionesCheckboxes(stationsData);
+            } else if (group.id === 'stationPreference') {
+                selectedEstaciones = getSelectedValues('stationPreference');
+            }
+
+            await saveNotificationPreferences(); // Guardar cambios automáticamente
+        });
+    });
 
     // Configurar búsqueda de estaciones
     const estacionSearch = document.getElementById('estacionSearch');
@@ -377,47 +440,34 @@ function setupFilterEventListeners() {
         });
     }
 
-    // Agregar listeners para cambios individuales
-    document.querySelectorAll('.preferences-group .form-check-input').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const group = this.closest('.preferences-group');
-            const selectAllCheckbox = document.querySelector(`#selectAll${group.id.replace('Preference', '')}`);
+    // Configurar filtros de historial
+    document.querySelectorAll('.notification-filters .filter-chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            // Remover clase activa de todos los chips
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
 
-            if (selectAllCheckbox) {
-                const totalCheckboxes = group.querySelectorAll('.form-check-input:not([disabled])').length;
-                const checkedCheckboxes = group.querySelectorAll('.form-check-input:checked:not([disabled])').length;
-                selectAllCheckbox.checked = totalCheckboxes === checkedCheckboxes;
-            }
+            // Activar el chip seleccionado
+            this.classList.add('active');
 
-            if (group.id === 'troncalPreference') {
-                selectedTroncales = getSelectedValues('troncalPreference');
-                updateEstacionesCheckboxes(stationsData);
-            } else if (group.id === 'stationPreference') {
-                selectedEstaciones = getSelectedValues('stationPreference');
-            }
-
-            savePreferencesState();
+            // Actualizar historial con el nuevo filtro
+            updateNotificationHistory();
         });
     });
+
+    // Actualizar historial inicial
+    updateNotificationHistory();
 }
 
-// Función auxiliar para guardar el estado de las preferencias
-function savePreferencesState() {
-    const preferences = {
-        troncal: getSelectedValues('troncalPreference'),
-        station: getSelectedValues('stationPreference'),
-        incidentType: getSelectedValues('typePreference')
-    };
-    localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
-}
+
 
 // Función para obtener preferencias almacenadas
 function getNotificationSettings() {
-    return JSON.parse(localStorage.getItem('notificationSettings')) || {
-        troncal: ['all'],
-        station: ['all'],
-        incidentType: ['all'],
-        enabled: true
+    const stored = localStorage.getItem('notificationPreferences');
+    return stored ? JSON.parse(stored) : {
+        troncal: [],
+        station: [],
+        incidentType: [],
+        enabled: false
     };
 }
 
@@ -457,7 +507,7 @@ function showBrowserNotification(incident) {
     if (shouldShowBrowserNotifications()) {
         new Notification('Nuevo Incidente', {
             body: `${capitalizeFirstLetter(incident.incident_type)} en ${incident.nearest_station}`,
-            icon: '/static/icons/notification-icon.png' 
+            icon: '/static/icons/notification-icon.png'
         });
     }
 }
@@ -685,3 +735,98 @@ async function subscribeToPushNotifications() {
         throw error;
     }
 }
+
+
+// Función para actualizar el historial de notificaciones
+async function updateNotificationHistory() {
+    try {
+        const notificationsList = document.getElementById('notificationList');
+        if (!notificationsList) return;
+
+        // Obtener preferencias actuales
+        const preferences = getNotificationSettings();
+        const activeFilter = document.querySelector('.filter-chip.active')?.dataset.filter || 'all';
+
+        // Construir parámetros de consulta
+        const queryParams = new URLSearchParams();
+
+        if (activeFilter !== 'all') {
+            if (activeFilter === 'troncal' && preferences.troncal) {
+                queryParams.append('troncal', preferences.troncal.join(','));
+            }
+            if (activeFilter === 'station' && preferences.station) {
+                queryParams.append('station', preferences.station.join(','));
+            }
+            if (activeFilter === 'type' && preferences.incidentType) {
+                queryParams.append('incident_type', preferences.incidentType.join(','));
+            }
+        }
+
+        // Obtener notificaciones
+        const response = await fetch(`/api/notifications?${queryParams.toString()}`);
+        if (!response.ok) throw new Error('Error al cargar notificaciones');
+        const notifications = await response.json();
+
+        // Filtrar notificaciones según preferencias si no hay filtro activo
+        let filteredNotifications = notifications;
+        if (activeFilter === 'all' && !document.querySelector('.show-all-notifications')?.classList.contains('active')) {
+            filteredNotifications = notifications.filter(notification => {
+                const troncalMatch = preferences.troncal.length === 0 || preferences.troncal.includes(notification.troncal);
+                const stationMatch = preferences.station.length === 0 || preferences.station.includes(notification.station);
+                const typeMatch = preferences.incidentType.length === 0 || preferences.incidentType.includes(notification.incident_type);
+                return troncalMatch && stationMatch && typeMatch;
+            });
+        }
+
+        // Limpiar y actualizar la lista
+        notificationsList.innerHTML = '';
+
+        if (filteredNotifications.length === 0) {
+            notificationsList.innerHTML = `
+                <div class="no-notifications">
+                    <p>No hay notificaciones que coincidan con los filtros seleccionados.</p>
+                </div>`;
+            return;
+        }
+
+        // Ordenar por fecha más reciente
+        filteredNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        // Renderizar notificaciones
+        filteredNotifications.forEach(notification => {
+            const item = document.createElement('div');
+            item.className = 'notification-item';
+            const timestamp = new Date(notification.timestamp).toLocaleString();
+
+            item.innerHTML = `
+                <div class="notification-header">
+                    <h6 class="incident-type">${capitalizeFirstLetter(notification.incident_type)}</h6>
+                    <span class="notification-time">${timestamp}</span>
+                </div>
+                <p class="station-name">Estación: ${notification.station}</p>
+                ${notification.description ? `<p class="incident-description">${notification.description}</p>` : ''}
+            `;
+
+            notificationsList.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar historial:', error);
+        showToast('Error al cargar el historial de notificaciones', 'error');
+    }
+}
+
+// Configurar el botón "Mostrar todas"
+document.querySelector('.show-all-notifications')?.addEventListener('click', function() {
+    this.classList.toggle('active');
+
+    // Si está activo, mostrar todas las notificaciones
+    if (this.classList.contains('active')) {
+        this.innerHTML = '<i class="fas fa-filter"></i> Mostrar según preferencias';
+        document.querySelector('.filter-chip[data-filter="all"]').click();
+    } else {
+        // Si se desactiva, volver a mostrar según preferencias
+        this.innerHTML = '<i class="fas fa-filter"></i> Mostrar todas';
+        updateNotificationHistory();
+    }
+});

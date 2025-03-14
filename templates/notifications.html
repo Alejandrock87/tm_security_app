@@ -40,7 +40,7 @@
               <!-- Estaciones -->
               <div class="col-12 mb-3">
                 <label for="stationPreference">Estaciones:</label>
-                <div class="search-box">
+                <div class="search-box mb-2">
                   <input type="text" id="estacionSearch" placeholder="Buscar estación..." class="search-input">
                 </div>
                 <div class="select-all-container">
@@ -118,26 +118,33 @@
 
     <!-- Historial de Notificaciones -->
     <div class="row">
-      <div class="col-12 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h2>Historial de Notificaciones</h2>
-            <div class="notification-filters mb-3">
-              <h5>Filtrar Historial</h5>
-              <div class="scroll-container">
-                <button class="filter-chip active" data-filter="all">Todas</button>
-                <button class="filter-chip" data-filter="troncal">Troncales</button>
-                <button class="filter-chip" data-filter="station">Estaciones</button>
-                <button class="filter-chip" data-filter="type">Tipos</button>
-              </div>
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Historial de Notificaciones</h2>
+                    <div class="notification-filters mb-3">
+                        <h5>Filtrar Historial</h5>
+                        <div class="filter-controls mb-2">
+                            <button class="btn btn-outline-primary btn-sm show-all-notifications">
+                                <i class="fas fa-filter"></i>
+                                Mostrar todas
+                            </button>
+                        </div>
+                        <div class="scroll-container">
+                            <button class="filter-chip active" data-filter="all">Según preferencias</button>
+                            <button class="filter-chip" data-filter="troncal">Troncales</button>
+                            <button class="filter-chip" data-filter="station">Estaciones</button>
+                            <button class="filter-chip" data-filter="type">Tipos</button>
+                        </div>
+                    </div>
+                    <div id="notificationList" class="notification-list">
+                        <!-- Notificaciones se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
             </div>
-            <div id="notificationList" class="notification-list">
-              <!-- Notificaciones se cargarán dinámicamente aquí -->
-            </div>
-          </div><!-- /.card-body -->
-        </div><!-- /.card -->
-      </div><!-- /.col-12 -->
-    </div><!-- /.row (Historial) -->
+        </div>
+    </div>
+
   </div><!-- /.container.notifications-page -->
 </div><!-- /.main-content.notifications-wrapper -->
 

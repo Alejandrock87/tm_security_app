@@ -36,6 +36,7 @@
     --notification-hover: #f1f5f9;
     --notification-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --notification-radius: 12px;
+    --notification-text-secondary: #64748b; /* Assumed variable */
 }
 
 /* Reset y configuración base */
@@ -195,6 +196,37 @@ h5 {
     margin-bottom: 2rem;
 }
 
+/* Estilos para los controles de filtro */
+.filter-controls {
+    margin-bottom: 1rem;
+}
+
+.filter-controls .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+.filter-controls .btn i {
+    margin-right: 0.5rem;
+}
+
+.filter-controls .btn-outline-primary {
+    color: var(--notification-primary);
+    border-color: var(--notification-primary);
+}
+
+.filter-controls .btn-outline-primary:hover {
+    background-color: var(--notification-primary);
+    color: white;
+}
+
+.filter-controls .btn-outline-primary.active {
+    background-color: var(--notification-primary);
+    color: white;
+}
+
+
 .scroll-container {
     display: flex;
     gap: 0.5rem;
@@ -237,16 +269,26 @@ h5 {
     overflow-y: auto;
 }
 
+/* Actualizar estilos de la lista de notificaciones */
+.notification-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 1rem;
+    border-radius: var(--notification-radius);
+    background-color: var(--notification-bg);
+}
+
 .notification-item {
-    background: var(--notification-hover);
-    border-radius: 8px;
-    padding: 1.25rem;
+    background: white;
+    border-radius: var(--notification-radius);
+    padding: 1rem;
     margin-bottom: 1rem;
+    box-shadow: var(--notification-shadow);
     transition: transform 0.2s ease;
 }
 
 .notification-item:hover {
-    transform: translateX(5px);
+    transform: translateY(-2px);
 }
 
 .notification-header {
@@ -282,9 +324,9 @@ h5 {
 
 .no-notifications {
     text-align: center;
-    color: #64748b;
-    font-style: italic;
     padding: 2rem;
+    color: var(--notification-text-secondary);
+    font-style: italic;
 }
 
 /* Botones y Controles */
@@ -329,6 +371,16 @@ h5 {
     .filter-chip {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
+    }
+    .filter-controls {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .filter-controls .btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
     }
 }
 
@@ -523,11 +575,15 @@ h5 {
   border-radius: 8px;
   border: 1px solid var(--notification-border);
   gap: 0.5rem;
+  min-height: 2.5rem; /* Altura mínima consistente */
 }
 
 .select-all-container .form-check-input {
   margin: 0;
   flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  align-self: center; /* Asegurar alineación vertical */
 }
 
 .select-all-container .form-check-label {
@@ -536,18 +592,112 @@ h5 {
   color: var(--notification-text);
   font-weight: 500;
   cursor: pointer;
-  white-space: nowrap;
+  line-height: 1.2;
+  display: inline-flex; /* Mantener el texto en línea */
+  align-items: center;
 }
 
 /* Ajustes responsivos */
 @media (max-width: 768px) {
   .select-all-container {
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the start on smaller screens */
-    padding: 0.75rem;
+    display: inline-flex; /* Cambiar a inline-flex para mejor control del espacio */
+    align-items: center;
+    justify-content: flex-start;
+    width: auto; /* Permitir que el contenedor se ajuste al contenido */
+    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .select-all-container .form-check-input {
+    margin-right: 0.5rem; /* Espacio consistente entre checkbox y texto */
   }
 
   .select-all-container .form-check-label {
     font-size: 0.85rem;
+    white-space: nowrap; /* Prevenir que el texto se rompa */
   }
+}
+
+/* Estilos para botones de notificaciones */
+.notification-controls .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+}
+
+.notification-controls .btn-primary {
+    background-color: #1a73e8;
+    border: none;
+}
+
+.notification-controls .btn-primary:hover {
+    background-color: #1557b0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.notification-controls .btn-success {
+    background-color: #34a853;
+    border: none;
+}
+
+.notification-controls .btn-success:hover {
+    background-color: #2d8745;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.notification-controls .btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Estado activo especial para el botón de guardar */
+#savePreferences:not(:disabled) {
+    cursor: pointer;
+    background-color: #1a73e8;
+}
+
+#savePreferences.saved {
+    background-color: #34a853;
+    pointer-events: none;
+}
+
+#savePreferences.saved:after {
+    content: '✓';
+    margin-left: 0.5rem;
+}
+
+/* Estilos para el botón "Mostrar todas" */
+.show-all-notifications {
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.show-all-notifications.active {
+    background-color: var(--notification-primary);
+    color: white;
+    border-color: var(--notification-primary);
+}
+
+.show-all-notifications:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustar el espaciado del icono */
+.show-all-notifications i {
+    margin-right: 0.5rem;
+}
+
+/* Ajustes responsivos para el botón */
+@media (max-width: 768px) {
+    .show-all-notifications {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 1rem auto;
+    }
 }
