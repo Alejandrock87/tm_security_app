@@ -437,41 +437,58 @@ def init_routes(app):
     def get_notifications():
         try:
             # Obtener parámetros de filtro
-            troncal = request.args.get('troncal', '').split(',')
-            station = request.args.get('station', '').split(',')
-            incident_type = request.args.get('incident_type', '').split(',')
+            troncal = request.args.get('troncal', '')
+            station = request.args.get('station', '')
+            incident_type = request.args.get('incident_type', '')
+
+            app.logger.info(f"Parámetros recibidos en /api/notifications:")
+            app.logger.info(f"- Troncal: {troncal}")
+            app.logger.info(f"- Estación: {station}")
+            app.logger.info(f"- Tipo de incidente: {incident_type}")
 
             # Iniciar consulta base
             query = Incident.query.order_by(Incident.timestamp.desc())
 
-            # Aplicar filtros si están presentes y no están vacíos
-            if troncal and troncal[0]:  # Si hay troncales especificadas
+            # Procesar y aplicar filtros
+            troncal_list = [t.strip() for t in troncal.split(',') if t.strip()]
+            station_list = [s.strip() for s in station.split(',') if s.strip()]
+            type_list = [t.strip() for t in incident_type.split(',') if t.strip()]
+
+            app.logger.info("Listas de filtros procesadas:")
+            app.logger.info(f"- Troncales: {troncal_list}")
+            app.logger.info(f"- Estaciones: {station_list}")
+            app.logger.info(f"- Tipos: {type_list}")
+
+            # Aplicar filtros
+            if troncal_list:
                 with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                     geojson_data = json.load(f)
                     stations_for_troncal = [
                         feature['properties']['nombre_estacion']
                         for feature in geojson_data['features']
-                        if feature['properties'].get('troncal_estacion') in troncal
+                        if feature['properties'].get('troncal_estacion') in troncal_list
                     ]
+                    app.logger.info(f"Estaciones encontradas para troncales: {stations_for_troncal}")
                     query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
 
-            if station and station[0]:  # Si hay estaciones especificadas
-                query = query.filter(Incident.nearest_station.in_(station))
+            if station_list:
+                app.logger.info(f"Filtrando por estaciones: {station_list}")
+                query = query.filter(Incident.nearest_station.in_(station_list))
 
-            if incident_type and incident_type[0]:  # Si hay tipos de incidente especificados
-                query = query.filter(Incident.incident_type.in_(incident_type))
+            if type_list:
+                app.logger.info(f"Filtrando por tipos: {type_list}")
+                query = query.filter(Incident.incident_type.in_(type_list))
 
-            # Obtener los últimos 100 incidentes que coincidan con los filtros
+            # Obtener resultados
             incidents = query.limit(100).all()
+            app.logger.info(f"Total de incidentes encontrados: {len(incidents)}")
 
-            # Convertir a formato JSON con información completa
-            return jsonify([{
+            # Convertir a JSON
+            result = [{
                 'id': incident.id,
                 'incident_type': incident.incident_type,
                 'description': incident.description,
                 'nearest_station': incident.nearest_station,
-                'latitude': incident.latitude,
-                'longitude': incident.longitude,
                 'timestamp': incident.timestamp.isoformat(),
                 'troncal': next(
                     (feature['properties'].get('troncal_estacion')
@@ -479,7 +496,10 @@ def init_routes(app):
                      if feature['properties'].get('nombre_estacion') == incident.nearest_station),
                     'N/A'
                 )
-            } for incident in incidents])
+            } for incident in incidents]
+
+            app.logger.info("Respuesta JSON generada exitosamente")
+            return jsonify(result)
 
         except Exception as e:
             app.logger.error(f"Error en /api/notifications: {str(e)}")

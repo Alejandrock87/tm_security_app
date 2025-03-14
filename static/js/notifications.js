@@ -460,7 +460,6 @@ function setupFilterEventListeners() {
 
 
 
-
 // Función para obtener preferencias almacenadas
 function getNotificationSettings() {
     const stored = localStorage.getItem('notificationPreferences');
@@ -752,39 +751,48 @@ async function updateNotificationHistory() {
         // Construir parámetros de consulta
         const queryParams = new URLSearchParams();
 
-        // Si no estamos mostrando todo y tenemos filtros activos, aplicarlos
-        if (!showAll && activeFilter !== 'all') {
-            if (activeFilter === 'troncal' && preferences.troncal?.length > 0) {
-                queryParams.append('troncal', preferences.troncal.join(','));
-            }
-            if (activeFilter === 'station' && preferences.station?.length > 0) {
-                queryParams.append('station', preferences.station.join(','));
-            }
-            if (activeFilter === 'type' && preferences.incidentType?.length > 0) {
-                queryParams.append('incident_type', preferences.incidentType.join(','));
+        // Si no estamos mostrando todas las notificaciones
+        if (!showAll) {
+            if (activeFilter === 'all') {
+                // Aplicar todas las preferencias seleccionadas
+                if (preferences.troncal?.length) {
+                    queryParams.append('troncal', preferences.troncal.join(','));
+                }
+                if (preferences.station?.length) {
+                    queryParams.append('station', preferences.station.join(','));
+                }
+                if (preferences.incidentType?.length) {
+                    queryParams.append('incident_type', preferences.incidentType.join(','));
+                }
+            } else {
+                // Aplicar solo el filtro específico seleccionado
+                const filterMap = {
+                    'troncal': preferences.troncal,
+                    'station': preferences.station,
+                    'type': preferences.incidentType
+                };
+
+                const paramMap = {
+                    'troncal': 'troncal',
+                    'station': 'station',
+                    'type': 'incident_type'
+                };
+
+                if (filterMap[activeFilter]?.length) {
+                    queryParams.append(paramMap[activeFilter], filterMap[activeFilter].join(','));
+                }
             }
         }
 
-        // Obtener notificaciones de la API
+        // Obtener notificaciones
         const response = await fetch(`/api/notifications?${queryParams.toString()}`);
         if (!response.ok) throw new Error('Error al cargar notificaciones');
         const notifications = await response.json();
 
-        // Filtrar notificaciones según preferencias si es necesario
-        let filteredNotifications = notifications;
-        if (!showAll && activeFilter === 'all') {
-            filteredNotifications = notifications.filter(notification => {
-                const troncalMatch = !preferences.troncal?.length || preferences.troncal.includes(notification.troncal);
-                const stationMatch = !preferences.station?.length || preferences.station.includes(notification.nearest_station);
-                const typeMatch = !preferences.incidentType?.length || preferences.incidentType.includes(notification.incident_type);
-                return troncalMatch && stationMatch && typeMatch;
-            });
-        }
-
         // Limpiar y actualizar la lista
         notificationsList.innerHTML = '';
 
-        if (filteredNotifications.length === 0) {
+        if (notifications.length === 0) {
             notificationsList.innerHTML = `
                 <div class="no-notifications">
                     <p>No hay notificaciones que coincidan con los filtros seleccionados.</p>
@@ -793,10 +801,10 @@ async function updateNotificationHistory() {
         }
 
         // Ordenar por fecha más reciente
-        filteredNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
         // Renderizar notificaciones
-        filteredNotifications.forEach(notification => {
+        notifications.forEach(notification => {
             const item = document.createElement('div');
             item.className = 'notification-item';
             const timestamp = new Date(notification.timestamp).toLocaleString();
@@ -812,13 +820,6 @@ async function updateNotificationHistory() {
                 </p>
                 ${notification.description ? 
                     `<p class="incident-description">${notification.description}</p>` : ''}
-                <div class="incident-location">
-                    <small>
-                        <strong>Ubicación:</strong> 
-                        Lat: ${notification.latitude.toFixed(6)}, 
-                        Long: ${notification.longitude.toFixed(6)}
-                    </small>
-                </div>
             `;
 
             notificationsList.appendChild(item);
@@ -833,15 +834,8 @@ async function updateNotificationHistory() {
 // Configurar el botón "Mostrar todas"
 document.querySelector('.show-all-notifications')?.addEventListener('click', function() {
     this.classList.toggle('active');
-
-    // Si está activo, mostrar todas las notificaciones
-    if (this.classList.contains('active')) {
-        this.innerHTML = '<i class="fas fa-filter"></i> Mostrar según preferencias';
-    } else {
-        // Si se desactiva, volver a mostrar según preferencias
-        this.innerHTML = '<i class="fas fa-filter"></i> Mostrar todas';
-    }
-
-    // Actualizar el historial
+    this.innerHTML = this.classList.contains('active') 
+        ? '<i class="fas fa-filter"></i> Mostrar según preferencias'
+        : '<i class="fas fa-filter"></i> Mostrar todas';
     updateNotificationHistory();
 });
