@@ -1,5 +1,5 @@
 from models import Incident
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, case
 from database import db
 from datetime import datetime
 
@@ -25,17 +25,31 @@ def get_incident_statistics(date_from=None, date_to=None):
     # Total de incidentes
     total_incidents = query.count()
 
-    # Incidentes por tipo y estación
+    # Incidentes por tipo y estación usando la sintaxis correcta de CASE
     station_stats = db.session.query(
         Incident.nearest_station,
         func.count(Incident.id).label('total'),
-        func.sum(func.case([(Incident.incident_type == 'Hurto', 1)], else_=0)).label('hurtos'),
-        func.sum(func.case([(Incident.incident_type == 'Acoso', 1)], else_=0)).label('acosos'),
-        func.sum(func.case([(Incident.incident_type == 'Cosquilleo', 1)], else_=0)).label('cosquilleos'),
-        func.sum(func.case([(Incident.incident_type == 'Ataque', 1)], else_=0)).label('ataques'),
-        func.sum(func.case([(Incident.incident_type == 'Apertura de puertas', 1)], else_=0)).label('aperturas'),
-        func.sum(func.case([(Incident.incident_type == 'Hurto a mano armada', 1)], else_=0)).label('hurtos_armados'),
-        func.sum(func.case([(Incident.incident_type == 'Sospechoso', 1)], else_=0)).label('sospechosos')
+        func.count(case([
+            (Incident.incident_type == 'Hurto', Incident.id)
+        ])).label('hurtos'),
+        func.count(case([
+            (Incident.incident_type == 'Acoso', Incident.id)
+        ])).label('acosos'),
+        func.count(case([
+            (Incident.incident_type == 'Cosquilleo', Incident.id)
+        ])).label('cosquilleos'),
+        func.count(case([
+            (Incident.incident_type == 'Ataque', Incident.id)
+        ])).label('ataques'),
+        func.count(case([
+            (Incident.incident_type == 'Apertura de puertas', Incident.id)
+        ])).label('aperturas'),
+        func.count(case([
+            (Incident.incident_type == 'Hurto a mano armada', Incident.id)
+        ])).label('hurtos_armados'),
+        func.count(case([
+            (Incident.incident_type == 'Sospechoso', Incident.id)
+        ])).label('sospechosos')
     ).group_by(Incident.nearest_station)\
     .order_by(desc('total')).all()
 
@@ -66,16 +80,18 @@ def get_incident_statistics(date_from=None, date_to=None):
         'most_dangerous_hour': most_dangerous_hour,
         'most_common_type': most_common_type,
         'incident_types': {incident_type: count for incident_type, count in incidents_by_type},
-        'top_stations': {stat[0]: {
-            'total': stat[1],
-            'hurtos': stat[2],
-            'acosos': stat[3],
-            'cosquilleos': stat[4],
-            'ataques': stat[5],
-            'aperturas': stat[6],
-            'hurtos_armados': stat[7],
-            'sospechosos': stat[8]
-        } for stat in station_stats[:10]}
+        'top_stations': {
+            stat[0]: {
+                'total': stat[1],
+                'hurtos': stat[2],
+                'acosos': stat[3],
+                'cosquilleos': stat[4],
+                'ataques': stat[5],
+                'aperturas': stat[6],
+                'hurtos_armados': stat[7],
+                'sospechosos': stat[8]
+            } for stat in station_stats[:10]
+        }
     }
 
 def get_station_statistics():
