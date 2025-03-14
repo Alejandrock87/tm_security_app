@@ -4,6 +4,7 @@ let notificationPermission = localStorage.getItem('notificationPermission') === 
 let selectedFilter = 'all';
 let selectedTroncales = [];
 let selectedEstaciones = [];
+let stationsData = []; // Almacenar datos de estaciones
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Inicializando página de predicciones...');
@@ -21,25 +22,29 @@ function initializeFilters() {
     const troncalesCheckboxes = document.getElementById('troncalesCheckboxes');
     const estacionesCheckboxes = document.getElementById('estacionesCheckboxes');
     const estacionSearch = document.getElementById('estacionSearch');
+    const selectAllTroncales = document.getElementById('selectAllTroncales');
+    const selectAllEstaciones = document.getElementById('selectAllEstaciones');
 
     // Cargar troncales y estaciones
     fetch('/api/stations')
         .then(response => response.json())
         .then(data => {
+            stationsData = data;
             // Obtener troncales únicas
-            const troncales = [...new Set(data.map(station => station.troncal))];
+            const troncales = [...new Set(data.map(station => station.troncal))].filter(troncal => troncal && troncal !== 'N/A');
+
+            // Limpiar checkboxes existentes
+            troncalesCheckboxes.innerHTML = '';
+            estacionesCheckboxes.innerHTML = '';
+
+            // Agregar troncales
             troncales.forEach(troncal => {
-                if (troncal && troncal !== 'N/A') {
-                    const checkboxItem = createCheckboxItem(troncal, 'troncal');
-                    troncalesCheckboxes.appendChild(checkboxItem);
-                }
+                const checkboxItem = createCheckboxItem(troncal, 'troncal');
+                troncalesCheckboxes.appendChild(checkboxItem);
             });
 
-            // Agregar todas las estaciones
-            data.forEach(station => {
-                const checkboxItem = createCheckboxItem(station.nombre, 'estacion');
-                estacionesCheckboxes.appendChild(checkboxItem);
-            });
+            // Agregar estaciones inicialmente (todas)
+            updateEstacionesCheckboxes(data);
         })
         .catch(error => console.error('Error cargando estaciones:', error));
 
@@ -60,9 +65,80 @@ function initializeFilters() {
             selectedFilter = this.value;
             troncalesFilter.classList.toggle('hidden', selectedFilter !== 'troncales');
             estacionesFilter.classList.toggle('hidden', selectedFilter !== 'estaciones');
+
+            // Reiniciar selecciones al cambiar el filtro
+            if (this.value === 'all') {
+                selectAllTroncales.checked = false;
+                selectAllEstaciones.checked = false;
+                selectedTroncales = [];
+                selectedEstaciones = [];
+                updateEstacionesCheckboxes(stationsData);
+            }
+
             loadAndCheckPredictions();
         });
     });
+
+    // Manejar "Seleccionar todo" para troncales
+    selectAllTroncales.addEventListener('change', function() {
+        const checkboxes = troncalesCheckboxes.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        selectedTroncales = this.checked ?
+            Array.from(checkboxes).map(cb => cb.value) : [];
+
+        // Actualizar lista de estaciones basada en troncales seleccionadas
+        updateEstacionesCheckboxes(stationsData);
+        // Resetear selección de estaciones cuando cambian las troncales
+        selectAllEstaciones.checked = false;
+        selectedEstaciones = [];
+        loadAndCheckPredictions();
+    });
+
+    // Manejar "Seleccionar todo" para estaciones
+    selectAllEstaciones.addEventListener('change', function() {
+        const checkboxes = estacionesCheckboxes.querySelectorAll('input[type="checkbox"]:not([disabled])');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        selectedEstaciones = this.checked ?
+            Array.from(checkboxes).map(cb => cb.value) : [];
+        loadAndCheckPredictions();
+    });
+}
+
+// Función para actualizar estaciones basada en troncales seleccionadas
+function updateEstacionesCheckboxes(data) {
+    const estacionesCheckboxes = document.getElementById('estacionesCheckboxes');
+    const selectAllEstaciones = document.getElementById('selectAllEstaciones');
+    estacionesCheckboxes.innerHTML = '';
+
+    // Filtrar estaciones según las troncales seleccionadas
+    const filteredStations = selectedTroncales.length > 0 ?
+        data.filter(station => selectedTroncales.includes(station.troncal)) :
+        data;
+
+    // Si no hay estaciones disponibles, deshabilitar "Seleccionar todo"
+    selectAllEstaciones.disabled = filteredStations.length === 0;
+    if (filteredStations.length === 0) {
+        selectAllEstaciones.checked = false;
+        const mensaje = document.createElement('div');
+        mensaje.className = 'no-stations-message';
+        mensaje.textContent = 'No hay estaciones disponibles para las troncales seleccionadas';
+        estacionesCheckboxes.appendChild(mensaje);
+        return;
+    }
+
+    // Agregar las estaciones filtradas
+    filteredStations.forEach(station => {
+        const checkboxItem = createCheckboxItem(station.nombre, 'estacion');
+        estacionesCheckboxes.appendChild(checkboxItem);
+    });
+
+    // Actualizar estado del checkbox "Seleccionar todo" según las selecciones actuales
+    const allChecked = selectedEstaciones.length === filteredStations.length;
+    selectAllEstaciones.checked = allChecked;
 }
 
 // Crear elemento checkbox
@@ -74,6 +150,9 @@ function createCheckboxItem(value, type) {
     checkbox.type = 'checkbox';
     checkbox.id = `${type}-${value}`;
     checkbox.value = value;
+    checkbox.checked = type === 'troncal' ?
+        selectedTroncales.includes(value) :
+        selectedEstaciones.includes(value);
 
     const label = document.createElement('label');
     label.htmlFor = checkbox.id;
@@ -82,8 +161,12 @@ function createCheckboxItem(value, type) {
     checkbox.addEventListener('change', function() {
         if (type === 'troncal') {
             selectedTroncales = getSelectedValues('troncal');
+            // Actualizar lista de estaciones cuando cambian las troncales seleccionadas
+            updateEstacionesCheckboxes(stationsData);
         } else {
             selectedEstaciones = getSelectedValues('estacion');
+            // Actualizar estado del checkbox "Seleccionar todo"
+            updateSelectAllEstacionesState();
         }
         loadAndCheckPredictions();
     });
@@ -91,6 +174,15 @@ function createCheckboxItem(value, type) {
     div.appendChild(checkbox);
     div.appendChild(label);
     return div;
+}
+
+// Actualizar estado del checkbox "Seleccionar todo" para estaciones
+function updateSelectAllEstacionesState() {
+    const selectAllEstaciones = document.getElementById('selectAllEstaciones');
+    const checkboxes = document.querySelectorAll('#estacionesCheckboxes input[type="checkbox"]:not([disabled])');
+    const checkedBoxes = document.querySelectorAll('#estacionesCheckboxes input[type="checkbox"]:checked:not([disabled])');
+
+    selectAllEstaciones.checked = checkboxes.length > 0 && checkboxes.length === checkedBoxes.length;
 }
 
 // Obtener valores seleccionados
@@ -115,7 +207,7 @@ function initializeNotifications() {
                 if (permission === 'granted') {
                     notificationPermission = true;
                     localStorage.setItem('notificationPermission', 'true');
-                    socket.emit('subscribe_notifications', { 
+                    socket.emit('subscribe_notifications', {
                         userId: getUserId(),
                         filter: {
                             type: selectedFilter,
@@ -155,11 +247,11 @@ function filterPredictions(predictions) {
 
     return predictions.filter(prediction => {
         if (selectedFilter === 'troncales') {
-            return selectedTroncales.length === 0 || 
-                   selectedTroncales.includes(prediction.troncal);
+            return selectedTroncales.length === 0 ||
+                selectedTroncales.includes(prediction.troncal);
         } else if (selectedFilter === 'estaciones') {
-            return selectedEstaciones.length === 0 || 
-                   selectedEstaciones.includes(prediction.station);
+            return selectedEstaciones.length === 0 ||
+                selectedEstaciones.includes(prediction.station);
         }
         return true;
     });
@@ -221,7 +313,7 @@ function loadAndCheckPredictions() {
             }
 
             // Ordenar predicciones por tiempo
-            filteredPredictions.sort((a, b) => 
+            filteredPredictions.sort((a, b) =>
                 new Date(a.predicted_time) - new Date(b.predicted_time)
             );
 

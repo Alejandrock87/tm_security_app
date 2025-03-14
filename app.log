@@ -10512,3 +10512,900 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 17:52:42,517 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Upgrade to websocket successful
 2025-03-14 17:52:42,602 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet MESSAGE data 0
 2025-03-14 17:52:42,603 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet MESSAGE data 0{"sid":"IDg16FXtho5bU7y7AAAB"}
+2025-03-14 17:52:52,072 - app - INFO - Index endpoint accessed
+2025-03-14 17:52:52,155 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:52:52] "GET / HTTP/1.1" 302 380 0.082978
+2025-03-14 17:52:52,403 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:52:52] "GET /home HTTP/1.1" 200 8521 0.082397
+2025-03-14 17:52:52,568 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:52:52] "GET /static/css/home.css HTTP/1.1" 304 215 0.001216
+2025-03-14 17:52:52,617 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:52:52] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001251
+2025-03-14 17:52:53,806 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Sending packet OPEN data {'sid': 'tWoYmnRPQAqVLxRMAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 17:52:53,806 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Received request to upgrade to websocket
+2025-03-14 17:52:53,806 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Upgrade to websocket successful
+2025-03-14 17:52:53,906 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Received packet MESSAGE data 0
+2025-03-14 17:52:53,907 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Sending packet MESSAGE data 0{"sid":"rW3dyzeJfeeOObdsAAAD"}
+2025-03-14 17:53:07,532 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:53:07,640 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:53:18,818 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Sending packet PING data None
+2025-03-14 17:53:18,929 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Received packet PONG data 
+2025-03-14 17:53:32,654 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:53:32,776 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:53:43,931 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Sending packet PING data None
+2025-03-14 17:53:44,052 - engineio.server - INFO - tWoYmnRPQAqVLxRMAAAC: Received packet PONG data 
+2025-03-14 17:53:56,964 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 17:53:56,964 - app - DEBUG - Usuario autenticado: alejandro
+2025-03-14 17:53:56,989 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:56] "GET /predictions HTTP/1.1" 200 10592 0.085734
+2025-03-14 17:53:57,197 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:57] "GET /static/js/predictions.js HTTP/1.1" 200 11901 0.001342
+2025-03-14 17:53:57,199 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:57] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.001189
+2025-03-14 17:53:57,201 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:57] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000956
+2025-03-14 17:53:57,736 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet OPEN data {'sid': 'LPBqUUr9Ee8yoEISAAAE', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 17:53:57,737 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:57] "GET /socket.io/?EIO=4&transport=polling&t=PMLoeHu HTTP/1.1" 200 254 0.000657
+2025-03-14 17:53:57,828 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:57] "GET /api/stations HTTP/1.1" 200 20676 0.084365
+2025-03-14 17:53:57,828 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:53:57,889 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:53:58,269 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:53:58,297 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:58] "GET /api/predictions HTTP/1.1" 200 117436 0.468272
+2025-03-14 17:53:58,298 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet MESSAGE data 0
+2025-03-14 17:53:58,299 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet MESSAGE data 0{"sid":"OibK-7JEaD9X4E7eAAAF"}
+2025-03-14 17:53:58,299 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:58] "POST /socket.io/?EIO=4&transport=polling&t=PMLoeJN&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.001196
+2025-03-14 17:53:58,300 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet OPEN data {'sid': 'vPU35jiB0THCrCsiAAAG', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 17:53:58,300 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received request to upgrade to websocket
+2025-03-14 17:53:58,301 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Upgrade to websocket successful
+2025-03-14 17:53:58,301 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:53:58] "GET /socket.io/?EIO=4&transport=polling&t=PMLoeJP&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 189 0.003361
+2025-03-14 17:53:58,383 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:53:58,383 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet MESSAGE data 0
+2025-03-14 17:53:58,384 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet MESSAGE data 0{"sid":"r52wwvjsUlrzlDC_AAAH"}
+2025-03-14 17:53:58,663 - engineio.server - ERROR - Invalid transport for session LPBqUUr9Ee8yoEISAAAE (further occurrences of this error will be logged with level INFO)
+2025-03-14 17:54:05,435 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:05,442 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:05,466 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:05] "GET /api/predictions HTTP/1.1" 200 117511 0.093062
+2025-03-14 17:54:08,915 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:08,923 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:08,947 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:08] "GET /api/predictions HTTP/1.1" 200 117535 0.093054
+2025-03-14 17:54:13,232 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:13,240 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:13,265 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:13] "GET /api/predictions HTTP/1.1" 200 117340 0.094858
+2025-03-14 17:54:14,288 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:14,304 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:14,336 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:14] "GET /api/predictions HTTP/1.1" 200 117641 0.111507
+2025-03-14 17:54:15,761 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:15,768 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:15,793 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:15] "GET /api/predictions HTTP/1.1" 200 117297 0.094807
+2025-03-14 17:54:18,891 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:18,899 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:18,923 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:18] "GET /api/predictions HTTP/1.1" 200 117699 0.092981
+2025-03-14 17:54:22,742 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:54:22,743 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:22] "GET /socket.io/?EIO=4&transport=polling&t=PMLoeS8&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 24.352088
+2025-03-14 17:54:22,890 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:54:22,891 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:22] "POST /socket.io/?EIO=4&transport=polling&t=PMLokQ0&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000518
+2025-03-14 17:54:23,302 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:54:23,384 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:54:23,405 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:54:23,468 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:54:47,897 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:54:47,897 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:47] "GET /socket.io/?EIO=4&transport=polling&t=PMLokQ1&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 24.940783
+2025-03-14 17:54:48,009 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:54:48,009 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:48] "POST /socket.io/?EIO=4&transport=polling&t=PMLoqZ9&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000500
+2025-03-14 17:54:48,406 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:54:48,468 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:54:48,487 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:54:48,553 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:54:57,824 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:54:57,832 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:54:57,858 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:54:57] "GET /api/predictions HTTP/1.1" 200 117660 0.096474
+2025-03-14 17:55:01,710 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:55:01,717 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:55:01,742 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:01] "GET /api/predictions HTTP/1.1" 200 117607 0.160690
+2025-03-14 17:55:13,020 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:55:13,021 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:13] "GET /socket.io/?EIO=4&transport=polling&t=PMLoqZA&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 25.010103
+2025-03-14 17:55:13,245 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:55:13,245 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:13] "POST /socket.io/?EIO=4&transport=polling&t=PMLowjO&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000548
+2025-03-14 17:55:13,489 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:55:13,554 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:55:13,597 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:55:13,646 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:55:38,262 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:55:38,262 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:38] "GET /socket.io/?EIO=4&transport=polling&t=PMLowjP&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 25.017802
+2025-03-14 17:55:38,423 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:55:38,424 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:38] "POST /socket.io/?EIO=4&transport=polling&t=PMLp0st&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000594
+2025-03-14 17:55:38,598 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:55:38,646 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:55:38,703 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:55:38,771 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:55:57,832 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 17:55:57,840 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 17:55:57,866 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:55:57] "GET /api/predictions HTTP/1.1" 200 117356 0.095496
+2025-03-14 17:56:03,426 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:56:03,426 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:03] "GET /socket.io/?EIO=4&transport=polling&t=PMLp0su&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 25.000940
+2025-03-14 17:56:03,705 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:56:03,772 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:56:03,850 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:56:03,854 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:56:05,950 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:56:05,950 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:05] "POST /socket.io/?EIO=4&transport=polling&t=PMLp7bD&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000579
+2025-03-14 17:56:28,858 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Sending packet PING data None
+2025-03-14 17:56:28,858 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:56:29,006 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:56:29,006 - engineio.server - INFO - vPU35jiB0THCrCsiAAAG: Received packet PONG data 
+2025-03-14 17:56:30,953 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Sending packet PING data None
+2025-03-14 17:56:30,953 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:30] "GET /socket.io/?EIO=4&transport=polling&t=PMLp7bE&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 157 24.937511
+2025-03-14 17:56:31,080 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet PONG data 
+2025-03-14 17:56:31,081 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:31] "POST /socket.io/?EIO=4&transport=polling&t=PMLpDjf&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000535
+2025-03-14 17:56:51,763 - engineio.server - INFO - LPBqUUr9Ee8yoEISAAAE: Received packet CLOSE data 
+2025-03-14 17:56:51,763 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:51] "POST /socket.io/?EIO=4&transport=polling&t=PMLpIms&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 258 0.000583
+2025-03-14 17:56:51,764 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:51] "GET /socket.io/?EIO=4&transport=polling&t=PMLpDjg&sid=LPBqUUr9Ee8yoEISAAAE HTTP/1.1" 200 156 20.677418
+2025-03-14 17:56:51,987 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:51] "GET /notifications HTTP/1.1" 200 14096 0.085164
+2025-03-14 17:56:52,167 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:52] "GET /static/js/notifications.js HTTP/1.1" 304 224 0.001104
+2025-03-14 17:56:52,175 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:52] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000967
+2025-03-14 17:56:52,177 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:52] "GET /static/css/notifications.css HTTP/1.1" 304 222 0.000863
+2025-03-14 17:56:53,044 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "GET /api/stations HTTP/1.1" 200 20676 0.084326
+2025-03-14 17:56:53,236 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "GET /api/stations HTTP/1.1" 200 20676 0.089360
+2025-03-14 17:56:53,237 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet OPEN data {'sid': 'CbesOuFVimBwiKLnAAAI', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 17:56:53,237 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received request to upgrade to websocket
+2025-03-14 17:56:53,237 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Upgrade to websocket successful
+2025-03-14 17:56:53,321 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet MESSAGE data 0
+2025-03-14 17:56:53,322 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet MESSAGE data 0{"sid":"jYV91MKc17gut8JrAAAJ"}
+2025-03-14 17:56:53,513 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet OPEN data {'sid': 'kde08fuEBwwpq2fVAAAK', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 17:56:53,514 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "GET /socket.io/?EIO=4&transport=polling&t=PMLpJCI HTTP/1.1" 200 254 0.000624
+2025-03-14 17:56:53,625 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=all%2CHurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 156 0.110380
+2025-03-14 17:56:53,626 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet MESSAGE data 0
+2025-03-14 17:56:53,627 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet MESSAGE data 0{"sid":"-f1ptA2mK31DG7E1AAAL"}
+2025-03-14 17:56:53,627 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "POST /socket.io/?EIO=4&transport=polling&t=PMLpJDw&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000941
+2025-03-14 17:56:53,628 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:56:53] "GET /socket.io/?EIO=4&transport=polling&t=PMLpJDx&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 189 0.000165
+2025-03-14 17:56:53,875 - engineio.server - INFO - Invalid transport for session kde08fuEBwwpq2fVAAAK
+2025-03-14 17:56:54,006 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:56:54,090 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:57:18,253 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:57:18,338 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:57:18,514 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:57:18,515 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:57:18] "GET /socket.io/?EIO=4&transport=polling&t=PMLpJFo&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.773621
+2025-03-14 17:57:18,619 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:57:18,619 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:57:18] "POST /socket.io/?EIO=4&transport=polling&t=PMLpPKV&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000585
+2025-03-14 17:57:19,091 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:57:19,175 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:57:43,339 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:57:43,468 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:57:43,620 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:57:43,621 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:57:43] "GET /socket.io/?EIO=4&transport=polling&t=PMLpPKV.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.001554
+2025-03-14 17:57:43,772 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:57:43,772 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:57:43] "POST /socket.io/?EIO=4&transport=polling&t=PMLpVTS&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000519
+2025-03-14 17:57:44,176 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:57:44,294 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:58:08,475 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:58:08,557 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:58:08,773 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:58:08,773 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:08] "GET /socket.io/?EIO=4&transport=polling&t=PMLpVTS.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.000666
+2025-03-14 17:58:08,884 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:58:08,885 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:08] "POST /socket.io/?EIO=4&transport=polling&t=PMLpbbu&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000596
+2025-03-14 17:58:09,296 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:58:09,388 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:58:33,568 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:58:33,669 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:58:33,886 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:58:33,886 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:33] "GET /socket.io/?EIO=4&transport=polling&t=PMLpbbu.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.915871
+2025-03-14 17:58:34,035 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:58:34,036 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:34] "POST /socket.io/?EIO=4&transport=polling&t=PMLphki&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000455
+2025-03-14 17:58:34,390 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:58:34,473 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:58:58,686 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:58:58,848 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:58:59,036 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:58:59,037 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:59] "GET /socket.io/?EIO=4&transport=polling&t=PMLphkj&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.000879
+2025-03-14 17:58:59,145 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:58:59,145 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:58:59] "POST /socket.io/?EIO=4&transport=polling&t=PMLpnt3&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000514
+2025-03-14 17:58:59,474 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:58:59,563 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:59:23,850 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:59:23,979 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:59:24,146 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:59:24,147 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:59:24] "GET /socket.io/?EIO=4&transport=polling&t=PMLpnt4&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.002469
+2025-03-14 17:59:24,252 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:59:24,253 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:59:24] "POST /socket.io/?EIO=4&transport=polling&t=PMLpt_S&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000646
+2025-03-14 17:59:24,564 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:59:24,649 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 17:59:48,986 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 17:59:49,078 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 17:59:49,254 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 17:59:49,254 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:59:49] "GET /socket.io/?EIO=4&transport=polling&t=PMLpt_T&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.000958
+2025-03-14 17:59:49,358 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 17:59:49,358 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 17:59:49] "POST /socket.io/?EIO=4&transport=polling&t=PMLp-7i&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000557
+2025-03-14 17:59:49,650 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 17:59:49,735 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:00:14,090 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:00:14,199 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:00:14,359 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:00:14,360 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:00:14] "GET /socket.io/?EIO=4&transport=polling&t=PMLp-7j&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.003808
+2025-03-14 18:00:14,539 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:00:14,540 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:00:14] "POST /socket.io/?EIO=4&transport=polling&t=PMLq4Gf&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000561
+2025-03-14 18:00:14,736 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:00:14,844 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:00:39,217 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:00:39,308 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:00:39,541 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:00:39,542 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:00:39] "GET /socket.io/?EIO=4&transport=polling&t=PMLq4Gg&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.020091
+2025-03-14 18:00:39,746 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:00:39,747 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:00:39] "POST /socket.io/?EIO=4&transport=polling&t=PMLqAQo&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000481
+2025-03-14 18:00:39,846 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:00:39,931 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:01:04,310 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:01:04,421 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:01:04,748 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:01:04,748 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:04] "GET /socket.io/?EIO=4&transport=polling&t=PMLqAQo.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.002743
+2025-03-14 18:01:04,862 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:01:04,863 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:04] "POST /socket.io/?EIO=4&transport=polling&t=PMLqGZS&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000582
+2025-03-14 18:01:04,932 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:01:05,016 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:01:29,429 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:01:29,510 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:01:29,864 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:01:29,864 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:29] "GET /socket.io/?EIO=4&transport=polling&t=PMLqGZT&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.997672
+2025-03-14 18:01:30,017 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:01:30,088 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:01:30,089 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:30] "POST /socket.io/?EIO=4&transport=polling&t=PMLqMiM&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000467
+2025-03-14 18:01:30,122 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:01:54,523 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:01:54,610 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:01:55,090 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:01:55,091 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:55] "GET /socket.io/?EIO=4&transport=polling&t=PMLqMiN&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.001442
+2025-03-14 18:01:55,123 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:01:55,214 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:01:55,233 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:01:55,233 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:01:55] "POST /socket.io/?EIO=4&transport=polling&t=PMLqSsP&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000499
+2025-03-14 18:02:19,627 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:02:19,757 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:02:20,215 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:02:20,235 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:02:20,235 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:02:20] "GET /socket.io/?EIO=4&transport=polling&t=PMLqSsP.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.931834
+2025-03-14 18:02:20,298 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:02:20,409 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:02:20,410 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:02:20] "POST /socket.io/?EIO=4&transport=polling&t=PMLqY_L&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000523
+2025-03-14 18:02:44,760 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:02:44,852 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:02:45,300 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:02:45,381 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:02:45,411 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:02:45,411 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:02:45] "GET /socket.io/?EIO=4&transport=polling&t=PMLqY_M&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.000770
+2025-03-14 18:02:45,571 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:02:45,572 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:02:45] "POST /socket.io/?EIO=4&transport=polling&t=PMLqf92&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000561
+2025-03-14 18:03:09,860 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:03:09,946 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:03:10,382 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:03:10,511 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:03:10,573 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:03:10,573 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:03:10] "GET /socket.io/?EIO=4&transport=polling&t=PMLqf93&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.995934
+2025-03-14 18:03:10,727 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:03:10,727 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:03:10] "POST /socket.io/?EIO=4&transport=polling&t=PMLqlI8&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000564
+2025-03-14 18:03:34,959 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:03:35,041 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:03:35,513 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:03:35,642 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:03:35,728 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:03:35,729 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:03:35] "GET /socket.io/?EIO=4&transport=polling&t=PMLqlI8.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.951684
+2025-03-14 18:03:35,906 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:03:35,907 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:03:35] "POST /socket.io/?EIO=4&transport=polling&t=PMLqrRO&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000522
+2025-03-14 18:04:00,059 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:04:00,226 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:04:00,643 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:04:00,730 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:04:00,908 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:04:00,908 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:00] "GET /socket.io/?EIO=4&transport=polling&t=PMLqrRP&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.002235
+2025-03-14 18:04:01,010 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:04:01,011 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:01] "POST /socket.io/?EIO=4&transport=polling&t=PMLqxZk&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000595
+2025-03-14 18:04:25,229 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:04:25,344 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:04:25,731 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:04:25,815 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:04:26,012 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:04:26,012 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:26] "GET /socket.io/?EIO=4&transport=polling&t=PMLqxZk.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.004034
+2025-03-14 18:04:26,124 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:04:26,124 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:26] "POST /socket.io/?EIO=4&transport=polling&t=PMLr1i6&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000504
+2025-03-14 18:04:50,352 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:04:50,458 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:04:50,816 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:04:50,898 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:04:51,125 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:04:51,126 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:51] "GET /socket.io/?EIO=4&transport=polling&t=PMLr1i7&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 24.957079
+2025-03-14 18:04:51,296 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:04:51,296 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:04:51] "POST /socket.io/?EIO=4&transport=polling&t=PMLr7rM&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000682
+2025-03-14 18:05:15,472 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Sending packet PING data None
+2025-03-14 18:05:15,564 - engineio.server - INFO - CbesOuFVimBwiKLnAAAI: Received packet PONG data 
+2025-03-14 18:05:15,899 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:05:16,018 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:05:16,298 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:05:16,298 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:05:16] "GET /socket.io/?EIO=4&transport=polling&t=PMLr7rN&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.006176
+2025-03-14 18:05:16,403 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Received packet PONG data 
+2025-03-14 18:05:16,404 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:05:16] "POST /socket.io/?EIO=4&transport=polling&t=PMLrDzl&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 258 0.000612
+2025-03-14 18:05:41,019 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:05:41,109 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:05:41,405 - engineio.server - INFO - kde08fuEBwwpq2fVAAAK: Sending packet PING data None
+2025-03-14 18:05:41,413 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:05:41] "GET /socket.io/?EIO=4&transport=polling&t=PMLrDzl.0&sid=kde08fuEBwwpq2fVAAAK HTTP/1.1" 200 157 25.008686
+2025-03-14 18:06:06,133 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Sending packet PING data None
+2025-03-14 18:06:06,245 - engineio.server - INFO - vT6q1VokxW4y8dOeAAAA: Received packet PONG data 
+2025-03-14 18:06:18,399 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 18:06:18,400 - app - INFO - Inicializando base de datos...
+2025-03-14 18:06:19,516 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 18:06:19,517 - app - INFO - Configurando login manager...
+2025-03-14 18:06:19,517 - app - INFO - Login manager configurado correctamente
+2025-03-14 18:06:19,518 - app - INFO - Importando e inicializando rutas...
+2025-03-14 18:06:19,760 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 18:06:19,761 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 18:06:19,761 - __main__ - INFO - Starting Flask application
+2025-03-14 18:06:19,761 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 18:06:19,761 - __main__ - INFO - Testing server configuration...
+2025-03-14 18:06:19,770 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 18:06:19,771 - __main__ - INFO - Test response status: 200
+2025-03-14 18:06:19,772 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 18:06:20,437 - app - INFO - Index endpoint accessed
+2025-03-14 18:06:20,559 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:06:20] "GET / HTTP/1.1" 302 380 0.123157
+2025-03-14 18:06:20,774 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:06:20] "GET /home HTTP/1.1" 200 8521 0.122285
+2025-03-14 18:06:21,236 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:06:21] "GET /static/css/home.css HTTP/1.1" 304 215 0.004655
+2025-03-14 18:06:21,238 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:06:21] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001066
+2025-03-14 18:06:23,781 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet OPEN data {'sid': 'veQ784oAe8VL6UmlAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:06:23,781 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received request to upgrade to websocket
+2025-03-14 18:06:23,781 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Upgrade to websocket successful
+2025-03-14 18:06:23,868 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received packet MESSAGE data 0
+2025-03-14 18:06:23,869 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet MESSAGE data 0{"sid":"NnqWyrfb4lKr_XbMAAAB"}
+2025-03-14 18:06:48,807 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet PING data None
+2025-03-14 18:06:48,895 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received packet PONG data 
+2025-03-14 18:07:13,920 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet PING data None
+2025-03-14 18:07:14,035 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received packet PONG data 
+2025-03-14 18:07:39,052 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet PING data None
+2025-03-14 18:07:39,138 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received packet PONG data 
+2025-03-14 18:08:04,151 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Sending packet PING data None
+2025-03-14 18:08:04,242 - engineio.server - INFO - veQ784oAe8VL6UmlAAAA: Received packet PONG data 
+2025-03-14 18:08:08,412 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 18:08:08,413 - app - INFO - Inicializando base de datos...
+2025-03-14 18:08:08,936 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 18:08:08,936 - app - INFO - Configurando login manager...
+2025-03-14 18:08:08,937 - app - INFO - Login manager configurado correctamente
+2025-03-14 18:08:08,937 - app - INFO - Importando e inicializando rutas...
+2025-03-14 18:08:08,971 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 18:08:08,971 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 18:08:08,972 - __main__ - INFO - Starting Flask application
+2025-03-14 18:08:08,972 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 18:08:08,972 - __main__ - INFO - Testing server configuration...
+2025-03-14 18:08:08,973 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 18:08:08,974 - __main__ - INFO - Test response status: 200
+2025-03-14 18:08:08,974 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 18:08:09,452 - app - INFO - Index endpoint accessed
+2025-03-14 18:08:09,544 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:08:09] "GET / HTTP/1.1" 302 380 0.092515
+2025-03-14 18:08:09,853 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:08:09] "GET /home HTTP/1.1" 200 8521 0.097861
+2025-03-14 18:08:10,072 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:08:10] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004373
+2025-03-14 18:08:10,074 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:08:10] "GET /static/css/home.css HTTP/1.1" 304 215 0.001099
+2025-03-14 18:08:11,105 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet OPEN data {'sid': 'Zvgh1O_sLuunlJHEAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:08:11,105 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received request to upgrade to websocket
+2025-03-14 18:08:11,106 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Upgrade to websocket successful
+2025-03-14 18:08:11,209 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet MESSAGE data 0
+2025-03-14 18:08:11,210 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet MESSAGE data 0{"sid":"Opw9jXdPShFWxdzNAAAB"}
+2025-03-14 18:08:36,131 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:08:36,217 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:09:01,243 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:09:01,351 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:09:26,367 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:09:26,565 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:09:51,578 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:09:51,664 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:10:16,671 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:10:16,776 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:10:41,801 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:10:41,892 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:11:06,917 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:11:07,002 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:11:32,024 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:11:32,127 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:11:57,153 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:11:57,262 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:12:22,275 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:12:22,679 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:12:47,704 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:12:47,823 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:13:12,825 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:13:12,972 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:13:37,997 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:13:38,104 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:14:03,129 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:14:03,261 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:14:28,279 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:14:28,846 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:14:53,871 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:14:53,984 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:15:18,992 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:15:20,668 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:15:45,693 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:15:45,778 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:16:10,804 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:16:15,940 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:16:40,965 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:16:41,057 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Received packet PONG data 
+2025-03-14 18:17:06,082 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Sending packet PING data None
+2025-03-14 18:18:11,272 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Client is gone, closing socket
+2025-03-14 18:18:11,272 - engineio.server - INFO - Zvgh1O_sLuunlJHEAAAA: Client is gone, closing socket
+2025-03-14 18:23:20,958 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet OPEN data {'sid': 'abx7vBzRmsdYtzJ9AAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:23:20,961 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received request to upgrade to websocket
+2025-03-14 18:23:20,962 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Upgrade to websocket successful
+2025-03-14 18:23:21,071 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet MESSAGE data 0
+2025-03-14 18:23:21,071 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet MESSAGE data 0{"sid":"zRpv7f7ofDVCt5ECAAAD"}
+2025-03-14 18:23:45,995 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:23:46,113 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:23:53,007 - app - INFO - Index endpoint accessed
+2025-03-14 18:23:53,008 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:23:53] "GET / HTTP/1.1" 302 383 0.001477
+2025-03-14 18:23:53,142 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:23:53] "GET /login HTTP/1.1" 200 4187 0.022123
+2025-03-14 18:23:53,377 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:23:53] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001080
+2025-03-14 18:23:53,463 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:23:53] "GET /static/css/login.css HTTP/1.1" 304 216 0.001307
+2025-03-14 18:24:02,816 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:02] "POST /login HTTP/1.1" 302 861 0.873630
+2025-03-14 18:24:03,013 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:03] "GET /home HTTP/1.1" 200 9214 0.097860
+2025-03-14 18:24:03,219 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:03] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001092
+2025-03-14 18:24:03,246 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:03] "GET /static/css/home.css HTTP/1.1" 304 215 0.000978
+2025-03-14 18:24:04,021 - engineio.server - INFO - zodK07bUXWSuQt8NAAAE: Sending packet OPEN data {'sid': 'zodK07bUXWSuQt8NAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:04,022 - engineio.server - INFO - zodK07bUXWSuQt8NAAAE: Received request to upgrade to websocket
+2025-03-14 18:24:04,022 - engineio.server - INFO - zodK07bUXWSuQt8NAAAE: Upgrade to websocket successful
+2025-03-14 18:24:04,102 - engineio.server - INFO - zodK07bUXWSuQt8NAAAE: Received packet MESSAGE data 0
+2025-03-14 18:24:04,102 - engineio.server - INFO - zodK07bUXWSuQt8NAAAE: Sending packet MESSAGE data 0{"sid":"xQUbwWrQBczYIVRUAAAF"}
+2025-03-14 18:24:06,507 - app - INFO - Accessing report_incident. User: <User 3>, Remote addr: 172.31.128.49
+2025-03-14 18:24:06,507 - app - DEBUG - Request headers: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cookie': 'session=.eJwlzj1uwzAMQOG7aO4g0aRI5TIGf5GgQAvYyVT07nHR8b3p-2l7HXne2-15vPKj7Y9otwZRoW4dSDKwJ1YODRWeIZZEsemk2tx0Fg60XLI69WAGR-YIIx5bMiEuBchYIbJVB68uwog6xupFHmC4WG0QAFVqz5k5pV2Q15nHv2a70s-j9uf3Z35dY5ouNqzli9i1c6KVDO8JF0D-qkTc2u8blgdA6g.Z9R0Qg.RKpH7IAHP5lxbyZJjxuGFHL6TY8', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/home', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.3.64', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 18:24:06,507 - app - DEBUG - Session data: {'_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '3', 'csrf_token': '6ba97b4f9c957ca07e4bf81c0e272c8e4bff88cb'}
+2025-03-14 18:24:06,507 - app - DEBUG - User authenticated: True
+2025-03-14 18:24:06,524 - app - INFO - Rendering report_incident template
+2025-03-14 18:24:06,567 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:06] "GET /report_incident HTTP/1.1" 200 32860 0.133931
+2025-03-14 18:24:06,712 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:06] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001007
+2025-03-14 18:24:06,826 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:06] "GET /static/css/report_incident.css HTTP/1.1" 304 225 0.000990
+2025-03-14 18:24:07,794 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:07] "GET /station_statistics HTTP/1.1" 200 501 0.221290
+2025-03-14 18:24:07,796 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:07] "GET /static/Estaciones_Troncales_de_TRANSMILENIO.geojson HTTP/1.1" 304 252 0.001330
+2025-03-14 18:24:07,933 - engineio.server - INFO - 1JADV4MWhKdk8LYtAAAG: Sending packet OPEN data {'sid': '1JADV4MWhKdk8LYtAAAG', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:07,934 - engineio.server - INFO - 1JADV4MWhKdk8LYtAAAG: Received request to upgrade to websocket
+2025-03-14 18:24:07,934 - engineio.server - INFO - 1JADV4MWhKdk8LYtAAAG: Upgrade to websocket successful
+2025-03-14 18:24:08,043 - engineio.server - INFO - 1JADV4MWhKdk8LYtAAAG: Received packet MESSAGE data 0
+2025-03-14 18:24:08,044 - engineio.server - INFO - 1JADV4MWhKdk8LYtAAAG: Sending packet MESSAGE data 0{"sid":"uGaWa9d7s7vVIprMAAAH"}
+2025-03-14 18:24:10,606 - app - INFO - Dashboard endpoint accessed
+2025-03-14 18:24:10,606 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 18:24:10,853 - app - INFO - Obtenidos 1011 incidentes para el mapa
+2025-03-14 18:24:10,854 - app - INFO - Intentando obtener estadísticas
+2025-03-14 18:24:10,855 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 18:24:10,855 - root - INFO - Filtros de fecha - desde: None, hasta: None
+2025-03-14 18:24:10,888 - root - INFO - Total de incidentes encontrados: 1011
+2025-03-14 18:24:10,913 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 18:24:13,238 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 18:24:13,239 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1011, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 48, 'Apertura de puertas': 24}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 5, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 18:24:13,239 - app - INFO - Renderizando template dashboard.html
+2025-03-14 18:24:13,300 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:13] "GET /dashboard HTTP/1.1" 200 14823 2.694473
+2025-03-14 18:24:13,301 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:24:13,405 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:24:13,429 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:13] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001156
+2025-03-14 18:24:13,431 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:13] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.001620
+2025-03-14 18:24:13,522 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:13] "GET /static/js/map.js HTTP/1.1" 304 213 0.000949
+2025-03-14 18:24:14,407 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:14] "GET /api/stations HTTP/1.1" 200 20676 0.101119
+2025-03-14 18:24:14,694 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:14] "GET /incidents HTTP/1.1" 200 349885 0.285094
+2025-03-14 18:24:14,790 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:14] "GET /api/stations HTTP/1.1" 200 20676 0.095461
+2025-03-14 18:24:14,792 - engineio.server - INFO - JV02g9VTTmaNsn3DAAAI: Sending packet OPEN data {'sid': 'JV02g9VTTmaNsn3DAAAI', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:14,792 - engineio.server - INFO - JV02g9VTTmaNsn3DAAAI: Received request to upgrade to websocket
+2025-03-14 18:24:14,792 - engineio.server - INFO - JV02g9VTTmaNsn3DAAAI: Upgrade to websocket successful
+2025-03-14 18:24:14,875 - engineio.server - INFO - JV02g9VTTmaNsn3DAAAI: Received packet MESSAGE data 0
+2025-03-14 18:24:14,876 - engineio.server - INFO - JV02g9VTTmaNsn3DAAAI: Sending packet MESSAGE data 0{"sid":"VNkkCJuLa0D0yX9FAAAJ"}
+2025-03-14 18:24:15,068 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:15] "GET /api/stations HTTP/1.1" 200 20676 0.096968
+2025-03-14 18:24:18,703 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:18] "GET /statistics HTTP/1.1" 200 11067 0.101979
+2025-03-14 18:24:18,854 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:18] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001234
+2025-03-14 18:24:18,856 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:18] "GET /static/css/statistics.css HTTP/1.1" 304 220 0.001039
+2025-03-14 18:24:18,858 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:18] "GET /static/js/statistics.js HTTP/1.1" 304 220 0.001159
+2025-03-14 18:24:19,587 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 18:24:19,587 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 18:24:19,587 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 18:24:19,587 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 18:24:19,587 - root - INFO - Filtros de fecha - desde: None, hasta: None
+2025-03-14 18:24:19,611 - root - INFO - Total de incidentes encontrados: 1011
+2025-03-14 18:24:19,636 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 18:24:21,910 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 18:24:21,910 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1011, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 48, 'Apertura de puertas': 24}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 5, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 18:24:21,910 - app - INFO - Retornando datos - Total de incidentes: 1011
+2025-03-14 18:24:21,911 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 18:24:21,911 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 48, 'Apertura de puertas': 24}
+2025-03-14 18:24:21,911 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 5, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 18:24:21,934 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:21] "GET /api/statistics HTTP/1.1" 200 3288 2.417480
+2025-03-14 18:24:21,936 - engineio.server - INFO - VSiIA7zJfOeGvWO-AAAK: Sending packet OPEN data {'sid': 'VSiIA7zJfOeGvWO-AAAK', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:21,936 - engineio.server - INFO - VSiIA7zJfOeGvWO-AAAK: Received request to upgrade to websocket
+2025-03-14 18:24:21,936 - engineio.server - INFO - VSiIA7zJfOeGvWO-AAAK: Upgrade to websocket successful
+2025-03-14 18:24:22,027 - engineio.server - INFO - VSiIA7zJfOeGvWO-AAAK: Received packet MESSAGE data 0
+2025-03-14 18:24:22,027 - engineio.server - INFO - VSiIA7zJfOeGvWO-AAAK: Sending packet MESSAGE data 0{"sid":"_OcsniAuT45_iKJVAAAL"}
+2025-03-14 18:24:26,990 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 18:24:26,990 - app - DEBUG - Usuario autenticado: alejandro
+2025-03-14 18:24:27,020 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /predictions HTTP/1.1" 200 11023 0.100528
+2025-03-14 18:24:27,154 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001125
+2025-03-14 18:24:27,163 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /static/css/predictions.css HTTP/1.1" 200 8294 0.008378
+2025-03-14 18:24:27,166 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /static/js/predictions.js HTTP/1.1" 200 16093 0.002531
+2025-03-14 18:24:27,798 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Sending packet OPEN data {'sid': 'ODcwfXJQSLYa6irhAAAM', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:27,799 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /socket.io/?EIO=4&transport=polling&t=PMLvd4G HTTP/1.1" 200 254 0.000630
+2025-03-14 18:24:27,898 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:27] "GET /api/stations HTTP/1.1" 200 20676 0.096308
+2025-03-14 18:24:27,969 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:29,392 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:29,421 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:29] "GET /api/predictions HTTP/1.1" 200 117420 1.522879
+2025-03-14 18:24:29,423 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Received packet MESSAGE data 0
+2025-03-14 18:24:29,423 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Sending packet MESSAGE data 0{"sid":"k52R4EQLyZjjL7vbAAAN"}
+2025-03-14 18:24:29,423 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:29] "POST /socket.io/?EIO=4&transport=polling&t=PMLvd5g&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 258 0.000974
+2025-03-14 18:24:29,424 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:29] "GET /socket.io/?EIO=4&transport=polling&t=PMLvd5h&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 189 0.001657
+2025-03-14 18:24:29,424 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Sending packet OPEN data {'sid': 'bDE6_Nyc-iK3vabKAAAO', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:24:29,425 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Received request to upgrade to websocket
+2025-03-14 18:24:29,425 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Upgrade to websocket successful
+2025-03-14 18:24:29,507 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Received packet MESSAGE data 0
+2025-03-14 18:24:29,508 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Sending packet MESSAGE data 0{"sid":"D2UX_vzuq9r2yQbXAAAP"}
+2025-03-14 18:24:29,783 - engineio.server - ERROR - Invalid transport for session ODcwfXJQSLYa6irhAAAM (further occurrences of this error will be logged with level INFO)
+2025-03-14 18:24:35,560 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:35,568 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:35,596 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:35] "GET /api/predictions HTTP/1.1" 200 117469 0.105857
+2025-03-14 18:24:38,322 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:38,331 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:38,360 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:38] "GET /api/predictions HTTP/1.1" 200 117529 0.108286
+2025-03-14 18:24:38,406 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:24:38,488 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:24:39,198 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:39,210 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:39,243 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:39] "GET /api/predictions HTTP/1.1" 200 117272 0.115720
+2025-03-14 18:24:42,456 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:42,467 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:42,500 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:42] "GET /api/predictions HTTP/1.1" 200 117607 0.113474
+2025-03-14 18:24:45,415 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:45,426 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:45,456 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:45] "GET /api/predictions HTTP/1.1" 200 117418 0.111276
+2025-03-14 18:24:46,923 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:46,932 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:46,960 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:46] "GET /api/predictions HTTP/1.1" 200 117544 0.106151
+2025-03-14 18:24:52,806 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Sending packet PING data None
+2025-03-14 18:24:52,807 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:52] "GET /socket.io/?EIO=4&transport=polling&t=PMLvdV2&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 157 23.286988
+2025-03-14 18:24:52,904 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Received packet PONG data 
+2025-03-14 18:24:52,905 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:52] "POST /socket.io/?EIO=4&transport=polling&t=PMLvjCP&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 258 0.000594
+2025-03-14 18:24:54,427 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Sending packet PING data None
+2025-03-14 18:24:54,527 - engineio.server - INFO - bDE6_Nyc-iK3vabKAAAO: Received packet PONG data 
+2025-03-14 18:24:58,378 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:24:58,385 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:24:58,412 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:24:58] "GET /api/predictions HTTP/1.1" 200 117522 0.104018
+2025-03-14 18:25:02,734 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:25:02,743 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:25:02,771 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:02] "GET /api/predictions HTTP/1.1" 200 117337 0.105969
+2025-03-14 18:25:03,492 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:25:03,575 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:25:15,594 - engineio.server - INFO - ODcwfXJQSLYa6irhAAAM: Received packet CLOSE data 
+2025-03-14 18:25:15,595 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "POST /socket.io/?EIO=4&transport=polling&t=PMLvokv&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 258 0.000798
+2025-03-14 18:25:15,595 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "GET /socket.io/?EIO=4&transport=polling&t=PMLvjCQ&sid=ODcwfXJQSLYa6irhAAAM HTTP/1.1" 200 156 22.689459
+2025-03-14 18:25:15,723 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "GET /notifications HTTP/1.1" 200 14096 0.100017
+2025-03-14 18:25:15,892 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001070
+2025-03-14 18:25:15,894 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "GET /static/css/notifications.css HTTP/1.1" 304 222 0.001069
+2025-03-14 18:25:15,966 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:15] "GET /static/js/notifications.js HTTP/1.1" 304 224 0.001190
+2025-03-14 18:25:16,765 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:16] "GET /api/stations HTTP/1.1" 200 20676 0.095040
+2025-03-14 18:25:16,978 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:16] "GET /api/stations HTTP/1.1" 200 20676 0.095254
+2025-03-14 18:25:16,979 - engineio.server - INFO - 51NVMiYlRVeOWxF5AAAQ: Sending packet OPEN data {'sid': '51NVMiYlRVeOWxF5AAAQ', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:16,979 - engineio.server - INFO - 51NVMiYlRVeOWxF5AAAQ: Received request to upgrade to websocket
+2025-03-14 18:25:16,979 - engineio.server - INFO - 51NVMiYlRVeOWxF5AAAQ: Upgrade to websocket successful
+2025-03-14 18:25:17,060 - engineio.server - INFO - 51NVMiYlRVeOWxF5AAAQ: Received packet MESSAGE data 0
+2025-03-14 18:25:17,061 - engineio.server - INFO - 51NVMiYlRVeOWxF5AAAQ: Sending packet MESSAGE data 0{"sid":"rCdEx25Tz5yURpy2AAAR"}
+2025-03-14 18:25:17,166 - engineio.server - INFO - QD13GrCjQqqiERFcAAAS: Sending packet OPEN data {'sid': 'QD13GrCjQqqiERFcAAAS', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:17,166 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:17] "GET /socket.io/?EIO=4&transport=polling&t=PMLvp7W HTTP/1.1" 200 254 0.000647
+2025-03-14 18:25:17,291 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:17] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=all%2CHurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 156 0.121959
+2025-03-14 18:25:17,292 - engineio.server - INFO - QD13GrCjQqqiERFcAAAS: Received packet MESSAGE data 0
+2025-03-14 18:25:17,292 - engineio.server - INFO - QD13GrCjQqqiERFcAAAS: Sending packet MESSAGE data 0{"sid":"ybc-P9A-z2moO1YTAAAT"}
+2025-03-14 18:25:17,293 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:17] "POST /socket.io/?EIO=4&transport=polling&t=PMLvp97&sid=QD13GrCjQqqiERFcAAAS HTTP/1.1" 200 258 0.000716
+2025-03-14 18:25:17,293 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:17] "GET /socket.io/?EIO=4&transport=polling&t=PMLvp99&sid=QD13GrCjQqqiERFcAAAS HTTP/1.1" 200 189 0.001305
+2025-03-14 18:25:17,510 - engineio.server - INFO - Invalid transport for session QD13GrCjQqqiERFcAAAS
+2025-03-14 18:25:28,585 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:25:28,669 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:25:30,965 - engineio.server - INFO - QD13GrCjQqqiERFcAAAS: Received packet CLOSE data 
+2025-03-14 18:25:30,965 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:30] "POST /socket.io/?EIO=4&transport=polling&t=PMLvsV3&sid=QD13GrCjQqqiERFcAAAS HTTP/1.1" 200 258 0.000564
+2025-03-14 18:25:30,965 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:30] "GET /socket.io/?EIO=4&transport=polling&t=PMLvpB1&sid=QD13GrCjQqqiERFcAAAS HTTP/1.1" 200 156 13.582116
+2025-03-14 18:25:31,042 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 18:25:31,042 - app - DEBUG - Usuario autenticado: alejandro
+2025-03-14 18:25:31,066 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /predictions HTTP/1.1" 200 11023 0.095065
+2025-03-14 18:25:31,204 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /static/js/predictions.js HTTP/1.1" 304 222 0.001324
+2025-03-14 18:25:31,205 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001034
+2025-03-14 18:25:31,207 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.000776
+2025-03-14 18:25:31,693 - engineio.server - INFO - PCOg46m0p0Rg5vKMAAAU: Sending packet OPEN data {'sid': 'PCOg46m0p0Rg5vKMAAAU', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:31,693 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /socket.io/?EIO=4&transport=polling&t=PMLvsgd HTTP/1.1" 200 254 0.000593
+2025-03-14 18:25:31,934 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:31] "GET /api/stations HTTP/1.1" 200 20676 0.236307
+2025-03-14 18:25:32,004 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:25:32,011 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:25:32,038 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:32] "GET /api/predictions HTTP/1.1" 200 117494 0.103409
+2025-03-14 18:25:32,039 - engineio.server - INFO - PCOg46m0p0Rg5vKMAAAU: Received packet MESSAGE data 0
+2025-03-14 18:25:32,039 - engineio.server - INFO - PCOg46m0p0Rg5vKMAAAU: Sending packet MESSAGE data 0{"sid":"WYa7s5lROClBMZUQAAAV"}
+2025-03-14 18:25:32,040 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:32] "POST /socket.io/?EIO=4&transport=polling&t=PMLvsi2&sid=PCOg46m0p0Rg5vKMAAAU HTTP/1.1" 200 258 0.001262
+2025-03-14 18:25:32,041 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:32] "GET /socket.io/?EIO=4&transport=polling&t=PMLvsi3&sid=PCOg46m0p0Rg5vKMAAAU HTTP/1.1" 200 189 0.000274
+2025-03-14 18:25:32,042 - engineio.server - INFO - r1WzG-wietZCB_3mAAAW: Sending packet OPEN data {'sid': 'r1WzG-wietZCB_3mAAAW', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:32,042 - engineio.server - INFO - r1WzG-wietZCB_3mAAAW: Received request to upgrade to websocket
+2025-03-14 18:25:32,042 - engineio.server - INFO - r1WzG-wietZCB_3mAAAW: Upgrade to websocket successful
+2025-03-14 18:25:32,126 - engineio.server - INFO - r1WzG-wietZCB_3mAAAW: Received packet MESSAGE data 0
+2025-03-14 18:25:32,126 - engineio.server - INFO - r1WzG-wietZCB_3mAAAW: Sending packet MESSAGE data 0{"sid":"8mnWdFEfhsNvGNorAAAX"}
+2025-03-14 18:25:32,393 - engineio.server - INFO - Invalid transport for session PCOg46m0p0Rg5vKMAAAU
+2025-03-14 18:25:40,735 - engineio.server - INFO - PCOg46m0p0Rg5vKMAAAU: Received packet CLOSE data 
+2025-03-14 18:25:40,735 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:40] "POST /socket.io/?EIO=4&transport=polling&t=PMLvutM&sid=PCOg46m0p0Rg5vKMAAAU HTTP/1.1" 200 258 0.000687
+2025-03-14 18:25:40,736 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:40] "GET /socket.io/?EIO=4&transport=polling&t=PMLvsnO&sid=PCOg46m0p0Rg5vKMAAAU HTTP/1.1" 200 156 8.608330
+2025-03-14 18:25:40,832 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:40] "GET /notifications HTTP/1.1" 200 14096 0.095705
+2025-03-14 18:25:41,098 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:41] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001102
+2025-03-14 18:25:41,099 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:41] "GET /static/css/notifications.css HTTP/1.1" 304 222 0.000820
+2025-03-14 18:25:41,101 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:41] "GET /static/js/notifications.js HTTP/1.1" 304 224 0.000767
+2025-03-14 18:25:41,818 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:41] "GET /api/stations HTTP/1.1" 200 20676 0.094884
+2025-03-14 18:25:42,009 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:42] "GET /api/stations HTTP/1.1" 200 20676 0.094568
+2025-03-14 18:25:42,114 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet OPEN data {'sid': 'D-aCL5B4-p18imwQAAAY', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:42,114 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received request to upgrade to websocket
+2025-03-14 18:25:42,114 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Upgrade to websocket successful
+2025-03-14 18:25:42,199 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet MESSAGE data 0
+2025-03-14 18:25:42,200 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet MESSAGE data 0{"sid":"nkzUKIOIOT9wrfsGAAAZ"}
+2025-03-14 18:25:42,211 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet OPEN data {'sid': 'sxFVAKnz_DfhM5tUAAAa', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:25:42,212 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:42] "GET /socket.io/?EIO=4&transport=polling&t=PMLvvEw HTTP/1.1" 200 254 0.000380
+2025-03-14 18:25:42,338 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:42] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=all%2CHurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 156 0.121849
+2025-03-14 18:25:42,339 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet MESSAGE data 0
+2025-03-14 18:25:42,339 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet MESSAGE data 0{"sid":"EZPviF1JijndgPQ-AAAb"}
+2025-03-14 18:25:42,339 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:42] "POST /socket.io/?EIO=4&transport=polling&t=PMLvvGi&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000804
+2025-03-14 18:25:42,340 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:25:42] "GET /socket.io/?EIO=4&transport=polling&t=PMLvvGj&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 189 0.000130
+2025-03-14 18:25:42,671 - engineio.server - INFO - Invalid transport for session sxFVAKnz_DfhM5tUAAAa
+2025-03-14 18:25:53,670 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:25:53,797 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:26:07,125 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:26:07,213 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:26:07,214 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:07] "GET /socket.io/?EIO=4&transport=polling&t=PMLvvIY&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 24.774510
+2025-03-14 18:26:07,275 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:26:07,341 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:26:07,341 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:07] "POST /socket.io/?EIO=4&transport=polling&t=PMLv_NU&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000479
+2025-03-14 18:26:18,804 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:26:18,915 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:26:32,290 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:26:32,342 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:26:32,343 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:32] "GET /socket.io/?EIO=4&transport=polling&t=PMLv_NU.0&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 24.998804
+2025-03-14 18:26:32,383 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:26:32,508 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:26:32,508 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:32] "POST /socket.io/?EIO=4&transport=polling&t=PMLw5Wh&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000638
+2025-03-14 18:26:43,927 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:26:44,009 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:26:57,389 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:26:57,507 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:26:57,509 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:26:57,509 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:57] "GET /socket.io/?EIO=4&transport=polling&t=PMLw5Wh.0&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 25.003313
+2025-03-14 18:26:57,628 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:26:57,628 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:26:57] "POST /socket.io/?EIO=4&transport=polling&t=PMLwBfC&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000477
+2025-03-14 18:27:09,020 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:27:09,115 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:27:22,517 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:27:22,605 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:27:22,630 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:27:22,630 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:27:22] "GET /socket.io/?EIO=4&transport=polling&t=PMLwBfD&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 25.000148
+2025-03-14 18:27:22,795 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:27:22,799 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:27:22] "POST /socket.io/?EIO=4&transport=polling&t=PMLwHoO&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.004699
+2025-03-14 18:27:34,117 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:27:34,227 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:27:47,619 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:27:47,734 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:27:47,800 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:27:47,801 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:27:47] "GET /socket.io/?EIO=4&transport=polling&t=PMLwHoP&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 25.006785
+2025-03-14 18:27:47,913 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:27:47,914 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:27:47] "POST /socket.io/?EIO=4&transport=polling&t=PMLwNwv&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000556
+2025-03-14 18:27:59,234 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:27:59,321 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:28:12,749 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Sending packet PING data None
+2025-03-14 18:28:12,890 - engineio.server - INFO - D-aCL5B4-p18imwQAAAY: Received packet PONG data 
+2025-03-14 18:28:12,915 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:28:12,915 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:28:12] "GET /socket.io/?EIO=4&transport=polling&t=PMLwNww&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 24.993466
+2025-03-14 18:28:13,090 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Received packet PONG data 
+2025-03-14 18:28:13,090 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:28:13] "POST /socket.io/?EIO=4&transport=polling&t=PMLwU4E&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 258 0.000487
+2025-03-14 18:28:24,333 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:28:24,433 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:28:38,092 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Sending packet PING data None
+2025-03-14 18:28:38,092 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:28:38] "GET /socket.io/?EIO=4&transport=polling&t=PMLwU4F&sid=sxFVAKnz_DfhM5tUAAAa HTTP/1.1" 200 157 25.004126
+2025-03-14 18:28:49,446 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:28:49,551 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:29:14,553 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:29:14,634 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:29:39,659 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:29:39,761 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:29:43,404 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Client is gone, closing socket
+2025-03-14 18:29:43,404 - engineio.server - INFO - sxFVAKnz_DfhM5tUAAAa: Client is gone, closing socket
+2025-03-14 18:30:04,782 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:30:04,878 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:30:29,896 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:30:29,976 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:30:54,988 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:30:55,121 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:31:20,129 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:31:20,241 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:31:45,266 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:31:45,346 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:32:10,371 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:32:10,494 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:32:35,516 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:32:35,615 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:33:00,640 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:33:00,720 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:33:25,733 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:33:25,814 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:33:50,839 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:33:50,919 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:34:15,923 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:34:16,013 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:34:27,474 - app - INFO - Index endpoint accessed
+2025-03-14 18:34:28,209 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:28] "GET / HTTP/1.1" 302 380 0.735628
+2025-03-14 18:34:28,399 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:28] "GET /home HTTP/1.1" 200 8521 0.085807
+2025-03-14 18:34:28,875 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:28] "GET /static/css/home.css HTTP/1.1" 304 215 0.000926
+2025-03-14 18:34:28,888 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:28] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000772
+2025-03-14 18:34:29,188 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:29] "GET /static/css/custom.css HTTP/1.1" 200 7721 0.007332
+2025-03-14 18:34:29,605 - engineio.server - INFO - t3kTOejYKZujn49cAAAc: Sending packet OPEN data {'sid': 't3kTOejYKZujn49cAAAc', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:29,605 - engineio.server - INFO - t3kTOejYKZujn49cAAAc: Received request to upgrade to websocket
+2025-03-14 18:34:29,605 - engineio.server - INFO - t3kTOejYKZujn49cAAAc: Upgrade to websocket successful
+2025-03-14 18:34:29,685 - engineio.server - INFO - t3kTOejYKZujn49cAAAc: Received packet MESSAGE data 0
+2025-03-14 18:34:29,686 - engineio.server - INFO - t3kTOejYKZujn49cAAAc: Sending packet MESSAGE data 0{"sid":"8nFUjmZ3GtAC9vxiAAAd"}
+2025-03-14 18:34:33,130 - app - INFO - Accediendo a la página de predicciones
+2025-03-14 18:34:33,131 - app - DEBUG - Usuario autenticado: alejandro
+2025-03-14 18:34:33,152 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:33] "GET /predictions HTTP/1.1" 200 11023 0.086773
+2025-03-14 18:34:33,324 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:33] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000990
+2025-03-14 18:34:33,405 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:33] "GET /static/js/predictions.js HTTP/1.1" 304 222 0.000949
+2025-03-14 18:34:33,473 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:33] "GET /static/css/predictions.css HTTP/1.1" 304 222 0.000947
+2025-03-14 18:34:33,926 - engineio.server - INFO - DTknF94rUoA9xxR2AAAe: Sending packet OPEN data {'sid': 'DTknF94rUoA9xxR2AAAe', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:33,927 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:33] "GET /socket.io/?EIO=4&transport=polling&t=PMLxx2S HTTP/1.1" 200 254 0.000612
+2025-03-14 18:34:34,017 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:34] "GET /api/stations HTTP/1.1" 200 20676 0.088560
+2025-03-14 18:34:34,082 - app - INFO - Solicitud de predicciones API recibida
+2025-03-14 18:34:34,090 - app - INFO - Predicciones generadas exitosamente: 447 predicciones
+2025-03-14 18:34:34,115 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:34] "GET /api/predictions HTTP/1.1" 200 117373 0.097740
+2025-03-14 18:34:34,116 - engineio.server - INFO - DTknF94rUoA9xxR2AAAe: Received packet MESSAGE data 0
+2025-03-14 18:34:34,117 - engineio.server - INFO - DTknF94rUoA9xxR2AAAe: Sending packet MESSAGE data 0{"sid":"I6VNDPJSqzQ38ArfAAAf"}
+2025-03-14 18:34:34,117 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:34] "POST /socket.io/?EIO=4&transport=polling&t=PMLxx4e&sid=DTknF94rUoA9xxR2AAAe HTTP/1.1" 200 258 0.000707
+2025-03-14 18:34:34,117 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:34] "GET /socket.io/?EIO=4&transport=polling&t=PMLxx4g&sid=DTknF94rUoA9xxR2AAAe HTTP/1.1" 200 189 0.001295
+2025-03-14 18:34:34,297 - engineio.server - INFO - HlDIKMJAkb-oyq-zAAAg: Sending packet OPEN data {'sid': 'HlDIKMJAkb-oyq-zAAAg', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:34,297 - engineio.server - INFO - HlDIKMJAkb-oyq-zAAAg: Received request to upgrade to websocket
+2025-03-14 18:34:34,297 - engineio.server - INFO - HlDIKMJAkb-oyq-zAAAg: Upgrade to websocket successful
+2025-03-14 18:34:34,379 - engineio.server - INFO - HlDIKMJAkb-oyq-zAAAg: Received packet MESSAGE data 0
+2025-03-14 18:34:34,379 - engineio.server - INFO - HlDIKMJAkb-oyq-zAAAg: Sending packet MESSAGE data 0{"sid":"_E_KkIqdg0KAB4AXAAAh"}
+2025-03-14 18:34:34,639 - engineio.server - INFO - Invalid transport for session DTknF94rUoA9xxR2AAAe
+2025-03-14 18:34:35,726 - engineio.server - INFO - DTknF94rUoA9xxR2AAAe: Received packet CLOSE data 
+2025-03-14 18:34:35,727 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "POST /socket.io/?EIO=4&transport=polling&t=PMLxxV1&sid=DTknF94rUoA9xxR2AAAe HTTP/1.1" 200 258 0.000627
+2025-03-14 18:34:35,727 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "GET /socket.io/?EIO=4&transport=polling&t=PMLxx7G&sid=DTknF94rUoA9xxR2AAAe HTTP/1.1" 200 156 1.438870
+2025-03-14 18:34:35,816 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "GET /statistics HTTP/1.1" 200 11067 0.086161
+2025-03-14 18:34:35,953 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001120
+2025-03-14 18:34:35,959 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "GET /static/css/statistics.css HTTP/1.1" 304 220 0.001158
+2025-03-14 18:34:35,963 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:35] "GET /static/js/statistics.js HTTP/1.1" 304 220 0.000945
+2025-03-14 18:34:36,506 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 18:34:36,506 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 18:34:36,507 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 18:34:36,507 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 18:34:36,507 - root - INFO - Filtros de fecha - desde: None, hasta: None
+2025-03-14 18:34:36,543 - root - INFO - Total de incidentes encontrados: 1011
+2025-03-14 18:34:36,579 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 18:34:38,718 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 18:34:38,719 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1011, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 48, 'Apertura de puertas': 24}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 5, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 18:34:38,719 - app - INFO - Retornando datos - Total de incidentes: 1011
+2025-03-14 18:34:38,719 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 18:34:38,719 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 48, 'Apertura de puertas': 24}
+2025-03-14 18:34:38,719 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 5, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 18:34:38,741 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:38] "GET /api/statistics HTTP/1.1" 200 3288 2.299712
+2025-03-14 18:34:38,742 - engineio.server - INFO - XMaAP8qYGt02F5hfAAAi: Sending packet OPEN data {'sid': 'XMaAP8qYGt02F5hfAAAi', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:38,742 - engineio.server - INFO - XMaAP8qYGt02F5hfAAAi: Received request to upgrade to websocket
+2025-03-14 18:34:38,743 - engineio.server - INFO - XMaAP8qYGt02F5hfAAAi: Upgrade to websocket successful
+2025-03-14 18:34:38,835 - engineio.server - INFO - XMaAP8qYGt02F5hfAAAi: Received packet MESSAGE data 0
+2025-03-14 18:34:38,836 - engineio.server - INFO - XMaAP8qYGt02F5hfAAAi: Sending packet MESSAGE data 0{"sid":"443iQrDo4VlMFEg5AAAj"}
+2025-03-14 18:34:40,841 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:40] "GET /notifications HTTP/1.1" 200 14456 0.089215
+2025-03-14 18:34:40,976 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:40] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000905
+2025-03-14 18:34:40,977 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:40] "GET /static/css/notifications.css HTTP/1.1" 304 222 0.000712
+2025-03-14 18:34:41,013 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:34:41,045 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:41] "GET /static/js/notifications.js HTTP/1.1" 200 26820 0.001400
+2025-03-14 18:34:41,108 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:34:41,821 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:41] "GET /api/stations HTTP/1.1" 200 20676 0.090424
+2025-03-14 18:34:41,996 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:41] "GET /api/stations HTTP/1.1" 200 20676 0.090477
+2025-03-14 18:34:42,055 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet OPEN data {'sid': 'nsmjWUDvDK90cSYdAAAk', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:42,056 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received request to upgrade to websocket
+2025-03-14 18:34:42,056 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Upgrade to websocket successful
+2025-03-14 18:34:42,136 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet MESSAGE data 0
+2025-03-14 18:34:42,136 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet MESSAGE data 0{"sid":"h6JES1eHixlGgOtoAAAl"}
+2025-03-14 18:34:42,181 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet OPEN data {'sid': 'oo1FHTCk_3-foxp0AAAm', 'upgrades': ['websocket'], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 18:34:42,181 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:42] "GET /socket.io/?EIO=4&transport=polling&t=PMLxz3q HTTP/1.1" 200 254 0.000593
+2025-03-14 18:34:42,296 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:42] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=all%2CHurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 156 0.111371
+2025-03-14 18:34:42,297 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet MESSAGE data 0
+2025-03-14 18:34:42,297 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet MESSAGE data 0{"sid":"2IUsATGWEEUucLC-AAAn"}
+2025-03-14 18:34:42,298 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:42] "POST /socket.io/?EIO=4&transport=polling&t=PMLxz5G&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000868
+2025-03-14 18:34:42,298 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:34:42] "GET /socket.io/?EIO=4&transport=polling&t=PMLxz5H&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 189 0.000161
+2025-03-14 18:34:42,519 - engineio.server - INFO - Invalid transport for session oo1FHTCk_3-foxp0AAAm
+2025-03-14 18:35:02,190 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:02] "GET /api/notifications? HTTP/1.1" 200 23188 0.135345
+2025-03-14 18:35:03,180 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:03] "GET /api/notifications?troncal=Americas%2CAutonorte%2CCalle+26%2CCalle+6%2CCalle+80%2CCaracas%2CCr+7-10%2CEje+Ambiental%2CNQS%2CSoacha%2CSuba%2CTunal&station=21+%C3%81ngeles%2C7+de+Agosto%2CAV.+1+Mayo%2CAV.+39%2CAV.+68%2CAV.+Am%C3%A9ricas+-+AV.+Boyac%C3%A1%2CAV.+Boyac%C3%A1%2CAV.+Cali%2CAV.+Chile%2CAV.+ElDorado%2CAV.+Jim%C3%A9nez+-+CL+13%2CAV.+Jim%C3%A9nez+-+Caracas%2CAlcal%C3%A1+%E2%80%93+Colegio+S.+Tom%C3%A1s+Dominicos%2CAlquer%C3%ADa%2CAv.+Rojas+%E2%80%93+UNISALESIANA%2CBanderas%2CBiblioteca%2CBiblioteca+Tintal%2CBicentenario%2CBosa%2CCAD%2CCAN%2CCC+Paseo+Villa+del+R%C3%ADo+-+Madelena%2CCDS+-+Carrera+32%2CCalle+100+-+Marketmedios%2CCalle+106%2CCalle+127%2CCalle+142%2CCalle+146%2CCalle+161%2CCalle+187%2CCalle+19%2CCalle+22%2CCalle+26%2CCalle+34%2CCalle+40+Sur%2CCalle+45+-+American+School+Way%2CCalle+57%2CCalle+63%2CCalle+72%2CCalle+75+-+Zona+M%2CCalle+76+-+San+Felipe%2CCalle+85%2CCamp%C3%ADn+-+UAN%2CCarrera+43+-+Comapan%2CCarrera+47%2CCarrera+53%2CCarrera+90%2CCentro+Memoria%2CCiudad+Jard%C3%ADn+-+UAN%2CCiudad+Universitaria+-+Loter%C3%ADa+de+Bogot%C3%A1%2CComuneros%2CConcejo+de+Bogot%C3%A1%2CConsuelo%2CCorferias%2CCountry+Sur%2CDe+La+Sabana%2CDistrito+Grafiti%2CEl+Tiempo+%E2%80%93+C%C3%A1mara+de+Comercio+de+Bogot%C3%A1%2CEscuela+Militar%2CFerias%2CFlores+%E2%80%93+Areandina%2CFucha%2CGeneral+Santander%2CGobernaci%C3%B3n%2CGranja+-+Kr+77%2CGratamira%2CGuatoque+-+Veraguas%2CHort%C3%BAa%2CHospital%2CHumedal+C%C3%B3rdoba%2CH%C3%A9roes%2CLa+Campi%C3%B1a%2CLa+Castellana%2CLa+Despensa%2CLas+Aguas+-+Centro+Colombo+Americano%2CLas+Nieves%2CLe%C3%B3n+XIII%2CMandalay%2CMarly%2CMarsella%2CMazur%C3%A9n%2CMinuto+de+Dios%2CModelia%2CMolinos%2CMovistar+Arena%2CMuseo+Nacional%2CMuseo+del+Oro%2CNQS+-+Calle+30+S%2CNQS+-+Calle+38A+S%2CNari%C3%B1o%2CNiza+-+Calle+127%2CNormand%C3%ADa%2COlaya%2CPaloquemao%2CParque%2CPatio+Bonito%2CPepe+Sierra%2CPerdomo%2CPolicarpa%2CPolo+%E2%80%93+FINCOMERCIO%2CPortal+20+de+Julio%2CPortal+80%2CPortal+Am%C3%A9ricas%2CPortal+El+Dorado%2CPortal+Norte%2CPortal+Suba%2CPortal+Sur+-+JFK+Coop.+Financiera%2CPortal+Tunal%2CPortal+Usme%2CPradera%2CPrado%2CPuente+Aranda%2CPuentelargo%2CQuinta+Paredes%2CQuirigua%2CQuiroga%2CRestrepo%2CRicaurte+-+CL+13%2CRicaurte+-+NQS%2CRionegro%2CSENA%2CSalitre+-+El+Greco%2CSan+Bernardo%2CSan+Diego%2CSan+Facon+Carrera+22%2CSan+Mart%C3%ADn%2CSan+Mateo+-+CC+Unisur%2CSan+Victorino%2CSanta+Isabel%2CSanta+Luc%C3%ADa%2CSevillana%2CSocorro%2CSuba+-+AV.+Boyac%C3%A1%2CSuba+-+Calle+100%2CSuba+-+Calle+116%2CSuba+-+Calle+95%2CSuba+-+TV.+91%2CTercer+Milenio%2CTerminal%2CTerreros+-+Hospital+Cardio+Vascular%2CToberin+-+Foundever%2CTransversal+86%2CTygua+-+San+Jos%C3%A9%2CUniversidad+Nacional%2CUniversidades+%E2%80%93+CityU%2CVenecia%2CVirrey%2CZona+Industrial&incident_type=all%2CHurto%2CHurto+a+mano+armada%2CCosquilleo%2CAtaque%2CApertura+de+puertas%2CSospechoso%2CAcoso HTTP/1.1" 200 156 0.109573
+2025-03-14 18:35:04,281 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:04] "GET /api/notifications? HTTP/1.1" 200 23188 0.131531
+2025-03-14 18:35:06,111 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:35:06,263 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:35:07,058 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:35:07,138 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:35:07,182 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:35:07,183 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:07] "GET /socket.io/?EIO=4&transport=polling&t=PMLxz74&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 24.798090
+2025-03-14 18:35:07,298 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:35:07,299 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:07] "POST /socket.io/?EIO=4&transport=polling&t=PMLy3CM&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000559
+2025-03-14 18:35:31,281 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:35:31,404 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:35:32,140 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:35:32,220 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:35:32,300 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:35:32,300 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:32] "GET /socket.io/?EIO=4&transport=polling&t=PMLy3CN&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.002509
+2025-03-14 18:35:32,426 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:35:32,427 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:32] "POST /socket.io/?EIO=4&transport=polling&t=PMLy9KL&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000514
+2025-03-14 18:35:56,408 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:35:56,495 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:35:57,222 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:35:57,303 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:35:57,428 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:35:57,429 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:57] "GET /socket.io/?EIO=4&transport=polling&t=PMLy9KM&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.001256
+2025-03-14 18:35:57,526 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:35:57,526 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:35:57] "POST /socket.io/?EIO=4&transport=polling&t=PMLyFS-&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000713
+2025-03-14 18:36:21,504 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:36:21,584 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:36:22,304 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:36:22,386 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:36:22,527 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:36:22,528 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:36:22] "GET /socket.io/?EIO=4&transport=polling&t=PMLyFS-.0&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 24.998359
+2025-03-14 18:36:22,626 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:36:22,626 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:36:22] "POST /socket.io/?EIO=4&transport=polling&t=PMLyLbB&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000422
+2025-03-14 18:36:46,598 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:36:46,693 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:36:47,388 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:36:47,535 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:36:47,627 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:36:47,628 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:36:47] "GET /socket.io/?EIO=4&transport=polling&t=PMLyLbC&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.002530
+2025-03-14 18:36:47,732 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:36:47,733 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:36:47] "POST /socket.io/?EIO=4&transport=polling&t=PMLyRjN&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000754
+2025-03-14 18:37:11,712 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:37:11,868 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:37:12,537 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:37:12,619 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:37:12,734 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:37:12,734 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:37:12] "GET /socket.io/?EIO=4&transport=polling&t=PMLyRjN.0&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 24.998566
+2025-03-14 18:37:12,881 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:37:12,882 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:37:12] "POST /socket.io/?EIO=4&transport=polling&t=PMLyXrd&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000548
+2025-03-14 18:37:36,873 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:37:36,954 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:37:37,620 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:37:37,733 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:37:37,883 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:37:37,883 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:37:37] "GET /socket.io/?EIO=4&transport=polling&t=PMLyXre&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.000680
+2025-03-14 18:37:38,012 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:37:38,013 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:37:38] "POST /socket.io/?EIO=4&transport=polling&t=PMLyd-_&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000526
+2025-03-14 18:38:01,963 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:38:02,059 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:38:02,735 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:38:02,869 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:38:03,013 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:38:03,014 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:03] "GET /socket.io/?EIO=4&transport=polling&t=PMLyd-_.0&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.002364
+2025-03-14 18:38:03,109 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:38:03,110 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:03] "POST /socket.io/?EIO=4&transport=polling&t=PMLyk7D&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000515
+2025-03-14 18:38:27,073 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:38:27,152 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:38:27,871 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:38:27,955 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:38:28,111 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:38:28,111 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:28] "GET /socket.io/?EIO=4&transport=polling&t=PMLyk7E&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.000902
+2025-03-14 18:38:28,209 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:38:28,210 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:28] "POST /socket.io/?EIO=4&transport=polling&t=PMLyqFP&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000499
+2025-03-14 18:38:52,171 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:38:52,296 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:38:52,957 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:38:53,071 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:38:53,211 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:38:53,211 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:53] "GET /socket.io/?EIO=4&transport=polling&t=PMLyqFQ&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 24.999753
+2025-03-14 18:38:53,308 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:38:53,309 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:38:53] "POST /socket.io/?EIO=4&transport=polling&t=PMLywNY&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000642
+2025-03-14 18:39:17,301 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:39:17,399 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:39:18,073 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:39:18,153 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:39:18,310 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:39:18,310 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:39:18] "GET /socket.io/?EIO=4&transport=polling&t=PMLywNY.0&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.002532
+2025-03-14 18:39:18,407 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:39:18,407 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:39:18] "POST /socket.io/?EIO=4&transport=polling&t=PMLz0Vj&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000538
+2025-03-14 18:39:42,408 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:39:42,520 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:39:43,155 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Sending packet PING data None
+2025-03-14 18:39:43,265 - engineio.server - INFO - nsmjWUDvDK90cSYdAAAk: Received packet PONG data 
+2025-03-14 18:39:43,409 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:39:43,409 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:39:43] "GET /socket.io/?EIO=4&transport=polling&t=PMLz0Vk&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.002898
+2025-03-14 18:39:43,618 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Received packet PONG data 
+2025-03-14 18:39:43,618 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:39:43] "POST /socket.io/?EIO=4&transport=polling&t=PMLz6eM&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 258 0.000659
+2025-03-14 18:40:07,534 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Sending packet PING data None
+2025-03-14 18:40:07,615 - engineio.server - INFO - abx7vBzRmsdYtzJ9AAAC: Received packet PONG data 
+2025-03-14 18:40:08,620 - engineio.server - INFO - oo1FHTCk_3-foxp0AAAm: Sending packet PING data None
+2025-03-14 18:40:08,620 - geventwebsocket.handler - INFO - 172.31.128.49 - - [2025-03-14 18:40:08] "GET /socket.io/?EIO=4&transport=polling&t=PMLz6eN&sid=oo1FHTCk_3-foxp0AAAm HTTP/1.1" 200 157 25.011370
+2025-03-14 18:40:34,350 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 18:40:34,351 - app - INFO - Inicializando base de datos...
+2025-03-14 18:40:35,497 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 18:40:35,497 - app - INFO - Configurando login manager...
+2025-03-14 18:40:35,497 - app - INFO - Login manager configurado correctamente
+2025-03-14 18:40:35,498 - app - INFO - Importando e inicializando rutas...
+2025-03-14 18:40:35,702 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 18:40:35,703 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 18:40:35,703 - __main__ - INFO - Starting Flask application
+2025-03-14 18:40:35,703 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 18:40:35,703 - __main__ - INFO - Testing server configuration...
+2025-03-14 18:40:35,717 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 18:40:35,717 - __main__ - INFO - Test response status: 200
+2025-03-14 18:40:35,718 - __main__ - INFO - Starting SocketIO server...

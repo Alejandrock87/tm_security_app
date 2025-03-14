@@ -512,3 +512,42 @@ h5 {
     max-width: 33.333333%;
   }
 }
+
+/* Contenedor para la opción "Seleccionar todo" */
+.select-all-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--notification-border);
+  gap: 0.5rem;
+}
+
+.select-all-container .form-check-input {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.select-all-container .form-check-label {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--notification-text);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .select-all-container {
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start on smaller screens */
+    padding: 0.75rem;
+  }
+
+  .select-all-container .form-check-label {
+    font-size: 0.85rem;
+  }
+}

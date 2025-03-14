@@ -34,6 +34,10 @@
 
       <div id="troncalesFilter" class="filter-select hidden">
         <label class="filter-label">Seleccionar troncales:</label>
+        <div class="select-all-container">
+          <input type="checkbox" id="selectAllTroncales" class="select-all-checkbox">
+          <label for="selectAllTroncales">Todas las troncales</label>
+        </div>
         <div id="troncalesCheckboxes" class="checkbox-group">
           <!-- Se llenará dinámicamente -->
         </div>
@@ -43,6 +47,10 @@
         <label class="filter-label">Seleccionar estaciones:</label>
         <div class="search-box">
           <input type="text" id="estacionSearch" placeholder="Buscar estación..." class="search-input">
+        </div>
+        <div class="select-all-container">
+          <input type="checkbox" id="selectAllEstaciones" class="select-all-checkbox">
+          <label for="selectAllEstaciones">Todas las estaciones</label>
         </div>
         <div id="estacionesCheckboxes" class="checkbox-group">
           <!-- Se llenará dinámicamente -->

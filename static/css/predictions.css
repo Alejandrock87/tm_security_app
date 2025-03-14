@@ -61,6 +61,29 @@
   margin-bottom: 1rem;
 }
 
+/* Agregar estilos para el contenedor de "Seleccionar todo" */
+.select-all-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--predictions-border);
+}
+
+.select-all-checkbox {
+  margin-right: 0.5rem;
+}
+
+.select-all-container label {
+  font-size: 0.9rem;
+  color: var(--predictions-text);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+
 /* Estilos para checkboxes */
 .checkbox-group {
   display: grid;
@@ -197,7 +220,6 @@
   font-size: 0.85rem;
   color: var(--predictions-text-secondary);
 }
-
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
@@ -336,7 +358,6 @@
   margin-bottom: 0.5rem;
 }
 
-
 .radio-container {
   display: flex;
   align-items: center;
@@ -391,4 +412,30 @@
   .predictions-list {
     gap: 0.75rem;
   }
+}
+
+/* Agregar al final del archivo */
+.no-stations-message {
+    padding: 1rem;
+    text-align: center;
+    color: var(--predictions-text-secondary);
+    font-style: italic;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed var(--predictions-border);
+}
+
+.checkbox-item input[type="checkbox"]:disabled + label {
+    color: var(--predictions-text-secondary);
+    cursor: not-allowed;
+}
+
+.select-all-checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.select-all-container input[type="checkbox"]:disabled + label {
+    color: var(--predictions-text-secondary);
+    cursor: not-allowed;
 }
