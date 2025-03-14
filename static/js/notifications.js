@@ -6,6 +6,40 @@ let selectedTroncales = [];
 let selectedEstaciones = [];
 let stationsData = []; // Almacenar datos de estaciones
 
+function checkNotificationCompatibility() {
+    // Verificar si el navegador soporta notificaciones
+    if (!('Notification' in window)) {
+        return {
+            supported: false,
+            reason: 'Este navegador no soporta notificaciones'
+        };
+    }
+
+    // Verificar si es un dispositivo móvil
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+        // Verificar si es iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS) {
+            return {
+                supported: false,
+                reason: 'Las notificaciones no están soportadas en iOS. Por favor, usa un navegador de escritorio.'
+            };
+        }
+        // En Android, verificar si el navegador soporta service workers
+        if (!('serviceWorker' in navigator)) {
+            return {
+                supported: false,
+                reason: 'Tu navegador móvil no soporta las notificaciones. Por favor, usa Chrome para Android o un navegador de escritorio.'
+            };
+        }
+    }
+
+    return {
+        supported: true
+    };
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Cargar datos iniciales y configurar listeners
@@ -271,8 +305,14 @@ async function requestNotificationPermission() {
     const originalText = activateBtn.textContent;
 
     try {
-        if (!('Notification' in window)) {
-            showToast('Este navegador no soporta notificaciones', 'error');
+        // Verificar compatibilidad primero
+        const compatibility = checkNotificationCompatibility();
+        if (!compatibility.supported) {
+            showToast(compatibility.reason, 'warning');
+            activateBtn.textContent = 'Notificaciones No Soportadas';
+            activateBtn.classList.remove('btn-primary', 'btn-success');
+            activateBtn.classList.add('btn-warning');
+            activateBtn.disabled = true;
             return;
         }
 
@@ -292,10 +332,14 @@ async function requestNotificationPermission() {
             notificationsEnabled = true;
             updateButtonStates(true);
             showToast('Notificaciones activadas correctamente', 'success');
-            new Notification('Notificaciones Activadas', {
-                body: 'Recibirás alertas de incidentes según tus preferencias',
-                icon: '/static/icons/notification-icon.png'
-            });
+
+            // Solo mostrar notificación de prueba en dispositivos compatibles
+            if (!(/iPad|iPhone|iPod/.test(navigator.userAgent))) {
+                new Notification('Notificaciones Activadas', {
+                    body: 'Recibirás alertas de incidentes según tus preferencias',
+                    icon: '/static/icons/notification-icon.png'
+                });
+            }
         } else {
             throw new Error('Permiso de notificaciones denegado');
         }
