@@ -3028,3 +3028,18 @@ DETAIL:  Key (user_id)=(5) is not present in table "users".
 2025-03-14 03:31:22,845 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:31:22] "GET /login HTTP/1.1" 200 4022 0.019683
 2025-03-14 03:31:22,955 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:31:22] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004542
 2025-03-14 03:31:22,957 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:31:22] "GET /static/css/login.css HTTP/1.1" 304 216 0.001100
+2025-03-14 03:43:13,734 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 03:43:13,735 - app - INFO - Inicializando base de datos...
+2025-03-14 03:43:14,747 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 03:43:14,747 - app - INFO - Configurando login manager...
+2025-03-14 03:43:14,747 - app - INFO - Login manager configurado correctamente
+2025-03-14 03:43:14,748 - app - INFO - Importando e inicializando rutas...
+2025-03-14 03:43:14,797 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 03:43:14,797 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 03:43:14,799 - __main__ - INFO - Starting Flask application
+2025-03-14 03:43:14,799 - __main__ - INFO - Server will start on port 5000
+2025-03-14 03:43:15,973 - app - INFO - Index endpoint accessed
+2025-03-14 03:43:15,974 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:43:15] "GET / HTTP/1.1" 302 383 0.002278
+2025-03-14 03:43:16,135 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:43:16] "GET /login HTTP/1.1" 200 4022 0.017908
+2025-03-14 03:43:16,600 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:43:16] "GET /static/css/login.css HTTP/1.1" 304 216 0.005511
+2025-03-14 03:43:16,602 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 03:43:16] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001245

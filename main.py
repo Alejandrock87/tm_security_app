@@ -29,7 +29,7 @@ CORS(app, resources={
 
 @app.route('/health')
 def health_check():
-    logger.info("Health check endpoint accessed")
+    logger.info("Health check endpoint accessed from IP: %s", request.remote_addr)
     return 'OK', 200
 
 if __name__ == '__main__':
