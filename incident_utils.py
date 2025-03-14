@@ -15,6 +15,9 @@ def get_incidents_for_map():
     } for incident in incidents]
 
 def get_incident_statistics(date_from=None, date_to=None):
+    """
+    Obtiene estadísticas detalladas de incidentes por estación.
+    """
     query = Incident.query
 
     if date_from:
@@ -25,17 +28,17 @@ def get_incident_statistics(date_from=None, date_to=None):
     # Total de incidentes
     total_incidents = query.count()
 
-    # Incidentes por tipo y estación usando subconsultas
+    # Incidentes por tipo y estación usando subconsultas simples
     station_stats = db.session.query(
         Incident.nearest_station,
         func.count(Incident.id).label('total'),
-        func.count(func.nullif(Incident.incident_type != 'Hurto', True)).label('hurtos'),
-        func.count(func.nullif(Incident.incident_type != 'Acoso', True)).label('acosos'),
-        func.count(func.nullif(Incident.incident_type != 'Cosquilleo', True)).label('cosquilleos'),
-        func.count(func.nullif(Incident.incident_type != 'Ataque', True)).label('ataques'),
-        func.count(func.nullif(Incident.incident_type != 'Apertura de puertas', True)).label('aperturas'),
-        func.count(func.nullif(Incident.incident_type != 'Hurto a mano armada', True)).label('hurtos_armados'),
-        func.count(func.nullif(Incident.incident_type != 'Sospechoso', True)).label('sospechosos')
+        func.sum(case([(Incident.incident_type == 'Hurto', 1)], else_=0)).label('hurtos'),
+        func.sum(case([(Incident.incident_type == 'Acoso', 1)], else_=0)).label('acosos'),
+        func.sum(case([(Incident.incident_type == 'Cosquilleo', 1)], else_=0)).label('cosquilleos'),
+        func.sum(case([(Incident.incident_type == 'Ataque', 1)], else_=0)).label('ataques'),
+        func.sum(case([(Incident.incident_type == 'Apertura de puertas', 1)], else_=0)).label('aperturas'),
+        func.sum(case([(Incident.incident_type == 'Hurto a mano armada', 1)], else_=0)).label('hurtos_armados'),
+        func.sum(case([(Incident.incident_type == 'Sospechoso', 1)], else_=0)).label('sospechosos')
     ).group_by(Incident.nearest_station)\
     .order_by(desc('total')).all()
 
@@ -55,7 +58,7 @@ def get_incident_statistics(date_from=None, date_to=None):
     most_dangerous_hour = f"{int(dangerous_hours[0]):02d}:00" if dangerous_hours else "No data"
 
     # Tipo más común
-    most_common_type = max(incidents_by_type, key=lambda x: x[1])[0] if incidents_by_type else "No data"
+    most_common_type = incidents_by_type[0][0] if incidents_by_type else "No data"
 
     # Estación más afectada
     most_affected_station = station_stats[0][0] if station_stats else "No data"
