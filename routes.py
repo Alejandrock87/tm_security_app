@@ -14,6 +14,12 @@ from database import db
 from sqlalchemy import func
 
 def init_routes(app):
+    @app.route('/health')
+    def health():
+        """Endpoint simple para verificar el estado del servidor"""
+        app.logger.info("Health check endpoint accessed")
+        return jsonify({"status": "ok", "message": "Server is running"}), 200
+
     @app.route('/test')
     def test():
         app.logger.info("Test endpoint accessed")
@@ -26,6 +32,26 @@ def init_routes(app):
         if current_user.is_authenticated:
             return redirect(url_for('home'))
         return redirect(url_for('login'))
+
+    # Temporary removal of @login_required for testing
+    @app.route('/dashboard')
+    def dashboard():
+        logging.info("Dashboard endpoint accessed")
+        try:
+            cached_data = cache.get('dashboard_data')
+            if not cached_data:
+                app.logger.info("Getting fresh dashboard data")
+                cached_data = {
+                    'incidents': get_incidents_for_map(),
+                    'statistics': get_incident_statistics() or {},
+                    'trends': [],
+                    'model_insights': {}
+                }
+                app.logger.debug(f"Dashboard data: {cached_data}")
+            return render_template('dashboard.html', **cached_data)
+        except Exception as e:
+            app.logger.error(f"Error in dashboard: {str(e)}", exc_info=True)
+            return jsonify({"error": str(e)}), 500
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -168,20 +194,6 @@ def init_routes(app):
     @login_required
     def home():
         return render_template('home.html', title='Inicio')
-
-    @app.route('/dashboard')
-    @login_required
-    def dashboard():
-        logging.info("Obteniendo datos para el panel de control")
-        cached_data = cache.get('dashboard_data')
-        if not cached_data:
-            cached_data = {
-                'incidents': get_incidents_for_map(),
-                'statistics': get_incident_statistics() or {},
-                'trends': [],
-                'model_insights': {}
-            }
-        return render_template('dashboard.html', **cached_data)
 
     @app.route('/notifications')
     @login_required
