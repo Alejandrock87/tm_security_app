@@ -33,7 +33,7 @@ try:
         PERMANENT_SESSION_LIFETIME=1800
     )
 
-    # Configurar CORS
+    # Configurar CORS para permitir todas las conexiones
     CORS(app, resources={
         r"/*": {
             "origins": "*",
@@ -52,7 +52,7 @@ try:
     cache.init_app(app)
     logger.info("Cache configurado")
 
-    # Configurar Socket.IO
+    # Configurar Socket.IO con modo de debug
     socketio = SocketIO(
         app,
         cors_allowed_origins="*",
@@ -95,10 +95,10 @@ try:
         from models import User
         return User.query.get(int(user_id))
 
-    # Endpoint de health check
+    # Endpoint de health check con logging detallado
     @app.route('/health')
     def health():
-        logger.info(f"Health check desde IP: {request.remote_addr}")
+        logger.info(f"Health check accedido - IP: {request.remote_addr}, Headers: {dict(request.headers)}")
         return jsonify({"status": "ok", "message": "Server is running"}), 200
 
     # Importar e inicializar rutas

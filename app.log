@@ -14278,3 +14278,54 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 22:48:05,830 - geventwebsocket.handler - INFO - 172.31.128.116 - - [2025-03-14 22:48:05] "GET /login HTTP/1.1" 200 4022 0.030857
 2025-03-14 22:48:06,219 - geventwebsocket.handler - INFO - 172.31.128.116 - - [2025-03-14 22:48:06] "GET /static/css/login.css HTTP/1.1" 304 216 0.004483
 2025-03-14 22:48:06,279 - geventwebsocket.handler - INFO - 172.31.128.116 - - [2025-03-14 22:48:06] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001132
+2025-03-14 22:51:53,688 - app - INFO - Aplicación Flask creada
+2025-03-14 22:51:53,688 - app - INFO - CORS configurado
+2025-03-14 22:51:53,691 - app - INFO - Cache configurado
+2025-03-14 22:51:53,752 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:51:53,753 - app - INFO - SocketIO configurado
+2025-03-14 22:51:54,368 - app - INFO - Base de datos inicializada
+2025-03-14 22:51:54,368 - app - INFO - Login manager configurado
+2025-03-14 22:51:54,576 - app - INFO - Rutas inicializadas
+2025-03-14 22:51:54,576 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 22:51:54,576 - __main__ - INFO - Aplicación Flask y SocketIO importados correctamente
+2025-03-14 22:51:54,576 - __main__ - INFO - Iniciando aplicación Flask
+2025-03-14 22:51:54,576 - __main__ - INFO - Intentando iniciar servidor en puerto 5000
+2025-03-14 22:51:54,576 - __main__ - INFO - Iniciando servidor SocketIO...
+2025-03-14 22:52:40,097 - app - INFO - Health check desde IP: 127.0.0.1
+2025-03-14 22:52:40,099 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-03-14 22:52:40] "GET /health HTTP/1.1" 200 195 0.001733
+2025-03-14 22:52:56,156 - app - INFO - Aplicación Flask creada
+2025-03-14 22:52:56,156 - app - INFO - CORS configurado
+2025-03-14 22:52:56,158 - app - INFO - Cache configurado
+2025-03-14 22:52:56,164 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:52:56,165 - app - INFO - SocketIO configurado
+2025-03-14 22:52:56,711 - app - INFO - Base de datos inicializada
+2025-03-14 22:52:56,711 - app - INFO - Login manager configurado
+2025-03-14 22:52:56,749 - app - INFO - Rutas inicializadas
+2025-03-14 22:52:56,749 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 22:52:56,749 - __main__ - INFO - Aplicación Flask y SocketIO importados correctamente
+2025-03-14 22:52:56,749 - __main__ - INFO - Iniciando aplicación Flask
+2025-03-14 22:52:56,749 - __main__ - INFO - Intentando iniciar servidor en puerto 5000
+2025-03-14 22:52:56,749 - __main__ - INFO - Iniciando servidor SocketIO...
+2025-03-14 22:52:57,140 - app - INFO - Index endpoint accessed
+2025-03-14 22:52:57,141 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:52:57] "GET / HTTP/1.1" 302 383 0.001904
+2025-03-14 22:52:57,257 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:52:57] "GET /login HTTP/1.1" 200 4022 0.024801
+2025-03-14 22:52:57,367 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:52:57] "GET /static/css/custom.css HTTP/1.1" 304 216 0.003828
+2025-03-14 22:52:57,368 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:52:57] "GET /static/css/login.css HTTP/1.1" 304 216 0.001010
+2025-03-14 22:54:28,199 - app - INFO - Aplicación Flask creada
+2025-03-14 22:54:28,200 - app - INFO - CORS configurado
+2025-03-14 22:54:28,202 - app - INFO - Cache configurado
+2025-03-14 22:54:28,210 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 22:54:28,210 - app - INFO - SocketIO configurado
+2025-03-14 22:54:28,747 - app - INFO - Base de datos inicializada
+2025-03-14 22:54:28,747 - app - INFO - Login manager configurado
+2025-03-14 22:54:28,784 - app - INFO - Rutas inicializadas
+2025-03-14 22:54:28,785 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 22:54:28,785 - __main__ - INFO - Aplicación Flask y SocketIO importados correctamente
+2025-03-14 22:54:28,785 - __main__ - INFO - Iniciando aplicación Flask
+2025-03-14 22:54:28,785 - __main__ - INFO - Intentando iniciar servidor en puerto 5000
+2025-03-14 22:54:28,785 - __main__ - INFO - Iniciando servidor SocketIO...
+2025-03-14 22:54:29,281 - app - INFO - Index endpoint accessed
+2025-03-14 22:54:29,282 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:54:29] "GET / HTTP/1.1" 302 383 0.002082
+2025-03-14 22:54:29,396 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:54:29] "GET /login HTTP/1.1" 200 4022 0.017734
+2025-03-14 22:54:29,628 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:54:29] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004091
+2025-03-14 22:54:29,633 - geventwebsocket.handler - INFO - 172.31.128.34 - - [2025-03-14 22:54:29] "GET /static/css/login.css HTTP/1.1" 304 216 0.000857
