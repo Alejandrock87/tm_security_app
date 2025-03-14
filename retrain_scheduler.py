@@ -29,6 +29,7 @@ logging.basicConfig(level=logging.INFO)
 
 PREDICTIONS_CACHE_FILE = 'predictions_cache.json'
 MODEL_CACHE_FILE = 'model_cache.pkl'
+VALID_INCIDENT_TYPES = ['Hurto', 'Acoso']  # Definir tipos válidos de incidentes
 
 def generate_weekly_predictions():
     """
@@ -64,12 +65,15 @@ def generate_weekly_predictions():
 
                     # Generar predicciones para cada estación
                     risk_score = predict_station_risk(station, pred_time.hour)
-                    if risk_score is not None:
+                    incident_type = predict_incident_type(station, pred_time.hour)
+
+                    # Solo agregar predicciones con tipos de incidentes válidos
+                    if risk_score is not None and incident_type in VALID_INCIDENT_TYPES:
                         predictions.append({
                             'station': station,
                             'predicted_time': pred_time.isoformat(),
                             'risk_score': float(risk_score),
-                            'incident_type': predict_incident_type(station, pred_time.hour),
+                            'incident_type': incident_type,
                             'latitude': coordinates[1],
                             'longitude': coordinates[0]
                         })

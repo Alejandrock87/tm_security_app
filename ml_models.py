@@ -149,9 +149,8 @@ def predict_incident_type(station, hour):
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
                     return prediction.get('incident_type')
 
-        # Si no está en caché, usar tipos predefinidos
-        # TODO: Implementar modelo de clasificación real
-        incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
+        # Si no está en caché, usar solo tipos válidos
+        incident_types = ['Hurto', 'Acoso']  # Solo tipos válidos
         return random.choice(incident_types)
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
