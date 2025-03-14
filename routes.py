@@ -435,32 +435,55 @@ def init_routes(app):
     @app.route('/api/notifications')
     @login_required
     def get_notifications():
-        query = Incident.query
-        troncal = request.args.get('troncal')
-        station = request.args.get('station')
-        incident_type = request.args.get('incident_type')
+        try:
+            # Obtener parámetros de filtro
+            troncal = request.args.get('troncal', '').split(',')
+            station = request.args.get('station', '').split(',')
+            incident_type = request.args.get('incident_type', '').split(',')
 
-        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
-            geojson_data = json.load(f)
+            # Iniciar consulta base
+            query = Incident.query.order_by(Incident.timestamp.desc())
 
-        if troncal:
-            stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                                   for feature in geojson_data['features']
-                                   if feature['properties'].get('troncal_estacion') == troncal]
-            query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
-        if station:
-            query = query.filter(Incident.nearest_station == station)
-        if incident_type:
-            query = query.filter(Incident.incident_type == incident_type)
+            # Aplicar filtros si están presentes y no están vacíos
+            if troncal and troncal[0]:  # Si hay troncales especificadas
+                with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                    geojson_data = json.load(f)
+                    stations_for_troncal = [
+                        feature['properties']['nombre_estacion']
+                        for feature in geojson_data['features']
+                        if feature['properties'].get('troncal_estacion') in troncal
+                    ]
+                    query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
 
-        incidents = query.order_by(Incident.timestamp.desc()).limit(100).all()
-        return jsonify([{
-            'id': i.id,
-            'incident_type': i.incident_type,
-            'nearest_station': i.nearest_station,
-            'timestamp': i.timestamp.isoformat(),
-            'description': i.description
-        } for i in incidents])
+            if station and station[0]:  # Si hay estaciones especificadas
+                query = query.filter(Incident.nearest_station.in_(station))
+
+            if incident_type and incident_type[0]:  # Si hay tipos de incidente especificados
+                query = query.filter(Incident.incident_type.in_(incident_type))
+
+            # Obtener los últimos 100 incidentes que coincidan con los filtros
+            incidents = query.limit(100).all()
+
+            # Convertir a formato JSON con información completa
+            return jsonify([{
+                'id': incident.id,
+                'incident_type': incident.incident_type,
+                'description': incident.description,
+                'nearest_station': incident.nearest_station,
+                'latitude': incident.latitude,
+                'longitude': incident.longitude,
+                'timestamp': incident.timestamp.isoformat(),
+                'troncal': next(
+                    (feature['properties'].get('troncal_estacion')
+                     for feature in json.load(open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8'))['features']
+                     if feature['properties'].get('nombre_estacion') == incident.nearest_station),
+                    'N/A'
+                )
+            } for incident in incidents])
+
+        except Exception as e:
+            app.logger.error(f"Error en /api/notifications: {str(e)}")
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/api/vapid-public-key')
     def get_vapid_public_key():

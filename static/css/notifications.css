@@ -701,3 +701,42 @@ h5 {
         margin: 0 auto 1rem auto;
     }
 }
+
+/* Estilos para el texto de la troncal */
+.troncal-info {
+    color: var(--notification-text-secondary);
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+/* Estilos para la ubicación del incidente */
+.incident-location {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--notification-border);
+    font-size: 0.85rem;
+    color: var(--notification-text-secondary);
+}
+
+.incident-location strong {
+    color: var(--notification-text);
+    font-weight: 500;
+}
+
+/* Ajustes responsivos para el contenido del incidente */
+@media (max-width: 768px) {
+    .notification-item {
+        padding: 0.75rem;
+    }
+
+    .incident-location {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+
+    .troncal-info {
+        display: block;
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
+}
