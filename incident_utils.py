@@ -29,13 +29,13 @@ def get_incident_statistics(date_from=None, date_to=None):
     station_stats = db.session.query(
         Incident.nearest_station,
         func.count(Incident.id).label('total'),
-        func.count(func.case([(Incident.incident_type == 'Hurto', 1)])).label('hurtos'),
-        func.count(func.case([(Incident.incident_type == 'Acoso', 1)])).label('acosos'),
-        func.count(func.case([(Incident.incident_type == 'Cosquilleo', 1)])).label('cosquilleos'),
-        func.count(func.case([(Incident.incident_type == 'Ataque', 1)])).label('ataques'),
-        func.count(func.case([(Incident.incident_type == 'Apertura de puertas', 1)])).label('aperturas'),
-        func.count(func.case([(Incident.incident_type == 'Hurto a mano armada', 1)])).label('hurtos_armados'),
-        func.count(func.case([(Incident.incident_type == 'Sospechoso', 1)])).label('sospechosos')
+        func.sum(func.case([(Incident.incident_type == 'Hurto', 1)], else_=0)).label('hurtos'),
+        func.sum(func.case([(Incident.incident_type == 'Acoso', 1)], else_=0)).label('acosos'),
+        func.sum(func.case([(Incident.incident_type == 'Cosquilleo', 1)], else_=0)).label('cosquilleos'),
+        func.sum(func.case([(Incident.incident_type == 'Ataque', 1)], else_=0)).label('ataques'),
+        func.sum(func.case([(Incident.incident_type == 'Apertura de puertas', 1)], else_=0)).label('aperturas'),
+        func.sum(func.case([(Incident.incident_type == 'Hurto a mano armada', 1)], else_=0)).label('hurtos_armados'),
+        func.sum(func.case([(Incident.incident_type == 'Sospechoso', 1)], else_=0)).label('sospechosos')
     ).group_by(Incident.nearest_station)\
     .order_by(desc('total')).all()
 

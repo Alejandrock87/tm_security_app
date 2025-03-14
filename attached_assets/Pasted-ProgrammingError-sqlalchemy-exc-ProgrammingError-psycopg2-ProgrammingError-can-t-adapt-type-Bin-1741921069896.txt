@@ -1,0 +1,105 @@
+ProgrammingError
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'BinaryExpression'
+[SQL: SELECT incident.nearest_station AS incident_nearest_station, count(incident.id) AS total, count(case(%(case_1)s)) AS hurtos, count(case(%(case_2)s)) AS acosos, count(case(%(case_3)s)) AS cosquilleos, count(case(%(case_4)s)) AS ataques, count(case(%(case_5)s)) AS aperturas, count(case(%(case_6)s)) AS hurtos_armados, count(case(%(case_7)s)) AS sospechosos 
+FROM incident GROUP BY incident.nearest_station ORDER BY total DESC]
+[parameters: {'case_1': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85b12ca10>, 1)], 'case_2': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad11810>, 1)], 'case_3': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad11e10>, 1)], 'case_4': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12790>, 1)], 'case_5': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12b50>, 1)], 'case_6': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12f10>, 1)], 'case_7': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad132d0>, 1)]}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Traceback (most recent call last)
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+self.dialect.do_execute(
+^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+cursor.execute(statement, parameters)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extensions.py", line 113, in getquoted
+pobjs = [adapt(o) for o in self._seq]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extensions.py", line 113, in <listcomp>
+pobjs = [adapt(o) for o in self._seq]
+         ^^^^^^^^
+The above exception was the direct cause of the following exception:
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1466, in wsgi_app
+response = self.handle_exception(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                            ^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+response = self.full_dispatch_request()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+rv = self.handle_user_exception(e)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                            ^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+rv = self.dispatch_request()
+     ^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+return current_app.ensure_sync(func)(*args, **kwargs)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/routes.py", line 180, in dashboard
+'statistics': get_incident_statistics() or {},
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/incident_utils.py", line 40, in get_incident_statistics
+.order_by(desc('total')).all()
+                         ^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2673, in all
+return self._iter().all()  # type: ignore
+       ^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2827, in _iter
+result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                              
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2362, in execute
+return self._execute_internal(
+       
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2247, in _execute_internal
+result: Result[Any] = compile_state_cls.orm_execute_statement(
+                      
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+result = conn.execute(
+         
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+return meth(
+       
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+return connection._execute_clauseelement(
+       
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+ret = self._execute_context(
+      
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+return self._exec_single_context(
+       
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+self._handle_dbapi_exception(
+^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+self.dialect.do_execute(
+^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+cursor.execute(statement, parameters)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extensions.py", line 113, in getquoted
+pobjs = [adapt(o) for o in self._seq]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extensions.py", line 113, in <listcomp>
+pobjs = [adapt(o) for o in self._seq]
+         ^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'BinaryExpression'
+[SQL: SELECT incident.nearest_station AS incident_nearest_station, count(incident.id) AS total, count(case(%(case_1)s)) AS hurtos, count(case(%(case_2)s)) AS acosos, count(case(%(case_3)s)) AS cosquilleos, count(case(%(case_4)s)) AS ataques, count(case(%(case_5)s)) AS aperturas, count(case(%(case_6)s)) AS hurtos_armados, count(case(%(case_7)s)) AS sospechosos
+FROM incident GROUP BY incident.nearest_station ORDER BY total DESC]
+[parameters: {'case_1': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85b12ca10>, 1)], 'case_2': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad11810>, 1)], 'case_3': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad11e10>, 1)], 'case_4': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12790>, 1)], 'case_5': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12b50>, 1)], 'case_6': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad12f10>, 1)], 'case_7': [(<sqlalchemy.sql.elements.BinaryExpression object at 0x7ff85ad132d0>, 1)]}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
+To switch between the interactive traceback and the plaintext one, you can click on the "Traceback" headline. From the text traceback you can also create a paste of it.
+
+Brought to you by DON'T PANIC, your friendly Werkzeug powered traceback interpreter.
