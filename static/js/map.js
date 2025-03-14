@@ -122,16 +122,15 @@ function displayStations(stations, incidentsByStation) {
         const marker = L.marker([station.latitude, station.longitude], {
             icon: L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div style="background-color: ${markerColor}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: white; font-weight: bold; font-size: 14px;">${station.nombre.slice(0, 2).toUpperCase()}</span>
+                html: `<div style="background-color: ${markerColor}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">🚍</span>
                       </div>
-                      <div style="background-color: rgba(255,255,255,0.9); padding: 2px 4px; border-radius: 3px; margin-top: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">
-                        <span style="font-size: 11px; font-weight: bold;">${station.nombre}</span><br>
-                        <span style="font-size: 11px; color: ${markerColor};">${totalIncidents} incidentes</span>
+                      <div style="background-color: rgba(255,255,255,0.95); padding: 2px 4px; border-radius: 3px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; margin-top: 0; z-index: 1000; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                        <span style="font-size: 11px; font-weight: bold; color: #2d3436;">${station.nombre}</span>
                       </div>`,
                 iconSize: [30, 70],
-                iconAnchor: [15, 70],
-                popupAnchor: [0, -70]
+                iconAnchor: [15, 35],
+                popupAnchor: [0, -35]
             })
         })
         .bindPopup(createStationPopup(station.nombre, stationData, securityLevel))
@@ -379,7 +378,6 @@ function resetFilters() {
 
     loadMapData();
 }
-
 
 // Event listeners for filters (redundant, removed one)
 

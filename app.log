@@ -4436,3 +4436,1008 @@ Exception: Neither port 5000 nor 5000 are available
 2025-03-14 07:43:59,929 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Upgrade to websocket successful
 2025-03-14 07:44:00,013 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet MESSAGE data 0
 2025-03-14 07:44:00,014 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet MESSAGE data 0{"sid":"7uvgKCAUucHJTfiRAAAB"}
+2025-03-14 07:44:05,820 - app - INFO - Index endpoint accessed
+2025-03-14 07:44:05,904 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:05] "GET / HTTP/1.1" 302 380 0.083994
+2025-03-14 07:44:06,090 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:06] "GET /home HTTP/1.1" 200 8521 0.083008
+2025-03-14 07:44:06,219 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:06] "GET /static/css/home.css HTTP/1.1" 304 215 0.001690
+2025-03-14 07:44:06,221 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:06] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000882
+2025-03-14 07:44:07,283 - engineio.server - INFO - hAn_Ek9IacBqvOXCAAAC: Sending packet OPEN data {'sid': 'hAn_Ek9IacBqvOXCAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:44:07,283 - engineio.server - INFO - hAn_Ek9IacBqvOXCAAAC: Received request to upgrade to websocket
+2025-03-14 07:44:07,284 - engineio.server - INFO - hAn_Ek9IacBqvOXCAAAC: Upgrade to websocket successful
+2025-03-14 07:44:07,446 - engineio.server - INFO - hAn_Ek9IacBqvOXCAAAC: Received packet MESSAGE data 0
+2025-03-14 07:44:07,447 - engineio.server - INFO - hAn_Ek9IacBqvOXCAAAC: Sending packet MESSAGE data 0{"sid":"HyceHIG5MCGFPZjiAAAD"}
+2025-03-14 07:44:09,843 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:44:09,843 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:44:10,058 - app - INFO - Obtenidos 1008 incidentes para el mapa
+2025-03-14 07:44:10,058 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:44:10,058 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:44:10,086 - root - INFO - Total de incidentes encontrados: 1008
+2025-03-14 07:44:10,108 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:44:12,085 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:44:12,085 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1008, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 111, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 2, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:44:12,085 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:44:12,132 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:12] "GET /dashboard HTTP/1.1" 200 14766 2.289849
+2025-03-14 07:44:12,234 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:12] "GET /static/css/dashboard.css HTTP/1.1" 200 5986 0.000988
+2025-03-14 07:44:12,235 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:12] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000801
+2025-03-14 07:44:12,355 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:12] "GET /static/js/map.js HTTP/1.1" 200 14886 0.001189
+2025-03-14 07:44:13,083 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:13] "GET /api/stations HTTP/1.1" 200 20676 0.084657
+2025-03-14 07:44:13,312 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:13] "GET /incidents HTTP/1.1" 200 349139 0.228212
+2025-03-14 07:44:13,398 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:13] "GET /api/stations HTTP/1.1" 200 20676 0.084630
+2025-03-14 07:44:13,399 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Sending packet OPEN data {'sid': 'lBinMjm5OQvpCiArAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:44:13,399 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Received request to upgrade to websocket
+2025-03-14 07:44:13,399 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Upgrade to websocket successful
+2025-03-14 07:44:13,484 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Received packet MESSAGE data 0
+2025-03-14 07:44:13,485 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Sending packet MESSAGE data 0{"sid":"_xuQwyMDno-OdisHAAAF"}
+2025-03-14 07:44:13,684 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:44:13] "GET /api/stations HTTP/1.1" 200 20676 0.084866
+2025-03-14 07:44:24,941 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:44:25,048 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:44:38,406 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Sending packet PING data None
+2025-03-14 07:44:38,511 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Received packet PONG data 
+2025-03-14 07:44:50,061 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:44:50,146 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:45:02,666 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:02] "GET /statistics HTTP/1.1" 200 11067 0.086541
+2025-03-14 07:45:02,800 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:02] "GET /static/css/statistics.css HTTP/1.1" 304 220 0.001013
+2025-03-14 07:45:02,802 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:02] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000675
+2025-03-14 07:45:02,836 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:02] "GET /static/js/statistics.js HTTP/1.1" 304 220 0.000825
+2025-03-14 07:45:03,513 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Sending packet PING data None
+2025-03-14 07:45:03,773 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:45:03,773 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 07:45:03,773 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:45:03,774 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:45:03,795 - root - INFO - Total de incidentes encontrados: 1008
+2025-03-14 07:45:03,816 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:45:05,810 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:45:05,810 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1008, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 111, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 2, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:45:05,810 - app - INFO - Retornando datos - Total de incidentes: 1008
+2025-03-14 07:45:05,810 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:45:05,810 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 111, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:45:05,810 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 2, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:45:05,832 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:05] "GET /api/statistics HTTP/1.1" 200 3288 2.120451
+2025-03-14 07:45:05,833 - engineio.server - INFO - nv3c_VH3679Rea0fAAAG: Sending packet OPEN data {'sid': 'nv3c_VH3679Rea0fAAAG', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:45:05,833 - engineio.server - INFO - nv3c_VH3679Rea0fAAAG: Received request to upgrade to websocket
+2025-03-14 07:45:05,833 - engineio.server - INFO - nv3c_VH3679Rea0fAAAG: Upgrade to websocket successful
+2025-03-14 07:45:05,933 - engineio.server - INFO - nv3c_VH3679Rea0fAAAG: Received packet MESSAGE data 0
+2025-03-14 07:45:05,934 - engineio.server - INFO - nv3c_VH3679Rea0fAAAG: Sending packet MESSAGE data 0{"sid":"Pn66v5eQrJdu1gGIAAAH"}
+2025-03-14 07:45:12,378 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:45:12,379 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:45:12,531 - app - INFO - Obtenidos 1008 incidentes para el mapa
+2025-03-14 07:45:12,531 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:45:12,532 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:45:12,554 - root - INFO - Total de incidentes encontrados: 1008
+2025-03-14 07:45:12,575 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:45:14,572 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:45:14,572 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1008, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 111, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 2, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:45:14,572 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:45:14,615 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:14] "GET /dashboard HTTP/1.1" 200 14766 2.237037
+2025-03-14 07:45:14,735 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:14] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001047
+2025-03-14 07:45:14,737 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:14] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.000789
+2025-03-14 07:45:14,792 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:14] "GET /static/js/map.js HTTP/1.1" 304 213 0.000882
+2025-03-14 07:45:15,147 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:45:15,257 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:45:15,390 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:15] "GET /api/stations HTTP/1.1" 200 20676 0.084652
+2025-03-14 07:45:15,599 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:15] "GET /incidents HTTP/1.1" 200 349139 0.207684
+2025-03-14 07:45:15,684 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:15] "GET /api/stations HTTP/1.1" 200 20676 0.084952
+2025-03-14 07:45:15,685 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Sending packet OPEN data {'sid': 'vqvjVeg6UkH28_4zAAAI', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:45:15,686 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Received request to upgrade to websocket
+2025-03-14 07:45:15,686 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Upgrade to websocket successful
+2025-03-14 07:45:15,772 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Received packet MESSAGE data 0
+2025-03-14 07:45:15,773 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Sending packet MESSAGE data 0{"sid":"QvbKuTUwdEju2oOPAAAJ"}
+2025-03-14 07:45:15,963 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:45:15] "GET /api/stations HTTP/1.1" 200 20676 0.084769
+2025-03-14 07:45:40,267 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:45:40,377 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:45:40,687 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Sending packet PING data None
+2025-03-14 07:45:40,781 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Received packet PONG data 
+2025-03-14 07:46:05,383 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:46:05,472 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:46:05,783 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Sending packet PING data None
+2025-03-14 07:46:05,879 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Received packet PONG data 
+2025-03-14 07:46:19,988 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Client is gone, closing socket
+2025-03-14 07:46:19,988 - engineio.server - INFO - lBinMjm5OQvpCiArAAAE: Client is gone, closing socket
+2025-03-14 07:46:30,484 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:46:30,570 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:46:30,881 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Sending packet PING data None
+2025-03-14 07:46:30,979 - engineio.server - INFO - vqvjVeg6UkH28_4zAAAI: Received packet PONG data 
+2025-03-14 07:46:32,784 - app - INFO - Accessing report_incident. User: <User 3>, Remote addr: 172.31.128.65
+2025-03-14 07:46:32,785 - app - DEBUG - Request headers: {'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cookie': 'session=.eJwlzj1qBDEMQOG7uE4h68eS9zKDZUkkBBKY2a1C7p6BlO9V30876szrvT2e5yvf2vER7dEwKtZ2QLEMhuTKvmKZjjBPkaA1pGj7GsWdPadNEAhV3Kwa4aKdUoV5LsSMGWZUgLvATJlX7xNKdqDz1OVdEKVyQY7MYe2GvK48_zV0577OOp7fn_l1D9CVkjKBOpGT9CLNPbdXMZai-YABae33D4H1P-k.Z9PZTw.oZYaJdNozwhM3_iuyAmERH2dXKk', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/dashboard', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.9.14', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 07:46:32,785 - app - DEBUG - Session data: {'_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '3', 'csrf_token': '07ae5e5903133b351f37ec9cbff42f728b6060e8'}
+2025-03-14 07:46:32,785 - app - DEBUG - User authenticated: True
+2025-03-14 07:46:32,788 - app - INFO - Rendering report_incident template
+2025-03-14 07:46:32,818 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:32] "GET /report_incident HTTP/1.1" 200 33016 0.097331
+2025-03-14 07:46:32,924 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:32] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001040
+2025-03-14 07:46:32,925 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:32] "GET /static/css/report_incident.css HTTP/1.1" 304 225 0.000865
+2025-03-14 07:46:33,577 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:33] "GET /static/Estaciones_Troncales_de_TRANSMILENIO.geojson HTTP/1.1" 304 252 0.001229
+2025-03-14 07:46:33,818 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:33] "GET /station_statistics HTTP/1.1" 200 501 0.176570
+2025-03-14 07:46:33,832 - engineio.server - INFO - shBoZSP7mTFuhE9_AAAK: Sending packet OPEN data {'sid': 'shBoZSP7mTFuhE9_AAAK', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:46:33,832 - engineio.server - INFO - shBoZSP7mTFuhE9_AAAK: Received request to upgrade to websocket
+2025-03-14 07:46:33,832 - engineio.server - INFO - shBoZSP7mTFuhE9_AAAK: Upgrade to websocket successful
+2025-03-14 07:46:33,917 - engineio.server - INFO - shBoZSP7mTFuhE9_AAAK: Received packet MESSAGE data 0
+2025-03-14 07:46:33,918 - engineio.server - INFO - shBoZSP7mTFuhE9_AAAK: Sending packet MESSAGE data 0{"sid":"VxIx2slpPDOCc0AlAAAL"}
+2025-03-14 07:46:43,693 - app - INFO - Accessing report_incident. User: <User 3>, Remote addr: 172.31.128.65
+2025-03-14 07:46:43,693 - app - DEBUG - Request headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': '269', 'Host': '07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'identity, gzip, deflate, br, zstd', 'Accept-Language': 'es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,es-CO;q=0.4', 'Cache-Control': 'max-age=0', 'Cookie': 'session=.eJwlzj1qBDEMQOG7uE4h68eS9zKDZUkkBBKY2a1C7p6BlO9V30876szrvT2e5yvf2vER7dEwKtZ2QLEMhuTKvmKZjjBPkaA1pGj7GsWdPadNEAhV3Kwa4aKdUoV5LsSMGWZUgLvATJlX7xNKdqDz1OVdEKVyQY7MYe2GvK48_zV0577OOp7fn_l1D9CVkjKBOpGT9CLNPbdXMZai-YABae33D4H1P-k.Z9PZTw.oZYaJdNozwhM3_iuyAmERH2dXKk', 'Origin': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000', 'Referer': 'https://07346fbb-7271-481a-8a26-9d9e24d426f2-00-1ywgqf88nryqa.picard.replit.dev:5000/report_incident', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Microsoft Edge";v="134"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Storage-Access': 'active', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'X-Forwarded-For': '181.61.208.87, 10.81.3.21', 'X-Forwarded-Proto': 'https', 'X-Replit-User-Bio': '', 'X-Replit-User-Id': '', 'X-Replit-User-Name': '', 'X-Replit-User-Profile-Image': '', 'X-Replit-User-Roles': '', 'X-Replit-User-Teams': '', 'X-Replit-User-Url': ''}
+2025-03-14 07:46:43,693 - app - DEBUG - Session data: {'_fresh': True, '_id': '2dfdacb0258ed40e4fe1ada876d8be55d3a65f3cba6f414be989050d772c477ddb5713e75449a22ed9d883f02cf088744a1190f5cd2b497ab15225fea0e6ee68', '_user_id': '3', 'csrf_token': '07ae5e5903133b351f37ec9cbff42f728b6060e8'}
+2025-03-14 07:46:43,693 - app - DEBUG - User authenticated: True
+2025-03-14 07:46:43,700 - app - INFO - Form submitted and validated
+2025-03-14 07:46:43,700 - app - DEBUG - Form data: ImmutableMultiDict([('csrf_token', 'IjA3YWU1ZTU5MDMxMzNiMzUxZjM3ZWM5Y2JmZjQyZjcyOGI2MDYwZTgi.Z9Pe2A.-D3ule6--EtEynUXVbyR6Yd1n3w'), ('latitude', '4.801201'), ('longitude', '-74.091934'), ('nearest_station', 'Portal Suba'), ('incident_type', 'Acoso'), ('description', ''), ('incident_date', '2025-03-14'), ('incident_time', '02:46'), ('station', 'Portal Suba')])
+2025-03-14 07:46:43,701 - app - DEBUG - Location data - Lat: 4.801201, Long: -74.091934, Station: Portal Suba
+2025-03-14 07:46:43,701 - app - DEBUG - Converting latitude: 4.801201 and longitude: -74.091934 to float
+2025-03-14 07:46:43,701 - app - DEBUG - Converted values - Lat: 4.801201, Long: -74.091934
+2025-03-14 07:46:43,701 - app - DEBUG - Created incident object: {'id': None, 'incident_type': 'Acoso', 'description': '', 'latitude': 4.801201, 'longitude': -74.091934, 'timestamp': '2025-03-14T02:46:00', 'user_id': 3, 'nearest_station': 'Portal Suba'}
+2025-03-14 07:46:43,702 - app - DEBUG - Added incident to session, attempting commit
+2025-03-14 07:46:43,754 - app - INFO - Incident saved successfully
+2025-03-14 07:46:43,817 - root - INFO - Notification received: Acoso at 2025-03-14T02:46:00
+2025-03-14 07:46:43,838 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:43] "POST /report_incident HTTP/1.1" 302 867 0.206801
+2025-03-14 07:46:44,058 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:44] "GET /home HTTP/1.1" 200 9220 0.082896
+2025-03-14 07:46:44,159 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:44] "GET /static/css/home.css HTTP/1.1" 304 215 0.000975
+2025-03-14 07:46:44,161 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:44] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000710
+2025-03-14 07:46:45,275 - engineio.server - INFO - ONUZBPwZbyCRC9tJAAAM: Sending packet OPEN data {'sid': 'ONUZBPwZbyCRC9tJAAAM', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:46:45,275 - engineio.server - INFO - ONUZBPwZbyCRC9tJAAAM: Received request to upgrade to websocket
+2025-03-14 07:46:45,275 - engineio.server - INFO - ONUZBPwZbyCRC9tJAAAM: Upgrade to websocket successful
+2025-03-14 07:46:45,405 - engineio.server - INFO - ONUZBPwZbyCRC9tJAAAM: Received packet MESSAGE data 0
+2025-03-14 07:46:45,406 - engineio.server - INFO - ONUZBPwZbyCRC9tJAAAM: Sending packet MESSAGE data 0{"sid":"OxsLZzWnvaKnE_s2AAAN"}
+2025-03-14 07:46:47,048 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:46:47,048 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:46:47,198 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 07:46:47,198 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:46:47,198 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:46:47,220 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:46:47,241 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:46:49,193 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:46:49,193 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:46:49,193 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:46:49,237 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:49] "GET /dashboard HTTP/1.1" 200 14766 2.189500
+2025-03-14 07:46:49,398 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:49] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.001000
+2025-03-14 07:46:49,399 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:49] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000810
+2025-03-14 07:46:49,497 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:49] "GET /static/js/map.js HTTP/1.1" 304 213 0.001036
+2025-03-14 07:46:50,204 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:50] "GET /api/stations HTTP/1.1" 200 20676 0.086158
+2025-03-14 07:46:50,405 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:50] "GET /incidents HTTP/1.1" 200 349383 0.200528
+2025-03-14 07:46:50,491 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:50] "GET /api/stations HTTP/1.1" 200 20676 0.084919
+2025-03-14 07:46:50,870 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:46:50] "GET /api/stations HTTP/1.1" 200 20676 0.085291
+2025-03-14 07:46:51,595 - engineio.server - INFO - 4gY7uAz5w30mto9mAAAO: Sending packet OPEN data {'sid': '4gY7uAz5w30mto9mAAAO', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:46:51,595 - engineio.server - INFO - 4gY7uAz5w30mto9mAAAO: Received request to upgrade to websocket
+2025-03-14 07:46:51,596 - engineio.server - INFO - 4gY7uAz5w30mto9mAAAO: Upgrade to websocket successful
+2025-03-14 07:46:51,834 - engineio.server - INFO - 4gY7uAz5w30mto9mAAAO: Received packet MESSAGE data 0
+2025-03-14 07:46:51,834 - engineio.server - INFO - 4gY7uAz5w30mto9mAAAO: Sending packet MESSAGE data 0{"sid":"QNAsHYCbVt-RbfcxAAAP"}
+2025-03-14 07:46:55,574 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:46:55,692 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:47:03,697 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:03] "GET /statistics HTTP/1.1" 200 11067 0.082830
+2025-03-14 07:47:03,817 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:03] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001030
+2025-03-14 07:47:03,819 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:03] "GET /static/css/statistics.css HTTP/1.1" 304 220 0.000924
+2025-03-14 07:47:04,142 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:04] "GET /static/js/statistics.js HTTP/1.1" 304 220 0.000954
+2025-03-14 07:47:04,691 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:04,692 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 07:47:04,692 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:04,692 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:04,713 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:47:04,735 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:06,688 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:06,689 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:06,689 - app - INFO - Retornando datos - Total de incidentes: 1009
+2025-03-14 07:47:06,689 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:06,689 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:06,690 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:06,711 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:06] "GET /api/statistics HTTP/1.1" 200 3288 2.080060
+2025-03-14 07:47:06,712 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Sending packet OPEN data {'sid': '1Mz4e3XQYXwwZDQpAAAQ', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:47:06,712 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Received request to upgrade to websocket
+2025-03-14 07:47:06,712 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Upgrade to websocket successful
+2025-03-14 07:47:06,873 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Received packet MESSAGE data 0
+2025-03-14 07:47:06,874 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Sending packet MESSAGE data 0{"sid":"XFcUnYbOs_j9kMI1AAAR"}
+2025-03-14 07:47:13,803 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:13,804 - app - INFO - Filtros de fecha recibidos - desde: 2025-03-14, hasta: 2025-03-14
+2025-03-14 07:47:13,804 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:13,804 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:13,829 - root - INFO - Total de incidentes encontrados: 3
+2025-03-14 07:47:13,851 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:15,796 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:15,796 - app - INFO - Estadísticas obtenidas: {'total_incidents': 3, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:15,796 - app - INFO - Retornando datos - Total de incidentes: 3
+2025-03-14 07:47:15,796 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:15,797 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:15,797 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:15,818 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:15] "GET /api/statistics?dateFrom=2025-03-14&dateTo=2025-03-14 HTTP/1.1" 200 3251 2.076469
+2025-03-14 07:47:20,694 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:47:20,811 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:47:31,724 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Sending packet PING data None
+2025-03-14 07:47:31,843 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Received packet PONG data 
+2025-03-14 07:47:33,038 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:33,038 - app - INFO - Filtros de fecha recibidos - desde: 2025-03-07, hasta: 2025-03-14
+2025-03-14 07:47:33,039 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:33,039 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:33,060 - root - INFO - Total de incidentes encontrados: 3
+2025-03-14 07:47:33,082 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:35,022 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:35,023 - app - INFO - Estadísticas obtenidas: {'total_incidents': 3, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:35,023 - app - INFO - Retornando datos - Total de incidentes: 3
+2025-03-14 07:47:35,023 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:35,023 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:35,023 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:35,045 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:35] "GET /api/statistics?dateFrom=2025-03-07&dateTo=2025-03-14 HTTP/1.1" 200 3251 2.069680
+2025-03-14 07:47:43,023 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:43,023 - app - INFO - Filtros de fecha recibidos - desde: 2025-02-14, hasta: 2025-03-14
+2025-03-14 07:47:43,024 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:43,024 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:43,046 - root - INFO - Total de incidentes encontrados: 9
+2025-03-14 07:47:43,067 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:45,055 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:45,055 - app - INFO - Estadísticas obtenidas: {'total_incidents': 9, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:45,055 - app - INFO - Retornando datos - Total de incidentes: 9
+2025-03-14 07:47:45,056 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:45,056 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:45,056 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:45,077 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:45] "GET /api/statistics?dateFrom=2025-02-14&dateTo=2025-03-14 HTTP/1.1" 200 3251 2.116433
+2025-03-14 07:47:45,813 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:47:45,897 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:47:46,016 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:46,017 - app - INFO - Filtros de fecha recibidos - desde: 2025-03-14, hasta: 2025-03-14
+2025-03-14 07:47:46,017 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:46,017 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:46,039 - root - INFO - Total de incidentes encontrados: 3
+2025-03-14 07:47:46,060 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:48,036 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:48,037 - app - INFO - Estadísticas obtenidas: {'total_incidents': 3, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:48,037 - app - INFO - Retornando datos - Total de incidentes: 3
+2025-03-14 07:47:48,037 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:48,037 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:48,038 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:48,058 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:48] "GET /api/statistics?dateFrom=2025-03-14&dateTo=2025-03-14 HTTP/1.1" 200 3251 2.104016
+2025-03-14 07:47:48,962 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:48,963 - app - INFO - Filtros de fecha recibidos - desde: 2025-03-14, hasta: 2025-03-14
+2025-03-14 07:47:48,963 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:48,964 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:48,985 - root - INFO - Total de incidentes encontrados: 3
+2025-03-14 07:47:49,006 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:50,974 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:50,974 - app - INFO - Estadísticas obtenidas: {'total_incidents': 3, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:50,974 - app - INFO - Retornando datos - Total de incidentes: 3
+2025-03-14 07:47:50,974 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:50,975 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:50,975 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Banderas': {'total': 145, 'hurto': 1, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Norte': {'total': 140, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Las Aguas': {'total': 136, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Universidades': {'total': 128, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Marly': {'total': 116, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 76': {'total': 106, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Calle 72': {'total': 70, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:50,996 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:50] "GET /api/statistics?dateFrom=2025-03-14&dateTo=2025-03-14 HTTP/1.1" 200 3251 2.095095
+2025-03-14 07:47:54,809 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:54,810 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 07:47:54,810 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:54,811 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:54,832 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:47:54,853 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:47:56,803 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:47:56,803 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:47:56,803 - app - INFO - Retornando datos - Total de incidentes: 1009
+2025-03-14 07:47:56,803 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:47:56,803 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:47:56,804 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:47:56,825 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:47:56] "GET /api/statistics? HTTP/1.1" 200 3288 2.076870
+2025-03-14 07:47:56,844 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Sending packet PING data None
+2025-03-14 07:47:56,931 - engineio.server - INFO - 1Mz4e3XQYXwwZDQpAAAQ: Received packet PONG data 
+2025-03-14 07:47:58,233 - app - INFO - Endpoint /api/statistics accessed
+2025-03-14 07:47:58,234 - app - INFO - Filtros de fecha recibidos - desde: None, hasta: None
+2025-03-14 07:47:58,234 - app - INFO - Obteniendo estadísticas de incidentes...
+2025-03-14 07:47:58,234 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:47:58,255 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:47:58,277 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:48:00,226 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:48:00,227 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:48:00,227 - app - INFO - Retornando datos - Total de incidentes: 1009
+2025-03-14 07:48:00,227 - app - INFO - Estación más afectada: Avenida Jiménez
+2025-03-14 07:48:00,227 - app - INFO - Tipos de incidentes: {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}
+2025-03-14 07:48:00,227 - app - INFO - Top estaciones: {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}
+2025-03-14 07:48:00,249 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:00] "GET /api/statistics? HTTP/1.1" 200 3288 2.076640
+2025-03-14 07:48:04,789 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:48:04,789 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:48:04,939 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 07:48:04,940 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:48:04,940 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:48:04,961 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:48:04,983 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:48:06,979 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:48:06,981 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:48:06,982 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:48:07,025 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:07] "GET /dashboard HTTP/1.1" 200 14766 2.236465
+2025-03-14 07:48:07,128 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:07] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.000970
+2025-03-14 07:48:07,130 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:07] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000927
+2025-03-14 07:48:07,203 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:07] "GET /static/js/map.js HTTP/1.1" 304 213 0.000877
+2025-03-14 07:48:08,152 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:08] "GET /incidents HTTP/1.1" 200 349383 0.204878
+2025-03-14 07:48:08,242 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:08] "GET /api/stations HTTP/1.1" 200 20676 0.087262
+2025-03-14 07:48:08,243 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet OPEN data {'sid': '5D-InakBwplL1sosAAAS', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:48:08,244 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received request to upgrade to websocket
+2025-03-14 07:48:08,244 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Upgrade to websocket successful
+2025-03-14 07:48:08,340 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet MESSAGE data 0
+2025-03-14 07:48:08,341 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet MESSAGE data 0{"sid":"HRzd2-ZrLCU2oK9oAAAT"}
+2025-03-14 07:48:08,430 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:08] "GET /api/stations HTTP/1.1" 200 20676 0.085746
+2025-03-14 07:48:08,779 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:48:08] "GET /api/stations HTTP/1.1" 200 20676 0.086077
+2025-03-14 07:48:10,900 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:48:11,010 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:48:33,248 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:48:33,348 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:48:36,013 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:48:36,163 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:48:58,371 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:48:58,469 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:49:01,164 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:49:01,261 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:49:23,492 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:49:23,582 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:49:26,265 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:49:26,369 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:49:48,593 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:49:48,678 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:49:51,372 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:49:51,475 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:50:13,692 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:50:13,819 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:50:16,478 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:50:16,593 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:50:38,828 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:50:38,930 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:50:41,597 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:50:41,729 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:51:03,934 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:51:04,052 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:51:06,732 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:51:06,812 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:51:29,075 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:51:29,163 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:51:31,815 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:51:31,933 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:51:54,186 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:51:54,303 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:51:56,937 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:51:57,054 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:52:19,323 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:52:19,424 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:52:22,058 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:52:22,155 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:52:44,439 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:52:44,521 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:52:47,159 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:52:47,292 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:53:09,531 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:53:09,617 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:53:12,296 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:53:12,392 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:53:34,622 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:53:34,704 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:53:37,396 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:53:37,477 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:53:59,727 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:53:59,813 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:54:02,481 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:54:02,564 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:54:24,836 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:54:24,932 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:54:27,567 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Sending packet PING data None
+2025-03-14 07:54:27,673 - engineio.server - INFO - QmoPSQKPjBGCyX7eAAAA: Received packet PONG data 
+2025-03-14 07:54:49,953 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Sending packet PING data None
+2025-03-14 07:54:50,035 - engineio.server - INFO - 5D-InakBwplL1sosAAAS: Received packet PONG data 
+2025-03-14 07:54:53,625 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:54:53,625 - app - INFO - Inicializando base de datos...
+2025-03-14 07:54:54,658 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:54:54,658 - app - INFO - Configurando login manager...
+2025-03-14 07:54:54,658 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:54:54,659 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:54:54,702 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:54:54,703 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:54:54,703 - __main__ - INFO - Starting Flask application
+2025-03-14 07:54:54,703 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 07:54:54,703 - __main__ - INFO - Testing server configuration...
+2025-03-14 07:54:54,705 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 07:54:54,706 - __main__ - INFO - Test response status: 200
+2025-03-14 07:54:54,706 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 07:54:55,755 - app - INFO - Index endpoint accessed
+2025-03-14 07:54:55,879 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:54:55] "GET / HTTP/1.1" 302 380 0.124432
+2025-03-14 07:54:56,121 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:54:56] "GET /home HTTP/1.1" 200 8521 0.105882
+2025-03-14 07:54:56,674 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:54:56] "GET /static/css/home.css HTTP/1.1" 304 215 0.005543
+2025-03-14 07:54:56,678 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:54:56] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001238
+2025-03-14 07:54:57,241 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet OPEN data {'sid': 'qPewiAFvHKvkmolbAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:54:57,242 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received request to upgrade to websocket
+2025-03-14 07:54:57,242 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Upgrade to websocket successful
+2025-03-14 07:54:57,342 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet MESSAGE data 0
+2025-03-14 07:54:57,343 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet MESSAGE data 0{"sid":"geBFeNDOwU9NQejcAAAB"}
+2025-03-14 07:55:22,268 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:55:22,378 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:55:38,871 - app - INFO - Index endpoint accessed
+2025-03-14 07:55:38,963 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:38] "GET / HTTP/1.1" 302 380 0.093298
+2025-03-14 07:55:39,140 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:39] "GET /home HTTP/1.1" 200 8521 0.089249
+2025-03-14 07:55:39,273 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:39] "GET /static/css/home.css HTTP/1.1" 304 215 0.001411
+2025-03-14 07:55:39,326 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:39] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001483
+2025-03-14 07:55:40,387 - engineio.server - INFO - k1434ukr0573Yf1aAAAC: Sending packet OPEN data {'sid': 'k1434ukr0573Yf1aAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:55:40,387 - engineio.server - INFO - k1434ukr0573Yf1aAAAC: Received request to upgrade to websocket
+2025-03-14 07:55:40,387 - engineio.server - INFO - k1434ukr0573Yf1aAAAC: Upgrade to websocket successful
+2025-03-14 07:55:40,509 - engineio.server - INFO - k1434ukr0573Yf1aAAAC: Received packet MESSAGE data 0
+2025-03-14 07:55:40,510 - engineio.server - INFO - k1434ukr0573Yf1aAAAC: Sending packet MESSAGE data 0{"sid":"iv8_pQ5hV5Cn461GAAAD"}
+2025-03-14 07:55:42,175 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:55:42,175 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:55:42,365 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 07:55:42,365 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:55:42,365 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:55:42,400 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:55:42,423 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:55:44,548 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:55:44,548 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:55:44,549 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:55:44,601 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:44] "GET /dashboard HTTP/1.1" 200 14766 2.426870
+2025-03-14 07:55:44,728 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:44] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001375
+2025-03-14 07:55:44,730 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:44] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.001031
+2025-03-14 07:55:44,805 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:44] "GET /static/js/map.js HTTP/1.1" 200 14729 0.001049
+2025-03-14 07:55:45,699 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:45] "GET /api/stations HTTP/1.1" 200 20676 0.092691
+2025-03-14 07:55:45,979 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:45] "GET /incidents HTTP/1.1" 200 349383 0.278380
+2025-03-14 07:55:46,071 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:46] "GET /api/stations HTTP/1.1" 200 20676 0.090631
+2025-03-14 07:55:46,381 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:55:46] "GET /api/stations HTTP/1.1" 200 20676 0.090625
+2025-03-14 07:55:46,896 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet OPEN data {'sid': 'wgf7SVygCmx96rXhAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:55:46,896 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received request to upgrade to websocket
+2025-03-14 07:55:46,896 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Upgrade to websocket successful
+2025-03-14 07:55:47,020 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet MESSAGE data 0
+2025-03-14 07:55:47,021 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet MESSAGE data 0{"sid":"NQpQKqQjqDuEFZmiAAAF"}
+2025-03-14 07:55:47,380 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:55:47,465 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:56:11,903 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:56:12,027 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:56:12,467 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:56:12,584 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:56:37,037 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:56:37,125 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:56:37,585 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:56:37,690 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:57:02,131 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:57:02,215 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:57:02,692 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:57:02,780 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:57:27,227 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:57:27,348 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:57:27,781 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:57:27,865 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:57:52,373 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:57:52,456 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:57:52,867 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:57:52,980 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:58:17,477 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Sending packet PING data None
+2025-03-14 07:58:17,636 - engineio.server - INFO - wgf7SVygCmx96rXhAAAE: Received packet PONG data 
+2025-03-14 07:58:17,982 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Sending packet PING data None
+2025-03-14 07:58:18,066 - engineio.server - INFO - qPewiAFvHKvkmolbAAAA: Received packet PONG data 
+2025-03-14 07:58:32,668 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 07:58:32,669 - app - INFO - Inicializando base de datos...
+2025-03-14 07:58:33,206 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 07:58:33,206 - app - INFO - Configurando login manager...
+2025-03-14 07:58:33,206 - app - INFO - Login manager configurado correctamente
+2025-03-14 07:58:33,207 - app - INFO - Importando e inicializando rutas...
+2025-03-14 07:58:33,240 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 07:58:33,240 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 07:58:33,240 - __main__ - INFO - Starting Flask application
+2025-03-14 07:58:33,241 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 07:58:33,241 - __main__ - INFO - Testing server configuration...
+2025-03-14 07:58:33,242 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 07:58:33,243 - __main__ - INFO - Test response status: 200
+2025-03-14 07:58:33,243 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 07:58:33,750 - app - INFO - Index endpoint accessed
+2025-03-14 07:58:33,848 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:33] "GET / HTTP/1.1" 302 380 0.098275
+2025-03-14 07:58:34,041 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:34] "GET /home HTTP/1.1" 200 8521 0.100116
+2025-03-14 07:58:34,141 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:34] "GET /static/css/custom.css HTTP/1.1" 304 216 0.003990
+2025-03-14 07:58:34,143 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:34] "GET /static/css/home.css HTTP/1.1" 304 215 0.000896
+2025-03-14 07:58:35,046 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet OPEN data {'sid': 'NZ9ymggoBZ1BLc9HAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:58:35,047 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received request to upgrade to websocket
+2025-03-14 07:58:35,047 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Upgrade to websocket successful
+2025-03-14 07:58:35,131 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet MESSAGE data 0
+2025-03-14 07:58:35,133 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet MESSAGE data 0{"sid":"7askPloL78LD2z7FAAAB"}
+2025-03-14 07:58:51,699 - app - INFO - Index endpoint accessed
+2025-03-14 07:58:51,788 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:51] "GET / HTTP/1.1" 302 380 0.089844
+2025-03-14 07:58:52,003 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:52] "GET /home HTTP/1.1" 200 8521 0.089409
+2025-03-14 07:58:52,171 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:52] "GET /static/css/home.css HTTP/1.1" 304 215 0.001088
+2025-03-14 07:58:52,173 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:52] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001141
+2025-03-14 07:58:53,049 - engineio.server - INFO - mb0nTRfYk9XOfJ7GAAAC: Sending packet OPEN data {'sid': 'mb0nTRfYk9XOfJ7GAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:58:53,049 - engineio.server - INFO - mb0nTRfYk9XOfJ7GAAAC: Received request to upgrade to websocket
+2025-03-14 07:58:53,049 - engineio.server - INFO - mb0nTRfYk9XOfJ7GAAAC: Upgrade to websocket successful
+2025-03-14 07:58:53,134 - engineio.server - INFO - mb0nTRfYk9XOfJ7GAAAC: Received packet MESSAGE data 0
+2025-03-14 07:58:53,134 - engineio.server - INFO - mb0nTRfYk9XOfJ7GAAAC: Sending packet MESSAGE data 0{"sid":"wKR7-LkDy7uupvutAAAD"}
+2025-03-14 07:58:54,374 - app - INFO - Dashboard endpoint accessed
+2025-03-14 07:58:54,374 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 07:58:54,539 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 07:58:54,539 - app - INFO - Intentando obtener estadísticas
+2025-03-14 07:58:54,539 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 07:58:54,565 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 07:58:54,588 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 07:58:56,684 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 07:58:56,684 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 07:58:56,684 - app - INFO - Renderizando template dashboard.html
+2025-03-14 07:58:56,734 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:56] "GET /dashboard HTTP/1.1" 200 14766 2.360771
+2025-03-14 07:58:56,920 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:56] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000998
+2025-03-14 07:58:56,921 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:56] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.000798
+2025-03-14 07:58:56,988 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:56] "GET /static/js/map.js HTTP/1.1" 200 14818 0.000947
+2025-03-14 07:58:57,808 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:57] "GET /api/stations HTTP/1.1" 200 20676 0.092505
+2025-03-14 07:58:58,053 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:58] "GET /incidents HTTP/1.1" 200 349383 0.244233
+2025-03-14 07:58:58,145 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:58] "GET /api/stations HTTP/1.1" 200 20676 0.091557
+2025-03-14 07:58:58,147 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet OPEN data {'sid': '03tsBjc8n_zGlyuzAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 07:58:58,147 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received request to upgrade to websocket
+2025-03-14 07:58:58,147 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Upgrade to websocket successful
+2025-03-14 07:58:58,232 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet MESSAGE data 0
+2025-03-14 07:58:58,233 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet MESSAGE data 0{"sid":"y7gPN-NwienIC-UcAAAF"}
+2025-03-14 07:58:58,428 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 07:58:58] "GET /api/stations HTTP/1.1" 200 20676 0.090768
+2025-03-14 07:59:00,049 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 07:59:00,135 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 07:59:23,153 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 07:59:23,254 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 07:59:25,138 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 07:59:25,256 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 07:59:48,268 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 07:59:48,357 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 07:59:50,259 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 07:59:50,343 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:00:13,366 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:00:13,452 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:00:15,346 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:00:15,440 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:00:38,457 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:00:38,542 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:00:40,443 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:00:40,530 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:01:03,566 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:01:03,704 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:01:05,532 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:01:05,618 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:01:28,727 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:01:28,832 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:01:30,620 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:01:30,734 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:01:53,851 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:01:53,973 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:01:55,736 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:01:55,889 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:02:18,988 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Sending packet PING data None
+2025-03-14 08:02:19,073 - engineio.server - INFO - 03tsBjc8n_zGlyuzAAAE: Received packet PONG data 
+2025-03-14 08:02:20,891 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Sending packet PING data None
+2025-03-14 08:02:21,016 - engineio.server - INFO - NZ9ymggoBZ1BLc9HAAAA: Received packet PONG data 
+2025-03-14 08:02:31,412 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:02:31,422 - app - INFO - Inicializando base de datos...
+2025-03-14 08:02:31,937 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:02:31,937 - app - INFO - Configurando login manager...
+2025-03-14 08:02:31,937 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:02:31,938 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:02:32,018 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:02:32,018 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:02:32,019 - __main__ - INFO - Starting Flask application
+2025-03-14 08:02:32,021 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:02:32,021 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:02:32,024 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:02:32,031 - __main__ - INFO - Test response status: 200
+2025-03-14 08:02:32,031 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:02:32,784 - app - INFO - Index endpoint accessed
+2025-03-14 08:02:32,874 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:02:32] "GET / HTTP/1.1" 302 380 0.091151
+2025-03-14 08:02:33,223 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:02:33] "GET /home HTTP/1.1" 200 8521 0.106196
+2025-03-14 08:02:33,404 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:02:33] "GET /static/css/home.css HTTP/1.1" 304 215 0.004056
+2025-03-14 08:02:33,468 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:02:33] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001190
+2025-03-14 08:02:34,396 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet OPEN data {'sid': 'oyEmraM8CSLylZdkAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:02:34,396 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received request to upgrade to websocket
+2025-03-14 08:02:34,396 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Upgrade to websocket successful
+2025-03-14 08:02:34,493 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet MESSAGE data 0
+2025-03-14 08:02:34,494 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet MESSAGE data 0{"sid":"QlaasxzhS0MhoW5_AAAB"}
+2025-03-14 08:02:59,422 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:02:59,515 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:03:23,741 - app - INFO - Index endpoint accessed
+2025-03-14 08:03:23,821 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:23] "GET / HTTP/1.1" 302 380 0.080353
+2025-03-14 08:03:23,986 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:23] "GET /home HTTP/1.1" 200 8521 0.079919
+2025-03-14 08:03:24,161 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:24] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001080
+2025-03-14 08:03:24,164 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:24] "GET /static/css/home.css HTTP/1.1" 304 215 0.000898
+2025-03-14 08:03:24,516 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:03:24,608 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:03:24,936 - engineio.server - INFO - sXh6TP_hdHDTXls2AAAC: Sending packet OPEN data {'sid': 'sXh6TP_hdHDTXls2AAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:03:24,936 - engineio.server - INFO - sXh6TP_hdHDTXls2AAAC: Received request to upgrade to websocket
+2025-03-14 08:03:24,936 - engineio.server - INFO - sXh6TP_hdHDTXls2AAAC: Upgrade to websocket successful
+2025-03-14 08:03:25,020 - engineio.server - INFO - sXh6TP_hdHDTXls2AAAC: Received packet MESSAGE data 0
+2025-03-14 08:03:25,021 - engineio.server - INFO - sXh6TP_hdHDTXls2AAAC: Sending packet MESSAGE data 0{"sid":"a7eiYMotqsawPx1jAAAD"}
+2025-03-14 08:03:26,661 - app - INFO - Dashboard endpoint accessed
+2025-03-14 08:03:26,661 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 08:03:26,836 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 08:03:26,837 - app - INFO - Intentando obtener estadísticas
+2025-03-14 08:03:26,837 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 08:03:26,861 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 08:03:26,882 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 08:03:28,905 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 08:03:28,906 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 08:03:28,907 - app - INFO - Renderizando template dashboard.html
+2025-03-14 08:03:28,952 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:28] "GET /dashboard HTTP/1.1" 200 14766 2.291412
+2025-03-14 08:03:29,086 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:29] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001082
+2025-03-14 08:03:29,174 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:29] "GET /static/js/map.js HTTP/1.1" 200 14834 0.001240
+2025-03-14 08:03:29,181 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:29] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.000931
+2025-03-14 08:03:30,006 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:30] "GET /incidents HTTP/1.1" 200 349383 0.238860
+2025-03-14 08:03:30,089 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:30] "GET /api/stations HTTP/1.1" 200 20676 0.081632
+2025-03-14 08:03:30,090 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet OPEN data {'sid': 'AQ3kjwqWywuwa47nAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:03:30,091 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received request to upgrade to websocket
+2025-03-14 08:03:30,091 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Upgrade to websocket successful
+2025-03-14 08:03:30,206 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet MESSAGE data 0
+2025-03-14 08:03:30,207 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet MESSAGE data 0{"sid":"VaglaJr6YGa2fdpIAAAF"}
+2025-03-14 08:03:30,290 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:30] "GET /api/stations HTTP/1.1" 200 20676 0.081588
+2025-03-14 08:03:30,642 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:03:30] "GET /api/stations HTTP/1.1" 200 20676 0.080809
+2025-03-14 08:03:49,623 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:03:49,730 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:03:55,097 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:03:55,233 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:04:14,741 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:04:14,881 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:04:20,239 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:04:20,353 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:04:39,887 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:04:39,983 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:04:45,359 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:04:45,444 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:05:04,985 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:05:05,118 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:05:10,451 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:05:10,558 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:05:30,139 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:05:30,261 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:05:35,560 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:05:35,648 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:05:55,282 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:05:55,379 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:06:00,654 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:06:00,757 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:06:20,396 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:06:20,507 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:06:25,763 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:06:25,852 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:06:45,518 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Sending packet PING data None
+2025-03-14 08:06:45,602 - engineio.server - INFO - oyEmraM8CSLylZdkAAAA: Received packet PONG data 
+2025-03-14 08:06:50,859 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Sending packet PING data None
+2025-03-14 08:06:50,944 - engineio.server - INFO - AQ3kjwqWywuwa47nAAAE: Received packet PONG data 
+2025-03-14 08:06:53,298 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:06:53,298 - app - INFO - Inicializando base de datos...
+2025-03-14 08:06:53,777 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:06:53,778 - app - INFO - Configurando login manager...
+2025-03-14 08:06:53,778 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:06:53,779 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:06:53,812 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:06:53,812 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:06:53,812 - __main__ - INFO - Starting Flask application
+2025-03-14 08:06:53,812 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:06:53,813 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:06:53,814 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:06:53,815 - __main__ - INFO - Test response status: 200
+2025-03-14 08:06:53,815 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:06:54,369 - app - INFO - Index endpoint accessed
+2025-03-14 08:06:54,468 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:06:54] "GET / HTTP/1.1" 302 380 0.100476
+2025-03-14 08:06:54,666 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:06:54] "GET /home HTTP/1.1" 200 8521 0.096966
+2025-03-14 08:06:54,802 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:06:54] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004567
+2025-03-14 08:06:54,804 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:06:54] "GET /static/css/home.css HTTP/1.1" 304 215 0.001076
+2025-03-14 08:06:55,823 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Sending packet OPEN data {'sid': 'pmjyOKQQeymjkPTPAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:06:55,823 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Received request to upgrade to websocket
+2025-03-14 08:06:55,823 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Upgrade to websocket successful
+2025-03-14 08:06:55,975 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Received packet MESSAGE data 0
+2025-03-14 08:06:55,976 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Sending packet MESSAGE data 0{"sid":"0xaSc0Aqu6lPmBMfAAAB"}
+2025-03-14 08:07:20,849 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Sending packet PING data None
+2025-03-14 08:07:20,947 - engineio.server - INFO - pmjyOKQQeymjkPTPAAAA: Received packet PONG data 
+2025-03-14 08:07:36,609 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:07:36,609 - app - INFO - Inicializando base de datos...
+2025-03-14 08:07:37,198 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:07:37,198 - app - INFO - Configurando login manager...
+2025-03-14 08:07:37,198 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:07:37,199 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:07:37,234 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:07:37,235 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:07:37,235 - __main__ - INFO - Starting Flask application
+2025-03-14 08:07:37,235 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:07:37,235 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:07:37,237 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:07:37,238 - __main__ - INFO - Test response status: 200
+2025-03-14 08:07:37,238 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:07:37,677 - app - INFO - Index endpoint accessed
+2025-03-14 08:07:37,776 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:37] "GET / HTTP/1.1" 302 380 0.100580
+2025-03-14 08:07:37,966 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:37] "GET /home HTTP/1.1" 200 8521 0.101741
+2025-03-14 08:07:38,088 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:38] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004022
+2025-03-14 08:07:38,147 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:38] "GET /static/css/home.css HTTP/1.1" 304 215 0.001238
+2025-03-14 08:07:38,891 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Sending packet OPEN data {'sid': 'T543wSiR0SFz7sm-AAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:07:38,891 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Received request to upgrade to websocket
+2025-03-14 08:07:38,892 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Upgrade to websocket successful
+2025-03-14 08:07:38,973 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Received packet MESSAGE data 0
+2025-03-14 08:07:38,974 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Sending packet MESSAGE data 0{"sid":"ccb2RskuOlShJ31wAAAB"}
+2025-03-14 08:07:47,665 - app - INFO - Index endpoint accessed
+2025-03-14 08:07:47,755 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:47] "GET / HTTP/1.1" 302 380 0.090213
+2025-03-14 08:07:47,950 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:47] "GET /home HTTP/1.1" 200 8521 0.090879
+2025-03-14 08:07:48,111 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:48] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001328
+2025-03-14 08:07:48,113 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:48] "GET /static/css/home.css HTTP/1.1" 304 215 0.001033
+2025-03-14 08:07:49,035 - engineio.server - INFO - l3ZQiC-rnFxf399wAAAC: Sending packet OPEN data {'sid': 'l3ZQiC-rnFxf399wAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:07:49,035 - engineio.server - INFO - l3ZQiC-rnFxf399wAAAC: Received request to upgrade to websocket
+2025-03-14 08:07:49,035 - engineio.server - INFO - l3ZQiC-rnFxf399wAAAC: Upgrade to websocket successful
+2025-03-14 08:07:49,120 - engineio.server - INFO - l3ZQiC-rnFxf399wAAAC: Received packet MESSAGE data 0
+2025-03-14 08:07:49,120 - engineio.server - INFO - l3ZQiC-rnFxf399wAAAC: Sending packet MESSAGE data 0{"sid":"XEi3h6imjtTT3HkrAAAD"}
+2025-03-14 08:07:50,714 - app - INFO - Dashboard endpoint accessed
+2025-03-14 08:07:50,714 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 08:07:50,900 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 08:07:50,901 - app - INFO - Intentando obtener estadísticas
+2025-03-14 08:07:50,901 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 08:07:50,927 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 08:07:50,950 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 08:07:53,119 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 08:07:53,120 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 08:07:53,120 - app - INFO - Renderizando template dashboard.html
+2025-03-14 08:07:53,171 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:53] "GET /dashboard HTTP/1.1" 200 14766 2.457368
+2025-03-14 08:07:53,287 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:53] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001400
+2025-03-14 08:07:53,335 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:53] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.001063
+2025-03-14 08:07:53,375 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:53] "GET /static/js/map.js HTTP/1.1" 200 14954 0.001066
+2025-03-14 08:07:54,045 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:54] "GET /api/stations HTTP/1.1" 200 20676 0.092274
+2025-03-14 08:07:54,289 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:54] "GET /incidents HTTP/1.1" 200 349383 0.242636
+2025-03-14 08:07:54,379 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:54] "GET /api/stations HTTP/1.1" 200 20676 0.089276
+2025-03-14 08:07:54,380 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Sending packet OPEN data {'sid': 'uUiHB1dAn1EipNXPAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:07:54,380 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Received request to upgrade to websocket
+2025-03-14 08:07:54,380 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Upgrade to websocket successful
+2025-03-14 08:07:54,467 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Received packet MESSAGE data 0
+2025-03-14 08:07:54,468 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Sending packet MESSAGE data 0{"sid":"JgpuoSutGwUhAreGAAAF"}
+2025-03-14 08:07:54,658 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:07:54] "GET /api/stations HTTP/1.1" 200 20676 0.092115
+2025-03-14 08:08:03,902 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Sending packet PING data None
+2025-03-14 08:08:04,014 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Received packet PONG data 
+2025-03-14 08:08:19,386 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Sending packet PING data None
+2025-03-14 08:08:19,507 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Received packet PONG data 
+2025-03-14 08:08:29,025 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Sending packet PING data None
+2025-03-14 08:08:29,167 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Received packet PONG data 
+2025-03-14 08:08:44,514 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Sending packet PING data None
+2025-03-14 08:08:44,598 - engineio.server - INFO - uUiHB1dAn1EipNXPAAAE: Received packet PONG data 
+2025-03-14 08:08:54,178 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Sending packet PING data None
+2025-03-14 08:08:54,340 - engineio.server - INFO - T543wSiR0SFz7sm-AAAA: Received packet PONG data 
+2025-03-14 08:08:59,584 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:08:59,585 - app - INFO - Inicializando base de datos...
+2025-03-14 08:09:00,127 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:09:00,127 - app - INFO - Configurando login manager...
+2025-03-14 08:09:00,127 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:09:00,128 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:09:00,164 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:09:00,164 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:09:00,165 - __main__ - INFO - Starting Flask application
+2025-03-14 08:09:00,165 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:09:00,165 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:09:00,167 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:09:00,167 - __main__ - INFO - Test response status: 200
+2025-03-14 08:09:00,167 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:09:00,536 - app - INFO - Index endpoint accessed
+2025-03-14 08:09:00,629 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:00] "GET / HTTP/1.1" 302 380 0.093784
+2025-03-14 08:09:00,824 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:00] "GET /home HTTP/1.1" 200 8521 0.096406
+2025-03-14 08:09:00,954 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:00] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004069
+2025-03-14 08:09:00,956 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:00] "GET /static/css/home.css HTTP/1.1" 304 215 0.001062
+2025-03-14 08:09:02,005 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Sending packet OPEN data {'sid': 'gT2lsyrTJy8SYiK4AAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:09:02,008 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Received request to upgrade to websocket
+2025-03-14 08:09:02,008 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Upgrade to websocket successful
+2025-03-14 08:09:02,148 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Received packet MESSAGE data 0
+2025-03-14 08:09:02,149 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Sending packet MESSAGE data 0{"sid":"LdzGDPZp50Blg2TYAAAB"}
+2025-03-14 08:09:27,034 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Sending packet PING data None
+2025-03-14 08:09:27,121 - engineio.server - INFO - gT2lsyrTJy8SYiK4AAAA: Received packet PONG data 
+2025-03-14 08:09:41,933 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:09:41,934 - app - INFO - Inicializando base de datos...
+2025-03-14 08:09:42,475 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:09:42,475 - app - INFO - Configurando login manager...
+2025-03-14 08:09:42,475 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:09:42,476 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:09:42,512 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:09:42,512 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:09:42,512 - __main__ - INFO - Starting Flask application
+2025-03-14 08:09:42,512 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:09:42,513 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:09:42,514 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:09:42,515 - __main__ - INFO - Test response status: 200
+2025-03-14 08:09:42,515 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:09:42,902 - app - INFO - Index endpoint accessed
+2025-03-14 08:09:42,994 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:42] "GET / HTTP/1.1" 302 380 0.092609
+2025-03-14 08:09:43,184 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:43] "GET /home HTTP/1.1" 200 8521 0.093537
+2025-03-14 08:09:43,285 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:43] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004017
+2025-03-14 08:09:43,380 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:09:43] "GET /static/css/home.css HTTP/1.1" 304 215 0.001220
+2025-03-14 08:09:44,136 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Sending packet OPEN data {'sid': 'ZkQo_6MVhZKs6kOBAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:09:44,136 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Received request to upgrade to websocket
+2025-03-14 08:09:44,136 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Upgrade to websocket successful
+2025-03-14 08:09:44,222 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Received packet MESSAGE data 0
+2025-03-14 08:09:44,223 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Sending packet MESSAGE data 0{"sid":"7xlGQRjEjtMkWTw2AAAB"}
+2025-03-14 08:10:09,162 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Sending packet PING data None
+2025-03-14 08:10:09,254 - engineio.server - INFO - ZkQo_6MVhZKs6kOBAAAA: Received packet PONG data 
+2025-03-14 08:10:23,363 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:10:23,363 - app - INFO - Inicializando base de datos...
+2025-03-14 08:10:23,853 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:10:23,853 - app - INFO - Configurando login manager...
+2025-03-14 08:10:23,853 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:10:23,854 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:10:23,886 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:10:23,886 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:10:23,886 - __main__ - INFO - Starting Flask application
+2025-03-14 08:10:23,886 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:10:23,886 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:10:23,888 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:10:23,889 - __main__ - INFO - Test response status: 200
+2025-03-14 08:10:23,889 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:10:24,209 - app - INFO - Index endpoint accessed
+2025-03-14 08:10:24,299 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:24] "GET / HTTP/1.1" 302 380 0.090992
+2025-03-14 08:10:24,481 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:24] "GET /home HTTP/1.1" 200 8521 0.094274
+2025-03-14 08:10:24,581 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:24] "GET /static/css/custom.css HTTP/1.1" 304 216 0.004331
+2025-03-14 08:10:24,583 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:24] "GET /static/css/home.css HTTP/1.1" 304 215 0.000787
+2025-03-14 08:10:25,425 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet OPEN data {'sid': '8YhEqBw1j_d9NNwOAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:10:25,426 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received request to upgrade to websocket
+2025-03-14 08:10:25,426 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Upgrade to websocket successful
+2025-03-14 08:10:25,513 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet MESSAGE data 0
+2025-03-14 08:10:25,514 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet MESSAGE data 0{"sid":"R7HGhKej2I0TTj-oAAAB"}
+2025-03-14 08:10:43,779 - app - INFO - Index endpoint accessed
+2025-03-14 08:10:43,858 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:43] "GET / HTTP/1.1" 302 380 0.078896
+2025-03-14 08:10:44,037 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:44] "GET /home HTTP/1.1" 200 8521 0.079222
+2025-03-14 08:10:44,144 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:44] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001147
+2025-03-14 08:10:44,146 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:44] "GET /static/css/home.css HTTP/1.1" 304 215 0.001153
+2025-03-14 08:10:45,142 - engineio.server - INFO - a4npxqokO8uNhk1rAAAC: Sending packet OPEN data {'sid': 'a4npxqokO8uNhk1rAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:10:45,142 - engineio.server - INFO - a4npxqokO8uNhk1rAAAC: Received request to upgrade to websocket
+2025-03-14 08:10:45,142 - engineio.server - INFO - a4npxqokO8uNhk1rAAAC: Upgrade to websocket successful
+2025-03-14 08:10:45,270 - engineio.server - INFO - a4npxqokO8uNhk1rAAAC: Received packet MESSAGE data 0
+2025-03-14 08:10:45,271 - engineio.server - INFO - a4npxqokO8uNhk1rAAAC: Sending packet MESSAGE data 0{"sid":"BUAaaf4orGXipgbXAAAD"}
+2025-03-14 08:10:46,836 - app - INFO - Dashboard endpoint accessed
+2025-03-14 08:10:46,836 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 08:10:46,992 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 08:10:46,992 - app - INFO - Intentando obtener estadísticas
+2025-03-14 08:10:46,993 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 08:10:47,017 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 08:10:47,037 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 08:10:48,898 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 08:10:48,899 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 08:10:48,899 - app - INFO - Renderizando template dashboard.html
+2025-03-14 08:10:48,943 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:48] "GET /dashboard HTTP/1.1" 200 14766 2.107429
+2025-03-14 08:10:49,061 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:49] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001168
+2025-03-14 08:10:49,063 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:49] "GET /static/css/dashboard.css HTTP/1.1" 200 6285 0.000958
+2025-03-14 08:10:49,147 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:49] "GET /static/js/map.js HTTP/1.1" 200 14922 0.001244
+2025-03-14 08:10:50,031 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:50] "GET /incidents HTTP/1.1" 200 349383 0.235646
+2025-03-14 08:10:50,113 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:50] "GET /api/stations HTTP/1.1" 200 20676 0.080358
+2025-03-14 08:10:50,164 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet OPEN data {'sid': 'HTUnQKoj4rpCXL_cAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:10:50,164 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received request to upgrade to websocket
+2025-03-14 08:10:50,165 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Upgrade to websocket successful
+2025-03-14 08:10:50,309 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:50] "GET /api/stations HTTP/1.1" 200 20676 0.080120
+2025-03-14 08:10:50,309 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet MESSAGE data 0
+2025-03-14 08:10:50,310 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet MESSAGE data 0{"sid":"94PSTFH22wBJa_BzAAAF"}
+2025-03-14 08:10:50,428 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:10:50,533 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:10:50,678 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:10:50] "GET /api/stations HTTP/1.1" 200 20676 0.080932
+2025-03-14 08:11:15,170 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:11:15,260 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:11:15,534 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:11:15,622 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:11:40,276 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:11:40,364 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:11:40,623 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:11:40,717 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:12:05,375 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:12:05,471 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:12:05,718 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:12:05,833 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:12:30,477 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:12:30,565 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:12:30,835 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:12:30,947 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:12:55,566 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:12:55,698 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:12:55,948 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:12:56,048 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:13:20,723 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:13:20,818 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:13:21,049 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:13:21,140 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:13:45,839 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:13:45,944 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:13:46,142 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:13:46,316 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:14:10,960 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:14:11,040 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:14:11,317 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:14:11,400 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:14:36,052 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:14:36,141 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:14:36,401 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:14:36,499 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:15:01,148 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:15:01,259 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:15:01,500 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:15:01,583 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:15:26,261 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:15:26,359 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:15:26,584 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:15:26,685 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:15:51,384 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:15:51,472 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:15:51,687 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:15:51,790 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:16:16,494 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Sending packet PING data None
+2025-03-14 08:16:16,593 - engineio.server - INFO - HTUnQKoj4rpCXL_cAAAE: Received packet PONG data 
+2025-03-14 08:16:16,792 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Sending packet PING data None
+2025-03-14 08:16:16,907 - engineio.server - INFO - 8YhEqBw1j_d9NNwOAAAA: Received packet PONG data 
+2025-03-14 08:16:32,672 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:16:32,672 - app - INFO - Inicializando base de datos...
+2025-03-14 08:16:33,636 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:16:33,636 - app - INFO - Configurando login manager...
+2025-03-14 08:16:33,636 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:16:33,637 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:16:33,675 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:16:33,675 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:16:33,675 - __main__ - INFO - Starting Flask application
+2025-03-14 08:16:33,675 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:16:33,676 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:16:33,677 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:16:33,678 - __main__ - INFO - Test response status: 200
+2025-03-14 08:16:33,678 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:16:34,735 - app - INFO - Index endpoint accessed
+2025-03-14 08:16:34,847 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:34] "GET / HTTP/1.1" 302 380 0.113588
+2025-03-14 08:16:35,068 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:35] "GET /home HTTP/1.1" 200 8521 0.089495
+2025-03-14 08:16:35,567 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:35] "GET /static/css/custom.css HTTP/1.1" 304 216 0.003923
+2025-03-14 08:16:35,641 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:35] "GET /static/css/home.css HTTP/1.1" 304 215 0.001144
+2025-03-14 08:16:36,321 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet OPEN data {'sid': 'qr75cYg4qOHI3cStAAAA', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:16:36,321 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received request to upgrade to websocket
+2025-03-14 08:16:36,321 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Upgrade to websocket successful
+2025-03-14 08:16:36,405 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet MESSAGE data 0
+2025-03-14 08:16:36,406 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet MESSAGE data 0{"sid":"ZmxS7PVf55kIw_GIAAAB"}
+2025-03-14 08:16:50,508 - app - INFO - Index endpoint accessed
+2025-03-14 08:16:50,509 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:50] "GET / HTTP/1.1" 302 383 0.001090
+2025-03-14 08:16:50,633 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:50] "GET /login HTTP/1.1" 200 4187 0.007633
+2025-03-14 08:16:50,811 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:50] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001104
+2025-03-14 08:16:50,874 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:16:50] "GET /static/css/login.css HTTP/1.1" 304 216 0.001225
+2025-03-14 08:17:01,333 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:17:01,464 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:17:05,072 - app - INFO - Index endpoint accessed
+2025-03-14 08:17:05,073 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:05] "GET / HTTP/1.1" 302 568 0.001342
+2025-03-14 08:17:05,176 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:05] "GET /login HTTP/1.1" 200 4022 0.001432
+2025-03-14 08:17:05,346 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:05] "GET /static/css/login.css HTTP/1.1" 304 216 0.001063
+2025-03-14 08:17:05,348 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:05] "GET /static/css/custom.css HTTP/1.1" 304 216 0.001170
+2025-03-14 08:17:14,083 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:14] "POST /login HTTP/1.1" 302 863 0.165185
+2025-03-14 08:17:14,252 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:14] "GET /home HTTP/1.1" 200 9214 0.079390
+2025-03-14 08:17:14,437 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:14] "GET /static/css/home.css HTTP/1.1" 304 215 0.000997
+2025-03-14 08:17:14,439 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:14] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000965
+2025-03-14 08:17:15,498 - engineio.server - INFO - 6lY51-531jFpNfvYAAAC: Sending packet OPEN data {'sid': '6lY51-531jFpNfvYAAAC', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:17:15,498 - engineio.server - INFO - 6lY51-531jFpNfvYAAAC: Received request to upgrade to websocket
+2025-03-14 08:17:15,499 - engineio.server - INFO - 6lY51-531jFpNfvYAAAC: Upgrade to websocket successful
+2025-03-14 08:17:15,580 - engineio.server - INFO - 6lY51-531jFpNfvYAAAC: Received packet MESSAGE data 0
+2025-03-14 08:17:15,581 - engineio.server - INFO - 6lY51-531jFpNfvYAAAC: Sending packet MESSAGE data 0{"sid":"ck1hwKsa6BhhquHZAAAD"}
+2025-03-14 08:17:16,350 - app - INFO - Dashboard endpoint accessed
+2025-03-14 08:17:16,350 - app - INFO - Intentando obtener incidentes para el mapa
+2025-03-14 08:17:16,514 - app - INFO - Obtenidos 1009 incidentes para el mapa
+2025-03-14 08:17:16,515 - app - INFO - Intentando obtener estadísticas
+2025-03-14 08:17:16,515 - root - INFO - Iniciando obtención de estadísticas de incidentes
+2025-03-14 08:17:16,541 - root - INFO - Total de incidentes encontrados: 1009
+2025-03-14 08:17:16,561 - root - INFO - Estadísticas por estación obtenidas: 13 estaciones
+2025-03-14 08:17:18,412 - root - INFO - Estadísticas procesadas exitosamente
+2025-03-14 08:17:18,413 - app - INFO - Estadísticas obtenidas: {'total_incidents': 1009, 'most_affected_station': 'Avenida Jiménez', 'most_dangerous_hour': '18:00', 'most_common_type': 'Hurto', 'incident_types': {'Hurto': 412, 'Cosquilleo': 256, 'Acoso': 112, 'Sospechoso': 97, 'Hurto a mano armada': 62, 'Ataque': 47, 'Apertura de puertas': 23}, 'top_stations': {'Avenida Jiménez': {'total': 160, 'hurto': 60, 'acoso': 20, 'cosquilleo': 40, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 12, 'sospechoso': 16}, 'Banderas': {'total': 145, 'hurto': 57, 'acoso': 14, 'cosquilleo': 34, 'ataque': 8, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 10, 'sospechoso': 18}, 'Portal Norte': {'total': 140, 'hurto': 52, 'acoso': 18, 'cosquilleo': 36, 'ataque': 10, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Las Aguas': {'total': 136, 'hurto': 50, 'acoso': 16, 'cosquilleo': 38, 'ataque': 6, 'apertura_de_puertas': 4, 'hurto_a_mano_armada': 8, 'sospechoso': 14}, 'Universidades': {'total': 128, 'hurto': 48, 'acoso': 16, 'cosquilleo': 32, 'ataque': 6, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 10, 'sospechoso': 14}, 'Marly': {'total': 116, 'hurto': 46, 'acoso': 14, 'cosquilleo': 30, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 8, 'sospechoso': 12}, 'Calle 76': {'total': 106, 'hurto': 44, 'acoso': 12, 'cosquilleo': 28, 'ataque': 4, 'apertura_de_puertas': 2, 'hurto_a_mano_armada': 6, 'sospechoso': 10}, 'Calle 72': {'total': 70, 'hurto': 54, 'acoso': 0, 'cosquilleo': 16, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Portal Suba': {'total': 3, 'hurto': 1, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 1, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'Patio Bonito': {'total': 2, 'hurto': 0, 'acoso': 0, 'cosquilleo': 2, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'León XIII': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 1, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}, 'La Despensa': {'total': 1, 'hurto': 0, 'acoso': 0, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 1}, 'Terminal': {'total': 1, 'hurto': 0, 'acoso': 1, 'cosquilleo': 0, 'ataque': 0, 'apertura_de_puertas': 0, 'hurto_a_mano_armada': 0, 'sospechoso': 0}}}
+2025-03-14 08:17:18,413 - app - INFO - Renderizando template dashboard.html
+2025-03-14 08:17:18,456 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:18] "GET /dashboard HTTP/1.1" 200 14766 2.106549
+2025-03-14 08:17:18,579 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:18] "GET /static/css/custom.css HTTP/1.1" 304 216 0.000938
+2025-03-14 08:17:18,659 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:18] "GET /static/css/dashboard.css HTTP/1.1" 304 220 0.000957
+2025-03-14 08:17:18,672 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:18] "GET /static/js/map.js HTTP/1.1" 200 14895 0.000908
+2025-03-14 08:17:19,516 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:19] "GET /api/stations HTTP/1.1" 200 20676 0.110391
+2025-03-14 08:17:19,712 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:19] "GET /incidents HTTP/1.1" 200 349383 0.194639
+2025-03-14 08:17:19,794 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:19] "GET /api/stations HTTP/1.1" 200 20676 0.081505
+2025-03-14 08:17:19,808 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet OPEN data {'sid': 'hKqzn5CSNBoyRUXwAAAE', 'upgrades': [], 'pingTimeout': 60000, 'pingInterval': 25000}
+2025-03-14 08:17:19,808 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received request to upgrade to websocket
+2025-03-14 08:17:19,808 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Upgrade to websocket successful
+2025-03-14 08:17:19,928 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received packet MESSAGE data 0
+2025-03-14 08:17:19,929 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet MESSAGE data 0{"sid":"tvkU-kpdCgB6odSgAAAF"}
+2025-03-14 08:17:20,118 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:17:20] "GET /api/stations HTTP/1.1" 200 20676 0.080179
+2025-03-14 08:17:26,472 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:17:26,620 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:17:44,813 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet PING data None
+2025-03-14 08:17:44,911 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received packet PONG data 
+2025-03-14 08:17:51,628 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:17:51,735 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:18:09,916 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet PING data None
+2025-03-14 08:18:10,048 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received packet PONG data 
+2025-03-14 08:18:16,743 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:18:16,842 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:18:35,066 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet PING data None
+2025-03-14 08:18:35,170 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received packet PONG data 
+2025-03-14 08:18:41,848 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:18:41,953 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:19:00,181 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Sending packet PING data None
+2025-03-14 08:19:00,306 - engineio.server - INFO - hKqzn5CSNBoyRUXwAAAE: Received packet PONG data 
+2025-03-14 08:19:06,954 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:19:07,092 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:19:32,099 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:19:32,183 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:19:57,204 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:19:57,288 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:20:22,313 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Sending packet PING data None
+2025-03-14 08:20:22,398 - engineio.server - INFO - qr75cYg4qOHI3cStAAAA: Received packet PONG data 
+2025-03-14 08:20:41,926 - engineio.server - INFO - Server initialized for gevent.
+2025-03-14 08:20:41,927 - app - INFO - Inicializando base de datos...
+2025-03-14 08:20:42,437 - app - INFO - Base de datos inicializada correctamente
+2025-03-14 08:20:42,437 - app - INFO - Configurando login manager...
+2025-03-14 08:20:42,437 - app - INFO - Login manager configurado correctamente
+2025-03-14 08:20:42,438 - app - INFO - Importando e inicializando rutas...
+2025-03-14 08:20:42,491 - app - INFO - Rutas inicializadas correctamente
+2025-03-14 08:20:42,492 - app - INFO - Aplicación Flask configurada completamente
+2025-03-14 08:20:42,492 - __main__ - INFO - Starting Flask application
+2025-03-14 08:20:42,492 - __main__ - INFO - Attempting to start server on port 5000
+2025-03-14 08:20:42,492 - __main__ - INFO - Testing server configuration...
+2025-03-14 08:20:42,495 - app - INFO - Health check endpoint accessed from IP: 127.0.0.1
+2025-03-14 08:20:42,496 - __main__ - INFO - Test response status: 200
+2025-03-14 08:20:42,496 - __main__ - INFO - Starting SocketIO server...
+2025-03-14 08:20:43,094 - app - INFO - Index endpoint accessed
+2025-03-14 08:20:43,181 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:20:43] "GET / HTTP/1.1" 302 380 0.087810
+2025-03-14 08:20:43,426 - geventwebsocket.handler - INFO - 172.31.128.65 - - [2025-03-14 08:20:43] "GET /home HTTP/1.1" 200 8521 0.094538
