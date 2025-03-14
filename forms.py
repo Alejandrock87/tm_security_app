@@ -34,7 +34,7 @@ class IncidentReportForm(FlaskForm):
         ('Hurto a mano armada', 'Hurto a mano armada'),
         ('Cosquilleo', 'Cosquilleo'),
         ('Ataque', 'Ataque'),
-        ('Apertura de Puertas', 'Apertura de Puertas'),
+        ('Apertura de puertas', 'Apertura de puertas'),
         ('Sospechoso', 'Sospechoso'),
         ('Acoso', 'Acoso')
     ], validators=[DataRequired()])
