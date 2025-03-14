@@ -13,6 +13,16 @@
       <p class="predictions-description">Mantente informado sobre posibles incidentes en tiempo real</p>
     </header>
 
+    <section class="predictions-toggle-container">
+      <label class="predictions-label" for="notificationToggle">
+        Recibir alertas
+      </label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="notificationToggle" class="toggle-input">
+        <label for="notificationToggle" class="toggle-label"></label>
+      </div>
+    </section>
+
     <section class="predictions-filters">
       <div class="filter-group">
         <label class="filter-label">Filtrar predicciones por:</label>
@@ -58,16 +68,6 @@
       </div>
     </section>
 
-    <section class="predictions-toggle-container">
-      <label class="predictions-label" for="notificationToggle">
-        Recibir alertas
-      </label>
-      <div class="toggle-switch">
-        <input type="checkbox" id="notificationToggle" class="toggle-input">
-        <label for="notificationToggle" class="toggle-label"></label>
-      </div>
-    </section>
-
     <section class="risk-level-info">
       <h3>Niveles de Riesgo</h3>
       <div class="risk-level-description">
@@ -90,6 +90,9 @@
       <!-- Las predicciones se cargarán dinámicamente aquí -->
     </section>
   </div>
+
+  <!-- Contenedor para notificaciones in-app -->
+  <div id="toastContainer"></div>
 </main>
 {% endblock %}
 

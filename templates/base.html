@@ -62,36 +62,8 @@
         {% block content %}{% endblock %}
     </div>
 
-    {% if current_user.is_authenticated and not request.endpoint in ['login', 'register'] %}
-    <!-- Navbar Inferior Fijo (~60px) -->
-    <nav class="navbar bottom-nav">
-        <div class="container-fluid d-flex justify-content-around">
-            <a class="nav-link text-center" href="{{ url_for('home') }}">
-                <i class="fas fa-home fa-lg"></i>
-                <span class="d-block small">Inicio</span>
-            </a>
-            <a class="nav-link text-center" href="{{ url_for('dashboard') }}">
-                <i class="fas fa-map-marked-alt fa-lg"></i>
-                <span class="d-block small">Mapa</span>
-            </a>
-            <a class="nav-link text-center" href="{{ url_for('report_incident') }}">
-                <i class="fas fa-exclamation-triangle fa-lg"></i>
-                <span class="d-block small">Reportar</span>
-            </a>
-            <a class="nav-link text-center" href="{{ url_for('predictions') }}">
-                <i class="fas fa-brain fa-lg"></i>
-                <span class="d-block small">Predicciones</span>
-            </a>
-            <a class="nav-link text-center" href="{{ url_for('statistics') }}">
-                <i class="fas fa-chart-bar fa-lg"></i>
-                <span class="d-block small">Stats</span>
-            </a>
-        </div>
-    </nav>
-    {% endif %}
-
     <!-- Modal de Notificaciones -->
-    {% if not request.endpoint == 'login' %}
+    {% if current_user.is_authenticated and not request.endpoint in ['login', 'register'] %}
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content bg-dark">
@@ -121,22 +93,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+        // Registro del Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/static/js/service-worker.js')
                     .then(registration => {
                         console.log('ServiceWorker registrado:', registration);
+                        // Suscribirse a mensajes del service worker
+                        navigator.serviceWorker.addEventListener('message', (event) => {
+                            if (event.data && event.data.type === 'showNotification') {
+                                showNotification(event.data.payload);
+                            }
+                        });
                     })
                     .catch(error => {
                         console.log('Error al registrar ServiceWorker:', error);
                     });
             });
         }
-    </script>
-    {% if not request.endpoint == 'login' %}
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Configuración de Socket.IO con reconexión automática
+
+        // Función para mostrar notificaciones in-app
+        function showNotification(data) {
+            const notificationList = document.getElementById('notifications-list');
+            if (notificationList) {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
+                notificationItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>${data.message || 'Nueva notificación'}</span>
+                        <small>${new Date().toLocaleTimeString()}</small>
+                    </div>
+                `;
+                notificationList.appendChild(notificationItem);
+
+                // Actualizar badge
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    const count = parseInt(badge.textContent || '0') + 1;
+                    badge.textContent = count;
+                    badge.style.display = 'inline-block';
+                }
+            }
+        }
+
+        // Configuración de Socket.IO
         const socket = io({
             transports: ['websocket', 'polling'],
             reconnection: true,
@@ -148,46 +148,18 @@
             console.log('Conectado al servidor Socket.IO');
         });
 
-        socket.on('connect_error', (error) => {
-            console.log('Error de conexión Socket.IO:', error);
-        });
-
-        socket.on('disconnect', (reason) => {
-            console.log('Desconectado del servidor Socket.IO:', reason);
-        });
-
         socket.on('newNotification', (notification) => {
-            const notificationList = document.getElementById('notifications-list');
-            if (notificationList) {
-                const newNotificationItem = document.createElement('li');
-                newNotificationItem.classList.add('list-group-item', 'bg-dark', 'text-white', 'border-secondary');
-                newNotificationItem.textContent = notification;
-                notificationList.appendChild(newNotificationItem);
-
-                // Incrementar badge
-                const notificationBadge = document.getElementById('notificationBadge');
-                if (notificationBadge) {
-                    let count = parseInt(notificationBadge.textContent) || 0;
-                    count++;
-                    notificationBadge.textContent = count;
-                    notificationBadge.style.display = 'inline-block';
-                }
-            }
+            showNotification({ message: notification });
         });
 
-        // Ocultar alertas flash luego de 5s
-        const alerts = document.querySelectorAll('.floating-alert');
-        alerts.forEach(alert => {
+        // Ocultar alertas flash después de 5s
+        document.querySelectorAll('.floating-alert').forEach(alert => {
             setTimeout(() => {
                 alert.classList.add('hide');
-                setTimeout(() => {
-                    alert.remove();
-                }, 500);
+                setTimeout(() => alert.remove(), 500);
             }, 5000);
         });
-    });
     </script>
-    {% endif %}
     {% block scripts %}{% endblock %}
 </body>
 </html>
