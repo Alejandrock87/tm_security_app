@@ -7,8 +7,12 @@
   --predictions-text: #2d3436;
   --predictions-text-secondary: #636e72;
   --predictions-border: #e2e8f0;
+  --risk-high: #ef4444;
+  --risk-medium: #f59e0b;
+  --risk-low: #3b82f6;
 }
 
+/* Estilos base */
 .predictions-content {
   position: fixed;
   top: var(--nav-height);
@@ -29,6 +33,202 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
+/* Estilos para los filtros */
+.predictions-filters {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--predictions-text);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para checkboxes */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid var(--predictions-border);
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.checkbox-item label {
+  font-size: 0.9rem;
+  color: var(--predictions-text);
+  cursor: pointer;
+}
+
+/* Estilos para el buscador de estaciones */
+.search-box {
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--predictions-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Estilos para información de niveles de riesgo */
+.risk-level-info {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.risk-level-info h3 {
+  font-size: 1.1rem;
+  color: #000000; /* Changed color to black */
+  margin-bottom: 1rem;
+}
+
+.risk-level-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.risk-level-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #000000; /* Changed color to black */
+}
+
+.risk-level-item .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.risk-high .dot {
+  background-color: var(--risk-high);
+}
+
+.risk-medium .dot {
+  background-color: var(--risk-medium);
+}
+
+.risk-low .dot {
+  background-color: var(--risk-low);
+}
+
+/* Estilos para las predicciones */
+.prediction-item {
+  background-color: #fff;
+  border: 2px solid var(--predictions-border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: var(--predictions-text);
+}
+
+.prediction-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.prediction-item-danger {
+  border-left: 4px solid var(--risk-high);
+}
+
+.prediction-item-warning {
+  border-left: 4px solid var(--risk-medium);
+}
+
+.prediction-item-info {
+  border-left: 4px solid var(--risk-low);
+}
+
+.prediction-item h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--predictions-text);
+  margin-bottom: 0.5rem;
+}
+
+.prediction-item p {
+  font-size: 0.95rem;
+  color: var(--predictions-text);
+  margin-bottom: 0.5rem;
+}
+
+.prediction-item small {
+  font-size: 0.85rem;
+  color: var(--predictions-text-secondary);
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .predictions-content {
+    padding: 1rem;
+  }
+
+  .predictions-container {
+    padding: 1.25rem;
+    margin: 0;
+  }
+
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mensaje de carga */
+.loading-message {
+  color: var(--predictions-text);
+  text-align: center;
+  padding: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mantener estilos existentes */
 .predictions-header {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -114,14 +314,12 @@
   margin-top: 1.5rem;
 }
 
-/* Estilos para la etiqueta de notificaciones */
 .predictions-label {
   font-size: 0.95rem;
   color: var(--predictions-text);
   font-weight: 500;
 }
 
-/* Clases utilitarias */
 .d-flex {
   display: flex;
 }
@@ -138,92 +336,41 @@
   margin-bottom: 0.5rem;
 }
 
-.prediction-item {
-  background-color: #fff;
-  border: 2px solid var(--predictions-border);
-  border-radius: 12px;
-  padding: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radio-label {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
   color: var(--predictions-text);
 }
 
-.prediction-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.filter-select {
+  margin-top: 1rem;
 }
 
-.prediction-item h5 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--predictions-text);
+.filter-select label {
+  display: block;
   margin-bottom: 0.5rem;
-}
-
-.prediction-item p {
-  font-size: 0.95rem;
-  color: var(--predictions-text);
-  margin-bottom: 0.5rem;
-}
-
-.prediction-item small {
-  font-size: 0.85rem;
-  color: var(--predictions-text-secondary);
-}
-
-.prediction-item-danger {
-  border-left: 4px solid #ef4444;
-}
-
-.prediction-item-warning {
-  border-left: 4px solid #f59e0b;
-}
-
-.prediction-item-info {
-  border-left: 4px solid #3b82f6;
-}
-
-/* Asegurar que el texto sea visible en todos los estados */
-.prediction-item-danger,
-.prediction-item-warning,
-.prediction-item-info {
+  font-size: 0.9rem;
   color: var(--predictions-text);
 }
 
-.prediction-item-danger small,
-.prediction-item-warning small,
-.prediction-item-info small {
-  color: var(--predictions-text-secondary);
+.form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--predictions-border);
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
-@media (max-width: 768px) {
-  .predictions-content {
-    padding: 1rem;
-  }
-
-  .predictions-container {
-    padding: 1.25rem;
-    margin: 0 1rem;
-  }
-
-  .predictions-header i {
-    font-size: 2rem;
-  }
-
-  .predictions-title {
-    font-size: 1.5rem;
-  }
-
-  .predictions-description {
-    font-size: 0.85rem;
-  }
-
-  .predictions-toggle-container {
-    padding: 0.75rem;
-  }
-
-  .prediction-item {
-    padding: 0.875rem;
-  }
+.hidden {
+  display: none;
 }
 
 @media (max-height: 600px) {
@@ -244,16 +391,4 @@
   .predictions-list {
     gap: 0.75rem;
   }
-}
-
-.loading-message {
-  color: var(--predictions-text);
-  text-align: center;
-  padding: 1rem;
-  font-weight: 500;
-  font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  margin: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
