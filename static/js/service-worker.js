@@ -1,71 +1,72 @@
-// Service Worker para la PWA y manejo de notificaciones
+
+// Service Worker para la PWA
 const CACHE_NAME = 'transmilenio-security-v1';
 const ASSETS_TO_CACHE = [
-    '/',
-    '/static/css/notifications.css',
-    '/static/css/predictions.css',
-    '/static/js/notifications.js',
-    '/static/js/predictions.js',
-    '/static/icons/icon-192x192.png',
-    '/static/icons/icon-512x512.png',
-    '/static/manifest.json',
-    '/health'
+  '/',
+  '/static/css/custom.css',
+  '/static/js/notifications.js',
+  '/static/js/predictions.js',
+  '/static/js/statistics.js',
+  '/static/icons/icon-192x192.png',
+  '/static/icons/icon-512x512.png',
+  '/static/manifest.json'
 ];
 
+// Instalación del SW
 self.addEventListener('install', (event) => {
-    console.log('Service Worker instalado');
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(ASSETS_TO_CACHE))
-    );
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
+  );
 });
 
+// Activación y limpieza de caches antiguos
 self.addEventListener('activate', (event) => {
-    console.log('Service Worker activado');
-    // Limpiar caches antiguos
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
         })
-    );
+      );
+    })
+  );
 });
 
 // Estrategia de cache: Network first, fallback to cache
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        fetch(event.request)
-            .catch(() => {
-                return caches.match(event.request);
-            })
-    );
+  event.respondWith(
+    fetch(event.request)
+      .catch(() => {
+        return caches.match(event.request);
+      })
+  );
 });
 
-// Manejar eventos push para notificaciones
+// Manejo de notificaciones push
 self.addEventListener('push', (event) => {
-    console.log('Push event recibido');
-    const data = event.data ? event.data.json() : {};
+  const data = event.data ? event.data.json() : {};
+  const options = {
+    body: data.body || 'Nueva notificación',
+    icon: '/static/icons/icon-192x192.png',
+    badge: '/static/icons/icon-192x192.png',
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url || '/'
+    }
+  };
 
-    // Enviar mensaje al cliente para mostrar notificación in-app
-    self.clients.matchAll().then(clients => {
-        clients.forEach(client => {
-            client.postMessage({
-                type: 'showNotification',
-                payload: data
-            });
-        });
-    });
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'TransMilenio Security', options)
+  );
 });
 
-// Manejar click en notificaciones
+// Click en notificación
 self.addEventListener('notificationclick', (event) => {
-    event.notification.close();
-    event.waitUntil(
-        clients.openWindow('/')
-    );
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow(event.notification.data.url)
+  );
 });
