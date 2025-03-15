@@ -11,7 +11,7 @@ ARQUITECTURA IMPLEMENTADA:
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 import random
 import math
 from flask import current_app
@@ -118,7 +118,7 @@ def predict_station_risk(station, hour):
             model_path = 'models/rnn_model.h5'
             if os.path.exists(model_path):
                 model = load_model(model_path)
-                # Preparar datos para predicción (función aún no implementada)
+                # Preparar datos para predicción
                 current_data = prepare_prediction_data(station, hour)
                 if current_data is not None:
                     prediction = model.predict(current_data)
@@ -288,14 +288,79 @@ def get_model_insights():
         'last_training': None
     }
 
-# Funciones auxiliares para futuras implementaciones (no modificadas)
+# Funciones auxiliares para futuras implementaciones
 def predict_incident_probability(latitude, longitude, hour, day_of_week, month, nearest_station):
     """Placeholder para futura implementación de predicción de probabilidad"""
     return "Prediction not available with the simplified model."
 
 def prepare_prediction_data(station, hour):
-    """Placeholder para futura implementación de preparación de datos de predicción"""
-    return None
+    """
+    Prepara los datos para predicción en tiempo real.
+
+    Args:
+        station (str): Nombre de la estación
+        hour (int): Hora del día (0-23)
+
+    Returns:
+        numpy.ndarray: Datos preparados para predicción con la RNN
+        None: En caso de error o datos insuficientes
+    """
+    try:
+        # Obtener datos históricos recientes
+        current_time = datetime.now()
+        start_time = current_time - timedelta(hours=MODEL_CONFIG['sequence_length'])
+
+        # Consultar incidentes recientes para la estación
+        recent_incidents = Incident.query.filter(
+            Incident.nearest_station == station,
+            Incident.timestamp >= start_time,
+            Incident.timestamp <= current_time
+        ).order_by(Incident.timestamp).all()
+
+        if len(recent_incidents) < MODEL_CONFIG['sequence_length'] // 2:
+            logging.warning(f"Insufficient recent data for station {station}")
+            return None
+
+        # Crear DataFrame con la secuencia temporal
+        data = []
+        current = start_time
+        while current <= current_time:
+            incidents_at_time = [i for i in recent_incidents if i.timestamp.hour == current.hour]
+            incident_type = incidents_at_time[0].incident_type if incidents_at_time else VALID_INCIDENT_TYPES[0]
+
+            data.append({
+                'hour': current.hour,
+                'day_of_week': current.weekday(),
+                'month': current.month,
+                'incident_count': len(incidents_at_time),
+                'incident_type': incident_type
+            })
+            current += timedelta(hours=1)
+
+        # Convertir a DataFrame
+        df = pd.DataFrame(data)
+
+        # Codificar tipos de incidente
+        le = LabelEncoder()
+        df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
+
+        # Preparar secuencia de características
+        features = np.array([
+            df['hour'].values,
+            df['day_of_week'].values,
+            df['month'].values,
+            df['incident_count'].values,
+            df['incident_type_encoded'].values
+        ]).T
+
+        # Reshape para RNN: [1, sequence_length, n_features]
+        features = features.reshape(1, len(features), MODEL_CONFIG['n_features'])
+
+        return features
+
+    except Exception as e:
+        logging.error(f"Error preparing prediction data: {str(e)}")
+        return None
 
 def get_incident_trends():
     """
