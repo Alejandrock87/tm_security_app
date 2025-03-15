@@ -34,13 +34,13 @@ try:
     if __name__ == '__main__':
         try:
             logger.info("Iniciando aplicación Flask")
-            port = int(os.environ.get('PORT', 5000))
+            port = int(os.environ.get('PORT', 8080))
             logger.info(f"Intentando iniciar servidor en puerto {port}")
 
             socketio.run(
                 app,
                 host='0.0.0.0',
-                port=5000,
+                port=port,
                 debug=False,
                 use_reloader=False,
                 log_output=True,
