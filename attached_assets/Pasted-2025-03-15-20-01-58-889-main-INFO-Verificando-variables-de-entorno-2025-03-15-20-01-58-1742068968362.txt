@@ -1,0 +1,47 @@
+2025-03-15 20:01:58,889 - __main__ - INFO - Verificando variables de entorno...
+2025-03-15 20:01:58,889 - __main__ - INFO - DATABASE_URL encontrada
+2025-03-15 20:01:58,889 - __main__ - INFO - Importando módulos de la aplicación...
+2025-03-15 20:01:59,369 - app - INFO - Aplicación Flask creada
+2025-03-15 20:01:59,370 - app - INFO - CORS configurado
+2025-03-15 20:01:59,372 - app - INFO - Cache configurado
+Server initialized for gevent.
+2025-03-15 20:01:59,378 - engineio.server - INFO - Server initialized for gevent.
+2025-03-15 20:01:59,378 - app - INFO - SocketIO configurado
+2025-03-15 20:01:59,420 - app - INFO - Base de datos inicializada
+2025-03-15 20:01:59,420 - app - INFO - Login manager configurado
+2025-03-15 20:01:59,462 - app - INFO - Rutas inicializadas
+2025-03-15 20:01:59,462 - app - INFO - Aplicación Flask configurada completamente
+2025-03-15 20:01:59,462 - __main__ - INFO - Aplicación Flask y SocketIO importados correctamente
+2025-03-15 20:01:59,462 - __main__ - INFO - Iniciando aplicación Flask
+2025-03-15 20:01:59,462 - __main__ - INFO - Intentando iniciar servidor en puerto 5000
+2025-03-15 20:01:59,813 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-15 20:01:59,813 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-15 20:01:59,814 - app - INFO - Index endpoint accessed
+2025-03-15 20:02:00,205 - geventwebsocket.handler - INFO - 172.31.128.101 - - [2025-03-15 20:02:00] "GET / HTTP/1.1" 302 380 0.391920
+2025-03-15 20:02:00,309 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-15 20:02:00,309 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-15 20:02:00,405 - geventwebsocket.handler - INFO - 172.31.128.101 - - [2025-03-15 20:02:00] "GET /home HTTP/1.1" 200 9063 0.096439
+2025-03-15 20:02:00,520 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-15 20:02:00,520 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-15 20:02:00,525 - geventwebsocket.handler - INFO - 172.31.128.101 - - [2025-03-15 20:02:00] "GET /static/css/custom.css HTTP/1.1" 304 217 0.005195
+2025-03-15 20:02:00,528 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-15 20:02:00,528 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-15 20:02:00,529 - geventwebsocket.handler - INFO - 172.31.128.101 - - [2025-03-15 20:02:00] "GET /static/css/home.css HTTP/1.1" 304 215 0.001334
+2025-03-15 20:02:01,406 - geventwebsocket.handler - DEBUG - Initializing WebSocket
+2025-03-15 20:02:01,406 - geventwebsocket.handler - DEBUG - Validating WebSocket request
+2025-03-15 20:02:01,406 - geventwebsocket.handler - DEBUG - Attempting to upgrade connection
+2025-03-15 20:02:01,407 - geventwebsocket.handler - DEBUG - WebSocket request accepted, switching protocols
+7LyGN2xvBX7XaDcaAAAA: Sending packet OPEN data {'sid': '7LyGN2xvBX7XaDcaAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+2025-03-15 20:02:01,407 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Sending packet OPEN data {'sid': '7LyGN2xvBX7XaDcaAAAA', 'upgrades': [], 'pingTimeout': 20000, 'pingInterval': 25000}
+7LyGN2xvBX7XaDcaAAAA: Received request to upgrade to websocket
+2025-03-15 20:02:01,407 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Received request to upgrade to websocket
+7LyGN2xvBX7XaDcaAAAA: Upgrade to websocket successful
+2025-03-15 20:02:01,408 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Upgrade to websocket successful
+7LyGN2xvBX7XaDcaAAAA: Received packet MESSAGE data 0
+2025-03-15 20:02:01,506 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Received packet MESSAGE data 0
+7LyGN2xvBX7XaDcaAAAA: Sending packet MESSAGE data 0{"sid":"jnex-_7wAuJG5Q75AAAB"}
+2025-03-15 20:02:01,507 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Sending packet MESSAGE data 0{"sid":"jnex-_7wAuJG5Q75AAAB"}
+7LyGN2xvBX7XaDcaAAAA: Sending packet PING data None
+2025-03-15 20:02:26,413 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Sending packet PING data None
+7LyGN2xvBX7XaDcaAAAA: Received packet PONG data 
+2025-03-15 20:02:26,501 - engineio.server - INFO - 7LyGN2xvBX7XaDcaAAAA: Received packet PONG data 

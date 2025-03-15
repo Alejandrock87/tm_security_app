@@ -35,7 +35,7 @@ try:
     )
 
     # Configurar CORS
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})
     logger.info("CORS configurado")
 
     # Configurar cache
@@ -53,7 +53,9 @@ try:
         cors_allowed_origins="*",
         async_mode='gevent',
         logger=True,
-        engineio_logger=True
+        engineio_logger=True,
+        ping_timeout=60,
+        ping_interval=25
     )
     logger.info("SocketIO configurado")
 

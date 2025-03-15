@@ -23,7 +23,6 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 import os
 
@@ -45,57 +44,209 @@ MODEL_CONFIG = {
     'lstm_units': 64,
     'dropout_rate': 0.2,
     'learning_rate': 0.001,
-    'batch_size': 32,
-    'epochs': 100
+    'batch_size': 16,      # Reducido para mejor rendimiento en CPU
+    'epochs': 20           # Reducido para entrenamiento más rápido
 }
 
 def create_rnn_model():
     """
-    Crea el modelo RNN con arquitectura LSTM
+    Crea el modelo RNN con arquitectura LSTM.
+    Ahora con manejo mejorado de dimensiones y logging.
     """
-    model = Sequential([
-        LSTM(MODEL_CONFIG['lstm_units'], 
-             input_shape=(MODEL_CONFIG['sequence_length'], MODEL_CONFIG['n_features']),
-             return_sequences=True),
-        Dropout(MODEL_CONFIG['dropout_rate']),
-        LSTM(MODEL_CONFIG['lstm_units'] // 2),
-        Dropout(MODEL_CONFIG['dropout_rate']),
-        Dense(32, activation='relu'),
-        Dense(1, activation='sigmoid')  # Predicción de riesgo
-    ])
+    try:
+        model = Sequential([
+            LSTM(MODEL_CONFIG['lstm_units'], 
+                 input_shape=(MODEL_CONFIG['sequence_length'], MODEL_CONFIG['n_features']),
+                 return_sequences=True),
+            Dropout(MODEL_CONFIG['dropout_rate']),
+            LSTM(MODEL_CONFIG['lstm_units'] // 2),
+            Dropout(MODEL_CONFIG['dropout_rate']),
+            Dense(32, activation='relu'),
+            Dense(1, activation='sigmoid')  # Predicción de riesgo
+        ])
 
-    model.compile(
-        optimizer=Adam(learning_rate=MODEL_CONFIG['learning_rate']),
-        loss='binary_crossentropy',
-        metrics=['accuracy']
-    )
+        model.compile(
+            optimizer=Adam(learning_rate=MODEL_CONFIG['learning_rate']),
+            loss='binary_crossentropy',
+            metrics=['accuracy']
+        )
 
-    return model
+        logging.info("Modelo RNN creado exitosamente")
+        logging.info(f"Configuración del modelo: {MODEL_CONFIG}")
+        model.summary(print_fn=logging.info)
+        return model
+    except Exception as e:
+        logging.error(f"Error creando modelo RNN: {str(e)}")
+        return None
 
 def prepare_sequence_data(data, sequence_length=24):
     """
-    Prepara secuencias de datos para el entrenamiento de la RNN
+    Prepara secuencias de datos para el entrenamiento de la RNN.
+    Ahora con mejor manejo de datos y validación.
     """
-    features = []
-    targets = []
+    try:
+        features = []
+        targets = []
 
-    for i in range(len(data) - sequence_length):
-        # Crear secuencia de características
-        sequence = data[i:i + sequence_length]
-        target = data[i + sequence_length]
+        # Verificar que tenemos suficientes datos
+        if len(data) < sequence_length:
+            logging.warning(f"Insufficient data for sequence length {sequence_length}")
+            return np.array([]), np.array([])
 
-        features.append([
-            sequence['hour'].values,
-            sequence['day_of_week'].values,
-            sequence['month'].values,
-            sequence['incident_count'].values,
-            sequence['incident_type_encoded'].values
-        ])
+        # Crear secuencias de características y objetivos
+        for i in range(len(data) - sequence_length):
+            sequence = data.iloc[i:i + sequence_length]
+            target = data.iloc[i + sequence_length]
 
-        # El objetivo es si ocurrirá un incidente (1) o no (0)
-        targets.append(1 if target['incident_count'] > 0 else 0)
+            # Verificar que la secuencia está completa
+            if len(sequence) != sequence_length:
+                continue
 
-    return np.array(features), np.array(targets)
+            # Extraer características en el orden correcto
+            sequence_features = np.array([
+                sequence['hour'].values,
+                sequence['day_of_week'].values,
+                sequence['month'].values,
+                sequence['incident_count'].values,
+                sequence['incident_type_encoded'].values
+            ]).T
+
+            features.append(sequence_features)
+            # El objetivo es si ocurrirá un incidente (1) o no (0)
+            targets.append(1 if target['incident_count'] > 0 else 0)
+
+        if not features:
+            logging.warning("No valid sequences could be generated")
+            return np.array([]), np.array([])
+
+        # Convertir a arrays numpy
+        features_array = np.array(features)
+        targets_array = np.array(targets)
+
+        logging.info(f"Generated {len(features)} sequences for training")
+        logging.info(f"Features shape: {features_array.shape}")
+        logging.info(f"Targets shape: {targets_array.shape}")
+
+        return features_array, targets_array
+
+    except Exception as e:
+        logging.error(f"Error preparing sequence data: {str(e)}")
+        return np.array([]), np.array([])
+
+def prepare_data():
+    """
+    Prepara los datos históricos para el entrenamiento del modelo.
+    Solo lee datos existentes, no modifica la base de datos.
+    """
+    try:
+        incidents = Incident.query.order_by(Incident.timestamp).all()
+        if not incidents:
+            logging.warning("No incidents found in database")
+            return pd.DataFrame()
+
+        # Crear DataFrame con datos existentes
+        data = []
+        for incident in incidents:
+            data.append({
+                'incident_type': incident.incident_type,
+                'timestamp': incident.timestamp,
+                'nearest_station': incident.nearest_station,
+                'hour': incident.timestamp.hour,
+                'day_of_week': incident.timestamp.weekday(),
+                'month': incident.timestamp.month,
+                'incident_count': 1
+            })
+
+        df = pd.DataFrame(data)
+
+        # Agregar encoding para tipos de incidente
+        le = LabelEncoder()
+        df['incident_type_encoded'] = le.fit_transform(df['incident_type'])
+
+        # Agregar información temporal agregada
+        df['time_of_day'] = pd.cut(df['hour'], 
+                                   bins=[0,6,12,18,24], 
+                                   labels=['night','morning','afternoon','evening'])
+
+        # Agrupar por timestamp y estación para obtener conteos
+        df = df.sort_values('timestamp')
+
+        logging.info(f"Prepared {len(df)} incidents for training")
+        logging.info(f"Data columns: {df.columns.tolist()}")
+        logging.info(f"Sample data:\n{df.head()}")
+        return df
+
+    except Exception as e:
+        logging.error(f"Error preparing data: {str(e)}")
+        return pd.DataFrame()
+
+def train_rnn_model():
+    """
+    Entrena el modelo RNN con datos históricos existentes.
+    No modifica la base de datos, solo usa los datos disponibles.
+    """
+    try:
+        # Preparar datos existentes
+        data = prepare_data()
+        if len(data) < MODEL_CONFIG['sequence_length']:
+            logging.error(f"Insufficient data. Got {len(data)} samples, need at least {MODEL_CONFIG['sequence_length']}")
+            return None, None
+
+        # Preparar secuencias
+        X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
+
+        if len(X) == 0 or len(y) == 0:
+            logging.error("No sequences could be generated from the data")
+            return None, None
+
+        logging.info(f"Training data: X shape={X.shape}, y shape={y.shape}")
+
+        # Dividir datos en entrenamiento y validación
+        train_size = int(len(X) * 0.8)
+        X_train, X_val = X[:train_size], X[train_size:]
+        y_train, y_val = y[:train_size], y[train_size:]
+
+        # Crear y entrenar modelo
+        model = create_rnn_model()
+        if model is None:
+            logging.error("Failed to create RNN model")
+            return None, None
+
+        # Configurar early stopping más agresivo
+        callbacks = [
+            tf.keras.callbacks.EarlyStopping(
+                monitor='val_loss',
+                patience=5,  # Reducido para detener antes si no hay mejora
+                restore_best_weights=True,
+                min_delta=0.001  # Mínima mejora requerida
+            ),
+            tf.keras.callbacks.ModelCheckpoint(
+                'models/rnn_model.h5',
+                monitor='val_loss',
+                save_best_only=True
+            )
+        ]
+
+        # Entrenar modelo
+        history = model.fit(
+            X_train, y_train,
+            validation_data=(X_val, y_val),
+            batch_size=MODEL_CONFIG['batch_size'],
+            epochs=MODEL_CONFIG['epochs'],
+            callbacks=callbacks,
+            verbose=1
+        )
+
+        # Evaluar modelo
+        val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+        logging.info(f"Validation accuracy: {val_accuracy:.4f}")
+        logging.info(f"Validation loss: {val_loss:.4f}")
+
+        return model, history
+
+    except Exception as e:
+        logging.error(f"Error training RNN model: {str(e)}")
+        return None, None
 
 def predict_station_risk(station, hour):
     """
@@ -189,78 +340,6 @@ def predict_incident_type(station, hour):
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
         return None
-
-def prepare_data():
-    """
-    Prepara los datos históricos para el entrenamiento del modelo.
-    """
-    try:
-        incidents = Incident.query.order_by(Incident.timestamp).all()
-        if not incidents:
-            return pd.DataFrame()
-
-        data = pd.DataFrame([{
-            'incident_type': incident.incident_type,
-            'timestamp': incident.timestamp,
-            'nearest_station': incident.nearest_station,
-            'hour': incident.timestamp.hour,
-            'day_of_week': incident.timestamp.weekday(),
-            'month': incident.timestamp.month,
-            'incident_count': 1
-        } for incident in incidents])
-
-        # Agregar encoding para tipos de incidente
-        le = LabelEncoder()
-        data['incident_type_encoded'] = le.fit_transform(data['incident_type'])
-
-        return data
-    except Exception as e:
-        logging.error(f"Error preparing data: {str(e)}")
-        return pd.DataFrame()
-
-def train_rnn_model():
-    """
-    Entrena el modelo RNN con datos históricos.
-    """
-    try:
-        # Preparar datos
-        data = prepare_data()
-        if len(data) < MODEL_CONFIG['sequence_length']:
-            logging.error("Insufficient data for training")
-            return None, None
-
-        # Preparar secuencias
-        X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
-
-        # Dividir datos
-        train_size = int(len(X) * 0.8)
-        X_train, X_test = X[:train_size], X[train_size:]
-        y_train, y_test = y[:train_size], y[train_size:]
-
-        # Crear y entrenar modelo
-        model = create_rnn_model()
-
-        callbacks = [
-            EarlyStopping(monitor='val_loss', patience=10),
-            ModelCheckpoint('models/rnn_model.h5', save_best_only=True)
-        ]
-
-        history = model.fit(
-            X_train, y_train,
-            validation_split=0.2,
-            batch_size=MODEL_CONFIG['batch_size'],
-            epochs=MODEL_CONFIG['epochs'],
-            callbacks=callbacks
-        )
-
-        # Evaluar modelo
-        test_loss, test_accuracy = model.evaluate(X_test, y_test)
-        logging.info(f"Test accuracy: {test_accuracy}")
-
-        return model, history
-    except Exception as e:
-        logging.error(f"Error training RNN model: {str(e)}")
-        return None, None
 
 def get_model_insights():
     """
