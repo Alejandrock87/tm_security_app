@@ -2,7 +2,7 @@
 Utilidades para el manejo y análisis de incidentes.
 """
 from models import Incident
-from sqlalchemy import func, desc, extract
+from sqlalchemy import func, desc, extract, text
 from database import db
 from datetime import datetime
 import logging
@@ -47,31 +47,31 @@ def get_incidents_for_map():
 def get_incident_statistics(date_from=None, date_to=None):
     """
     Obtiene estadísticas detalladas de incidentes con filtros de fecha opcionales.
+    Los filtros de fecha se interpretan en la zona horaria local del usuario.
     """
     try:
         logging.info("Iniciando obtención de estadísticas de incidentes")
         logging.info(f"Filtros de fecha - desde: {date_from}, hasta: {date_to}")
 
-        # Asegurar que las fechas estén en la zona horaria local
-        local_tz = pytz.timezone('America/Bogota')  # Zona horaria de Colombia
-
         # Construir la consulta base
         base_query = Incident.query
 
-        # Aplicar filtros de fecha considerando la zona horaria
+        # Aplicar filtros de fecha usando conversión de zona horaria en la base de datos
         if date_from:
-            # Convertir la fecha inicial a UTC para la comparación
-            start_of_day = local_tz.localize(
-                datetime.combine(date_from, datetime.min.time())
-            ).astimezone(pytz.UTC)
-            base_query = base_query.filter(Incident.timestamp >= start_of_day)
+            # Convertir la fecha local a UTC usando la base de datos
+            base_query = base_query.filter(
+                text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') >= :date_from"),
+                date_from=date_from
+            )
+            logging.info(f"Filtrando desde: {date_from}")
 
         if date_to:
-            # Convertir la fecha final a UTC para la comparación
-            end_of_day = local_tz.localize(
-                datetime.combine(date_to, datetime.max.time())
-            ).astimezone(pytz.UTC)
-            base_query = base_query.filter(Incident.timestamp <= end_of_day)
+            # Convertir la fecha local a UTC usando la base de datos
+            base_query = base_query.filter(
+                text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') <= :date_to"),
+                date_to=date_to
+            )
+            logging.info(f"Filtrando hasta: {date_to}")
 
         # Total de incidentes
         total_incidents = base_query.count()
@@ -82,8 +82,7 @@ def get_incident_statistics(date_from=None, date_to=None):
             Incident.nearest_station,
             func.count(Incident.id).label('total')
         ).filter(
-            *([Incident.timestamp >= start_of_day] if date_from else []),
-            *([Incident.timestamp <= end_of_day] if date_to else [])
+            *base_query._where_criteria
         ).group_by(Incident.nearest_station)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
@@ -95,21 +94,18 @@ def get_incident_statistics(date_from=None, date_to=None):
             Incident.incident_type,
             func.count(Incident.id).label('count')
         ).filter(
-            *([Incident.timestamp >= start_of_day] if date_from else []),
-            *([Incident.timestamp <= end_of_day] if date_to else [])
+            *base_query._where_criteria
         ).group_by(Incident.incident_type)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
 
         # Análisis de hora más peligrosa usando la hora local
-        hour_column = extract('hour', func.timezone('America/Bogota', Incident.timestamp))
         hour_stats = db.session.query(
-            hour_column.label('hour'),
+            extract('hour', text("timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota'")).label('hour'),
             func.count(Incident.id).label('count')
         ).filter(
-            *([Incident.timestamp >= start_of_day] if date_from else []),
-            *([Incident.timestamp <= end_of_day] if date_to else [])
-        ).group_by(hour_column)\
+            *base_query._where_criteria
+        ).group_by('hour')\
          .order_by(desc(func.count(Incident.id)))\
          .first()
 
