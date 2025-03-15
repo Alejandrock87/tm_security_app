@@ -32,12 +32,10 @@ def init_routes(app):
     def dashboard():
         app.logger.info("Dashboard endpoint accessed")
         try:
-            # Obtener datos de incidentes para el mapa usando la misma función que statistics
             app.logger.info("Intentando obtener incidentes para el mapa")
             incidents = get_incidents_for_map()
             app.logger.info(f"Obtenidos {len(incidents)} incidentes para el mapa")
 
-            # Obtener estadísticas usando la misma función que la página statistics
             app.logger.info("Intentando obtener estadísticas")
             statistics = get_incident_statistics()
             app.logger.info(f"Estadísticas obtenidas: {statistics}")
@@ -76,7 +74,6 @@ def init_routes(app):
     @app.route('/report_incident', methods=['GET', 'POST'])
     @login_required
     def report_incident():
-        # Logging detallado para diagnóstico
         app.logger.info(f"Accessing report_incident. User: {current_user}, Remote addr: {request.remote_addr}")
         app.logger.debug(f"Request headers: {dict(request.headers)}")
         app.logger.debug(f"Session data: {dict(session)}")
@@ -95,7 +92,6 @@ def init_routes(app):
 
             if form.validate_on_submit():
                 app.logger.info("Form submitted and validated")
-                # Log form data for debugging
                 app.logger.debug(f"Form data: {request.form}")
 
                 latitude = request.form.get('latitude')
@@ -112,17 +108,14 @@ def init_routes(app):
                 incident_time = form.incident_time.data or datetime.now().time()
 
                 try:
-                    # Verificar que el usuario existe
                     user = User.query.get(current_user.id)
                     if not user:
                         app.logger.error(f"Usuario no encontrado: ID {current_user.id}")
                         flash('Error de autenticación. Por favor, inicie sesión nuevamente.')
                         return redirect(url_for('login'))
 
-                    # Log valores antes de la conversión
                     app.logger.debug(f"Converting latitude: {latitude} and longitude: {longitude} to float")
 
-                    # Validar que los valores sean convertibles a float
                     try:
                         float_lat = float(latitude)
                         float_lon = float(longitude)
@@ -132,7 +125,6 @@ def init_routes(app):
                         flash('Error en el formato de las coordenadas. Por favor, intente de nuevo.')
                         return redirect(url_for('report_incident'))
 
-                    # Crear el incidente con validación de tipos
                     incident = Incident(
                         incident_type=form.incident_type.data,
                         description=form.description.data,
@@ -214,13 +206,11 @@ def init_routes(app):
             app.logger.info("Endpoint /api/statistics accessed")
             query = Incident.query
 
-            # Obtener parámetros de fecha
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
 
             app.logger.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
-            # Aplicar filtros de fecha si existen
             if date_from:
                 date_from_obj = datetime.strptime(date_from, '%Y-%m-%d')
                 query = query.filter(Incident.timestamp >= date_from_obj)
@@ -229,7 +219,6 @@ def init_routes(app):
                 date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
                 query = query.filter(Incident.timestamp <= date_to_end)
 
-            # Obtener estadísticas usando la función actualizada
             app.logger.info("Obteniendo estadísticas de incidentes...")
             statistics = get_incident_statistics(date_from_obj if date_from else None, 
                                               date_to_end if date_to else None)
@@ -262,7 +251,7 @@ def init_routes(app):
     @login_required
     def model_insights():
         try:
-            from ml_models import get_model_insights # Lazy import here
+            from ml_models import get_model_insights 
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
         except Exception as e:
@@ -283,60 +272,72 @@ def init_routes(app):
             return redirect(url_for('home'))
 
     @app.route('/api/predictions')
-    @login_required
     def api_predictions():
+        """
+        Endpoint para obtener predicciones.
+        No requiere autenticación para acceso público básico.
+        """
         try:
             app.logger.info("Solicitud de predicciones API recibida")
-            # Cargar datos de estaciones
+            from ml_models import get_cached_predictions
+            predictions = get_cached_predictions()
+
+            if not predictions:
+                app.logger.warning("No se encontraron predicciones en caché, generando nuevas")
+                from ml_models import generate_prediction_cache
+                predictions = generate_prediction_cache(hours_ahead=3)
+                if not predictions:
+                    app.logger.error("No se pudieron generar predicciones")
+                    return jsonify({
+                        'error': 'No se pudieron generar predicciones',
+                        'predictions': []
+                    }), 500
+
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
+                station_to_troncal = {
+                    feature['properties']['nombre_estacion']: feature['properties'].get('troncal_estacion', 'N/A')
+                    for feature in geojson_data['features']
+                    if 'nombre_estacion' in feature['properties']
+                }
 
-            # Crear mapeo de estaciones a troncales
-            station_to_troncal = {
-                feature['properties']['nombre_estacion']: feature['properties'].get('troncal_estacion', 'N/A')
-                for feature in geojson_data['features']
-                if 'nombre_estacion' in feature['properties']
-            }
+            # Agregar información de troncal a cada predicción
+            for prediction in predictions:
+                prediction['troncal'] = station_to_troncal.get(prediction['station'], 'N/A')
 
-            current_time = datetime.now()
-            predictions = []
+            app.logger.info(f"Retornando {len(predictions)} predicciones")
+            # Force prediction generation if empty
+            if not predictions:
+                app.logger.warning("Lista de predicciones vacía, forzando generación")
+                predictions = generate_prediction_cache(hours_ahead=3)
 
-            # Generar predicciones para las próximas 3 horas
-            for hour_offset in range(3):
-                prediction_time = current_time + timedelta(hours=hour_offset)
-
-                for feature in geojson_data['features']:
-                    station = feature['properties'].get('nombre_estacion')
-                    coordinates = feature['geometry'].get('coordinates')
-                    troncal = feature['properties'].get('troncal_estacion', 'N/A')
-
-                    if not all([station, coordinates]):
-                        continue
-
-                    risk_score = predict_station_risk(station, prediction_time.hour)
-                    incident_type = predict_incident_type(station, prediction_time.hour)
-
-                    if risk_score is not None and incident_type is not None:
-                        predictions.append({
-                            'station': station,
-                            'troncal': troncal,
-                            'incident_type': incident_type,
-                            'predicted_time': prediction_time.isoformat(),
-                            'risk_score': float(risk_score),
-                            'latitude': coordinates[1],
-                            'longitude': coordinates[0]
-                        })
-
-            app.logger.info(f"Predicciones generadas exitosamente: {len(predictions)} predicciones")
             return jsonify(predictions)
 
         except Exception as e:
-            app.logger.error(f"Error generando predicciones: {str(e)}")
+            app.logger.error(f"Error generando predicciones: {str(e)}", exc_info=True)
             return jsonify({
                 'error': 'Error al generar predicciones',
                 'message': str(e),
                 'predictions': []
             }), 500
+
+    @app.route('/initialize_predictions')
+    def initialize_predictions():
+        """
+        Endpoint para forzar la generación inicial de predicciones.
+        """
+        try:
+            app.logger.info("Forzando generación inicial de predicciones")
+            from ml_models import generate_prediction_cache
+            predictions = generate_prediction_cache(hours_ahead=24)
+            return jsonify({
+                'success': True,
+                'message': f'Generadas {len(predictions)} predicciones',
+                'count': len(predictions)
+            })
+        except Exception as e:
+            app.logger.error(f"Error en generación inicial: {str(e)}", exc_info=True)
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/real_time_map')
     @login_required
@@ -383,7 +384,6 @@ def init_routes(app):
             if incident_type and incident_type != 'all':
                 query = query.filter(Incident.incident_type == incident_type)
 
-            # Obtener estadísticas por estación usando la misma lógica que statistics
             station_stats = db.session.query(
                 Incident.nearest_station,
                 func.count(Incident.id).label('total')
@@ -391,7 +391,6 @@ def init_routes(app):
              .order_by(desc(func.count(Incident.id)))\
              .all()
 
-            # Crear diccionario de conteo por estación
             station_counts = {stat.nearest_station: stat.total for stat in station_stats}
 
             incidents = query.all()
@@ -436,7 +435,6 @@ def init_routes(app):
     @login_required
     def get_notifications():
         try:
-            # Obtener parámetros de filtro
             troncal = request.args.get('troncal', '')
             station = request.args.get('station', '')
             incident_type = request.args.get('incident_type', '')
@@ -446,10 +444,8 @@ def init_routes(app):
             app.logger.info(f"- Estación: {station}")
             app.logger.info(f"- Tipo de incidente: {incident_type}")
 
-            # Iniciar consulta base
             query = Incident.query.order_by(Incident.timestamp.desc())
 
-            # Procesar y aplicar filtros
             troncal_list = [t.strip() for t in troncal.split(',') if t.strip()]
             station_list = [s.strip() for s in station.split(',') if s.strip()]
             type_list = [t.strip() for t in incident_type.split(',') if t.strip()]
@@ -459,7 +455,6 @@ def init_routes(app):
             app.logger.info(f"- Estaciones: {station_list}")
             app.logger.info(f"- Tipos: {type_list}")
 
-            # Aplicar filtros
             if troncal_list:
                 with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                     geojson_data = json.load(f)
@@ -479,11 +474,9 @@ def init_routes(app):
                 app.logger.info(f"Filtrando por tipos: {type_list}")
                 query = query.filter(Incident.incident_type.in_(type_list))
 
-            # Obtener resultados
             incidents = query.limit(100).all()
             app.logger.info(f"Total de incidentes encontrados: {len(incidents)}")
 
-            # Convertir a JSON
             result = [{
                 'id': incident.id,
                 'incident_type': incident.incident_type,
@@ -514,14 +507,14 @@ def init_routes(app):
     def push_subscribe():
         subscription_info = request.get_json()
         try:
-            with db.session.begin_nested():  # Use nested transaction for better error handling
+            with db.session.begin_nested():  
                 device = PushSubscription(
                     subscription_info=json.dumps(subscription_info),
                     user_id=current_user.id if current_user.is_authenticated else None
                 )
                 db.session.add(device)
             return jsonify({'success': True})
-        except sql_exceptions.IntegrityError:  # Handle duplicate entry error
+        except sql_exceptions.IntegrityError:  
             return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -531,14 +524,12 @@ def init_routes(app):
     def test_notification():
         app.logger.info("Probando notificación")
         try:
-            # Crear una predicción de prueba
             test_prediction = {
                 'station': 'Estación de Prueba',
                 'incident_type': 'Prueba',
                 'predicted_time': datetime.now().isoformat(),
                 'risk_score': 0.8
             }
-            # Emitir el evento de predicción
             socketio.emit('prediction_alert', test_prediction)
             return jsonify({'success': True, 'message': 'Notificación de prueba enviada'})
         except Exception as e:
@@ -548,24 +539,20 @@ def init_routes(app):
     return app
 
 def predict_station_risk(station, hour):
-    """Wrapper para la función de predicción del modelo real"""
     try:
         from ml_models import predict_station_risk as ml_predict_station_risk
         return ml_predict_station_risk(station, hour)
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
-        # Fallback a valores aleatorios si hay error
         import random
         return random.uniform(0.1, 1.0)
 
 def predict_incident_type(station, hour):
-    """Wrapper para la función de predicción del tipo de incidente"""
     try:
         from ml_models import predict_incident_type as ml_predict_incident_type
         return ml_predict_incident_type(station, hour)
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
-        # Fallback a valores por defecto si hay error
         incident_types = ['Hurto', 'Acoso', 'Accidente', 'Otro']
         import random
         return random.choice(incident_types)

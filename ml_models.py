@@ -612,23 +612,33 @@ def update_predictions_periodically():
     """
     try:
         logging.info("Iniciando actualización periódica de predicciones...")
-        # Generar nuevas predicciones
         predictions = generate_prediction_cache(hours_ahead=24)
 
         if predictions:
+            # Cargar información de troncales
+            with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                geojson_data = json.load(f)
+                station_to_troncal = {
+                    feature['properties']['nombre_estacion']: feature['properties'].get('troncal_estacion', 'N/A')
+                    for feature in geojson_data['features']
+                    if 'nombre_estacion' in feature['properties']
+                }
+
+            # Agregar información de troncal a cada predicción
+            for prediction in predictions:
+                prediction['troncal'] = station_to_troncal.get(prediction['station'], 'N/A')
+
             # Notificar a través de SocketIO
             from app import socketio
-
-            # Preparar datos para envío
             prediction_data = {
                 'timestamp': datetime.now().isoformat(),
                 'prediction_count': len(predictions),
-                'predictions': predictions,  # Enviar predicciones completas
+                'predictions': predictions,
                 'update_type': 'periodic'
             }
 
             logging.info(f"Enviando {len(predictions)} predicciones a través de WebSocket")
-            socketio.emit('predictions_updated', prediction_data)
+            socketio.emit('predictions_updated', prediction_data, namespace='/')
 
             logging.info("Predicciones enviadas exitosamente")
             return True
@@ -649,11 +659,13 @@ def get_cached_predictions():
             with open('predictions_cache.json', 'r', encoding='utf-8') as f:
                 predictions = json.load(f)
                 if predictions:
+                    logging.info(f"Predicciones recuperadas del archivo: {len(predictions)}")
                     return predictions
         except Exception as file_error:
             logging.warning(f"No se pudo cargar el archivo de respaldo: {str(file_error)}")
 
-        # Si no hay archivo, generar nuevas predicciones
+        # Si no hay archivo o está vacío, generar nuevas predicciones
+        logging.info("Generando nuevas predicciones ya que no hay caché disponible")
         predictions = generate_prediction_cache(hours_ahead=24)
         return predictions if predictions else []
 

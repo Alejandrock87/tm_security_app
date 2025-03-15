@@ -1,5 +1,9 @@
 // Establecer conexión con Socket.IO (declaración en base.html)
-//let socket = io(); // Eliminada porque ya está declarada globalmente
+let socket = io('/', {
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000
+});
 let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
 let selectedFilter = 'all';
 let selectedTroncales = [];
@@ -13,12 +17,22 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAndCheckPredictions();
     setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
 
-    // Agregar manejador de eventos WebSocket
+    // Configurar manejadores de WebSocket
+    socket.on('connect', function() {
+        console.log('Conexión WebSocket establecida');
+    });
+
+    socket.on('connect_error', function(error) {
+        console.error('Error de conexión WebSocket:', error);
+    });
+
+    // Agregar manejador de eventos WebSocket para predicciones
     socket.on('predictions_updated', function(data) {
         console.log('Predicciones actualizadas recibidas:', data);
-        if (data && data.predictions) {
-            const predictionsList = document.getElementById('predictionsList');
+        if (data && data.predictions && Array.isArray(data.predictions)) {
             updatePredictionsList(data.predictions);
+        } else {
+            console.error('Formato de datos inválido en predictions_updated:', data);
         }
     });
 });
@@ -84,10 +98,16 @@ function updatePredictionsList(predictions) {
 function loadAndCheckPredictions() {
     console.log('Cargando predicciones...');
     const predictionsList = document.getElementById('predictionsList');
+    if (!predictionsList) {
+        console.error('No se encontró el elemento predictionsList');
+        return;
+    }
+
     predictionsList.innerHTML = '<div class="loading-message">Cargando predicciones...</div>';
 
     fetch('/api/predictions')
         .then(response => {
+            console.log('Respuesta recibida:', response);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -95,7 +115,13 @@ function loadAndCheckPredictions() {
         })
         .then(data => {
             console.log('Predicciones recibidas:', data);
-            updatePredictionsList(data);
+            if (Array.isArray(data)) {
+                updatePredictionsList(data);
+            } else if (data.error) {
+                throw new Error(data.error);
+            } else {
+                throw new Error('Formato de datos inválido');
+            }
         })
         .catch(error => {
             console.error('Error al cargar predicciones:', error);
