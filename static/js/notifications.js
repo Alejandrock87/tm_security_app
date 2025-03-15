@@ -243,7 +243,6 @@ async function requestNotificationPermission() {
             // Mostrar mensaje específico para iOS
             showInAppNotification({
                 incident_type: 'Sistema',
-                nearest_station: 'General',
                 description: 'Las notificaciones in-app están activadas. Recibirás alertas dentro de la aplicación.',
                 timestamp: new Date()
             });
@@ -258,7 +257,6 @@ async function requestNotificationPermission() {
 
                     showInAppNotification({
                         incident_type: 'Sistema',
-                        nearest_station: 'General',
                         description: 'Las notificaciones están activadas. Recibirás alertas de incidentes según tus preferencias.',
                         timestamp: new Date()
                     });
@@ -469,6 +467,14 @@ async function saveNotificationPreferences() {
         localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
 
         showToast('Preferencias guardadas correctamente', 'success');
+
+        // Mostrar notificación del sistema sobre las preferencias guardadas
+        showInAppNotification({
+            incident_type: 'Sistema',
+            description: 'Tus preferencias de notificaciones han sido actualizadas.',
+            timestamp: new Date()
+        });
+
         saveBtn.textContent = '¡Guardado!';
         saveBtn.classList.remove('btn-primary');
         saveBtn.classList.add('btn-success', 'saved');
@@ -587,7 +593,6 @@ function setupFilterEventListeners() {
 }
 
 
-
 // Función para agregar una nueva notificación al historial
 function addNotification(incident) {
     if (!notificationsList) return;
@@ -627,16 +632,31 @@ function showInAppNotification(notification) {
         notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
 
         const timestamp = new Date(notification.timestamp).toLocaleString();
-        notificationItem.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="notification-content">
-                    <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
-                    <p class="mb-1">Estación: ${notification.nearest_station}</p>
-                    ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
+
+        // Formato diferente para notificaciones del sistema
+        if (notification.incident_type === 'Sistema') {
+            notificationItem.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="notification-content">
+                        <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+                        ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
+                    </div>
+                    <small class="text-muted">${timestamp}</small>
                 </div>
-                <small class="text-muted">${timestamp}</small>
-            </div>
-        `;
+            `;
+        } else {
+            // Formato para notificaciones de incidentes
+            notificationItem.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="notification-content">
+                        <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+                        <p class="mb-1">Estación: ${notification.nearest_station}</p>
+                        ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
+                    </div>
+                    <small class="text-muted">${timestamp}</small>
+                </div>
+            `;
+        }
 
         // Insertar al principio de la lista
         notificationList.insertBefore(notificationItem, notificationList.firstChild);
@@ -650,7 +670,7 @@ function showInAppNotification(notification) {
         }
 
         // También mostrar un toast
-        showToast(`Nuevo incidente en ${notification.nearest_station}`, 'info');
+        showToast(`Nueva notificación: ${notification.incident_type}`, 'info');
     }
 }
 
@@ -771,7 +791,6 @@ function sanitizeId(text) {
 function shouldShowBrowserNotifications() {
     return 'Notification' in window && Notification.permission === 'granted';
 }
-
 
 // Función para actualizar el historial de notificaciones
 async function updateNotificationHistory() {
