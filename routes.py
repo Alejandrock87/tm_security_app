@@ -97,6 +97,8 @@ def init_routes(app):
                 app.logger.info("Form submitted and validated")
                 # Log form data for debugging
                 app.logger.debug(f"Form data: {request.form}")
+                app.logger.debug(f"Date received: {form.incident_date.data}")
+                app.logger.debug(f"Time received: {form.incident_time.data}")
 
                 latitude = request.form.get('latitude')
                 longitude = request.form.get('longitude')
@@ -108,9 +110,6 @@ def init_routes(app):
                     flash('Se requieren datos de ubicación y estación. Por favor, active la geolocalización.')
                     return redirect(url_for('report_incident'))
 
-                incident_date = form.incident_date.data or datetime.now().date()
-                incident_time = form.incident_time.data or datetime.now().time()
-
                 try:
                     # Verificar que el usuario existe
                     user = User.query.get(current_user.id)
@@ -118,9 +117,6 @@ def init_routes(app):
                         app.logger.error(f"Usuario no encontrado: ID {current_user.id}")
                         flash('Error de autenticación. Por favor, inicie sesión nuevamente.')
                         return redirect(url_for('login'))
-
-                    # Log valores antes de la conversión
-                    app.logger.debug(f"Converting latitude: {latitude} and longitude: {longitude} to float")
 
                     # Validar que los valores sean convertibles a float
                     try:
@@ -132,6 +128,14 @@ def init_routes(app):
                         flash('Error en el formato de las coordenadas. Por favor, intente de nuevo.')
                         return redirect(url_for('report_incident'))
 
+                    # Usar la fecha y hora enviadas desde el formulario
+                    incident_date = form.incident_date.data
+                    incident_time = form.incident_time.data
+
+                    # Crear el timestamp combinando fecha y hora
+                    timestamp = datetime.combine(incident_date, incident_time)
+                    app.logger.info(f"Creating incident with timestamp: {timestamp}")
+
                     # Crear el incidente con validación de tipos
                     incident = Incident(
                         incident_type=form.incident_type.data,
@@ -140,7 +144,7 @@ def init_routes(app):
                         longitude=float_lon,
                         user_id=current_user.id,
                         nearest_station=form.station.data,
-                        timestamp=datetime.combine(incident_date, incident_time)
+                        timestamp=timestamp
                     )
 
                     app.logger.debug(f"Created incident object: {incident.to_dict()}")
@@ -232,7 +236,7 @@ def init_routes(app):
             # Obtener estadísticas usando la función actualizada
             app.logger.info("Obteniendo estadísticas de incidentes...")
             statistics = get_incident_statistics(date_from_obj if date_from else None, 
-                                              date_to_end if date_to else None)
+                                                  date_to_end if date_to else None)
 
             app.logger.info(f"Estadísticas obtenidas: {statistics}")
 
@@ -375,8 +379,8 @@ def init_routes(app):
 
             if troncal and troncal != 'all':
                 stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                                   for feature in geojson_data['features']
-                                   if feature['properties'].get('troncal_estacion') == troncal]
+                                       for feature in geojson_data['features']
+                                       if feature['properties'].get('troncal_estacion') == troncal]
                 query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
             if station and station != 'all':
                 query = query.filter(Incident.nearest_station == station)
