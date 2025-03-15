@@ -12,7 +12,100 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNotifications();
     loadAndCheckPredictions();
     setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
+
+    // Agregar manejador de eventos WebSocket
+    socket.on('predictions_updated', function(data) {
+        console.log('Predicciones actualizadas recibidas:', data);
+        if (data && data.predictions) {
+            const predictionsList = document.getElementById('predictionsList');
+            updatePredictionsList(data.predictions);
+        }
+    });
 });
+
+// Función para actualizar la lista de predicciones
+function updatePredictionsList(predictions) {
+    const predictionsList = document.getElementById('predictionsList');
+    if (!predictionsList) {
+        console.error('No se encontró el elemento predictionsList');
+        return;
+    }
+
+    try {
+        const filteredPredictions = filterPredictions(predictions);
+
+        if (!filteredPredictions.length) {
+            predictionsList.innerHTML = `
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle"></i>
+                    No hay predicciones disponibles para la próxima hora con los filtros seleccionados.
+                </div>`;
+            return;
+        }
+
+        // Ordenar predicciones por tiempo
+        filteredPredictions.sort((a, b) =>
+            new Date(a.predicted_time) - new Date(b.predicted_time)
+        );
+
+        predictionsList.innerHTML = ''; // Limpiar lista actual
+        filteredPredictions.forEach(prediction => {
+            console.log('Procesando predicción:', prediction);
+            const riskInfo = getRiskInfo(prediction.risk_score);
+            const item = document.createElement('div');
+            item.className = `prediction-item prediction-item-${riskInfo.class}`;
+
+            item.innerHTML = `
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${prediction.station}</h5>
+                    <small>${getTimeUntilIncident(prediction.predicted_time)}</small>
+                </div>
+                <p class="mb-1">Posible ${prediction.incident_type}</p>
+                <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})</small>
+                <div class="station-info">
+                    <small class="text-muted">Troncal: ${prediction.troncal || 'N/A'}</small>
+                </div>
+            `;
+
+            predictionsList.appendChild(item);
+            checkAndNotify(prediction);
+        });
+    } catch (error) {
+        console.error('Error actualizando lista de predicciones:', error);
+        predictionsList.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                Error al actualizar las predicciones: ${error.message}
+            </div>`;
+    }
+}
+
+// Función para cargar y verificar predicciones
+function loadAndCheckPredictions() {
+    console.log('Cargando predicciones...');
+    const predictionsList = document.getElementById('predictionsList');
+    predictionsList.innerHTML = '<div class="loading-message">Cargando predicciones...</div>';
+
+    fetch('/api/predictions')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Predicciones recibidas:', data);
+            updatePredictionsList(data);
+        })
+        .catch(error => {
+            console.error('Error al cargar predicciones:', error);
+            predictionsList.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Error al cargar las predicciones: ${error.message}
+                </div>`;
+        });
+}
 
 // Inicializar filtros
 function initializeFilters() {
@@ -305,76 +398,6 @@ function getRiskInfo(risk_score) {
     };
 }
 
-// Función para cargar y verificar predicciones
-function loadAndCheckPredictions() {
-    console.log('Cargando predicciones...');
-    const predictionsList = document.getElementById('predictionsList');
-    predictionsList.innerHTML = '<div class="loading-message">Cargando predicciones...</div>';
-
-    fetch('/api/predictions')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Predicciones recibidas:', data);
-            predictionsList.innerHTML = '';
-
-            if (!Array.isArray(data)) {
-                throw new Error('Formato de datos inválido');
-            }
-
-            const filteredPredictions = filterPredictions(data);
-
-            if (!filteredPredictions.length) {
-                predictionsList.innerHTML = `
-                    <div class="alert alert-info" role="alert">
-                        <i class="fas fa-info-circle"></i>
-                        No hay predicciones disponibles para la próxima hora con los filtros seleccionados.
-                    </div>`;
-                return;
-            }
-
-            // Ordenar predicciones por tiempo
-            filteredPredictions.sort((a, b) =>
-                new Date(a.predicted_time) - new Date(b.predicted_time)
-            );
-
-            filteredPredictions.forEach(prediction => {
-                console.log('Procesando predicción:', prediction);
-                const riskInfo = getRiskInfo(prediction.risk_score);
-                const item = document.createElement('div');
-                item.className = `prediction-item prediction-item-${riskInfo.class}`;
-
-                item.innerHTML = `
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">${prediction.station}</h5>
-                        <small>${getTimeUntilIncident(prediction.predicted_time)}</small>
-                    </div>
-                    <p class="mb-1">Posible ${prediction.incident_type}</p>
-                    <small>Nivel de riesgo: ${(prediction.risk_score * 100).toFixed(1)}% (${riskInfo.label})</small>
-                    <div class="station-info">
-                        <small class="text-muted">Troncal: ${prediction.troncal || 'N/A'}</small>
-                    </div>
-                `;
-
-                predictionsList.appendChild(item);
-
-                // Verificar si es momento de notificar (1 hora antes)
-                checkAndNotify(prediction);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar predicciones:', error);
-            predictionsList.innerHTML = `
-                <div class="alert alert-danger" role="alert">
-                    <i class="fas fa-exclamation-circle"></i>
-                    Error al cargar las predicciones: ${error.message}
-                </div>`;
-        });
-}
 
 // Función para verificar y mostrar notificación de predicción
 function checkAndNotify(prediction) {

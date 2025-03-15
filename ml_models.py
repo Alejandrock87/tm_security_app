@@ -547,83 +547,118 @@ def cross_validate_model(k_folds=5):
         return None
 
 
+
 def generate_prediction_cache(hours_ahead=24):
     """
-    Genera y actualiza el caché de predicciones.
-
-    Args:
-        hours_ahead (int): Número de horas hacia adelante para predecir
-
-    Returns:
-        list: Lista de predicciones
+    Genera predicciones para las próximas horas.
     """
     try:
+        logging.info(f"Generando predicciones para las próximas {hours_ahead} horas...")
         predictions = []
         current_time = datetime.now(pytz.timezone('America/Bogota'))
 
         # Cargar datos de estaciones
         with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
             geojson_data = json.load(f)
+            logging.info(f"Datos de estaciones cargados: {len(geojson_data['features'])} estaciones")
 
         # Generar predicciones para las próximas hours_ahead horas
         for hour_offset in range(hours_ahead):
             pred_time = current_time + timedelta(hours=hour_offset)
+            logging.info(f"Generando predicciones para {pred_time.isoformat()}")
 
             for feature in geojson_data['features']:
                 station = feature['properties']['nombre_estacion']
                 coordinates = feature['geometry']['coordinates']
 
                 try:
-                    # Intentar predicción con modelo RNN
-                    risk_score = predict_station_risk(station, pred_time.hour)
-                    incident_type = predict_incident_type(station, pred_time.hour)
+                    # Usar sistema de fallback mejorado
+                    risk_score, incident_type = enhanced_fallback_prediction(station, pred_time)
 
-                    if risk_score is not None and incident_type in VALID_INCIDENT_TYPES:
-                        prediction = {
-                            'station': station,
-                            'predicted_time': pred_time.isoformat(),
-                            'risk_score': float(risk_score),
-                            'incident_type': incident_type,
-                            'latitude': coordinates[1],
-                            'longitude': coordinates[0],
-                            'prediction_made': datetime.now().isoformat(),
-                            'model_version': 'RNN'
-                        }
-                    else:
-                        # Usar sistema de fallback mejorado
-                        risk_score, incident_type = enhanced_fallback_prediction(station, pred_time)
-                        prediction = {
-                            'station': station,
-                            'predicted_time': pred_time.isoformat(),
-                            'risk_score': risk_score,
-                            'incident_type': incident_type,
-                            'latitude': coordinates[1],
-                            'longitude': coordinates[0],
-                            'prediction_made': datetime.now().isoformat(),
-                            'model_version': 'fallback'
-                        }
-
+                    prediction = {
+                        'station': station,
+                        'predicted_time': pred_time.isoformat(),
+                        'risk_score': float(risk_score),
+                        'incident_type': incident_type,
+                        'latitude': coordinates[1],
+                        'longitude': coordinates[0],
+                        'prediction_made': datetime.now().isoformat(),
+                        'model_version': 'fallback'
+                    }
                     predictions.append(prediction)
 
                 except Exception as e:
                     logging.error(f"Error prediciendo para estación {station}: {str(e)}")
                     continue
 
-        # Guardar predicciones en caché
+        # Guardar predicciones en archivo para respaldo
         if predictions:
-            cache = current_app.extensions['cache']
-            cache.set('predictions_cache', predictions, timeout=3600)  # 1 hora de caché
-
-            # Guardar también en archivo para respaldo
             with open('predictions_cache.json', 'w', encoding='utf-8') as f:
                 json.dump(predictions, f, indent=2, ensure_ascii=False)
 
-            logging.info(f"Generadas {len(predictions)} predicciones para las próximas {hours_ahead} horas")
+            logging.info(f"Generadas y guardadas {len(predictions)} predicciones")
+            return predictions
 
-        return predictions
+        logging.warning("No se generaron predicciones")
+        return []
 
     except Exception as e:
-        logging.error(f"Error generando caché de predicciones: {str(e)}")
+        logging.error(f"Error generando predicciones: {str(e)}", exc_info=True)
+        return []
+
+def update_predictions_periodically():
+    """
+    Actualiza las predicciones periódicamente y notifica a los clientes conectados.
+    """
+    try:
+        logging.info("Iniciando actualización periódica de predicciones...")
+        # Generar nuevas predicciones
+        predictions = generate_prediction_cache(hours_ahead=24)
+
+        if predictions:
+            # Notificar a través de SocketIO
+            from app import socketio
+
+            # Preparar datos para envío
+            prediction_data = {
+                'timestamp': datetime.now().isoformat(),
+                'prediction_count': len(predictions),
+                'predictions': predictions,  # Enviar predicciones completas
+                'update_type': 'periodic'
+            }
+
+            logging.info(f"Enviando {len(predictions)} predicciones a través de WebSocket")
+            socketio.emit('predictions_updated', prediction_data)
+
+            logging.info("Predicciones enviadas exitosamente")
+            return True
+
+        logging.warning("No se generaron predicciones para enviar")
+        return False
+    except Exception as e:
+        logging.error(f"Error actualizando predicciones: {str(e)}", exc_info=True)
+        return False
+
+def get_cached_predictions():
+    """
+    Obtiene predicciones del caché con fallback al archivo.
+    """
+    try:
+        # Intentar obtener del archivo de respaldo primero
+        try:
+            with open('predictions_cache.json', 'r', encoding='utf-8') as f:
+                predictions = json.load(f)
+                if predictions:
+                    return predictions
+        except Exception as file_error:
+            logging.warning(f"No se pudo cargar el archivo de respaldo: {str(file_error)}")
+
+        # Si no hay archivo, generar nuevas predicciones
+        predictions = generate_prediction_cache(hours_ahead=24)
+        return predictions if predictions else []
+
+    except Exception as e:
+        logging.error(f"Error obteniendo predicciones del caché: {str(e)}")
         return []
 
 def enhanced_fallback_prediction(station, pred_time):
@@ -713,53 +748,3 @@ def enhanced_fallback_prediction(station, pred_time):
     except Exception as e:
         logging.error(f"Error en predicción fallback: {str(e)}")
         return 0.5, VALID_INCIDENT_TYPES[0]
-
-def update_predictions_periodically():
-    """
-    Actualiza las predicciones periódicamente y notifica a los clientes conectados.
-    """
-    try:
-        # Generar nuevas predicciones
-        predictions = generate_prediction_cache(hours_ahead=24)
-
-        if predictions:
-            # Notificar a través de SocketIO
-            from app import socketio
-            socketio.emit('predictions_updated', {
-                'timestamp': datetime.now().isoformat(),
-                'prediction_count': len(predictions),
-                'update_type': 'periodic'
-            })
-
-            logging.info(f"Predicciones actualizadas: {len(predictions)} generadas")
-            return True
-        return False
-    except Exception as e:
-        logging.error(f"Error actualizando predicciones: {str(e)}")
-        return False
-
-def get_cached_predictions():
-    """
-    Obtiene predicciones del caché con fallback al archivo.
-    """
-    try:
-        cache = current_app.extensions['cache']
-        predictions = cache.get('predictions_cache')
-
-        if not predictions:
-            # Intentar recuperar del archivo de respaldo
-            try:
-                with open('predictions_cache.json', 'r', encoding='utf-8') as f:
-                    predictions = json.load(f)
-                # Actualizar caché
-                cache.set('predictions_cache', predictions, timeout=3600)
-                logging.info("Predicciones recuperadas del archivo de respaldo")
-            except Exception as file_error:
-                logging.warning(f"No se pudo cargar el archivo de respaldo: {str(file_error)}")
-                # Generar nuevas predicciones
-                predictions = generate_prediction_cache(hours_ahead=24)
-
-        return predictions if predictions else []
-    except Exception as e:
-        logging.error(f"Error obteniendo predicciones del caché: {str(e)}")
-        return []
