@@ -1,4 +1,4 @@
-// Establecer conexión con Socket.IO (declaración en base.html)
+// Establecer conexión con Socket.IO
 let socket = io('/', {
     reconnection: true,
     reconnectionAttempts: 5,
@@ -8,7 +8,7 @@ let notificationPermission = localStorage.getItem('notificationPermission') === 
 let selectedFilter = 'all';
 let selectedTroncales = [];
 let selectedEstaciones = [];
-let stationsData = []; // Almacenar datos de estaciones
+let stationsData = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Inicializando página de predicciones...');
@@ -20,10 +20,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configurar manejadores de WebSocket
     socket.on('connect', function() {
         console.log('Conexión WebSocket establecida');
+        showInAppNotification({
+            title: 'Conexión establecida',
+            message: 'Conectado al servidor de predicciones en tiempo real',
+            type: 'success'
+        });
     });
 
     socket.on('connect_error', function(error) {
         console.error('Error de conexión WebSocket:', error);
+        showInAppNotification({
+            title: 'Error de conexión',
+            message: 'No se pudo establecer conexión con el servidor',
+            type: 'error'
+        });
+    });
+
+    socket.on('disconnect', function() {
+        console.log('Desconectado del servidor WebSocket');
+        showInAppNotification({
+            title: 'Desconexión',
+            message: 'Se perdió la conexión con el servidor',
+            type: 'warning'
+        });
     });
 
     // Agregar manejador de eventos WebSocket para predicciones
@@ -33,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePredictionsList(data.predictions);
         } else {
             console.error('Formato de datos inválido en predictions_updated:', data);
+            showInAppNotification({
+                title: 'Error de datos',
+                message: 'Formato de predicciones inválido',
+                type: 'error'
+            });
         }
     });
 });
@@ -46,7 +70,9 @@ function updatePredictionsList(predictions) {
     }
 
     try {
+        console.log('Procesando predicciones:', predictions);
         const filteredPredictions = filterPredictions(predictions);
+        console.log('Predicciones filtradas:', filteredPredictions);
 
         if (!filteredPredictions.length) {
             predictionsList.innerHTML = `
@@ -57,14 +83,18 @@ function updatePredictionsList(predictions) {
             return;
         }
 
-        // Ordenar predicciones por tiempo
-        filteredPredictions.sort((a, b) =>
-            new Date(a.predicted_time) - new Date(b.predicted_time)
-        );
+        // Ordenar predicciones por tiempo y riesgo
+        filteredPredictions.sort((a, b) => {
+            const timeA = new Date(a.predicted_time);
+            const timeB = new Date(b.predicted_time);
+            if (timeA === timeB) {
+                return b.risk_score - a.risk_score; // Mayor riesgo primero
+            }
+            return timeA - timeB;
+        });
 
         predictionsList.innerHTML = ''; // Limpiar lista actual
         filteredPredictions.forEach(prediction => {
-            console.log('Procesando predicción:', prediction);
             const riskInfo = getRiskInfo(prediction.risk_score);
             const item = document.createElement('div');
             item.className = `prediction-item prediction-item-${riskInfo.class}`;
@@ -130,6 +160,19 @@ function loadAndCheckPredictions() {
                     <i class="fas fa-exclamation-circle"></i>
                     Error al cargar las predicciones: ${error.message}
                 </div>`;
+
+            // Intentar inicializar predicciones si no hay datos
+            fetch('/initialize_predictions')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Predicciones inicializadas:', data);
+                        loadAndCheckPredictions(); // Recargar después de inicializar
+                    }
+                })
+                .catch(initError => {
+                    console.error('Error inicializando predicciones:', initError);
+                });
         });
 }
 

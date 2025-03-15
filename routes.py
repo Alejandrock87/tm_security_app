@@ -83,10 +83,10 @@ def init_routes(app):
         try:
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
-                stations = [(feature['properties']['nombre_estacion'], 
-                            f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
-                           for feature in geojson_data['features']
-                           if 'nombre_estacion' in feature['properties']]
+                stations = [(feature['properties']['nombre_estacion'],
+                             f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
+                            for feature in geojson_data['features']
+                            if 'nombre_estacion' in feature['properties']]
                 stations.sort(key=lambda x: x[0])
                 form.station.choices = [(s[0], s[1]) for s in stations]
 
@@ -220,8 +220,8 @@ def init_routes(app):
                 query = query.filter(Incident.timestamp <= date_to_end)
 
             app.logger.info("Obteniendo estadísticas de incidentes...")
-            statistics = get_incident_statistics(date_from_obj if date_from else None, 
-                                              date_to_end if date_to else None)
+            statistics = get_incident_statistics(date_from_obj if date_from else None,
+                                                 date_to_end if date_to else None)
 
             app.logger.info(f"Estadísticas obtenidas: {statistics}")
 
@@ -251,7 +251,7 @@ def init_routes(app):
     @login_required
     def model_insights():
         try:
-            from ml_models import get_model_insights 
+            from ml_models import get_model_insights
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
         except Exception as e:
@@ -375,9 +375,9 @@ def init_routes(app):
                 geojson_data = json.load(f)
 
             if troncal and troncal != 'all':
-                stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                                   for feature in geojson_data['features']
-                                   if feature['properties'].get('troncal_estacion') == troncal]
+                stations_for_troncal = [feature['properties']['nombre_estacion']
+                                       for feature in geojson_data['features']
+                                       if feature['properties'].get('troncal_estacion') == troncal]
                 query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
             if station and station != 'all':
                 query = query.filter(Incident.nearest_station == station)
@@ -387,9 +387,9 @@ def init_routes(app):
             station_stats = db.session.query(
                 Incident.nearest_station,
                 func.count(Incident.id).label('total')
-            ).group_by(Incident.nearest_station)\
-             .order_by(desc(func.count(Incident.id)))\
-             .all()
+            ).group_by(Incident.nearest_station) \
+                .order_by(desc(func.count(Incident.id))) \
+                .all()
 
             station_counts = {stat.nearest_station: stat.total for stat in station_stats}
 
@@ -507,14 +507,14 @@ def init_routes(app):
     def push_subscribe():
         subscription_info = request.get_json()
         try:
-            with db.session.begin_nested():  
+            with db.session.begin_nested():
                 device = PushSubscription(
                     subscription_info=json.dumps(subscription_info),
                     user_id=current_user.id if current_user.is_authenticated else None
                 )
                 db.session.add(device)
             return jsonify({'success': True})
-        except sql_exceptions.IntegrityError:  
+        except sql_exceptions.IntegrityError:
             return jsonify({'success': True, 'message': 'Subscription already exists'}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -538,6 +538,7 @@ def init_routes(app):
 
     return app
 
+
 def predict_station_risk(station, hour):
     try:
         from ml_models import predict_station_risk as ml_predict_station_risk
@@ -546,6 +547,7 @@ def predict_station_risk(station, hour):
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
         import random
         return random.uniform(0.1, 1.0)
+
 
 def predict_incident_type(station, hour):
     try:
@@ -557,6 +559,7 @@ def predict_incident_type(station, hour):
         import random
         return random.choice(incident_types)
 
+
 def get_all_stations():
     with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
         geojson_data = json.load(f)
@@ -567,6 +570,7 @@ def get_all_stations():
             'longitude': feature['geometry']['coordinates'][0]
         } for feature in geojson_data['features']]
     return stations
+
 
 def get_route_information(route_id):
     return {"route_id": route_id, "name": f"Ruta {route_id}"}
