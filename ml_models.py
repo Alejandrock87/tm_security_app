@@ -40,13 +40,13 @@ VALID_INCIDENT_TYPES = [
 
 # Configuración del modelo
 MODEL_CONFIG = {
-    'sequence_length': 24,  # 24 horas de datos históricos
+    'sequence_length': 12,  # Reducido de 24 a 12 para manejar menos datos
     'n_features': 5,       # [hora, día_semana, mes, incidentes_previos, tipo_anterior]
-    'lstm_units': 64,
-    'dropout_rate': 0.2,
+    'lstm_units': 32,      # Reducido de 64 a 32
+    'dropout_rate': 0.1,   # Reducido de 0.2 a 0.1
     'learning_rate': 0.001,
-    'batch_size': 32,
-    'epochs': 100
+    'batch_size': 8,       # Reducido de 32 a 8
+    'epochs': 50          # Reducido de 100 a 50
 }
 
 def create_rnn_model():
@@ -225,12 +225,16 @@ def train_rnn_model():
     try:
         # Preparar datos
         data = prepare_data()
-        if len(data) < MODEL_CONFIG['sequence_length']:
-            logging.error("Insufficient data for training")
+        if len(data) < 10:  # Reducir el umbral mínimo para pruebas
+            logging.error(f"Insufficient data for training: only {len(data)} samples available")
             return None, None
 
         # Preparar secuencias
         X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
+
+        if len(X) < MODEL_CONFIG['batch_size']:
+            logging.error(f"Not enough sequences for training: {len(X)} < {MODEL_CONFIG['batch_size']}")
+            return None, None
 
         # Dividir datos
         train_size = int(len(X) * 0.8)
@@ -240,16 +244,19 @@ def train_rnn_model():
         # Crear y entrenar modelo
         model = create_rnn_model()
 
+        # Ajustar hiperparámetros para conjuntos pequeños de datos
+        adjusted_epochs = min(MODEL_CONFIG['epochs'], len(X_train) // MODEL_CONFIG['batch_size'] * 10)
+
         callbacks = [
-            EarlyStopping(monitor='val_loss', patience=10),
+            EarlyStopping(monitor='val_loss', patience=5),  # Reducir paciencia
             ModelCheckpoint('models/rnn_model.h5', save_best_only=True)
         ]
 
         history = model.fit(
             X_train, y_train,
             validation_split=0.2,
-            batch_size=MODEL_CONFIG['batch_size'],
-            epochs=MODEL_CONFIG['epochs'],
+            batch_size=min(MODEL_CONFIG['batch_size'], len(X_train) // 2),  # Ajustar batch_size
+            epochs=adjusted_epochs,
             callbacks=callbacks
         )
 
@@ -259,7 +266,7 @@ def train_rnn_model():
 
         return model, history
     except Exception as e:
-        logging.error(f"Error training RNN model: {str(e)}")
+        logging.error(f"Error training RNN model: {str(e)}", exc_info=True)
         return None, None
 
 def get_model_insights():
