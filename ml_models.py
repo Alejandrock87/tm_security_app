@@ -25,6 +25,8 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 import os
+import json
+import pytz
 
 # Definir tipos de incidentes válidos
 VALID_INCIDENT_TYPES = [
@@ -270,10 +272,9 @@ def predict_station_risk(station, hour):
     """
     try:
         # Intentar obtener predicción del caché
-        cache = current_app.extensions['cache']
-        cached_predictions = cache.get('predictions_cache')
-        if cached_predictions and isinstance(cached_predictions, list):
-            for prediction in cached_predictions:
+        predictions = get_cached_predictions()
+        if predictions:
+            for prediction in predictions:
                 if (prediction.get('station') == station and 
                     isinstance(prediction.get('predicted_time'), str) and
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
@@ -292,12 +293,10 @@ def predict_station_risk(station, hour):
         except Exception as model_error:
             logging.warning(f"RNN prediction failed, using fallback: {str(model_error)}")
 
-        # Sistema de fallback (código existente)
-        base_risk = random.uniform(0.3, 0.8)
-        time_factor = 1 + 0.2 * math.sin(hour * math.pi / 12)
-        risk_score = min(0.95, max(0.1, base_risk * time_factor))
-
+        # Sistema de fallback mejorado
+        risk_score, _ = enhanced_fallback_prediction(station, datetime(datetime.now().year, datetime.now().month, datetime.now().day, hour, 0, 0))
         return risk_score
+
     except Exception as e:
         logging.error(f"Error predicting risk for station {station}: {str(e)}")
         return None
@@ -309,10 +308,9 @@ def predict_incident_type(station, hour):
     """
     try:
         # Intentar obtener del caché
-        cache = current_app.extensions['cache']
-        cached_predictions = cache.get('predictions_cache')
-        if cached_predictions and isinstance(cached_predictions, list):
-            for prediction in cached_predictions:
+        predictions = get_cached_predictions()
+        if predictions:
+            for prediction in predictions:
                 if (prediction.get('station') == station and 
                     isinstance(prediction.get('predicted_time'), str) and
                     datetime.fromisoformat(prediction['predicted_time']).hour == hour):
@@ -330,28 +328,10 @@ def predict_incident_type(station, hour):
         except Exception as model_error:
             logging.warning(f"RNN incident type prediction failed, using fallback: {str(model_error)}")
 
-        # Sistema de fallback (código existente)
-        weights = {
-            'Hurto': 0.3,
-            'Cosquilleo': 0.2,
-            'Hurto a mano armada': 0.1,
-            'Acoso': 0.15,
-            'Sospechoso': 0.1,
-            'Ataque': 0.1,
-            'Apertura de puertas': 0.05
-        }
+        # Sistema de fallback mejorado
+        _, incident_type = enhanced_fallback_prediction(station, datetime(datetime.now().year, datetime.now().month, datetime.now().day, hour, 0, 0))
+        return incident_type
 
-        if 6 <= hour <= 9 or 17 <= hour <= 20:
-            weights['Hurto'] *= 1.2
-            weights['Cosquilleo'] *= 1.3
-        elif 22 <= hour or hour <= 4:
-            weights['Hurto a mano armada'] *= 1.5
-            weights['Ataque'] *= 1.2
-
-        total = sum(weights.values())
-        normalized_weights = [w/total for w in weights.values()]
-
-        return random.choices(list(weights.keys()), normalized_weights)[0]
     except Exception as e:
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
         return None
@@ -565,3 +545,221 @@ def cross_validate_model(k_folds=5):
     except Exception as e:
         logging.error(f"Error in cross validation: {str(e)}")
         return None
+
+
+def generate_prediction_cache(hours_ahead=24):
+    """
+    Genera y actualiza el caché de predicciones.
+
+    Args:
+        hours_ahead (int): Número de horas hacia adelante para predecir
+
+    Returns:
+        list: Lista de predicciones
+    """
+    try:
+        predictions = []
+        current_time = datetime.now(pytz.timezone('America/Bogota'))
+
+        # Cargar datos de estaciones
+        with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+
+        # Generar predicciones para las próximas hours_ahead horas
+        for hour_offset in range(hours_ahead):
+            pred_time = current_time + timedelta(hours=hour_offset)
+
+            for feature in geojson_data['features']:
+                station = feature['properties']['nombre_estacion']
+                coordinates = feature['geometry']['coordinates']
+
+                try:
+                    # Intentar predicción con modelo RNN
+                    risk_score = predict_station_risk(station, pred_time.hour)
+                    incident_type = predict_incident_type(station, pred_time.hour)
+
+                    if risk_score is not None and incident_type in VALID_INCIDENT_TYPES:
+                        prediction = {
+                            'station': station,
+                            'predicted_time': pred_time.isoformat(),
+                            'risk_score': float(risk_score),
+                            'incident_type': incident_type,
+                            'latitude': coordinates[1],
+                            'longitude': coordinates[0],
+                            'prediction_made': datetime.now().isoformat(),
+                            'model_version': 'RNN'
+                        }
+                    else:
+                        # Usar sistema de fallback mejorado
+                        risk_score, incident_type = enhanced_fallback_prediction(station, pred_time)
+                        prediction = {
+                            'station': station,
+                            'predicted_time': pred_time.isoformat(),
+                            'risk_score': risk_score,
+                            'incident_type': incident_type,
+                            'latitude': coordinates[1],
+                            'longitude': coordinates[0],
+                            'prediction_made': datetime.now().isoformat(),
+                            'model_version': 'fallback'
+                        }
+
+                    predictions.append(prediction)
+
+                except Exception as e:
+                    logging.error(f"Error prediciendo para estación {station}: {str(e)}")
+                    continue
+
+        # Guardar predicciones en caché
+        if predictions:
+            cache = current_app.extensions['cache']
+            cache.set('predictions_cache', predictions, timeout=3600)  # 1 hora de caché
+
+            # Guardar también en archivo para respaldo
+            with open('predictions_cache.json', 'w', encoding='utf-8') as f:
+                json.dump(predictions, f, indent=2, ensure_ascii=False)
+
+            logging.info(f"Generadas {len(predictions)} predicciones para las próximas {hours_ahead} horas")
+
+        return predictions
+
+    except Exception as e:
+        logging.error(f"Error generando caché de predicciones: {str(e)}")
+        return []
+
+def enhanced_fallback_prediction(station, pred_time):
+    """
+    Sistema de fallback mejorado para predicciones.
+
+    Args:
+        station (str): Nombre de la estación
+        pred_time (datetime): Tiempo para la predicción
+
+    Returns:
+        tuple: (risk_score, incident_type)
+    """
+    try:
+        hour = pred_time.hour
+        day_of_week = pred_time.weekday()
+
+        # Factores de riesgo base por hora del día
+        if 5 <= hour <= 9:  # Hora pico mañana
+            base_risk = random.uniform(0.6, 0.9)
+        elif 16 <= hour <= 20:  # Hora pico tarde
+            base_risk = random.uniform(0.7, 0.95)
+        elif 22 <= hour or hour <= 4:  # Noche
+            base_risk = random.uniform(0.5, 0.8)
+        else:  # Hora valle
+            base_risk = random.uniform(0.3, 0.6)
+
+        # Ajuste por día de la semana
+        if day_of_week < 5:  # Lunes a Viernes
+            day_factor = 1.2
+        else:  # Fin de semana
+            day_factor = 0.8
+
+        # Calcular risk score final
+        risk_score = min(0.95, max(0.1, base_risk * day_factor))
+
+        # Determinar tipo de incidente más probable según la hora
+        if 6 <= hour <= 9:  # Hora pico mañana
+            weights = {
+                'Cosquilleo': 0.3,
+                'Hurto': 0.25,
+                'Hurto a mano armada': 0.1,
+                'Acoso': 0.15,
+                'Sospechoso': 0.1,
+                'Ataque': 0.05,
+                'Apertura de puertas': 0.05
+            }
+        elif 16 <= hour <= 20:  # Hora pico tarde
+            weights = {
+                'Hurto': 0.3,
+                'Cosquilleo': 0.25,
+                'Hurto a mano armada': 0.15,
+                'Acoso': 0.1,
+                'Sospechoso': 0.1,
+                'Ataque': 0.05,
+                'Apertura de puertas': 0.05
+            }
+        elif 22 <= hour or hour <= 4:  # Noche
+            weights = {
+                'Hurto a mano armada': 0.3,
+                'Ataque': 0.2,
+                'Hurto': 0.2,
+                'Sospechoso': 0.15,
+                'Acoso': 0.1,
+                'Cosquilleo': 0.03,
+                'Apertura de puertas': 0.02
+            }
+        else:  # Hora valle
+            weights = {
+                'Hurto': 0.25,
+                'Cosquilleo': 0.2,
+                'Sospechoso': 0.15,
+                'Acoso': 0.15,
+                'Hurto a mano armada': 0.1,
+                'Ataque': 0.1,
+                'Apertura de puertas': 0.05
+            }
+
+        # Seleccionar tipo de incidente
+        incident_type = random.choices(
+            list(weights.keys()),
+            weights=list(weights.values())
+        )[0]
+
+        return risk_score, incident_type
+
+    except Exception as e:
+        logging.error(f"Error en predicción fallback: {str(e)}")
+        return 0.5, VALID_INCIDENT_TYPES[0]
+
+def update_predictions_periodically():
+    """
+    Actualiza las predicciones periódicamente y notifica a los clientes conectados.
+    """
+    try:
+        # Generar nuevas predicciones
+        predictions = generate_prediction_cache(hours_ahead=24)
+
+        if predictions:
+            # Notificar a través de SocketIO
+            from app import socketio
+            socketio.emit('predictions_updated', {
+                'timestamp': datetime.now().isoformat(),
+                'prediction_count': len(predictions),
+                'update_type': 'periodic'
+            })
+
+            logging.info(f"Predicciones actualizadas: {len(predictions)} generadas")
+            return True
+        return False
+    except Exception as e:
+        logging.error(f"Error actualizando predicciones: {str(e)}")
+        return False
+
+def get_cached_predictions():
+    """
+    Obtiene predicciones del caché con fallback al archivo.
+    """
+    try:
+        cache = current_app.extensions['cache']
+        predictions = cache.get('predictions_cache')
+
+        if not predictions:
+            # Intentar recuperar del archivo de respaldo
+            try:
+                with open('predictions_cache.json', 'r', encoding='utf-8') as f:
+                    predictions = json.load(f)
+                # Actualizar caché
+                cache.set('predictions_cache', predictions, timeout=3600)
+                logging.info("Predicciones recuperadas del archivo de respaldo")
+            except Exception as file_error:
+                logging.warning(f"No se pudo cargar el archivo de respaldo: {str(file_error)}")
+                # Generar nuevas predicciones
+                predictions = generate_prediction_cache(hours_ahead=24)
+
+        return predictions if predictions else []
+    except Exception as e:
+        logging.error(f"Error obteniendo predicciones del caché: {str(e)}")
+        return []
