@@ -6,6 +6,7 @@ from sqlalchemy import func, desc, extract
 from database import db
 from datetime import datetime
 import logging
+import pytz
 
 def get_incidents_for_map():
     """
@@ -51,12 +52,26 @@ def get_incident_statistics(date_from=None, date_to=None):
         logging.info("Iniciando obtención de estadísticas de incidentes")
         logging.info(f"Filtros de fecha - desde: {date_from}, hasta: {date_to}")
 
-        # Construir la consulta base con filtros de fecha
+        # Asegurar que las fechas estén en la zona horaria local
+        local_tz = pytz.timezone('America/Bogota')  # Zona horaria de Colombia
+
+        # Construir la consulta base
         base_query = Incident.query
+
+        # Aplicar filtros de fecha considerando la zona horaria
         if date_from:
-            base_query = base_query.filter(Incident.timestamp >= date_from)
+            # Convertir la fecha inicial a UTC para la comparación
+            start_of_day = local_tz.localize(
+                datetime.combine(date_from, datetime.min.time())
+            ).astimezone(pytz.UTC)
+            base_query = base_query.filter(Incident.timestamp >= start_of_day)
+
         if date_to:
-            base_query = base_query.filter(Incident.timestamp <= date_to)
+            # Convertir la fecha final a UTC para la comparación
+            end_of_day = local_tz.localize(
+                datetime.combine(date_to, datetime.max.time())
+            ).astimezone(pytz.UTC)
+            base_query = base_query.filter(Incident.timestamp <= end_of_day)
 
         # Total de incidentes
         total_incidents = base_query.count()
@@ -67,8 +82,8 @@ def get_incident_statistics(date_from=None, date_to=None):
             Incident.nearest_station,
             func.count(Incident.id).label('total')
         ).filter(
-            *([Incident.timestamp >= date_from] if date_from else []),
-            *([Incident.timestamp <= date_to] if date_to else [])
+            *([Incident.timestamp >= start_of_day] if date_from else []),
+            *([Incident.timestamp <= end_of_day] if date_to else [])
         ).group_by(Incident.nearest_station)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
@@ -80,20 +95,20 @@ def get_incident_statistics(date_from=None, date_to=None):
             Incident.incident_type,
             func.count(Incident.id).label('count')
         ).filter(
-            *([Incident.timestamp >= date_from] if date_from else []),
-            *([Incident.timestamp <= date_to] if date_to else [])
+            *([Incident.timestamp >= start_of_day] if date_from else []),
+            *([Incident.timestamp <= end_of_day] if date_to else [])
         ).group_by(Incident.incident_type)\
          .order_by(desc(func.count(Incident.id)))\
          .all()
 
-        # Análisis de hora más peligrosa
-        hour_column = extract('hour', Incident.timestamp)
+        # Análisis de hora más peligrosa usando la hora local
+        hour_column = extract('hour', func.timezone('America/Bogota', Incident.timestamp))
         hour_stats = db.session.query(
             hour_column.label('hour'),
             func.count(Incident.id).label('count')
         ).filter(
-            *([Incident.timestamp >= date_from] if date_from else []),
-            *([Incident.timestamp <= date_to] if date_to else [])
+            *([Incident.timestamp >= start_of_day] if date_from else []),
+            *([Incident.timestamp <= end_of_day] if date_to else [])
         ).group_by(hour_column)\
          .order_by(desc(func.count(Incident.id)))\
          .first()
@@ -106,7 +121,7 @@ def get_incident_statistics(date_from=None, date_to=None):
             )
             type_counts = {}
             for incident in ['Hurto', 'Acoso', 'Cosquilleo', 'Ataque', 
-                           'Apertura de puertas', 'Hurto a mano armada', 'Sospechoso']:
+                         'Apertura de puertas', 'Hurto a mano armada', 'Sospechoso']:
                 count = station_incidents.filter(
                     Incident.incident_type == incident
                 ).count()
