@@ -50,13 +50,13 @@ try:
     # Configurar Socket.IO
     socketio = SocketIO(
         app,
-        async_mode='gevent',
+        async_mode='eventlet',
         logger=True,
         engineio_logger=True,
         ping_timeout=60,
         ping_interval=25,
         manage_session=False,  # Evitar conflictos con la gestión de sesiones de Flask
-        cors_allowed_origins=['*']  # Corregido el formato de CORS
+        cors_allowed_origins='*'
     )
     logger.info("SocketIO configurado")
 
