@@ -1,14 +1,10 @@
-# Monkey patch debe ser lo primero
-from gevent import monkey
-monkey.patch_all()
-
 import os
 import logging
 import sys
 
 # Configurar logging más detallado
 logging.basicConfig(
-    level=logging.DEBUG,  # Cambiado a DEBUG para más detalle
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
@@ -17,7 +13,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Verificar variables de entorno críticas
 try:
     required_env_vars = ['DATABASE_URL', 'FLASK_SECRET_KEY']
     missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
@@ -29,10 +24,10 @@ try:
             os.environ['DATABASE_URL'] = database_url
             logger.info("DATABASE_URL construida exitosamente")
 
-    # Importar la aplicación Flask y SocketIO después del monkey patch
+    # Importar la aplicación Flask
     logger.info("Importando módulos de la aplicación...")
-    from app import app, socketio
-    logger.info("Aplicación Flask y SocketIO importados correctamente")
+    from app import app
+    logger.info("Aplicación Flask importada correctamente")
 
     if __name__ == '__main__':
         try:
@@ -40,13 +35,11 @@ try:
             port = int(os.environ.get('PORT', 5000))
             logger.info(f"Intentando iniciar servidor en puerto {port}")
 
-            socketio.run(
-                app,
+            # Iniciar servidor Flask sin SocketIO temporalmente
+            app.run(
                 host='0.0.0.0',
                 port=port,
-                debug=False,  # Deshabilitado para evitar problemas con gevent
-                use_reloader=False,
-                log_output=True
+                debug=True
             )
         except Exception as e:
             logger.error(f"Error al iniciar servidor: {str(e)}", exc_info=True)

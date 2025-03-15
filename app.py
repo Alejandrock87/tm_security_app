@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Configurar logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Cambiado a DEBUG para más detalle
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
@@ -24,65 +24,40 @@ try:
     app = Flask(__name__)
     logger.info("Aplicación Flask creada")
 
-    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "a-secret-key-123")
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "default-secret-key")
 
-    # Configuración de sesión
+    # Simplificar configuración de sesión
     app.config.update(
         SESSION_COOKIE_SECURE=False,
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE='Lax',
-        PERMANENT_SESSION_LIFETIME=1800
     )
 
-    # Configurar CORS para permitir todas las conexiones
-    CORS(app, resources={
-        r"/*": {
-            "origins": "*",
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"]
-        }
-    })
+    # Configurar CORS
+    CORS(app)
     logger.info("CORS configurado")
 
     # Configurar cache
-    cache = Cache(config={
-        'CACHE_TYPE': 'SimpleCache',
-        'CACHE_DEFAULT_TIMEOUT': 3600,
-        'CACHE_THRESHOLD': 1000
-    })
+    cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
     cache.init_app(app)
     logger.info("Cache configurado")
 
-    # Configurar Socket.IO con modo de debug
+    # Simplificar configuración de SocketIO
     socketio = SocketIO(
         app,
         cors_allowed_origins="*",
         async_mode='gevent',
         logger=True,
-        engineio_logger=True,
-        ping_timeout=60,
-        ping_interval=25
+        engineio_logger=True
     )
     logger.info("SocketIO configurado")
 
-    # Configurar base de datos
-    database_url = os.environ.get("DATABASE_URL")
-    if not database_url:
-        logger.warning("DATABASE_URL no encontrada, construyendo desde variables individuales")
-        database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_recycle": 300,
-        "pool_pre_ping": True
-    }
+    # Configurar base de datos - Solo lectura, no modificamos estructura
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Inicializar base de datos
     init_db(app)
-    with app.app_context():
-        import models
-        db.create_all()
     logger.info("Base de datos inicializada")
 
     # Inicializar login manager
@@ -96,31 +71,17 @@ try:
         from models import User
         return User.query.get(int(user_id))
 
-    # Endpoint de health check con logging detallado
+    # Endpoint de health check simplificado
     @app.route('/health')
     def health():
         try:
-            logger.info(f"Health check accedido - IP: {request.remote_addr}")
-
-            # Verificar conexión a la base de datos
-            db.session.execute('SELECT 1')
-            db_status = "connected"
-            logger.info("Conexión a base de datos verificada")
+            logger.info("Health check accedido")
+            return jsonify({"status": "ok", "timestamp": datetime.now().isoformat()}), 200
         except Exception as e:
-            logger.error(f"Error en health check - DB: {str(e)}")
-            db_status = "error"
+            logger.error(f"Error en health check: {str(e)}")
+            return jsonify({"status": "error"}), 500
 
-        response = {
-            "status": "ok",
-            "message": "Server is running",
-            "timestamp": datetime.now().isoformat(),
-            "database": db_status
-        }
-
-        logger.info(f"Health check response: {response}")
-        return jsonify(response), 200
-
-    # Importar e inicializar rutas
+    # Importar rutas
     from routes import init_routes
     init_routes(app)
     logger.info("Rutas inicializadas")
