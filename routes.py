@@ -13,6 +13,8 @@ from models import User, Incident, PushSubscription
 from database import db
 from sqlalchemy import func
 from sqlalchemy.sql import desc
+from sqlalchemy import text
+
 
 def init_routes(app):
     @app.route('/test')
@@ -86,10 +88,10 @@ def init_routes(app):
         try:
             with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
                 geojson_data = json.load(f)
-                stations = [(feature['properties']['nombre_estacion'], 
-                            f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
-                           for feature in geojson_data['features']
-                           if 'nombre_estacion' in feature['properties']]
+                stations = [(feature['properties']['nombre_estacion'],
+                             f"{feature['properties']['nombre_estacion']} - {feature['properties'].get('troncal_estacion', 'N/A')}")
+                            for feature in geojson_data['features']
+                            if 'nombre_estacion' in feature['properties']]
                 stations.sort(key=lambda x: x[0])
                 form.station.choices = [(s[0], s[1]) for s in stations]
 
@@ -216,7 +218,6 @@ def init_routes(app):
     def api_statistics():
         try:
             app.logger.info("Endpoint /api/statistics accessed")
-            query = Incident.query
 
             # Obtener parámetros de fecha
             date_from = request.args.get('dateFrom')
@@ -224,19 +225,9 @@ def init_routes(app):
 
             app.logger.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
-            # Aplicar filtros de fecha si existen
-            if date_from:
-                date_from_obj = datetime.strptime(date_from, '%Y-%m-%d')
-                query = query.filter(Incident.timestamp >= date_from_obj)
-            if date_to:
-                date_to_obj = datetime.strptime(date_to, '%Y-%m-%d')
-                date_to_end = date_to_obj.replace(hour=23, minute=59, second=59)
-                query = query.filter(Incident.timestamp <= date_to_end)
-
             # Obtener estadísticas usando la función actualizada
             app.logger.info("Obteniendo estadísticas de incidentes...")
-            statistics = get_incident_statistics(date_from_obj if date_from else None, 
-                                                  date_to_end if date_to else None)
+            statistics = get_incident_statistics(date_from, date_to)
 
             app.logger.info(f"Estadísticas obtenidas: {statistics}")
 
@@ -252,10 +243,6 @@ def init_routes(app):
                 })
 
             app.logger.info(f"Retornando datos - Total de incidentes: {statistics['total_incidents']}")
-            app.logger.info(f"Estación más afectada: {statistics['most_affected_station']}")
-            app.logger.info(f"Tipos de incidentes: {statistics['incident_types']}")
-            app.logger.info(f"Top estaciones: {statistics['top_stations']}")
-
             return jsonify(statistics)
 
         except Exception as e:
@@ -266,7 +253,7 @@ def init_routes(app):
     @login_required
     def model_insights():
         try:
-            from ml_models import get_model_insights # Lazy import here
+            from ml_models import get_model_insights  # Lazy import here
             insights = get_model_insights()
             return render_template('model_insights.html', insights=insights)
         except Exception as e:
@@ -378,9 +365,9 @@ def init_routes(app):
                 geojson_data = json.load(f)
 
             if troncal and troncal != 'all':
-                stations_for_troncal = [feature['properties']['nombre_estacion'] 
-                                       for feature in geojson_data['features']
-                                       if feature['properties'].get('troncal_estacion') == troncal]
+                stations_for_troncal = [feature['properties']['nombre_estacion']
+                                        for feature in geojson_data['features']
+                                        if feature['properties'].get('troncal_estacion') == troncal]
                 query = query.filter(Incident.nearest_station.in_(stations_for_troncal))
             if station and station != 'all':
                 query = query.filter(Incident.nearest_station == station)
@@ -391,9 +378,9 @@ def init_routes(app):
             station_stats = db.session.query(
                 Incident.nearest_station,
                 func.count(Incident.id).label('total')
-            ).group_by(Incident.nearest_station)\
-             .order_by(desc(func.count(Incident.id)))\
-             .all()
+            ).group_by(Incident.nearest_station) \
+                .order_by(desc(func.count(Incident.id))) \
+                .all()
 
             # Crear diccionario de conteo por estación
             station_counts = {stat.nearest_station: stat.total for stat in station_stats}
@@ -551,6 +538,7 @@ def init_routes(app):
 
     return app
 
+
 def predict_station_risk(station, hour):
     """Wrapper para la función de predicción del modelo real"""
     try:
@@ -561,6 +549,7 @@ def predict_station_risk(station, hour):
         # Fallback a valores aleatorios si hay error
         import random
         return random.uniform(0.1, 1.0)
+
 
 def predict_incident_type(station, hour):
     """Wrapper para la función de predicción del tipo de incidente"""
@@ -574,6 +563,7 @@ def predict_incident_type(station, hour):
         import random
         return random.choice(incident_types)
 
+
 def get_all_stations():
     with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
         geojson_data = json.load(f)
@@ -584,6 +574,7 @@ def get_all_stations():
             'longitude': feature['geometry']['coordinates'][0]
         } for feature in geojson_data['features']]
     return stations
+
 
 def get_route_information(route_id):
     return {"route_id": route_id, "name": f"Ruta {route_id}"}

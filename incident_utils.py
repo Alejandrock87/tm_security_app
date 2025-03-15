@@ -53,19 +53,19 @@ def get_incident_statistics(date_from=None, date_to=None):
         logging.info("Iniciando obtención de estadísticas de incidentes")
         logging.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
-        # Construir la consulta base con filtros de fecha
+        # Construir la consulta base
         base_query = Incident.query
 
         # Aplicar filtros de fecha usando la zona horaria local
         if date_from:
             # Construir y loggear la expresión SQL para el filtro de fecha inicial
-            date_filter = text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') >= :date_from")
+            date_filter = text("DATE(timestamp AT TIME ZONE 'America/Bogota') >= :date_from")
             logging.info(f"Aplicando filtro de fecha inicial: {date_filter}")
             base_query = base_query.filter(date_filter, date_from=date_from)
 
         if date_to:
             # Construir y loggear la expresión SQL para el filtro de fecha final
-            date_filter = text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') <= :date_to")
+            date_filter = text("DATE(timestamp AT TIME ZONE 'America/Bogota') <= :date_to")
             logging.info(f"Aplicando filtro de fecha final: {date_filter}")
             base_query = base_query.filter(date_filter, date_to=date_to)
 
@@ -95,7 +95,7 @@ def get_incident_statistics(date_from=None, date_to=None):
 
         # Análisis de hora más peligrosa usando la hora local
         hour_stats = db.session.query(
-            extract('hour', text("timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota'")).label('hour'),
+            extract('hour', text("timestamp AT TIME ZONE 'America/Bogota'")).label('hour'),
             func.count(Incident.id).label('count')
         ).filter(
             *base_query._where_criteria
