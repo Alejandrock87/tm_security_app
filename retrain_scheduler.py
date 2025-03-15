@@ -14,15 +14,9 @@ Programador de Reentrenamiento del Modelo de Predicción
 -----------------------------------------------------
 
 Este módulo gestiona:
-1. Programación automática de reentrenamiento del modelo
+1. Reentrenamiento automático del modelo con datos existentes
 2. Generación y caché de predicciones semanales
 3. Monitoreo de salud del modelo
-4. Almacenamiento de predicciones en caché
-
-Frecuencia de operaciones:
-- Reentrenamiento: Domingos a las 11:00 PM
-- Verificación de salud: Cada 12 horas
-- Generación de predicciones: Después de cada reentrenamiento
 """
 
 logging.basicConfig(level=logging.INFO)
@@ -47,6 +41,7 @@ def generate_weekly_predictions():
 
                 for feature in geojson_data['features']:
                     station = feature['properties']['nombre_estacion']
+                    troncal = feature['properties'].get('troncal', 'N/A')
                     coordinates = feature['geometry']['coordinates']
 
                     # Generar predicciones para cada estación
@@ -56,6 +51,7 @@ def generate_weekly_predictions():
                     if risk_score is not None and incident_type in VALID_INCIDENT_TYPES:
                         predictions.append({
                             'station': station,
+                            'troncal': troncal,
                             'predicted_time': pred_time.isoformat(),
                             'risk_score': float(risk_score),
                             'incident_type': incident_type,
@@ -63,9 +59,13 @@ def generate_weekly_predictions():
                             'longitude': coordinates[0]
                         })
 
-        # Guardar predicciones en caché por 24 horas
+        # Guardar predicciones en caché
         from app import cache
         cache.set('predictions_cache', predictions, timeout=24 * 3600)
+
+        # También guardar en archivo para respaldo
+        with open('predictions_cache.json', 'w', encoding='utf-8') as f:
+            json.dump(predictions, f, ensure_ascii=False, indent=2)
 
         logging.info(f"Generated {len(predictions)} predictions for the next week")
         return True
@@ -73,15 +73,9 @@ def generate_weekly_predictions():
         logging.error(f"Error generating predictions: {str(e)}")
         return False
 
-
 def check_model_health():
     """
     Verifica el estado del modelo y sus predicciones.
-
-    Verificaciones:
-    1. Rendimiento del modelo (accuracy)
-    2. Calidad de las predicciones
-    3. Inicia reentrenamiento si el rendimiento es bajo
     """
     try:
         from ml_models import get_model_insights
@@ -97,16 +91,9 @@ def check_model_health():
         logging.error(f"Error en verificación de salud del modelo: {str(e)}")
         return False
 
-
 def retrain_model_job():
     """
     Ejecuta el reentrenamiento programado del modelo.
-
-    Proceso:
-    1. Entrena un nuevo modelo RNN con datos actualizados
-    2. Verifica la calidad del nuevo modelo
-    3. Genera nuevas predicciones semanales
-    4. Actualiza el caché de predicciones
     """
     from app import app
 
@@ -126,15 +113,9 @@ def retrain_model_job():
         logging.error(f"Error during model retraining: {str(e)}")
         logging.exception("Detailed error traceback:")
 
-
 def run_scheduler():
     """
     Inicia y ejecuta el programador de tareas.
-
-    Tareas programadas:
-    1. Reentrenamiento semanal (Domingos 11:00 PM)
-    2. Verificación de salud (cada 12 horas)
-    3. Entrenamiento inicial si no existe modelo
     """
     # Programar reentrenamiento semanal
     schedule.every().sunday.at("23:00").do(retrain_model_job)
@@ -151,7 +132,6 @@ def run_scheduler():
     while True:
         schedule.run_pending()
         time.sleep(60)
-
 
 if __name__ == "__main__":
     run_scheduler()

@@ -27,7 +27,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 import os
 
-# Definir tipos de incidentes válidos
+# Tipos de incidentes válidos permanecen igual
 VALID_INCIDENT_TYPES = [
     'Hurto',
     'Hurto a mano armada',
@@ -38,20 +38,21 @@ VALID_INCIDENT_TYPES = [
     'Acoso'
 ]
 
-# Configuración del modelo
+# Configuración mejorada del modelo
 MODEL_CONFIG = {
     'sequence_length': 24,  # 24 horas de datos históricos
     'n_features': 5,       # [hora, día_semana, mes, incidentes_previos, tipo_anterior]
-    'lstm_units': 64,
-    'dropout_rate': 0.2,
+    'lstm_units': 128,     # Aumentado para mejor capacidad de aprendizaje
+    'dropout_rate': 0.3,   # Aumentado para mejor generalización
     'learning_rate': 0.001,
     'batch_size': 32,
-    'epochs': 100
+    'epochs': 100,
+    'validation_split': 0.2
 }
 
 def create_rnn_model():
     """
-    Crea el modelo RNN con arquitectura LSTM
+    Crea un modelo RNN mejorado con arquitectura LSTM
     """
     model = Sequential([
         LSTM(MODEL_CONFIG['lstm_units'], 
@@ -60,8 +61,9 @@ def create_rnn_model():
         Dropout(MODEL_CONFIG['dropout_rate']),
         LSTM(MODEL_CONFIG['lstm_units'] // 2),
         Dropout(MODEL_CONFIG['dropout_rate']),
+        Dense(64, activation='relu'),
         Dense(32, activation='relu'),
-        Dense(1, activation='sigmoid')  # Predicción de riesgo
+        Dense(1, activation='sigmoid')
     ])
 
     model.compile(
@@ -80,7 +82,6 @@ def prepare_sequence_data(data, sequence_length=24):
     targets = []
 
     for i in range(len(data) - sequence_length):
-        # Crear secuencia de características
         sequence = data[i:i + sequence_length]
         target = data[i + sequence_length]
 
@@ -92,10 +93,92 @@ def prepare_sequence_data(data, sequence_length=24):
             sequence['incident_type_encoded'].values
         ])
 
-        # El objetivo es si ocurrirá un incidente (1) o no (0)
         targets.append(1 if target['incident_count'] > 0 else 0)
 
     return np.array(features), np.array(targets)
+
+def prepare_data():
+    """
+    Prepara los datos históricos para el entrenamiento - SOLO LECTURA
+    """
+    try:
+        # Solo lectura de incidentes existentes
+        incidents = Incident.query.order_by(Incident.timestamp).all()
+        if not incidents:
+            logging.warning("No hay datos de incidentes disponibles para entrenamiento")
+            return pd.DataFrame()
+
+        # Convertir a DataFrame sin modificar la base de datos
+        data = pd.DataFrame([{
+            'incident_type': incident.incident_type,
+            'timestamp': incident.timestamp,
+            'nearest_station': incident.nearest_station,
+            'hour': incident.timestamp.hour,
+            'day_of_week': incident.timestamp.weekday(),
+            'month': incident.timestamp.month,
+            'incident_count': 1
+        } for incident in incidents])
+
+        # Agrupar por hora y estación para contar incidentes
+        data = data.groupby([
+            'timestamp', 'nearest_station', 'hour', 
+            'day_of_week', 'month', 'incident_type'
+        ]).size().reset_index(name='incident_count')
+
+        # Codificar tipos de incidente
+        le = LabelEncoder()
+        data['incident_type_encoded'] = le.fit_transform(data['incident_type'])
+
+        return data
+
+    except Exception as e:
+        logging.error(f"Error preparing data: {str(e)}")
+        return pd.DataFrame()
+
+def train_rnn_model():
+    """
+    Entrena el modelo RNN con datos históricos - SOLO LECTURA
+    """
+    try:
+        # Preparar datos (solo lectura)
+        data = prepare_data()
+        if len(data) < MODEL_CONFIG['sequence_length']:
+            logging.error("Insufficient data for training")
+            return None, None
+
+        # Preparar secuencias
+        X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
+
+        # Dividir datos
+        train_size = int(len(X) * 0.8)
+        X_train, X_test = X[:train_size], X[train_size:]
+        y_train, y_test = y[:train_size], y[train_size:]
+
+        # Crear y entrenar modelo
+        model = create_rnn_model()
+
+        callbacks = [
+            EarlyStopping(monitor='val_loss', patience=10),
+            ModelCheckpoint('models/rnn_model.h5', save_best_only=True)
+        ]
+
+        history = model.fit(
+            X_train, y_train,
+            validation_split=MODEL_CONFIG['validation_split'],
+            batch_size=MODEL_CONFIG['batch_size'],
+            epochs=MODEL_CONFIG['epochs'],
+            callbacks=callbacks
+        )
+
+        # Evaluar modelo
+        test_loss, test_accuracy = model.evaluate(X_test, y_test)
+        logging.info(f"Test accuracy: {test_accuracy}")
+
+        return model, history
+
+    except Exception as e:
+        logging.error(f"Error training RNN model: {str(e)}")
+        return None, None
 
 def predict_station_risk(station, hour):
     """
@@ -190,109 +273,6 @@ def predict_incident_type(station, hour):
         logging.error(f"Error predicting incident type for station {station}: {str(e)}")
         return None
 
-def prepare_data():
-    """
-    Prepara los datos históricos para el entrenamiento del modelo.
-    """
-    try:
-        incidents = Incident.query.order_by(Incident.timestamp).all()
-        if not incidents:
-            return pd.DataFrame()
-
-        data = pd.DataFrame([{
-            'incident_type': incident.incident_type,
-            'timestamp': incident.timestamp,
-            'nearest_station': incident.nearest_station,
-            'hour': incident.timestamp.hour,
-            'day_of_week': incident.timestamp.weekday(),
-            'month': incident.timestamp.month,
-            'incident_count': 1
-        } for incident in incidents])
-
-        # Agregar encoding para tipos de incidente
-        le = LabelEncoder()
-        data['incident_type_encoded'] = le.fit_transform(data['incident_type'])
-
-        return data
-    except Exception as e:
-        logging.error(f"Error preparing data: {str(e)}")
-        return pd.DataFrame()
-
-def train_rnn_model():
-    """
-    Entrena el modelo RNN con datos históricos.
-    """
-    try:
-        # Preparar datos
-        data = prepare_data()
-        if len(data) < MODEL_CONFIG['sequence_length']:
-            logging.error("Insufficient data for training")
-            return None, None
-
-        # Preparar secuencias
-        X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
-
-        # Dividir datos
-        train_size = int(len(X) * 0.8)
-        X_train, X_test = X[:train_size], X[train_size:]
-        y_train, y_test = y[:train_size], y[train_size:]
-
-        # Crear y entrenar modelo
-        model = create_rnn_model()
-
-        callbacks = [
-            EarlyStopping(monitor='val_loss', patience=10),
-            ModelCheckpoint('models/rnn_model.h5', save_best_only=True)
-        ]
-
-        history = model.fit(
-            X_train, y_train,
-            validation_split=0.2,
-            batch_size=MODEL_CONFIG['batch_size'],
-            epochs=MODEL_CONFIG['epochs'],
-            callbacks=callbacks
-        )
-
-        # Evaluar modelo
-        test_loss, test_accuracy = model.evaluate(X_test, y_test)
-        logging.info(f"Test accuracy: {test_accuracy}")
-
-        return model, history
-    except Exception as e:
-        logging.error(f"Error training RNN model: {str(e)}")
-        return None, None
-
-def get_model_insights():
-    """
-    Proporciona métricas e insights sobre el rendimiento del modelo.
-    """
-    try:
-        model_path = 'models/rnn_model.h5'
-        if os.path.exists(model_path):
-            model = load_model(model_path)
-            return {
-                'accuracy': 0.75,  # TODO: Calcular accuracy real
-                'predictions_available': True,
-                'model_status': 'active',
-                'model_type': 'RNN-LSTM',
-                'last_training': os.path.getmtime(model_path)
-            }
-    except Exception:
-        pass
-
-    return {
-        'accuracy': 0.75,
-        'predictions_available': True,
-        'model_status': 'fallback',
-        'model_type': 'statistical',
-        'last_training': None
-    }
-
-# Funciones auxiliares para futuras implementaciones
-def predict_incident_probability(latitude, longitude, hour, day_of_week, month, nearest_station):
-    """Placeholder para futura implementación de predicción de probabilidad"""
-    return "Prediction not available with the simplified model."
-
 def prepare_prediction_data(station, hour):
     """
     Prepara los datos para predicción en tiempo real.
@@ -383,3 +363,35 @@ def get_incident_trends():
     except Exception as e:
         logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
         return {}
+
+def get_model_insights():
+    """
+    Proporciona métricas e insights sobre el rendimiento del modelo.
+    """
+    try:
+        model_path = 'models/rnn_model.h5'
+        if os.path.exists(model_path):
+            model = load_model(model_path)
+            return {
+                'accuracy': 0.75,  # TODO: Calcular accuracy real
+                'predictions_available': True,
+                'model_status': 'active',
+                'model_type': 'RNN-LSTM',
+                'last_training': os.path.getmtime(model_path)
+            }
+    except Exception:
+        pass
+
+    return {
+        'accuracy': 0.75,
+        'predictions_available': True,
+        'model_status': 'fallback',
+        'model_type': 'statistical',
+        'last_training': None
+    }
+
+
+# Funciones auxiliares para futuras implementaciones
+def predict_incident_probability(latitude, longitude, hour, day_of_week, month, nearest_station):
+    """Placeholder para futura implementación de predicción de probabilidad"""
+    return "Prediction not available with the simplified model."
