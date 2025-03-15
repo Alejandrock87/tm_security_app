@@ -44,7 +44,7 @@ try:
                 debug=False,
                 use_reloader=False,
                 log_output=True,
-                cors_allowed_origins="*"
+                allow_unsafe_werkzeug=True
             )
         except Exception as e:
             logger.error(f"Error al iniciar servidor: {str(e)}", exc_info=True)

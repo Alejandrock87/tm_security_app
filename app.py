@@ -56,7 +56,8 @@ try:
         ping_timeout=60,
         ping_interval=25,
         manage_session=False,  # Evitar conflictos con la gestión de sesiones de Flask
-        cors_allowed_origins='*'
+        cors_allowed_origins=['*'],
+        allow_upgrades=True
     )
     logger.info("SocketIO configurado")
 
