@@ -22,6 +22,14 @@ async function loadStatistics() {
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
+
+        // Verificar si hay datos
+        if (data.total_incidents === 0) {
+            console.log("No se encontraron incidentes para mostrar");
+            showError('No hay datos para mostrar en este período');
+            return;
+        }
+
         updateAllStatistics(data);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
@@ -30,21 +38,51 @@ async function loadStatistics() {
 }
 
 function updateAllStatistics(data) {
-    if (!data) return;
+    if (!data) {
+        console.log("No hay datos para actualizar");
+        return;
+    }
+
+    console.log("Actualizando estadísticas con datos:", data);
 
     // Actualizar tarjetas de resumen
-    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
-    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
-    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
-    document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
+    const elementsToUpdate = {
+        'totalIncidents': data.total_incidents || '0',
+        'mostAffectedStation': data.most_affected_station || '-',
+        'mostDangerousHour': data.most_dangerous_hour || '-',
+        'mostCommonType': data.most_common_type || '-'
+    };
+
+    for (const [elementId, value] of Object.entries(elementsToUpdate)) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            console.log(`Actualizando ${elementId} con valor:`, value);
+            element.textContent = value;
+        } else {
+            console.warn(`Elemento no encontrado: ${elementId}`);
+        }
+    }
 
     // Actualizar listas detalladas
-    updateIncidentTypesList(data.incident_types);
-    updateStationsList(data.top_stations);
+    if (data.incident_types) {
+        console.log("Actualizando lista de tipos de incidentes:", data.incident_types);
+        updateIncidentTypesList(data.incident_types);
+    }
+
+    if (data.top_stations) {
+        console.log("Actualizando lista de estaciones:", data.top_stations);
+        updateStationsList(data.top_stations);
+    }
 
     // Actualizar gráficas
     updateIncidentTypesChart(data.incident_types);
     updateStationsChart(data.top_stations);
+
+    // Ocultar mensaje de error si existe
+    const errorContainer = document.getElementById('emptyDataMessage');
+    if (errorContainer) {
+        errorContainer.style.display = 'none';
+    }
 }
 
 function updateIncidentTypesList(incidentTypes) {
@@ -218,6 +256,8 @@ async function applyQuickFilter(period) {
 
         console.log('Aplicando filtros:', filters);
         const queryString = new URLSearchParams(filters).toString();
+        console.log('URL de consulta:', `/api/statistics?${queryString}`);
+
         const response = await fetch(`/api/statistics?${queryString}`);
 
         if (!response.ok) {
@@ -225,6 +265,14 @@ async function applyQuickFilter(period) {
         }
 
         const data = await response.json();
+        console.log('Datos recibidos después de aplicar filtro:', data);
+
+        if (data.total_incidents === 0) {
+            console.log("No se encontraron incidentes para el período seleccionado");
+            showError('No hay datos para mostrar en este período');
+            return;
+        }
+
         updateAllStatistics(data);
 
     } catch (error) {

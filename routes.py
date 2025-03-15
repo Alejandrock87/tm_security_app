@@ -225,28 +225,26 @@ def init_routes(app):
 
             app.logger.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
-            # Obtener estadísticas usando la función actualizada
-            app.logger.info("Obteniendo estadísticas de incidentes...")
-            statistics = get_incident_statistics(date_from, date_to)
-
-            app.logger.info(f"Estadísticas obtenidas: {statistics}")
-
-            if not statistics['total_incidents']:
-                app.logger.warning("No se encontraron incidentes para los filtros especificados")
-                return jsonify({
+            # Obtener estadísticas
+            try:
+                app.logger.info("Intentando obtener estadísticas de incidentes...")
+                statistics = get_incident_statistics(date_from, date_to)
+                app.logger.info(f"Estadísticas obtenidas exitosamente: {statistics}")
+            except Exception as e:
+                app.logger.error(f"Error obteniendo estadísticas: {str(e)}", exc_info=True)
+                statistics = {
                     'total_incidents': 0,
+                    'most_affected_station': "Error",
+                    'most_dangerous_hour': "Error",
+                    'most_common_type': "Error",
                     'incident_types': {},
-                    'most_affected_station': '-',
-                    'most_common_type': '-',
-                    'most_dangerous_hour': '-',
                     'top_stations': {}
-                })
+                }
 
-            app.logger.info(f"Retornando datos - Total de incidentes: {statistics['total_incidents']}")
             return jsonify(statistics)
 
         except Exception as e:
-            app.logger.error(f"Error en /api/statistics: {str(e)}", exc_info=True)
+            app.logger.error(f"Error general en /api/statistics: {str(e)}", exc_info=True)
             return jsonify({'error': str(e)}), 500
 
     @app.route('/model_insights')
