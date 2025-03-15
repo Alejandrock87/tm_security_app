@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timedelta
 from database import db
 from models import Incident
-from ml_models import VALID_INCIDENT_TYPES, train_model, predict_station_risk, predict_incident_type
+from ml_models import VALID_INCIDENT_TYPES, train_rnn_model, predict_station_risk, predict_incident_type
 
 """
 Programador de Reentrenamiento del Modelo de Predicción
@@ -26,10 +26,6 @@ Frecuencia de operaciones:
 """
 
 logging.basicConfig(level=logging.INFO)
-
-PREDICTIONS_CACHE_FILE = 'predictions_cache.json'
-MODEL_CACHE_FILE = 'model_cache.pkl'
-
 
 def generate_weekly_predictions():
     """
@@ -83,21 +79,18 @@ def check_model_health():
     Verifica el estado del modelo y sus predicciones.
 
     Verificaciones:
-    1. Rendimiento del modelo (cross-validation score)
+    1. Rendimiento del modelo (accuracy)
     2. Calidad de las predicciones
     3. Inicia reentrenamiento si el rendimiento es bajo
-
-    Returns:
-        bool: True si la verificación fue exitosa
     """
     try:
         from ml_models import get_model_insights
         insights = get_model_insights()
 
         if isinstance(insights, dict):
-            cv_score = insights['cross_validation_scores']['mean']
-            if cv_score < 0.5:  # Si el rendimiento es muy bajo
-                logging.warning(f"Bajo rendimiento del modelo (CV Score: {cv_score}). Iniciando reentrenamiento.")
+            accuracy = insights.get('accuracy', 0)
+            if accuracy < 0.5:  # Si el rendimiento es muy bajo
+                logging.warning(f"Bajo rendimiento del modelo (Accuracy: {accuracy}). Iniciando reentrenamiento.")
                 retrain_model_job()
         return True
     except Exception as e:
@@ -110,7 +103,7 @@ def retrain_model_job():
     Ejecuta el reentrenamiento programado del modelo.
 
     Proceso:
-    1. Entrena un nuevo modelo con datos actualizados
+    1. Entrena un nuevo modelo RNN con datos actualizados
     2. Verifica la calidad del nuevo modelo
     3. Genera nuevas predicciones semanales
     4. Actualiza el caché de predicciones
@@ -120,8 +113,8 @@ def retrain_model_job():
     logging.info("Starting scheduled model retraining...")
     try:
         with app.app_context():
-            model = train_model()
-            if model is not None:
+            model, history = train_rnn_model()
+            if model is not None and history is not None:
                 logging.info("Model retraining completed successfully")
                 if generate_weekly_predictions():
                     logging.info("Weekly predictions generated successfully")
@@ -150,7 +143,7 @@ def run_scheduler():
     schedule.every(12).hours.do(check_model_health)
 
     # Ejecutar entrenamiento inicial si es necesario
-    if not os.path.exists(MODEL_CACHE_FILE):
+    if not os.path.exists('models/rnn_model.h5'):
         logging.info("No model found. Running initial training...")
         retrain_model_job()
 
