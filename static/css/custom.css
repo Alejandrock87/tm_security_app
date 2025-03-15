@@ -107,82 +107,145 @@ html, body {
   max-width: 100% !important;
 }
 
-/* Mensajes Flash */
+/* Mensajes Flash y Notificaciones */
 #flash-messages-container {
-  position: fixed;
-  top: 70px; /* Justo debajo del navbar */
-  right: 20px;
-  z-index: 1040; /* Por debajo del navbar pero por encima del contenido */
-  max-width: 400px;
-  pointer-events: none; /* Permite hacer clic a través del contenedor */
+    position: fixed;
+    top: 70px; /* Justo debajo del navbar */
+    right: 20px;
+    z-index: 1040;
+    max-width: 400px;
+    pointer-events: none; /* Permite hacer clic a través del contenedor */
 }
 
 .floating-alert {
-  background-color: #1e293b;
-  color: #ffffff;
-  border-left: 4px solid #ee5253;
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  max-width: 100%;
-  pointer-events: auto; /* Restaura los eventos de clic en la alerta */
+    background-color: #1e293b;
+    color: #ffffff;
+    border-left: 4px solid #ee5253;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 100%;
+    pointer-events: auto; /* Restaura los eventos de clic en la alerta */
 }
 
-.floating-alert.success {
-  border-left-color: #10b981;
+.floating-alert .notification-content {
+    flex: 1;
+    min-width: 0; /* Evita que el contenido se desborde */
 }
 
-.floating-alert.error {
-  border-left-color: #ef4444;
+.floating-alert strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #ee5253;
 }
 
-.floating-alert.warning {
-  border-left-color: #f59e0b;
+.floating-alert p {
+    margin: 0.25rem 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
 }
 
-.floating-alert .message {
-  flex: 1;
-  margin-right: 0.5rem;
+.floating-alert small {
+    display: block;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+    font-size: 0.75rem;
 }
 
 .floating-alert .btn-close {
-  background: none;
-  border: none;
-  color: #94a3b8;
-  padding: 0.25rem;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: color 0.2s ease;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    padding: 0.25rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+    align-self: flex-start;
+    pointer-events: auto;
 }
 
 .floating-alert .btn-close:hover {
-  color: #ffffff;
+    color: #ffffff;
+}
+
+.floating-alert.success {
+    border-left-color: #10b981;
+}
+
+.floating-alert.success strong {
+    color: #10b981;
+}
+
+.floating-alert.error {
+    border-left-color: #ef4444;
+}
+
+.floating-alert.error strong {
+    color: #ef4444;
+}
+
+.floating-alert.warning {
+    border-left-color: #f59e0b;
+}
+
+.floating-alert.warning strong {
+    color: #f59e0b;
+}
+
+.floating-alert.info {
+    border-left-color: #3b82f6;
+}
+
+.floating-alert.info strong {
+    color: #3b82f6;
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
 }
+
 @keyframes slideOut {
-  from { opacity: 1; }
-  to   { opacity: 0; transform: translateX(100%); }
+    from { opacity: 1; }
+    to   { opacity: 0; transform: translateX(100%); }
 }
+
 .floating-alert.hide {
-  animation: slideOut 0.5s ease-out forwards;
+    animation: slideOut 0.5s ease-out forwards;
+}
+
+/* Responsivo en móviles */
+@media (max-width: 768px) {
+    #flash-messages-container {
+        max-width: 90%;
+        right: 5%;
+        left: 5%;
+    }
+
+    .floating-alert {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Ajustes específicos para iOS */
+@supports (-webkit-touch-callout: none) {
+    #flash-messages-container {
+        top: calc(70px + env(safe-area-inset-top, 0px));
+    }
 }
 
 /* Modal notificaciones */
 .modal {
     z-index: 9999;
-  overflow: hidden;
-  
+    overflow: hidden;
 }
 
 .modal-dialog {

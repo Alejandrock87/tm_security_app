@@ -95,14 +95,20 @@ function areNotificationsSupported() {
 // Función para mostrar mensajes toast
 function showToast(message, type) {
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
+    toast.className = `floating-alert ${type} fade show`;
 
-    // Asegurar que el contenedor existe
-    let toastContainer = document.getElementById('toastContainer');
+    toast.innerHTML = `
+        <div class="message">${message}</div>
+        <button type="button" class="btn-close" onclick="this.closest('.floating-alert').remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+
+    // Asegurar que el contenedor existe y está en la posición correcta
+    let toastContainer = document.getElementById('flash-messages-container');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
-        toastContainer.id = 'toastContainer';
+        toastContainer.id = 'flash-messages-container';
         document.body.appendChild(toastContainer);
     }
 
@@ -114,11 +120,11 @@ function showToast(message, type) {
     // Añadir clase para mostrar con animación
     toast.classList.add('show');
 
-    // Remover después de 3 segundos
+    // Remover después de 5 segundos
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 5000);
 }
 
 // Función para cargar las estaciones
@@ -627,39 +633,53 @@ function shouldShowNotification(incident) {
 // Función para mostrar notificaciones in-app
 function showInAppNotification(notification) {
     const notificationList = document.getElementById('notifications-list');
-    if (notificationList) {
-        const notificationItem = document.createElement('div');
-        notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
+    if (!notificationList) return;
 
-        const timestamp = new Date(notification.timestamp).toLocaleString();
+    // Crear el elemento de notificación
+    const notificationItem = document.createElement('div');
+    notificationItem.className = 'floating-alert info fade';
 
-        // Formato diferente para notificaciones del sistema
-        if (notification.incident_type === 'Sistema') {
-            notificationItem.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="notification-content">
-                        <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
-                        ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
-                    </div>
-                    <small class="text-muted">${timestamp}</small>
-                </div>
-            `;
-        } else {
-            // Formato para notificaciones de incidentes
-            notificationItem.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="notification-content">
-                        <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
-                        <p class="mb-1">Estación: ${notification.nearest_station}</p>
-                        ${notification.description ? `<p class="mb-0 small">${notification.description}</p>` : ''}
-                    </div>
-                    <small class="text-muted">${timestamp}</small>
-                </div>
-            `;
-        }
+    const timestamp = new Date(notification.timestamp).toLocaleString();
 
-        // Insertar al principio de la lista
-        notificationList.insertBefore(notificationItem, notificationList.firstChild);
+    // Formato diferente para notificaciones del sistema vs incidentes
+    if (notification.incident_type === 'Sistema') {
+        notificationItem.innerHTML = `
+            <div class="notification-content">
+                <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+                ${notification.description ? `<p class="mb-0">${notification.description}</p>` : ''}
+                <small class="text-muted">${timestamp}</small>
+            </div>
+            <button type="button" class="btn-close" onclick="this.closest('.floating-alert').remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+    } else {
+        // Formato para notificaciones de incidentes
+        notificationItem.innerHTML = `
+            <div class="notification-content">
+                <strong>${capitalizeFirstLetter(notification.incident_type)}</strong>
+                <p class="mb-1">Estación: ${notification.nearest_station}</p>
+                ${notification.description ? `<p class="mb-0">${notification.description}</p>` : ''}
+                <small class="text-muted">${timestamp}</small>
+            </div>
+            <button type="button" class="btn-close" onclick="this.closest('.floating-alert').remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+    }
+
+    // Insertar al principio de la lista y en el contenedor de mensajes flotantes
+    notificationList.insertBefore(notificationItem, notificationList.firstChild);
+
+    // También mostrar como alerta flotante
+    const flashContainer = document.getElementById('flash-messages-container');
+    if (flashContainer) {
+        const alertCopy = notificationItem.cloneNode(true);
+        flashContainer.appendChild(alertCopy);
+
+        // Forzar reflow para asegurar la animación
+        alertCopy.offsetHeight;
+        alertCopy.classList.add('show');
 
         // Actualizar contador
         const badge = document.getElementById('notificationBadge');
@@ -669,8 +689,11 @@ function showInAppNotification(notification) {
             badge.style.display = 'inline-block';
         }
 
-        // También mostrar un toast
-        showToast(`Nueva notificación: ${notification.incident_type}`, 'info');
+        // Remover después de 5 segundos
+        setTimeout(() => {
+            alertCopy.classList.remove('show');
+            setTimeout(() => alertCopy.remove(), 300);
+        }, 5000);
     }
 }
 
@@ -678,7 +701,6 @@ function showInAppNotification(notification) {
 function showBrowserNotification(incident) {
     showInAppNotification(incident);
 }
-
 
 // Función para actualizar el estado visual de los filtros
 function updateFilterVisuals() {
