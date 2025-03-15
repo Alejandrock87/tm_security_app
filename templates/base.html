@@ -120,15 +120,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         // Variables globales
-        var socket;
+        let socket = null;
+        let socketInitialized = false;
 
-        // Registro del Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+        function initializeSocket() {
+            if (socketInitialized) {
+                console.log('Socket.IO ya está inicializado');
+                return;
+            }
+
+            console.log('Inicializando Socket.IO en base.html...');
+            socket = io({
+                transports: ['websocket', 'polling'],
+                reconnection: true,
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000
+            });
+
+            socket.on('connect', () => {
+                console.log('Socket.IO conectado en base.html');
+                socketInitialized = true;
+                document.dispatchEvent(new Event('socketInitialized'));
+            });
+
+            socket.on('error', (error) => {
+                console.error('Error en Socket.IO:', error);
+            });
+
+            socket.on('newNotification', (notification) => {
+                showNotification({ message: notification });
+            });
+        }
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM cargado en base.html');
+            initializeSocket();
+
+            // Registro del Service Worker
+            if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/static/js/service-worker.js')
                     .then(registration => {
                         console.log('ServiceWorker registrado:', registration);
-                        // Suscribirse a mensajes del service worker
                         navigator.serviceWorker.addEventListener('message', (event) => {
                             if (event.data && event.data.type === 'showNotification') {
                                 showNotification(event.data.payload);
@@ -138,8 +171,16 @@
                     .catch(error => {
                         console.log('Error al registrar ServiceWorker:', error);
                     });
+            }
+
+            // Ocultar alertas flash después de 5s
+            document.querySelectorAll('.floating-alert').forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.add('hide');
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
             });
-        }
+        });
 
         // Función para mostrar notificaciones in-app
         function showNotification(data) {
@@ -164,33 +205,6 @@
                 }
             }
         }
-
-        // Inicializar Socket.IO después de que el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configuración de Socket.IO
-            socket = io({
-                transports: ['websocket', 'polling'],
-                reconnection: true,
-                reconnectionAttempts: 5,
-                reconnectionDelay: 1000
-            });
-
-            socket.on('connect', () => {
-                console.log('Conectado al servidor Socket.IO');
-            });
-
-            socket.on('newNotification', (notification) => {
-                showNotification({ message: notification });
-            });
-
-            // Ocultar alertas flash después de 5s
-            document.querySelectorAll('.floating-alert').forEach(alert => {
-                setTimeout(() => {
-                    alert.classList.add('hide');
-                    setTimeout(() => alert.remove(), 500);
-                }, 5000);
-            });
-        });
     </script>
     {% block scripts %}{% endblock %}
 </body>

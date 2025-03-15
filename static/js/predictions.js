@@ -1,7 +1,5 @@
-// Configurar opciones de Socket.IO (usando la conexión global)
-socket.reconnection = true;
-socket.reconnectionAttempts = 5;
-socket.reconnectionDelay = 1000;
+// Usando la conexión Socket.IO global
+console.log('Cargando módulo de predicciones...');
 
 let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
 let selectedFilter = 'all';
@@ -9,16 +7,11 @@ let selectedTroncales = [];
 let selectedEstaciones = [];
 let stationsData = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Inicializando página de predicciones...');
-    initializeFilters();
-    initializeNotifications();
-    loadAndCheckPredictions();
-    setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
+function initializeSocketHandlers() {
+    console.log('Configurando manejadores de Socket.IO para predicciones...');
 
-    // Configurar manejadores de WebSocket
     socket.on('connect', function() {
-        console.log('Conexión WebSocket establecida');
+        console.log('Conexión WebSocket establecida en predictions.js');
         showInAppNotification({
             title: 'Conexión establecida',
             message: 'Conectado al servidor de predicciones en tiempo real',
@@ -27,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     socket.on('connect_error', function(error) {
-        console.error('Error de conexión WebSocket:', error);
+        console.error('Error de conexión WebSocket en predictions.js:', error);
         showInAppNotification({
             title: 'Error de conexión',
             message: 'No se pudo establecer conexión con el servidor',
@@ -36,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     socket.on('disconnect', function() {
-        console.log('Desconectado del servidor WebSocket');
+        console.log('Desconectado del servidor WebSocket en predictions.js');
         showInAppNotification({
             title: 'Desconexión',
             message: 'Se perdió la conexión con el servidor',
@@ -44,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Agregar manejador de eventos WebSocket para predicciones
     socket.on('predictions_updated', function(data) {
         console.log('Predicciones actualizadas recibidas:', data);
         if (data && data.predictions && Array.isArray(data.predictions)) {
@@ -58,6 +50,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Inicializando página de predicciones...');
+
+    // Esperar a que socket esté inicializado
+    if (socket && socket.connected) {
+        console.log('Socket.IO ya está disponible, configurando manejadores...');
+        initializeSocketHandlers();
+    } else {
+        console.log('Esperando inicialización de Socket.IO...');
+        document.addEventListener('socketInitialized', () => {
+            console.log('Socket.IO inicializado, configurando manejadores...');
+            initializeSocketHandlers();
+        });
+    }
+
+    initializeFilters();
+    initializeNotifications();
+    loadAndCheckPredictions();
+    setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
 });
 
 // Función para actualizar la lista de predicciones
