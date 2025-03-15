@@ -39,14 +39,15 @@ class IncidentReportForm(FlaskForm):
         ('Acoso', 'Acoso')
     ], validators=[DataRequired()])
     description = TextAreaField('Descripción')
-    incident_date = DateField('Fecha del incidente', validators=[DataRequired()])
-    incident_time = TimeField('Hora del incidente', validators=[DataRequired()])
+    incident_date = DateField('Fecha del incidente', validators=[DataRequired()], default=datetime.now)
+    incident_time = TimeField('Hora del incidente', validators=[DataRequired()], default=datetime.now)
     station = SelectField('Estación', validators=[DataRequired()], choices=[])
 
     def __init__(self, *args, **kwargs):
         super(IncidentReportForm, self).__init__(*args, **kwargs)
-        # Solo establecer fecha y hora por defecto si es una petición GET (formulario nuevo)
-        if not self.is_submitted():
-            self.incident_date.data = datetime.now().date()
-            self.incident_time.data = datetime.now().time()
+        # Set current date and time as defaults
+        if not self.incident_date.data:
+            self.incident_date.data = datetime.now()
+        if not self.incident_time.data:
+            self.incident_time.data = datetime.now()
     submit = SubmitField('Reportar incidente')

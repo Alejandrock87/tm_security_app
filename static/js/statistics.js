@@ -22,14 +22,6 @@ async function loadStatistics() {
 
         const data = await response.json();
         console.log("Datos recibidos:", data);
-
-        // Verificar si hay datos
-        if (data.total_incidents === 0) {
-            console.log("No se encontraron incidentes para mostrar");
-            showError('No hay datos para mostrar en este período');
-            return;
-        }
-
         updateAllStatistics(data);
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
@@ -38,51 +30,21 @@ async function loadStatistics() {
 }
 
 function updateAllStatistics(data) {
-    if (!data) {
-        console.log("No hay datos para actualizar");
-        return;
-    }
-
-    console.log("Actualizando estadísticas con datos:", data);
+    if (!data) return;
 
     // Actualizar tarjetas de resumen
-    const elementsToUpdate = {
-        'totalIncidents': data.total_incidents || '0',
-        'mostAffectedStation': data.most_affected_station || '-',
-        'mostDangerousHour': data.most_dangerous_hour || '-',
-        'mostCommonType': data.most_common_type || '-'
-    };
-
-    for (const [elementId, value] of Object.entries(elementsToUpdate)) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            console.log(`Actualizando ${elementId} con valor:`, value);
-            element.textContent = value;
-        } else {
-            console.warn(`Elemento no encontrado: ${elementId}`);
-        }
-    }
+    document.getElementById('totalIncidents').textContent = data.total_incidents || '0';
+    document.getElementById('mostAffectedStation').textContent = data.most_affected_station || '-';
+    document.getElementById('mostDangerousHour').textContent = data.most_dangerous_hour || '-';
+    document.getElementById('mostCommonType').textContent = data.most_common_type || '-';
 
     // Actualizar listas detalladas
-    if (data.incident_types) {
-        console.log("Actualizando lista de tipos de incidentes:", data.incident_types);
-        updateIncidentTypesList(data.incident_types);
-    }
-
-    if (data.top_stations) {
-        console.log("Actualizando lista de estaciones:", data.top_stations);
-        updateStationsList(data.top_stations);
-    }
+    updateIncidentTypesList(data.incident_types);
+    updateStationsList(data.top_stations);
 
     // Actualizar gráficas
     updateIncidentTypesChart(data.incident_types);
     updateStationsChart(data.top_stations);
-
-    // Ocultar mensaje de error si existe
-    const errorContainer = document.getElementById('emptyDataMessage');
-    if (errorContainer) {
-        errorContainer.style.display = 'none';
-    }
 }
 
 function updateIncidentTypesList(incidentTypes) {
@@ -227,37 +189,29 @@ function updateStationsChart(stationsData) {
 
 async function applyQuickFilter(period) {
     try {
-        // Usar la fecha local para los filtros
         const now = new Date();
-        // Ajustar a la zona horaria local de Colombia (UTC-5)
-        const offset = -5 * 60; // offset en minutos para Colombia
-        const localDate = new Date(now.getTime() + (now.getTimezoneOffset() + offset) * 60000);
-
         let filters = {};
 
         switch(period) {
             case 'today':
-                filters.dateFrom = localDate.toISOString().split('T')[0];
+                filters.dateFrom = now.toISOString().split('T')[0];
                 filters.dateTo = filters.dateFrom;
                 break;
             case 'week':
-                const weekStart = new Date(localDate);
-                weekStart.setDate(localDate.getDate() - 7);
+                const weekStart = new Date(now);
+                weekStart.setDate(now.getDate() - 7);
                 filters.dateFrom = weekStart.toISOString().split('T')[0];
-                filters.dateTo = localDate.toISOString().split('T')[0];
+                filters.dateTo = now.toISOString().split('T')[0];
                 break;
             case 'month':
-                const monthStart = new Date(localDate);
-                monthStart.setMonth(localDate.getMonth() - 1);
+                const monthStart = new Date(now);
+                monthStart.setMonth(now.getMonth() - 1);
                 filters.dateFrom = monthStart.toISOString().split('T')[0];
-                filters.dateTo = localDate.toISOString().split('T')[0];
+                filters.dateTo = now.toISOString().split('T')[0];
                 break;
         }
 
-        console.log('Aplicando filtros:', filters);
         const queryString = new URLSearchParams(filters).toString();
-        console.log('URL de consulta:', `/api/statistics?${queryString}`);
-
         const response = await fetch(`/api/statistics?${queryString}`);
 
         if (!response.ok) {
@@ -265,14 +219,6 @@ async function applyQuickFilter(period) {
         }
 
         const data = await response.json();
-        console.log('Datos recibidos después de aplicar filtro:', data);
-
-        if (data.total_incidents === 0) {
-            console.log("No se encontraron incidentes para el período seleccionado");
-            showError('No hay datos para mostrar en este período');
-            return;
-        }
-
         updateAllStatistics(data);
 
     } catch (error) {

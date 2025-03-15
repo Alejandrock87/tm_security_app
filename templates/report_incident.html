@@ -8,7 +8,7 @@
     {% block content %}
     <div class="report-incident">
       <div class="report-container">
-        <!-- Encabezado y estructura del formulario se mantiene igual -->
+        <!-- Encabezado de la pantalla Reportar Incidente -->
         <div class="report-header">
           <div class="card-icon">
             <i class="fas fa-exclamation-triangle"></i>
@@ -16,7 +16,9 @@
           <h1 class="welcome-title text-center">Reportar Incidente</h1>
         </div>
 
+        <!-- Contenedor principal (form + leyendas) -->
         <div class="content-wrapper">
+          <!-- Sección del formulario -->
           <div class="form-section">
             <div class="form-card">
               <div class="card-body">
@@ -52,7 +54,7 @@
                     {{ form.station(class="auth-input", onchange="handleStationChange(this.value)") }}
                   </div>
 
-                  <!-- Resto del formulario se mantiene igual -->
+                  <!-- Alertas de ubicación -->
                   <div id="location-status" class="alert alert-info" role="alert">
                     <i class="fas fa-location-arrow"></i> Obteniendo tu ubicación...
                   </div>
@@ -65,19 +67,21 @@
                     pero puedes ajustarlas para incidentes pasados.
                   </div>
 
+                  <!-- Contenedor para el mapa -->
                   <div class="map-container">
                     <div id="report-map"></div>
                   </div>
 
+                  <!-- Botón de envío -->
                   <button type="submit" class="auth-button" id="submit-button" disabled>
                     <i class="fas fa-exclamation-triangle"></i> Reportar Incidente
                   </button>
                 </form>
-              </div>
-            </div>
-          </div>
+              </div> <!-- /.card-body -->
+            </div> <!-- /.form-card -->
+          </div> <!-- /.form-section -->
 
-          <!-- Resto del HTML se mantiene igual -->
+          <!-- Sección de leyendas -->
           <div class="legend-section">
             <div class="legend-card">
               <div class="legend-header">
@@ -112,10 +116,11 @@
                 </p>
               </div>
             </div>
-          </div> 
-        </div>
-      </div>
-    </div>
+          </div> <!-- /.legend-section -->
+
+        </div> <!-- /.content-wrapper -->
+      </div> <!-- /.report-container -->
+    </div> <!-- /.main-content.report-incident -->
     {% endblock %}
 
     {% block scripts %}
@@ -124,36 +129,98 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <script>
+      let reportMap = null;
+      let reportUserMarker = null;
+      let reportNearestStationMarker = null;
+      let stations = [];
+      let stationSecurityLevels = {};
+
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+          const R = 6371;
+          const dLat = (lat2 - lat1) * Math.PI / 180;
+          const dLon = (lon2 - lon1) * Math.PI / 180;
+          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+          return R * c;
+      }
+
+      function getStationSecurityColor(count) {
+          if (!count && count !== 0) return '#feca57'; 
+          if (count >= 50) return '#ff0000';  
+          if (count >= 20) return '#ffa500'; 
+          return '#008000';                  
+      }
+
+      function handleStationChange(stationName) {
+          const station = stations.find(s => s.properties.nombre_estacion === stationName);
+          if (station) {
+              const coords = station.geometry.coordinates;
+              if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
+
+              const incidentCount = stationSecurityLevels[stationName] || 0;
+              const stationColor = getStationSecurityColor(incidentCount);
+
+              reportNearestStationMarker = L.marker([coords[1], coords[0]], {
+                  icon: L.divIcon({
+                      html: `<div class="station-marker station-marker-selected">
+                              <div style="background-color: ${stationColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
+                                  <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
+                              </div>
+                              <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
+                                  <span style="font-size: 12px; font-weight: bold; color: #333;">
+                                      ${stationName}
+                                  </span>
+                              </div>
+                          </div>`,
+                      className: 'station-marker',
+                      iconSize: [120, 60],
+                      iconAnchor: [60, 30]
+                  })
+              }).addTo(reportMap);
+
+              reportMap.setView([coords[1], coords[0]], 15);
+          }
+      }
+
+      function updateNearestStation(userLat, userLon) {
+          if (!stations.length) return null;
+
+          let nearestStation = null;
+          let minDistance = Infinity;
+
+          stations.forEach(station => {
+              const stationCoords = station.geometry.coordinates;
+              const distance = calculateDistance(
+                  userLat, userLon,
+                  stationCoords[1], stationCoords[0]
+              );
+
+              if (distance < minDistance) {
+                  minDistance = distance;
+                  nearestStation = station;
+              }
+          });
+
+          return nearestStation;
+      }
+
       document.addEventListener('DOMContentLoaded', function() {
           const locationStatus = document.getElementById('location-status');
           const submitButton = document.getElementById('submit-button');
           const nearestStationInfo = document.getElementById('nearest-station-info');
 
-          // Usar fecha y hora local del dispositivo
-          function setLocalDateTime() {
-              const now = new Date();
-              const dateInput = document.querySelector('input[name="incident_date"]');
-              const timeInput = document.querySelector('input[name="incident_time"]');
+          const now = new Date();
+          const dateInput = document.querySelector('input[name="incident_date"]');
+          const timeInput = document.querySelector('input[name="incident_time"]');
 
-              // Formato YYYY-MM-DD para el input date
-              const year = now.getFullYear();
-              const month = String(now.getMonth() + 1).padStart(2, '0');
-              const day = String(now.getDate()).padStart(2, '0');
-              const dateStr = `${year}-${month}-${day}`;
+          const dateStr = now.toISOString().split('T')[0];
+          dateInput.value = dateStr;
 
-              // Formato HH:MM para el input time
-              const hours = String(now.getHours()).padStart(2, '0');
-              const minutes = String(now.getMinutes()).padStart(2, '0');
-              const timeStr = `${hours}:${minutes}`;
-
-              dateInput.value = dateStr;
-              timeInput.value = timeStr;
-
-              console.log('Fecha y hora local establecidas:', dateStr, timeStr);
-          }
-
-          // Establecer fecha y hora local al cargar
-          setLocalDateTime();
+          const hours = String(now.getHours()).padStart(2, '0');
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          timeInput.value = `${hours}:${minutes}`;
 
           try {
               reportMap = L.map('report-map').setView([4.6097, -74.0817], 11);
@@ -258,82 +325,5 @@
               locationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al cargar los datos de las estaciones';
           });
       });
-
-      let reportMap = null;
-      let reportUserMarker = null;
-      let reportNearestStationMarker = null;
-      let stations = [];
-      let stationSecurityLevels = {};
-
-      function calculateDistance(lat1, lon1, lat2, lon2) {
-          const R = 6371;
-          const dLat = (lat2 - lat1) * Math.PI / 180;
-          const dLon = (lon2 - lon1) * Math.PI / 180;
-          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                    Math.sin(dLon/2) * Math.sin(dLon/2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-          return R * c;
-      }
-
-      function getStationSecurityColor(count) {
-          if (!count && count !== 0) return '#feca57'; 
-          if (count >= 50) return '#ff0000';  
-          if (count >= 20) return '#ffa500'; 
-          return '#008000';                  
-      }
-
-      function handleStationChange(stationName) {
-          const station = stations.find(s => s.properties.nombre_estacion === stationName);
-          if (station) {
-              const coords = station.geometry.coordinates;
-              if (reportNearestStationMarker) reportMap.removeLayer(reportNearestStationMarker);
-
-              const incidentCount = stationSecurityLevels[stationName] || 0;
-              const stationColor = getStationSecurityColor(incidentCount);
-
-              reportNearestStationMarker = L.marker([coords[1], coords[0]], {
-                  icon: L.divIcon({
-                      html: `<div class="station-marker station-marker-selected">
-                              <div style="background-color: ${stationColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; margin: 0 auto;">
-                                  <span style="color: white; font-weight: bold; line-height: 24px;">T</span>
-                              </div>
-                              <div style="background-color: rgba(255,255,255,0.9); padding: 2px; border-radius: 3px; margin-top: 2px;">
-                                  <span style="font-size: 12px; font-weight: bold; color: #333;">
-                                      ${stationName}
-                                  </span>
-                              </div>
-                          </div>`,
-                      className: 'station-marker',
-                      iconSize: [120, 60],
-                      iconAnchor: [60, 30]
-                  })
-              }).addTo(reportMap);
-
-              reportMap.setView([coords[1], coords[0]], 15);
-          }
-      }
-
-      function updateNearestStation(userLat, userLon) {
-          if (!stations.length) return null;
-
-          let nearestStation = null;
-          let minDistance = Infinity;
-
-          stations.forEach(station => {
-              const stationCoords = station.geometry.coordinates;
-              const distance = calculateDistance(
-                  userLat, userLon,
-                  stationCoords[1], stationCoords[0]
-              );
-
-              if (distance < minDistance) {
-                  minDistance = distance;
-                  nearestStation = station;
-              }
-          });
-
-          return nearestStation;
-      }
     </script>
     {% endblock %}

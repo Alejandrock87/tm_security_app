@@ -105,7 +105,7 @@ try:
             logger.info(f"Host: {request.host}")
 
             # Verificar conexión a la base de datos
-            db.session.execute(db.text('SELECT 1'))
+            db.session.execute('SELECT 1')
             db_status = "connected"
         except Exception as e:
             logger.error(f"Error en health check - DB: {str(e)}")
