@@ -55,7 +55,8 @@ try:
         logger=True,
         engineio_logger=True,
         ping_timeout=60,
-        ping_interval=25
+        ping_interval=25,
+        manage_session=False  # Evitar conflictos con la gestión de sesiones de Flask
     )
     logger.info("SocketIO configurado")
 

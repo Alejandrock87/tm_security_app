@@ -1,9 +1,8 @@
-// Establecer conexión con Socket.IO
-let socket = io('/', {
-    reconnection: true,
-    reconnectionAttempts: 5,
-    reconnectionDelay: 1000
-});
+// Configurar opciones de Socket.IO (usando la conexión global)
+socket.reconnection = true;
+socket.reconnectionAttempts = 5;
+socket.reconnectionDelay = 1000;
+
 let notificationPermission = localStorage.getItem('notificationPermission') === 'true';
 let selectedFilter = 'all';
 let selectedTroncales = [];
