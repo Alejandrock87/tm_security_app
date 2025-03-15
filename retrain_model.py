@@ -5,7 +5,6 @@ import numpy as np
 import tensorflow as tf
 from datetime import datetime
 import os
-from app import app  # Import Flask app
 
 """
 Sistema de Reentrenamiento y Análisis del Modelo RNN
@@ -33,32 +32,30 @@ def retrain_and_analyze():
     try:
         logging.info("Iniciando proceso de reentrenamiento del modelo RNN...")
 
-        # Usar el contexto de la aplicación Flask
-        with app.app_context():
-            # Entrenar modelo RNN
-            model, history = train_rnn_model()
+        # Entrenar modelo RNN
+        model, history = train_rnn_model()
 
-            if model is not None and history is not None:
-                logging.info("Modelo RNN entrenado exitosamente")
+        if model is not None and history is not None:
+            logging.info("Modelo RNN entrenado exitosamente")
 
-                # Guardar modelo entrenado
-                save_path = 'models/rnn_model.h5'
-                model.save(save_path)
-                logging.info(f"Modelo guardado en: {save_path}")
+            # Guardar modelo entrenado
+            save_path = 'models/rnn_model.h5'
+            model.save(save_path)
+            logging.info(f"Modelo guardado en: {save_path}")
 
-                # Registrar métricas de entrenamiento
-                val_accuracy = history.history['val_accuracy'][-1]
-                val_loss = history.history['val_loss'][-1]
+            # Registrar métricas de entrenamiento
+            val_accuracy = history.history['val_accuracy'][-1]
+            val_loss = history.history['val_loss'][-1]
 
-                logging.info(f"Métricas finales - Accuracy: {val_accuracy:.4f}, Loss: {val_loss:.4f}")
+            logging.info(f"Métricas finales - Accuracy: {val_accuracy:.4f}, Loss: {val_loss:.4f}")
 
-                # Generar reporte detallado
-                generate_training_report(history)
+            # Generar reporte detallado
+            generate_training_report(history)
 
-                return True
-            else:
-                logging.error("Error en el entrenamiento del modelo RNN")
-                return False
+            return True
+        else:
+            logging.error("Error en el entrenamiento del modelo RNN")
+            return False
 
     except Exception as e:
         logging.error(f"Error en retrain_and_analyze: {str(e)}")
