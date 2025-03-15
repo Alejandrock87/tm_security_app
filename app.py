@@ -50,7 +50,7 @@ try:
     # Configurar Socket.IO
     socketio = SocketIO(
         app,
-        async_mode='eventlet',
+        async_mode='gevent',  # Cambiar a gevent ya que estamos usando gevent-websocket
         logger=True,
         engineio_logger=True,
         ping_timeout=60,

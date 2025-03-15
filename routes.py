@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timedelta
 import os
 from sqlalchemy import exc as sql_exceptions
-from app import cache
+from app import cache, socketio  # Importar socketio desde app
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
@@ -208,6 +208,8 @@ def init_routes(app):
 
             date_from = request.args.get('dateFrom')
             date_to = request.args.get('dateTo')
+            date_from_obj = None
+            date_to_end = None
 
             app.logger.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
@@ -220,10 +222,7 @@ def init_routes(app):
                 query = query.filter(Incident.timestamp <= date_to_end)
 
             app.logger.info("Obteniendo estadísticas de incidentes...")
-            statistics = get_incident_statistics(date_from_obj if date_from else None,
-                                                 date_to_end if date_to else None)
-
-            app.logger.info(f"Estadísticas obtenidas: {statistics}")
+            statistics = get_incident_statistics(date_from_obj, date_to_end)
 
             if not statistics['total_incidents']:
                 app.logger.warning("No se encontraron incidentes para los filtros especificados")
@@ -530,6 +529,7 @@ def init_routes(app):
                 'predicted_time': datetime.now().isoformat(),
                 'risk_score': 0.8
             }
+            # socketio ya está importado correctamente al inicio del archivo
             socketio.emit('prediction_alert', test_prediction)
             return jsonify({'success': True, 'message': 'Notificación de prueba enviada'})
         except Exception as e:
