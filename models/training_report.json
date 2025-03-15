@@ -1,10 +1,10 @@
 {
-    "timestamp": "2025-03-15T21:11:30.499174",
+    "timestamp": "2025-03-15T21:13:28.414616",
     "metrics": {
         "accuracy": 1.0,
         "val_accuracy": 1.0,
-        "loss": 0.015552959404885769,
-        "val_loss": 0.013282264582812786,
+        "loss": 0.006673741154372692,
+        "val_loss": 0.00576850026845932,
         "auc": 0.0,
         "val_auc": 0.0
     },
@@ -12,7 +12,7 @@
     "early_stopping": false,
     "convergence": {
         "final_epoch": 50,
-        "best_val_loss": 0.013282264582812786,
+        "best_val_loss": 0.00576850026845932,
         "best_val_accuracy": 1.0,
         "best_val_auc": 0.0
     }
