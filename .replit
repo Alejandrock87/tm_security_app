@@ -18,6 +18,10 @@ args = "Generate Station Icon"
 task = "workflow.run"
 args = "Flask Server"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Model Retrainer"
+
 [[workflows.workflow]]
 name = "Generate Station Icon"
 author = "agent"
@@ -34,11 +38,17 @@ args = "python generate_station_icon.py"
 
 [[workflows.workflow]]
 name = "Model Retrainer"
-author = 14140229
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python retrain_scheduler.py"
+args = "python retrain_model.py"
 
 [[workflows.workflow]]
 name = "Run"

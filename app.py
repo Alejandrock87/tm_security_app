@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Configurar logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,  # Cambiado a DEBUG para más detalle
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
@@ -24,7 +24,7 @@ try:
     app = Flask(__name__)
     logger.info("Aplicación Flask creada")
 
-    app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "a-secret-key-123")
 
     # Configuración de sesión
     app.config.update(
@@ -68,7 +68,7 @@ try:
     # Configurar base de datos
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
-        logger.info("Construyendo DATABASE_URL desde variables de entorno")
+        logger.warning("DATABASE_URL no encontrada, construyendo desde variables individuales")
         database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
@@ -101,12 +101,11 @@ try:
     def health():
         try:
             logger.info(f"Health check accedido - IP: {request.remote_addr}")
-            logger.info(f"Headers: {dict(request.headers)}")
-            logger.info(f"Host: {request.host}")
 
             # Verificar conexión a la base de datos
             db.session.execute('SELECT 1')
             db_status = "connected"
+            logger.info("Conexión a base de datos verificada")
         except Exception as e:
             logger.error(f"Error en health check - DB: {str(e)}")
             db_status = "error"
@@ -115,12 +114,7 @@ try:
             "status": "ok",
             "message": "Server is running",
             "timestamp": datetime.now().isoformat(),
-            "database": db_status,
-            "request": {
-                "ip": request.remote_addr,
-                "host": request.host,
-                "method": request.method
-            }
+            "database": db_status
         }
 
         logger.info(f"Health check response: {response}")
