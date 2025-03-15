@@ -49,8 +49,12 @@ def retrain_and_analyze():
                 # Registrar métricas de entrenamiento
                 val_accuracy = history.history['val_accuracy'][-1]
                 val_loss = history.history['val_loss'][-1]
+                val_auc = history.history['val_auc'][-1]
 
-                logging.info(f"Métricas finales - Accuracy: {val_accuracy:.4f}, Loss: {val_loss:.4f}")
+                logging.info(f"Métricas finales:")
+                logging.info(f"- Accuracy: {val_accuracy:.4f}")
+                logging.info(f"- Loss: {val_loss:.4f}")
+                logging.info(f"- AUC: {val_auc:.4f}")
 
                 # Generar reporte detallado
                 generate_training_report(history)
@@ -75,10 +79,18 @@ def generate_training_report(history):
                 'accuracy': history.history['accuracy'][-1],
                 'val_accuracy': history.history['val_accuracy'][-1],
                 'loss': history.history['loss'][-1],
-                'val_loss': history.history['val_loss'][-1]
+                'val_loss': history.history['val_loss'][-1],
+                'auc': history.history['auc'][-1],
+                'val_auc': history.history['val_auc'][-1]
             },
             'training_duration': len(history.history['loss']),
-            'early_stopping': len(history.history['loss']) < 100
+            'early_stopping': len(history.history['loss']) < 50,  # Si se detuvo antes del máximo de épocas
+            'convergence': {
+                'final_epoch': len(history.history['loss']),
+                'best_val_loss': min(history.history['val_loss']),
+                'best_val_accuracy': max(history.history['val_accuracy']),
+                'best_val_auc': max(history.history['val_auc'])
+            }
         }
 
         # Guardar reporte
@@ -88,6 +100,10 @@ def generate_training_report(history):
             json.dump(report, f, indent=4)
 
         logging.info(f"Reporte de entrenamiento guardado en: {report_path}")
+        logging.info("Métricas de convergencia:")
+        logging.info(f"- Mejor val_loss: {report['convergence']['best_val_loss']:.4f}")
+        logging.info(f"- Mejor val_accuracy: {report['convergence']['best_val_accuracy']:.4f}")
+        logging.info(f"- Mejor val_auc: {report['convergence']['best_val_auc']:.4f}")
 
     except Exception as e:
         logging.error(f"Error generando reporte de entrenamiento: {str(e)}")

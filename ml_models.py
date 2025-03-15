@@ -37,38 +37,52 @@ VALID_INCIDENT_TYPES = [
     'Acoso'
 ]
 
-# Configuración del modelo
+# Actualizar configuración del modelo para evitar sobreajuste
 MODEL_CONFIG = {
     'sequence_length': 24,  # 24 horas de datos históricos
     'n_features': 5,       # [hora, día_semana, mes, incidentes_previos, tipo_anterior]
-    'lstm_units': 64,
-    'dropout_rate': 0.2,
+    'lstm_units': 16,      # Reducido de 32 a 16 para menor complejidad
+    'dropout_rate': 0.4,   # Aumentado de 0.3 a 0.4 para mayor regularización
     'learning_rate': 0.001,
-    'batch_size': 16,      # Reducido para mejor rendimiento en CPU
-    'epochs': 20           # Reducido para entrenamiento más rápido
+    'batch_size': 32,      # Aumentado para mejor generalización
+    'epochs': 50,          # Aumentado para permitir convergencia con mayor regularización
+    'l2_lambda': 0.02      # Aumentado para mayor regularización
 }
 
 def create_rnn_model():
     """
     Crea el modelo RNN con arquitectura LSTM.
-    Ahora con manejo mejorado de dimensiones y logging.
+    Versión con regularización mejorada para evitar sobreajuste.
     """
     try:
         model = Sequential([
             LSTM(MODEL_CONFIG['lstm_units'], 
                  input_shape=(MODEL_CONFIG['sequence_length'], MODEL_CONFIG['n_features']),
-                 return_sequences=True),
+                 return_sequences=True,
+                 kernel_regularizer=tf.keras.regularizers.l2(MODEL_CONFIG['l2_lambda'])),
             Dropout(MODEL_CONFIG['dropout_rate']),
-            LSTM(MODEL_CONFIG['lstm_units'] // 2),
+            LSTM(MODEL_CONFIG['lstm_units'] // 2,
+                 kernel_regularizer=tf.keras.regularizers.l2(MODEL_CONFIG['l2_lambda'])),
             Dropout(MODEL_CONFIG['dropout_rate']),
-            Dense(32, activation='relu'),
-            Dense(1, activation='sigmoid')  # Predicción de riesgo
+            Dense(8, activation='relu',  # Reducido de 16 a 8
+                  kernel_regularizer=tf.keras.regularizers.l2(MODEL_CONFIG['l2_lambda'])),
+            Dense(1, activation='sigmoid')
         ])
 
+        # Usar optimizador con decaimiento de learning rate
+        initial_learning_rate = MODEL_CONFIG['learning_rate']
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate,
+            decay_steps=1000,
+            decay_rate=0.9,
+            staircase=True)
+
+        optimizer = Adam(learning_rate=lr_schedule)
+
         model.compile(
-            optimizer=Adam(learning_rate=MODEL_CONFIG['learning_rate']),
+            optimizer=optimizer,
             loss='binary_crossentropy',
-            metrics=['accuracy']
+            metrics=['accuracy', tf.keras.metrics.AUC()]  # Añadido AUC para mejor evaluación
         )
 
         logging.info("Modelo RNN creado exitosamente")
@@ -238,9 +252,10 @@ def train_rnn_model():
         )
 
         # Evaluar modelo
-        val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
+        val_loss, val_accuracy, val_auc = model.evaluate(X_val, y_val, verbose=0)
         logging.info(f"Validation accuracy: {val_accuracy:.4f}")
         logging.info(f"Validation loss: {val_loss:.4f}")
+        logging.info(f"Validation AUC: {val_auc:.4f}")
 
         return model, history
 
@@ -462,3 +477,91 @@ def get_incident_trends():
     except Exception as e:
         logging.error(f"Error in get_incident_trends: {str(e)}", exc_info=True)
         return {}
+
+
+def cross_validate_model(k_folds=5):
+    """
+    Realiza validación cruzada del modelo RNN.
+
+    Args:
+        k_folds (int): Número de particiones para validación cruzada
+
+    Returns:
+        dict: Métricas promedio de validación cruzada
+    """
+    try:
+        # Preparar datos
+        data = prepare_data()
+        if len(data) < MODEL_CONFIG['sequence_length']:
+            logging.error(f"Insufficient data for cross validation")
+            return None
+
+        # Preparar secuencias
+        X, y = prepare_sequence_data(data, MODEL_CONFIG['sequence_length'])
+        if len(X) == 0 or len(y) == 0:
+            logging.error("No sequences could be generated for cross validation")
+            return None
+
+        # Inicializar métricas
+        metrics = {
+            'accuracy': [],
+            'loss': [],
+            'auc': []
+        }
+
+        # Realizar validación cruzada
+        fold_size = len(X) // k_folds
+        for fold in range(k_folds):
+            logging.info(f"Training fold {fold + 1}/{k_folds}")
+
+            # Definir índices para esta partición
+            val_start = fold * fold_size
+            val_end = (fold + 1) * fold_size
+
+            # Separar datos de entrenamiento y validación
+            X_val = X[val_start:val_end]
+            y_val = y[val_start:val_end]
+            X_train = np.concatenate([X[:val_start], X[val_end:]])
+            y_train = np.concatenate([y[:val_start], y[val_end:]])
+
+            # Crear y entrenar modelo
+            model = create_rnn_model()
+            if model is None:
+                continue
+
+            history = model.fit(
+                X_train, y_train,
+                validation_data=(X_val, y_val),
+                batch_size=MODEL_CONFIG['batch_size'],
+                epochs=MODEL_CONFIG['epochs'],
+                verbose=1
+            )
+
+            # Evaluar modelo
+            val_loss, val_accuracy, val_auc = model.evaluate(X_val, y_val, verbose=0)
+            metrics['accuracy'].append(val_accuracy)
+            metrics['loss'].append(val_loss)
+            metrics['auc'].append(val_auc)
+
+            logging.info(f"Fold {fold + 1} metrics - Accuracy: {val_accuracy:.4f}, Loss: {val_loss:.4f}, AUC: {val_auc:.4f}")
+
+        # Calcular y registrar métricas promedio
+        avg_metrics = {
+            'accuracy': np.mean(metrics['accuracy']),
+            'loss': np.mean(metrics['loss']),
+            'auc': np.mean(metrics['auc']),
+            'std_accuracy': np.std(metrics['accuracy']),
+            'std_loss': np.std(metrics['loss']),
+            'std_auc': np.std(metrics['auc'])
+        }
+
+        logging.info("Cross validation results:")
+        logging.info(f"Average accuracy: {avg_metrics['accuracy']:.4f} ± {avg_metrics['std_accuracy']:.4f}")
+        logging.info(f"Average loss: {avg_metrics['loss']:.4f} ± {avg_metrics['std_loss']:.4f}")
+        logging.info(f"Average AUC: {avg_metrics['auc']:.4f} ± {avg_metrics['std_auc']:.4f}")
+
+        return avg_metrics
+
+    except Exception as e:
+        logging.error(f"Error in cross validation: {str(e)}")
+        return None
