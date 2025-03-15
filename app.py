@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Configurar logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Cambiado a DEBUG para más detalle
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
@@ -34,14 +34,8 @@ try:
         PERMANENT_SESSION_LIFETIME=1800
     )
 
-    # Configurar CORS para permitir todas las conexiones
-    CORS(app, resources={
-        r"/*": {
-            "origins": "*",
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"]
-        }
-    })
+    # Configurar CORS
+    CORS(app)
     logger.info("CORS configurado")
 
     # Configurar cache
@@ -53,23 +47,20 @@ try:
     cache.init_app(app)
     logger.info("Cache configurado")
 
-    # Configurar Socket.IO con modo de debug
+    # Configurar Socket.IO
     socketio = SocketIO(
         app,
         cors_allowed_origins="*",
         async_mode='gevent',
         logger=True,
-        engineio_logger=True,
-        ping_timeout=60,
-        ping_interval=25
+        engineio_logger=True
     )
     logger.info("SocketIO configurado")
 
     # Configurar base de datos
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
-        logger.warning("DATABASE_URL no encontrada, construyendo desde variables individuales")
-        database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
+        logger.warning("DATABASE_URL no encontrada")
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
@@ -80,9 +71,6 @@ try:
 
     # Inicializar base de datos
     init_db(app)
-    with app.app_context():
-        import models
-        db.create_all()
     logger.info("Base de datos inicializada")
 
     # Inicializar login manager
@@ -96,12 +84,11 @@ try:
         from models import User
         return User.query.get(int(user_id))
 
-    # Endpoint de health check con logging detallado
+    # Endpoint de health check
     @app.route('/health')
     def health():
         try:
             logger.info(f"Health check accedido - IP: {request.remote_addr}")
-
             # Verificar conexión a la base de datos
             db.session.execute('SELECT 1')
             db_status = "connected"
@@ -118,7 +105,7 @@ try:
         }
 
         logger.info(f"Health check response: {response}")
-        return jsonify(response), 200
+        return jsonify(response)
 
     # Importar e inicializar rutas
     from routes import init_routes

@@ -8,7 +8,7 @@ import sys
 
 # Configurar logging más detallado
 logging.basicConfig(
-    level=logging.DEBUG,  # Cambiado a DEBUG para más detalle
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
@@ -17,17 +17,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Verificar variables de entorno críticas
 try:
-    required_env_vars = ['DATABASE_URL', 'FLASK_SECRET_KEY']
-    missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
-    if missing_vars:
-        logger.error(f"Faltan variables de entorno requeridas: {', '.join(missing_vars)}")
-        if not os.environ.get('DATABASE_URL'):
-            logger.info("Construyendo DATABASE_URL desde variables individuales...")
-            database_url = f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}"
-            os.environ['DATABASE_URL'] = database_url
-            logger.info("DATABASE_URL construida exitosamente")
+    # Verificar variables de entorno críticas
+    logger.info("Verificando variables de entorno...")
+    database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        logger.warning("DATABASE_URL no encontrada")
+    else:
+        logger.info("DATABASE_URL encontrada")
 
     # Importar la aplicación Flask y SocketIO después del monkey patch
     logger.info("Importando módulos de la aplicación...")
@@ -44,7 +41,7 @@ try:
                 app,
                 host='0.0.0.0',
                 port=port,
-                debug=False,  # Deshabilitado para evitar problemas con gevent
+                debug=True,  # Habilitado para ver más detalles del error
                 use_reloader=False,
                 log_output=True
             )
