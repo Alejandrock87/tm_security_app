@@ -51,25 +51,23 @@ def get_incident_statistics(date_from=None, date_to=None):
     """
     try:
         logging.info("Iniciando obtención de estadísticas de incidentes")
-        logging.info(f"Filtros de fecha - desde: {date_from}, hasta: {date_to}")
+        logging.info(f"Filtros de fecha recibidos - desde: {date_from}, hasta: {date_to}")
 
-        # Construir la consulta base
+        # Construir la consulta base con filtros de fecha
         base_query = Incident.query
 
-        # Aplicar filtros de fecha usando la zona horaria local directamente en la base de datos
+        # Aplicar filtros de fecha usando la zona horaria local
         if date_from:
-            base_query = base_query.filter(
-                text("DATE(timestamp AT TIME ZONE 'America/Bogota') >= :date_from"),
-                date_from=date_from
-            )
-            logging.info(f"Filtrando desde: {date_from}")
+            # Construir y loggear la expresión SQL para el filtro de fecha inicial
+            date_filter = text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') >= :date_from")
+            logging.info(f"Aplicando filtro de fecha inicial: {date_filter}")
+            base_query = base_query.filter(date_filter, date_from=date_from)
 
         if date_to:
-            base_query = base_query.filter(
-                text("DATE(timestamp AT TIME ZONE 'America/Bogota') <= :date_to"),
-                date_to=date_to
-            )
-            logging.info(f"Filtrando hasta: {date_to}")
+            # Construir y loggear la expresión SQL para el filtro de fecha final
+            date_filter = text("DATE(timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota') <= :date_to")
+            logging.info(f"Aplicando filtro de fecha final: {date_filter}")
+            base_query = base_query.filter(date_filter, date_to=date_to)
 
         # Total de incidentes
         total_incidents = base_query.count()
@@ -85,8 +83,6 @@ def get_incident_statistics(date_from=None, date_to=None):
          .order_by(desc(func.count(Incident.id)))\
          .all()
 
-        logging.info(f"Estadísticas por estación obtenidas: {len(station_stats)} estaciones")
-
         # Conteo por tipo de incidente
         incidents_by_type = db.session.query(
             Incident.incident_type,
@@ -99,7 +95,7 @@ def get_incident_statistics(date_from=None, date_to=None):
 
         # Análisis de hora más peligrosa usando la hora local
         hour_stats = db.session.query(
-            extract('hour', text("timestamp AT TIME ZONE 'America/Bogota'")).label('hour'),
+            extract('hour', text("timestamp AT TIME ZONE 'UTC' AT TIME ZONE 'America/Bogota'")).label('hour'),
             func.count(Incident.id).label('count')
         ).filter(
             *base_query._where_criteria
@@ -127,8 +123,7 @@ def get_incident_statistics(date_from=None, date_to=None):
             }
 
         logging.info("Estadísticas procesadas exitosamente")
-
-        return {
+        result = {
             'total_incidents': total_incidents,
             'most_affected_station': station_stats[0].nearest_station if station_stats else "No data",
             'most_dangerous_hour': f"{int(hour_stats.hour):02d}:00" if hour_stats else "No data",
@@ -139,6 +134,8 @@ def get_incident_statistics(date_from=None, date_to=None):
             },
             'top_stations': detailed_stats
         }
+        logging.info(f"Retornando resultado: {result}")
+        return result
 
     except Exception as e:
         logging.error(f"Error in get_incident_statistics: {str(e)}", exc_info=True)

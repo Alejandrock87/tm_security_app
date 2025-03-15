@@ -189,28 +189,34 @@ function updateStationsChart(stationsData) {
 
 async function applyQuickFilter(period) {
     try {
+        // Usar la fecha local para los filtros
         const now = new Date();
+        // Ajustar a la zona horaria local de Colombia (UTC-5)
+        const offset = -5 * 60; // offset en minutos para Colombia
+        const localDate = new Date(now.getTime() + (now.getTimezoneOffset() + offset) * 60000);
+
         let filters = {};
 
         switch(period) {
             case 'today':
-                filters.dateFrom = now.toISOString().split('T')[0];
+                filters.dateFrom = localDate.toISOString().split('T')[0];
                 filters.dateTo = filters.dateFrom;
                 break;
             case 'week':
-                const weekStart = new Date(now);
-                weekStart.setDate(now.getDate() - 7);
+                const weekStart = new Date(localDate);
+                weekStart.setDate(localDate.getDate() - 7);
                 filters.dateFrom = weekStart.toISOString().split('T')[0];
-                filters.dateTo = now.toISOString().split('T')[0];
+                filters.dateTo = localDate.toISOString().split('T')[0];
                 break;
             case 'month':
-                const monthStart = new Date(now);
-                monthStart.setMonth(now.getMonth() - 1);
+                const monthStart = new Date(localDate);
+                monthStart.setMonth(localDate.getMonth() - 1);
                 filters.dateFrom = monthStart.toISOString().split('T')[0];
-                filters.dateTo = now.toISOString().split('T')[0];
+                filters.dateTo = localDate.toISOString().split('T')[0];
                 break;
         }
 
+        console.log('Aplicando filtros:', filters);
         const queryString = new URLSearchParams(filters).toString();
         const response = await fetch(`/api/statistics?${queryString}`);
 
