@@ -43,7 +43,8 @@ try:
                 port=5000,
                 debug=False,
                 use_reloader=False,
-                log_output=True
+                log_output=True,
+                cors_allowed_origins="*"
             )
         except Exception as e:
             logger.error(f"Error al iniciar servidor: {str(e)}", exc_info=True)
