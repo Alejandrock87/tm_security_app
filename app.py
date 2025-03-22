@@ -7,6 +7,11 @@ from flask_caching import Cache
 from flask_socketio import SocketIO
 from flask_cors import CORS
 from datetime import datetime
+from dotenv import load_dotenv
+from config import Config
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Configurar logging
 logging.basicConfig(
@@ -24,15 +29,9 @@ try:
     app = Flask(__name__)
     logger.info("Aplicación Flask creada")
 
-    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "a-secret-key-123")
-
-    # Configuración de sesión
-    app.config.update(
-        SESSION_COOKIE_SECURE=False,
-        SESSION_COOKIE_HTTPONLY=True,
-        SESSION_COOKIE_SAMESITE='Lax',
-        PERMANENT_SESSION_LIFETIME=1800
-    )
+    # Cargar configuración desde el objeto Config
+    app.config.from_object(Config)
+    logger.info("Configuración cargada desde config.py")
 
     # Configurar CORS
     CORS(app, resources={r"/*": {"origins": "*"}})
@@ -61,17 +60,12 @@ try:
     )
     logger.info("SocketIO configurado")
 
-    # Configurar base de datos
-    database_url = os.environ.get("DATABASE_URL")
+    # Verificar la configuración de la base de datos
+    database_url = app.config.get("SQLALCHEMY_DATABASE_URI")
     if not database_url:
         logger.warning("DATABASE_URL no encontrada")
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_recycle": 300,
-        "pool_pre_ping": True
-    }
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    else:
+        logger.info(f"Usando base de datos: {database_url}")
 
     # Inicializar base de datos
     init_db(app)

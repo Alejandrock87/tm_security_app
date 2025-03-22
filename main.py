@@ -5,6 +5,10 @@ monkey.patch_all()
 import os
 import logging
 import sys
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Configurar logging más detallado
 logging.basicConfig(
@@ -24,7 +28,7 @@ try:
     if not database_url:
         logger.warning("DATABASE_URL no encontrada")
     else:
-        logger.info("DATABASE_URL encontrada")
+        logger.info("DATABASE_URL encontrada: " + database_url.split('@')[1] if '@' in database_url else database_url)
 
     # Importar la aplicación Flask y SocketIO después del monkey patch
     logger.info("Importando módulos de la aplicación...")
@@ -34,7 +38,7 @@ try:
     if __name__ == '__main__':
         try:
             logger.info("Iniciando aplicación Flask")
-            # Siempre usar puerto 5000 para Replit
+            # Usar puerto 5000 por defecto
             port = int(os.environ.get('PORT', 5000))
             logger.info(f"Iniciando servidor en puerto {port}")
 
@@ -44,8 +48,7 @@ try:
                 port=port,
                 debug=False,
                 use_reloader=False,
-                log_output=True,
-                allow_unsafe_werkzeug=True
+                log_output=True
             )
         except Exception as e:
             logger.error(f"Error al iniciar servidor: {str(e)}", exc_info=True)
