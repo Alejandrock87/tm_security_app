@@ -23,16 +23,17 @@
    - Accede a gráficos intuitivos que muestran tendencias de seguridad.
    - Analiza la distribución de incidentes por tipo y tiempo.
 
-5. **Análisis Predictivo de Seguridad**
-   - Recibe alertas sobre posibles áreas de riesgo basadas en datos históricos.
-   - Planifica tus viajes de manera más segura con esta información.
+5. **Análisis de Puntos Críticos**
+   - Identifica las estaciones con mayor concentración de incidentes.
+   - Visualiza los tipos de incidentes más comunes por zona.
 
 6. **Mapa en Tiempo Real**
    - Observa tu ubicación en tiempo real en relación con las estaciones de Transmilenio.
    - Identifica fácilmente las estaciones más cercanas a tu posición.
 
 7. **Notificaciones en Tiempo Real**
-   - Mantente informado con alertas instantáneas sobre nuevos incidentes en tu área.
+   - Recibe alertas sobre incidentes recientes en tu área de interés.
+   - Configura preferencias de notificación según tus necesidades.
 
 ## Guía de Uso Paso a Paso
 
@@ -94,7 +95,7 @@ R: Sí, al reportar un incidente, tienes la opción de ajustar la fecha y hora d
 R: El mapa y las estadísticas se actualizan en tiempo real cada vez que se reporta un nuevo incidente.
 
 **P: ¿La aplicación funciona fuera de Bogotá o en otros sistemas de transporte?**
-R: Actualmente, la aplicación está diseñada específicamente para el sistema Transmilenio en Bogotá. Estamos considerando expandirnos a otros sistemas en el futuro.
+R: Actualmente, la aplicación está diseñada específicamente para el sistema Transmilenio en Bogotá.
 
 ## Resolución de Problemas
 
@@ -120,25 +121,6 @@ R: Actualmente, la aplicación está diseñada específicamente para el sistema 
 - La autenticación de usuarios es obligatoria para acceder a funcionalidades sensibles.
 - La geolocalización requiere el consentimiento explícito del usuario y puede desactivarse en cualquier momento.
 
-## Planes Futuros
-
-Estamos constantemente trabajando para mejorar la aplicación. Algunos de nuestros planes futuros incluyen:
-
-- Integración con APIs oficiales de Transmilenio para obtener datos en tiempo real sobre el estado del servicio.
-- Implementación de modelos de aprendizaje automático más avanzados para mejorar las predicciones de seguridad.
-- Desarrollo de una aplicación móvil nativa para mejorar aún más la experiencia en dispositivos móviles.
-- Expansión a otros sistemas de transporte público en Colombia y América Latina.
-
-## Contacto y Soporte
-
-Si tienes alguna pregunta, sugerencia o necesitas ayuda, no dudes en contactarnos:
-
-- Correo electrónico: soporte@seguridadtransmilenio.com
-- Twitter: @SeguridadTM
-- Facebook: /SeguridadTransmilenio
-
-Agradecemos tu participación en hacer del Transmilenio un sistema más seguro para todos.
-
 ---
 
-Desarrollado con ❤️ por el equipo de Seguridad Transmilenio.
+Este es un proyecto independiente y no está afiliado oficialmente con Transmilenio S.A. Desarrollado con el objetivo de contribuir a la seguridad de los usuarios del sistema de transporte público de Bogotá.
