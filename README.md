@@ -111,7 +111,8 @@ R: Actualmente, la aplicación está diseñada específicamente para el sistema 
 
 - La aplicación está desarrollada con Flask, un framework ligero y potente de Python.
 - Utilizamos SQLAlchemy para una gestión eficiente de la base de datos.
-- El frontend está diseñado con Bootstrap, garantizando una experiencia responsiva en todos los dispositivos.
+- El frontend está diseñado con Bootstrap, un framework que utiliza HTML, CSS y JavaScript para garantizar una experiencia responsiva en todos los dispositivos.
+- Implementamos código HTML para la estructura, CSS para estilos adicionales y JavaScript para funcionalidades interactivas personalizadas.
 - Los mapas interactivos se implementan con Leaflet.js, una librería de código abierto para mapas interactivos.
 - Las funcionalidades en tiempo real se logran mediante Socket.IO.
 
