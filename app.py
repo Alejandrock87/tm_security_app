@@ -32,6 +32,15 @@ logger.info("Aplicación Flask creada")
 app.config.from_object(Config)
 logger.info("Configuración cargada desde config.py")
 
+# Comprobar si estamos en Railway y ajustar la URL de la base de datos
+if os.environ.get('RAILWAY_ENVIRONMENT'):
+    # Asegúrate de que la URL de la base de datos comienza con postgresql://
+    db_url = os.environ.get('DATABASE_URL', '')
+    if db_url.startswith('postgres://'):
+        db_url = db_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    logger.info(f"Configurando base de datos en Railway: {db_url}")
+
 # Configurar CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
 logger.info("CORS configurado")
@@ -60,10 +69,9 @@ socketio = SocketIO(
 logger.info("SocketIO configurado")
 
 try:
-    # Configuración de la base de datos
-    app.config["SQLALCHEMY_DATABASE_URI"] = Config.SQLALCHEMY_DATABASE_URI
+    # Configuración de la base de datos - Ya configurado anteriormente
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    logger.info(f"Usando base de datos: {Config.SQLALCHEMY_DATABASE_URI}")
+    logger.info(f"Usando base de datos: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
     # Inicializar la base de datos
     init_db(app)
@@ -115,4 +123,4 @@ except Exception as e:
 
 # Punto de entrada para ejecutar la aplicación directamente
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
