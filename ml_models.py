@@ -43,12 +43,12 @@ VALID_INCIDENT_TYPES = [
 MODEL_CONFIG = {
     'sequence_length': 24,  # 24 horas de datos históricos
     'n_features': 5,       # [hora, día_semana, mes, incidentes_previos, tipo_anterior]
-    'lstm_units': 16,      # Reducido de 32 a 16 para menor complejidad
-    'dropout_rate': 0.4,   # Aumentado de 0.3 a 0.4 para mayor regularización
+    'lstm_units': 12,      # Reducido de 16 a 12 para adaptarse a Railway
+    'dropout_rate': 0.4,   # Mantenido en 0.4 para regularización
     'learning_rate': 0.001,
-    'batch_size': 32,      # Aumentado para mejor generalización
-    'epochs': 50,          # Aumentado para permitir convergencia con mayor regularización
-    'l2_lambda': 0.02      # Aumentado para mayor regularización
+    'batch_size': 16,      # Reducido de 32 a 16 para menor consumo de memoria
+    'epochs': 20,          # Reducido de 50 a 20 para Railway
+    'l2_lambda': 0.02      # Mantenido para regularización
 }
 
 def create_rnn_model():

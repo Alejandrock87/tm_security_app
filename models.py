@@ -120,11 +120,59 @@ class Notification(db.Model):
     incident_type = db.Column(db.String(100), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
     nearest_station = db.Column(db.String(100), nullable=False)
-
+    
     def to_dict(self):
         return {
             'id': self.id,
             'incident_type': self.incident_type,
-            'timestamp': self.timestamp.isoformat(),
+            'timestamp': self.timestamp,
             'nearest_station': self.nearest_station
+        }
+
+class Prediction(db.Model):
+    __tablename__ = 'prediction'
+    id = db.Column(db.Integer, primary_key=True)
+    station = db.Column(db.String(100), nullable=False)
+    troncal = db.Column(db.String(100), nullable=True)
+    incident_type = db.Column(db.String(100), nullable=False)
+    predicted_time = db.Column(db.DateTime, nullable=False)
+    risk_score = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    
+    __table_args__ = (
+        db.Index('idx_prediction_station', 'station'),
+        db.Index('idx_prediction_time', 'predicted_time'),
+    )
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'station': self.station,
+            'troncal': self.troncal,
+            'incident_type': self.incident_type,
+            'predicted_time': self.predicted_time,
+            'risk_score': self.risk_score,
+            'created_at': self.created_at
+        }
+
+
+class UserPreference(db.Model):
+    __tablename__ = 'user_preference'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    notify_incident_types = db.Column(db.Text, nullable=True)  # JSON string de tipos de incidentes
+    notify_stations = db.Column(db.Text, nullable=True)  # JSON string de estaciones
+    notify_troncales = db.Column(db.Text, nullable=True)  # JSON string de troncales
+    browser_notifications = db.Column(db.Boolean, default=False)
+    in_app_notifications = db.Column(db.Boolean, default=True)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'notify_incident_types': self.notify_incident_types,
+            'notify_stations': self.notify_stations,
+            'notify_troncales': self.notify_troncales,
+            'browser_notifications': self.browser_notifications,
+            'in_app_notifications': self.in_app_notifications
         }

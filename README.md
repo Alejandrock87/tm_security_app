@@ -125,3 +125,182 @@ R: Actualmente, la aplicación está diseñada específicamente para el sistema 
 ---
 
 Este es un proyecto independiente y no está afiliado oficialmente con Transmilenio S.A. Desarrollado con el objetivo de contribuir a la seguridad de los usuarios del sistema de transporte público de Bogotá.
+
+# TransmilenioSafetyApp - Guía de Despliegue en Railway
+
+Esta guía detalla los pasos necesarios para desplegar la aplicación TransmilenioSafetyApp en la plataforma Railway, incluyendo la configuración de la base de datos PostgreSQL, la migración de datos, y la configuración del scheduler para reentrenamiento del modelo y predicciones automáticas.
+
+## Índice
+1. [Requisitos Previos](#requisitos-previos)
+2. [Preparación del Código](#preparación-del-código)
+3. [Exportación de Datos](#exportación-de-datos)
+4. [Configuración en Railway](#configuración-en-railway)
+5. [Despliegue en Railway](#despliegue-en-railway)
+6. [Migración de Datos](#migración-de-datos)
+7. [Verificación del Despliegue](#verificación-del-despliegue)
+8. [Mantenimiento y Supervisión](#mantenimiento-y-supervisión)
+
+## Requisitos Previos
+
+- Cuenta en [Railway](https://railway.app/)
+- Git instalado en tu máquina local
+- Repositorio GitHub configurado para tu proyecto
+- PostgreSQL instalado localmente para exportar datos
+
+## Preparación del Código
+
+Antes de desplegar en Railway, hemos realizado las siguientes modificaciones al código:
+
+1. **Optimización del Modelo ML**: 
+   - Reducido el número de épocas de entrenamiento a 20 (de 50)
+   - Reducido las unidades LSTM a 12 (de 16)
+   - Reducido el tamaño del batch a 16 (de 32)
+   
+2. **Archivos Creados**:
+   - `Procfile`: Define los comandos para ejecutar la aplicación web y el scheduler
+   - `scheduler.py`: Script para automatizar predicciones diarias y reentrenamiento semanal
+   - `export_data.py`: Script para exportar datos locales
+   - `import_data.py`: Script para importar datos en Railway
+
+3. **Dependencias Actualizadas**:
+   - Se añadieron las dependencias necesarias en `requirements.txt`:
+     - gunicorn
+     - gevent-websocket
+     - psycopg2-binary
+     - schedule
+     - tensorflow-cpu (en lugar de tensorflow)
+
+## Exportación de Datos
+
+Para exportar los datos locales y prepararlos para la importación en Railway:
+
+1. Asegúrate de que tu base de datos PostgreSQL local está en funcionamiento
+2. Ejecuta el script de exportación:
+
+```bash
+python export_data.py
+```
+
+3. Verifica que se hayan creado los siguientes archivos:
+   - `export_users.json`
+   - `export_incidents.json`
+   - `export_notifications.json`
+   - `export_user_preferences.json`
+
+## Configuración en Railway
+
+### 1. Crear un Nuevo Proyecto
+
+1. Inicia sesión en [Railway](https://railway.app/)
+2. Haz clic en "New Project"
+3. Selecciona "Deploy from GitHub repo"
+4. Elige tu repositorio y branch (main o master)
+
+### 2. Configurar Base de Datos PostgreSQL
+
+1. En tu proyecto, haz clic en "New"
+2. Elige "Database" -> "PostgreSQL"
+3. Railway configurará automáticamente una base de datos PostgreSQL y añadirá la variable `DATABASE_URL` a tu proyecto
+
+### 3. Configurar Variables de Entorno
+
+En la pestaña "Variables", añade las siguientes:
+
+```
+FLASK_SECRET_KEY=un_valor_aleatorio_largo_y_seguro
+PRODUCTION=True
+FLASK_ENV=production
+RETRAIN_FREQUENCY=7
+PREDICT_FREQUENCY=1
+```
+
+### 4. Configurar Servicios
+
+Railway detectará automáticamente el `Procfile` y configurará dos servicios:
+
+1. **Servicio Web**:
+   - Command: `gunicorn --worker-class geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 app:socketio`
+   - Configura recursos: 384 MB RAM
+
+2. **Servicio Scheduler**:
+   - Command: `python scheduler.py`
+   - Configura recursos: 128 MB RAM
+
+## Despliegue en Railway
+
+1. El despliegue inicial se activará automáticamente después de configurar el proyecto
+2. Puedes seguir el progreso en la pestaña "Deployments"
+3. Si necesitas realizar despliegues manuales, presiona el botón "Deploy" en la parte superior
+
+## Migración de Datos
+
+Una vez que la aplicación esté desplegada:
+
+1. Ve a la pestaña "Deployments" y selecciona el despliegue más reciente
+2. Haz clic en "Shell" para abrir una terminal
+3. Sube los archivos JSON exportados:
+   ```bash
+   curl -o export_users.json https://url-to-your-file/export_users.json
+   curl -o export_incidents.json https://url-to-your-file/export_incidents.json
+   # etc. para otros archivos
+   ```
+   
+   Alternativamente, puedes usar el comando `railway link` y `railway upload` si tienes la CLI de Railway instalada.
+
+4. Ejecuta el script de importación:
+   ```bash
+   python import_data.py
+   ```
+
+## Verificación del Despliegue
+
+### 1. Verificar la Aplicación Web
+
+1. Obtén la URL de tu aplicación desde el panel de Railway (normalmente `https://tu-app.railway.app`)
+2. Visita la URL y asegúrate de que la aplicación carga correctamente
+3. Intenta iniciar sesión con un usuario existente para verificar la migración de datos
+
+### 2. Verificar el Scheduler
+
+1. Revisa los logs del servicio Scheduler en Railway
+2. Verifica que las predicciones se estén generando diariamente
+3. Después de una semana, confirma que el modelo se haya reentrenado automáticamente
+
+### 3. Verificar la Integración de Socket.IO
+
+1. Accede a la pantalla de predicciones
+2. Comprueba que las actualizaciones en tiempo real funcionan correctamente
+3. Verifica que las notificaciones se envían como se espera
+
+## Mantenimiento y Supervisión
+
+### 1. Monitoreo de Recursos
+
+- Vigila regularmente el uso de recursos en Railway (especialmente durante el reentrenamiento)
+- Si se aproxima al límite (512 MB RAM total), considera:
+  - Reducir épocas de entrenamiento a 10-15
+  - Reducir el tamaño del batch a 8
+  - Limitar los datos históricos usados en el entrenamiento
+
+### 2. Backups de Datos
+
+- Configura backups regulares de la base de datos desde la sección "Database" en Railway
+- Considera exportar periódicamente los datos críticos
+
+### 3. Logs y Depuración
+
+- Revisa regularmente los logs de ambos servicios (web y scheduler)
+- Presta especial atención a los errores durante el reentrenamiento o predicciones
+
+### 4. Actualizaciones
+
+Para actualizar el código:
+1. Realiza cambios localmente y prueba
+2. Sube los cambios a GitHub
+3. Railway detectará automáticamente y desplegará los cambios
+
+---
+
+## Notas sobre el Modelo de ML
+
+El sistema utiliza una Red Neuronal Recurrente (RNN) con capas LSTM para predecir incidentes en el sistema Transmilenio. El entrenamiento se realiza con datos históricos, generando secuencias temporales para predecir el riesgo de incidentes por estación y tipo. La configuración ha sido optimizada para funcionar dentro de los límites de recursos de Railway.
