@@ -7,7 +7,7 @@ Flask-SocketIO==5.3.2
 Flask-Cors==3.0.10
 SQLAlchemy==1.4.46
 Werkzeug==2.0.3
-gevent==22.10.2
+gevent==23.9.1
 gevent-websocket==0.10.1
 psycopg2-binary==2.9.5
 python-dotenv==0.21.1
