@@ -5,20 +5,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    # Configuración predeterminada para desarrollo local
-    LOCAL_DB_URL = "postgresql://postgres:sistran2025@localhost:5432/transmilenio_db"
+    # Comprobar si estamos en Railway (Railway proporciona RAILWAY_SERVICE_NAME automáticamente)
+    IS_RAILWAY = os.environ.get('RAILWAY_SERVICE_NAME') is not None
     
-    # Obtener la URL de la base de datos - priorizar la de Railway
-    # Nota: Railway proporciona automáticamente la variable DATABASE_URL
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', LOCAL_DB_URL)
+    # Configuración de la base de datos
+    if IS_RAILWAY:
+        # En Railway, confía explícitamente en la URL proporcionada
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+        print(f"Usando la URL de base de datos de Railway: {SQLALCHEMY_DATABASE_URI}")
+    else:
+        # En desarrollo local, usa la URL local
+        SQLALCHEMY_DATABASE_URI = "postgresql://postgres:sistran2025@localhost:5432/transmilenio_db"
+        print(f"Usando URL de base de datos local: {SQLALCHEMY_DATABASE_URI}")
     
     # Railway usa postgres:// pero SQLAlchemy requiere postgresql://
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith('postgres://'):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace('postgres://', 'postgresql://', 1)
-    
-    # Si estamos en Railway, asegurarse de usar la URL de Railway
-    if os.environ.get('RAILWAY_SERVICE_NAME'):
-        print(f"Detectado entorno Railway. Usando DATABASE_URL: {SQLALCHEMY_DATABASE_URI}")
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
