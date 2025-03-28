@@ -24,54 +24,52 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Crear la aplicación Flask
+app = Flask(__name__)
+logger.info("Aplicación Flask creada")
+
+# Cargar configuración desde el objeto Config
+app.config.from_object(Config)
+logger.info("Configuración cargada desde config.py")
+
+# Configurar CORS
+CORS(app, resources={r"/*": {"origins": "*"}})
+logger.info("CORS configurado")
+
+# Configurar cache
+cache = Cache(config={
+    'CACHE_TYPE': 'SimpleCache',
+    'CACHE_DEFAULT_TIMEOUT': 3600,
+    'CACHE_THRESHOLD': 1000
+})
+cache.init_app(app)
+logger.info("Cache configurado")
+
+# Configurar Socket.IO - IMPORTANTE: Debe estar a nivel de módulo para Gunicorn
+socketio = SocketIO(
+    app,
+    async_mode='gevent',  # Cambiar a gevent ya que estamos usando gevent-websocket
+    logger=True,
+    engineio_logger=True,
+    ping_timeout=60,
+    ping_interval=25,
+    manage_session=False,  # Evitar conflictos con la gestión de sesiones de Flask
+    cors_allowed_origins="*",  # Use string instead of list
+    allow_upgrades=True
+)
+logger.info("SocketIO configurado")
+
 try:
-    # Crear la aplicación Flask
-    app = Flask(__name__)
-    logger.info("Aplicación Flask creada")
+    # Configuración de la base de datos
+    app.config["SQLALCHEMY_DATABASE_URI"] = Config.SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    logger.info(f"Usando base de datos: {Config.SQLALCHEMY_DATABASE_URI}")
 
-    # Cargar configuración desde el objeto Config
-    app.config.from_object(Config)
-    logger.info("Configuración cargada desde config.py")
-
-    # Configurar CORS
-    CORS(app, resources={r"/*": {"origins": "*"}})
-    logger.info("CORS configurado")
-
-    # Configurar cache
-    cache = Cache(config={
-        'CACHE_TYPE': 'SimpleCache',
-        'CACHE_DEFAULT_TIMEOUT': 3600,
-        'CACHE_THRESHOLD': 1000
-    })
-    cache.init_app(app)
-    logger.info("Cache configurado")
-
-    # Configurar Socket.IO
-    socketio = SocketIO(
-        app,
-        async_mode='gevent',  # Cambiar a gevent ya que estamos usando gevent-websocket
-        logger=True,
-        engineio_logger=True,
-        ping_timeout=60,
-        ping_interval=25,
-        manage_session=False,  # Evitar conflictos con la gestión de sesiones de Flask
-        cors_allowed_origins="*",  # Use string instead of list
-        allow_upgrades=True
-    )
-    logger.info("SocketIO configurado")
-
-    # Verificar la configuración de la base de datos
-    database_url = app.config.get("SQLALCHEMY_DATABASE_URI")
-    if not database_url:
-        logger.warning("DATABASE_URL no encontrada")
-    else:
-        logger.info(f"Usando base de datos: {database_url}")
-
-    # Inicializar base de datos
+    # Inicializar la base de datos
     init_db(app)
     logger.info("Base de datos inicializada")
 
-    # Inicializar login manager
+    # Configurar Login Manager
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
@@ -83,11 +81,10 @@ try:
         return User.query.get(int(user_id))
 
     # Endpoint de health check
-    @app.route('/health')
+    @app.route('/health', methods=['GET'])
     def health():
+        logger.info("Health check solicitado")
         try:
-            logger.info(f"Health check accedido - IP: {request.remote_addr}")
-            # Verificar conexión a la base de datos
             db.session.execute('SELECT 1')
             db_status = "connected"
             logger.info("Conexión a base de datos verificada")
@@ -115,3 +112,7 @@ try:
 except Exception as e:
     logger.error(f"Error en la configuración de la aplicación: {str(e)}", exc_info=True)
     raise
+
+# Punto de entrada para ejecutar la aplicación directamente
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
