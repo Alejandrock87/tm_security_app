@@ -46,7 +46,7 @@ def run_daily_predictions():
             # Eliminar predicciones viejas (opcional)
             Prediction.query.filter(
                 func.julianday(Prediction.predicted_time) < func.julianday('now')
-            ).delete()
+            ).delete(synchronize_session=False)
             db.session.commit()
             
             # Notificar a todos los clientes conectados
