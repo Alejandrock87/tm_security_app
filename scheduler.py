@@ -35,25 +35,42 @@ def run_daily_predictions():
         from app import app
         with app.app_context():
             from ml_models import generate_prediction_cache
-            predictions = generate_prediction_cache(hours_ahead=48)
-            logger.info(f"Generadas {len(predictions)} predicciones")
-            
-            # Guardar predicciones en la base de datos
             from models import Prediction
             from database import db
             from sqlalchemy import func, delete as sql_delete
             
-            # Eliminar predicciones viejas (opcional)
-            now_db_time = func.now()
-            logger.info(f"Intentando eliminar predicciones anteriores a: {now_db_time}")
-            delete_stmt = sql_delete(Prediction).where(Prediction.predicted_time < now_db_time)
-            # Ejecutar directamente sobre la conexión de la sesión
+            # PASO 1: Eliminar TODAS las predicciones existentes
+            logger.info("Eliminando todas las predicciones existentes para evitar duplicados...")
+            delete_stmt = sql_delete(Prediction)
             connection = db.session.connection()
             result = connection.execute(delete_stmt)
             num_deleted = result.rowcount
-            # Commit general de la sesión
             db.session.commit()
-            logger.info(f"Eliminadas {num_deleted} predicciones antiguas.")
+            logger.info(f"Eliminadas {num_deleted} predicciones existentes.")
+            
+            # PASO 2: Generar nuevas predicciones
+            logger.info("Generando nuevas predicciones para las próximas 48 horas...")
+            predictions = generate_prediction_cache(hours_ahead=48)
+            logger.info(f"Generadas {len(predictions)} predicciones")
+            
+            # PASO 3: Guardar nuevas predicciones en la base de datos
+            logger.info("Guardando nuevas predicciones en la base de datos...")
+            for pred in predictions:
+                # Crear nueva instancia de Prediction para cada predicción generada
+                prediction = Prediction(
+                    station=pred['station'],
+                    troncal=pred.get('troncal', 'N/A'),  # Usar N/A como valor por defecto si no existe
+                    incident_type=pred['incident_type'],
+                    predicted_time=datetime.fromisoformat(pred['predicted_time']),
+                    risk_score=float(pred['risk_score']),
+                    created_at=datetime.now()
+                )
+                # Añadir a la sesión
+                db.session.add(prediction)
+            
+            # Commit de todas las predicciones de una sola vez
+            db.session.commit()
+            logger.info(f"Guardadas {len(predictions)} predicciones en la base de datos.")
             
             # Notificar a todos los clientes conectados
             from app import socketio
