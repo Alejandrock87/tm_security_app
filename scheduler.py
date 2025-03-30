@@ -41,14 +41,14 @@ def run_daily_predictions():
             # Guardar predicciones en la base de datos
             from models import Prediction
             from database import db
-            from sqlalchemy import func
+            from sqlalchemy import func, delete as sql_delete
             
             # Eliminar predicciones viejas (opcional)
             now_db_time = func.now()
             logger.info(f"Intentando eliminar predicciones anteriores a: {now_db_time}")
-            num_deleted = db.session.query(Prediction).filter(
-                Prediction.predicted_time < now_db_time
-            ).delete(synchronize_session=False)
+            delete_stmt = sql_delete(Prediction).where(Prediction.predicted_time < now_db_time)
+            result = db.session.execute(delete_stmt)
+            num_deleted = result.rowcount
             db.session.commit()
             logger.info(f"Eliminadas {num_deleted} predicciones antiguas.")
             
