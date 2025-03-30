@@ -222,9 +222,60 @@ function filterPredictions(predictions) {
     const twelveHoursFromNow = new Date(now.getTime() + 12 * 60 * 60 * 1000);
     const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
+    // Debug info
+    console.log('Debug - Hora actual:', now.toISOString());
+    console.log('Debug - 3h desde ahora:', threeHoursFromNow.toISOString());
+
+    // Clasificar predicciones por rango de tiempo para depuración
+    const debugRanges = {
+        cercanas: 0,
+        medianas: 0,
+        lejanas: 0,
+        muy_lejanas: 0
+    };
+
     predictions = predictions.filter(prediction => {
-        const predTime = new Date(prediction.predicted_time);
+        // Asegurarse de parsear correctamente fechas ISO con zona horaria
+        // El formato esperado de predicted_time es ISO 8601: "2025-03-30T13:22:00-05:00"
+        let predTime;
         
+        try {
+            // Manejar explícitamente la zona horaria si está presente
+            if (prediction.predicted_time.includes('Z') || prediction.predicted_time.includes('+') || prediction.predicted_time.includes('-')) {
+                // La fecha ya tiene información de zona horaria
+                predTime = new Date(prediction.predicted_time);
+            } else {
+                // Si no tiene zona horaria, asumir que es hora local de Colombia (UTC-5)
+                predTime = new Date(prediction.predicted_time + '-05:00');
+            }
+        } catch (e) {
+            console.error('Error parseando fecha:', prediction.predicted_time, e);
+            predTime = new Date(); // Fallback a hora actual
+        }
+        
+        // Información de depuración
+        console.log('Debug - Predicción:', prediction.station, 
+                    'Tiempo original:', prediction.predicted_time, 
+                    '→ parseada como:', predTime.toISOString());
+        
+        // Clasificar para depuración
+        let matchesCurrentFilter = false;
+        
+        if (predTime >= now && predTime <= threeHoursFromNow) {
+            debugRanges.cercanas++;
+            matchesCurrentFilter = (timeRangeFilter === 'cercanas' || timeRangeFilter === 'todas');
+        } else if (predTime > threeHoursFromNow && predTime <= sixHoursFromNow) {
+            debugRanges.medianas++;
+            matchesCurrentFilter = (timeRangeFilter === 'medianas' || timeRangeFilter === 'todas');
+        } else if (predTime > sixHoursFromNow && predTime <= twelveHoursFromNow) {
+            debugRanges.lejanas++;
+            matchesCurrentFilter = (timeRangeFilter === 'lejanas' || timeRangeFilter === 'todas');
+        } else if (predTime > twelveHoursFromNow && predTime <= twentyFourHoursFromNow) {
+            debugRanges.muy_lejanas++;
+            matchesCurrentFilter = (timeRangeFilter === 'muy_lejanas' || timeRangeFilter === 'todas');
+        }
+        
+        // Aplicar filtro según rango seleccionado
         if (timeRangeFilter === 'cercanas') {
             return predTime >= now && predTime <= threeHoursFromNow;
         } else if (timeRangeFilter === 'medianas') {
@@ -238,6 +289,9 @@ function filterPredictions(predictions) {
         }
     });
 
+    // Mostrar resumen de distribución
+    console.log('Debug - Distribución de predicciones por rango:',  debugRanges);
+    
     // Luego aplicar filtros de usuario
     if (selectedFilter === 'all') return predictions;
 
@@ -569,8 +623,31 @@ function checkAndNotify(prediction) {
 // Función para obtener el tiempo restante hasta el incidente
 function getTimeUntilIncident(predicted_time) {
     const now = new Date();
-    const predTime = new Date(predicted_time);
-    const diffMinutes = Math.floor((predTime - now) / (1000 * 60));
+    let predTime;
+    
+    try {
+        // Manejar explícitamente la zona horaria si está presente
+        if (predicted_time.includes('Z') || predicted_time.includes('+') || predicted_time.includes('-')) {
+            // La fecha ya tiene información de zona horaria
+            predTime = new Date(predicted_time);
+        } else {
+            // Si no tiene zona horaria, asumir que es hora local de Colombia (UTC-5)
+            predTime = new Date(predicted_time + '-05:00');
+        }
+    } catch (e) {
+        console.error('Error parseando fecha para tiempo restante:', predicted_time, e);
+        predTime = new Date(); // Fallback a hora actual
+    }
+    
+    // Depuración
+    console.log('Debug - Cálculo de tiempo restante:');
+    console.log('  - Ahora:', now.toISOString());
+    console.log('  - Tiempo predicción original:', predicted_time);
+    console.log('  - Predicción parseada:', predTime.toISOString());
+    
+    const diffMillis = predTime.getTime() - now.getTime();
+    const diffMinutes = Math.floor(diffMillis / (1000 * 60));
+    console.log('  - Diferencia en minutos:', diffMinutes);
 
     if (diffMinutes < 60) {
         return `En ${diffMinutes} minutos`;
