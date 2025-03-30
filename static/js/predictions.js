@@ -609,173 +609,142 @@ function getRiskInfo(risk_score) {
 
 // Función para filtrar predicciones
 function filterPredictions(predictions) {
-    // Filtrar por tiempo según el rango seleccionado
-    const now = new Date();
-    // Ajuste: usar UTC para consistencia con el backend
-    console.log('Debug - Hora cliente:', now);
-    console.log('Debug - Timezone offset (minutos):', now.getTimezoneOffset());
-    
-    // Calcular rangos de tiempo
-    const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-    const sixHoursFromNow = new Date(now.getTime() + 6 * 60 * 60 * 1000);
-    const twelveHoursFromNow = new Date(now.getTime() + 12 * 60 * 60 * 1000);
-    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
-    // ARREGLO TEMPORAL: reducir el umbral para "cercanas" a solo 1 hora
-    // para garantizar que se muestren algunas predicciones
-    const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
-
-    // Debug info
-    console.log('Debug - Hora actual:', now.toISOString());
-    console.log('Debug - 3h desde ahora:', threeHoursFromNow.toISOString());
-
-    // Clasificar predicciones por rango de tiempo para depuración
-    const debugRanges = {
-        cercanas: 0,
-        medianas: 0,
-        lejanas: 0,
-        muy_lejanas: 0,
-        fuera_de_rango: 0
-    };
-
-    // Para verificar el formato de las fechas
-    if (predictions.length > 0) {
-        console.log('Debug - Muestra de predicción:', JSON.stringify(predictions[0]));
-    }
-    
-    // IMPORTANTE: Analizar las fechas sin filtrar primero
-    console.log('Análisis preliminar de fechas en TODAS las predicciones:');
-    const sampleSize = Math.min(predictions.length, 5); // Analizar hasta 5 predicciones
-    
-    for (let i = 0; i < sampleSize; i++) {
-        const p = predictions[i];
-        try {
-            const rawDate = new Date(p.predicted_time);
-            console.log(`Predicción #${i+1}: ${p.station}`, {
-                raw: p.predicted_time,
-                parsed: rawDate.toString(),
-                iso: rawDate.toISOString(),
-                timestamp: rawDate.getTime(),
-                isValid: !isNaN(rawDate.getTime())
-            });
-        } catch (e) {
-            console.error(`Error analizando predicción #${i+1}:`, e);
-        }
+    if (!predictions || !Array.isArray(predictions) || predictions.length === 0) {
+        console.log('No hay predicciones para filtrar');
+        return [];
     }
 
-    const filteredPredictions = predictions.filter(prediction => {
-        // Verificar que tenga la propiedad predicted_time
-        if (!prediction.predicted_time) {
-            console.error('Error: predicted_time es undefined o null', prediction);
-            return false;
+    console.log(`Filtrando ${predictions.length} predicciones con filtro de tiempo: ${timeRangeFilter}`);
+    console.log('Filtros actuales - Troncales:', selectedTroncales, 'Estaciones:', selectedEstaciones);
+    
+    // Crear una copia para no modificar el original
+    let filteredPredictions = [...predictions];
+    
+    // Filtrar por tiempo (cercanas, medianas, lejanas, muy lejanas)
+    if (timeRangeFilter !== 'todas') {
+        const now = new Date();
+        console.log('Hora actual para filtrado:', now.toISOString());
+        
+        // Umbral para cada tipo de filtro (en horas)
+        // Reducido el umbral "cercanas" a 1 hora temporalmente para pruebas
+        const thresholds = {
+            'cercanas': 3,    // Próximas 3 horas
+            'medianas': 12,   // Entre 3 y 12 horas
+            'lejanas': 24,    // Entre 12 y 24 horas
+            'muy_lejanas': 48 // Entre 24 y 48 horas
+        };
+        
+        // Calculamos las fechas límite según el filtro seleccionado
+        const lowerBound = new Date(now);
+        let upperBound = new Date(now);
+        
+        // Ajustar límites según el filtro
+        if (timeRangeFilter === 'cercanas') {
+            upperBound = new Date(now.getTime() + thresholds.cercanas * 60 * 60 * 1000);
+            console.log(`Filtrando predicciones entre ${lowerBound.toISOString()} y ${upperBound.toISOString()}`);
+        } else if (timeRangeFilter === 'medianas') {
+            lowerBound.setTime(now.getTime() + thresholds.cercanas * 60 * 60 * 1000);
+            upperBound.setTime(now.getTime() + thresholds.medianas * 60 * 60 * 1000);
+            console.log(`Filtrando predicciones entre ${lowerBound.toISOString()} y ${upperBound.toISOString()}`);
+        } else if (timeRangeFilter === 'lejanas') {
+            lowerBound.setTime(now.getTime() + thresholds.medianas * 60 * 60 * 1000);
+            upperBound.setTime(now.getTime() + thresholds.lejanas * 60 * 60 * 1000);
+            console.log(`Filtrando predicciones entre ${lowerBound.toISOString()} y ${upperBound.toISOString()}`);
+        } else if (timeRangeFilter === 'muy_lejanas') {
+            lowerBound.setTime(now.getTime() + thresholds.lejanas * 60 * 60 * 1000);
+            upperBound.setTime(now.getTime() + thresholds.muy_lejanas * 60 * 60 * 1000);
+            console.log(`Filtrando predicciones entre ${lowerBound.toISOString()} y ${upperBound.toISOString()}`);
         }
         
-        let predTime;
-        
-        try {
-            // Convertir a fecha usando manejo explícito de timezone
-            predTime = new Date(prediction.predicted_time);
+        // Aplicar el filtro de tiempo
+        const beforeFilter = filteredPredictions.length;
+        filteredPredictions = filteredPredictions.filter(prediction => {
+            // Asegurarse de que la fecha esté en formato consistente
+            let predTime;
             
-            // Si la conversión resultó en una fecha inválida, intentar otra aproximación
-            if (isNaN(predTime.getTime())) {
-                console.warn('Fecha inválida al convertir:', prediction.predicted_time);
+            try {
+                // Si ya pasó por normalizePredictionDates, debería ser un ISO string
+                predTime = new Date(prediction.predicted_time);
                 
-                // Intentar forzar zona horaria de Colombia
-                if (!prediction.predicted_time.includes('Z') && 
-                    !prediction.predicted_time.includes('+') && 
-                    !prediction.predicted_time.includes('-')) {
-                    predTime = new Date(prediction.predicted_time + '-05:00');
-                } else {
-                    // Último intento: extraer componentes de fecha/hora y crear fecha manualmente
-                    const parts = prediction.predicted_time.split('T');
-                    if (parts.length === 2) {
-                        const dateParts = parts[0].split('-').map(Number);
-                        const timeParts = parts[1].split(':').map(Number);
-                        predTime = new Date(dateParts[0], dateParts[1]-1, dateParts[2], 
-                                          timeParts[0], timeParts[1], timeParts[2] || 0);
+                // Si la fecha es inválida, intentar parsear según el formato de BD
+                if (isNaN(predTime.getTime()) && typeof prediction.predicted_time === 'string') {
+                    // Formato "2025-03-30 13:53:35" - interpretar como Colombia time
+                    if (prediction.predicted_time.includes(' ') && 
+                        !prediction.predicted_time.includes('T') && 
+                        !prediction.predicted_time.includes('Z')) {
+                        
+                        const parts = prediction.predicted_time.split(' ');
+                        if (parts.length === 2) {
+                            const dateParts = parts[0].split('-').map(Number);
+                            const timeParts = parts[1].split(':').map(Number);
+                            
+                            // Crear fecha en zona horaria Colombia (UTC-5)
+                            const utcDate = new Date(Date.UTC(
+                                dateParts[0], dateParts[1]-1, dateParts[2],
+                                timeParts[0], timeParts[1], timeParts[2] || 0
+                            ));
+                            
+                            // Ajuste para Colombia (UTC-5)
+                            predTime = new Date(utcDate.getTime() - 5 * 60 * 60 * 1000);
+                        }
                     }
                 }
-            }
-        } catch (e) {
-            console.error('Error parseando fecha:', prediction.predicted_time, e);
-            return false; // Excluir predicciones con fechas que no se pueden parsear
-        }
-        
-        // Solo depurar si predTime es válido
-        if (!isNaN(predTime.getTime())) {
-            // Información de depuración resumida para no saturar la consola
-            if (Math.random() < 0.05) { // Solo mostrar ~5% de las predicciones
-                console.log('Debug - Predicción:', prediction.station, 
-                            'Tiempo:', prediction.predicted_time, 
-                            '→ parseada:', predTime.toISOString());
-            }
-            
-            // Clasificar para depuración y verificar si está en el futuro
-            const timeFromNow = predTime.getTime() - now.getTime();
-            
-            // Solo considerar predicciones futuras
-            if (timeFromNow <= 0) {
-                debugRanges.fuera_de_rango++;
+                
+                // Verificar si cae dentro del rango de tiempo
+                const isInRange = predTime >= lowerBound && predTime <= upperBound;
+                
+                // Mostrar algunas predicciones (limitado para no saturar la consola)
+                if (Math.random() < 0.01) {
+                    console.log(
+                        `Predicción: ${prediction.station} | ${prediction.predicted_time} | ` +
+                        `Parsed: ${predTime ? predTime.toISOString() : 'inválida'} | ` +
+                        `En rango: ${isInRange ? 'SÍ' : 'NO'}`
+                    );
+                }
+                
+                return isInRange;
+            } catch (e) {
+                console.error('Error al procesar fecha:', prediction.predicted_time, e);
                 return false;
             }
+        });
+        
+        console.log(`Filtro de tiempo: de ${beforeFilter} a ${filteredPredictions.length} predicciones`);
+        
+        // Si no quedan predicciones después del filtro de tiempo, podemos mostrar un mensaje
+        if (filteredPredictions.length === 0) {
+            console.warn(`No hay predicciones disponibles para el rango "${timeRangeFilter}"`);
             
-            // Clasificar por rango
-            if (predTime >= now && predTime <= threeHoursFromNow) {
-                debugRanges.cercanas++;
-                // Mostrar todas las cercanas para diagnóstico
-                console.log('✓ PREDICCIÓN CERCANA:', prediction.station, prediction.predicted_time);
-            } else if (predTime > threeHoursFromNow && predTime <= sixHoursFromNow) {
-                debugRanges.medianas++;
-            } else if (predTime > sixHoursFromNow && predTime <= twelveHoursFromNow) {
-                debugRanges.lejanas++;
-            } else if (predTime > twelveHoursFromNow && predTime <= twentyFourHoursFromNow) {
-                debugRanges.muy_lejanas++;
-            } else {
-                debugRanges.fuera_de_rango++;
-                return false; // Filtrar predicciones fuera de rango
-            }
-            
-            // Aplicar filtro según rango seleccionado
+            // Si es el filtro "cercanas" y no hay resultados, mostrar un pequeño conjunto
+            // de las predicciones más cercanas disponibles como alternativa
             if (timeRangeFilter === 'cercanas') {
-                // SOLUCIÓN TEMPORAL: Usar un umbral más reducido para cercanas
-                // return predTime >= now && predTime <= oneHourFromNow;
-                return predTime >= now && predTime <= threeHoursFromNow;
-            } else if (timeRangeFilter === 'medianas') {
-                return predTime > threeHoursFromNow && predTime <= sixHoursFromNow;
-            } else if (timeRangeFilter === 'lejanas') {
-                return predTime > sixHoursFromNow && predTime <= twelveHoursFromNow;
-            } else if (timeRangeFilter === 'muy_lejanas') {
-                return predTime > twelveHoursFromNow && predTime <= twentyFourHoursFromNow;
-            } else { // 'todas'
-                return predTime >= now && predTime <= twentyFourHoursFromNow;
+                console.log('Buscando alternativas para mostrar...');
+                
+                // Ordenar por proximidad temporal
+                const sortedByTime = [...predictions].sort((a, b) => {
+                    const timeA = new Date(a.predicted_time);
+                    const timeB = new Date(b.predicted_time);
+                    return timeA - timeB;
+                });
+                
+                // Tomar hasta 10 predicciones cercanas como alternativa
+                filteredPredictions = sortedByTime.slice(0, 10);
+                console.log(`Mostrando ${filteredPredictions.length} predicciones alternativas`);
             }
         }
-        
-        return false; // Excluir si la fecha no es válida
-    });
-
-    // Mostrar resumen de distribución
-    console.log('Debug - Distribución de predicciones por rango:', debugRanges);
-    console.log(`Predicciones filtradas: ${filteredPredictions.length} de ${predictions.length}`);
-    
-    // Si no hay predicciones en el rango seleccionado, mostrar mensaje
-    if (filteredPredictions.length === 0 && predictions.length > 0) {
-        console.warn(`No hay predicciones en el rango seleccionado: ${timeRangeFilter}`);
     }
     
-    // Luego aplicar filtros de usuario
-    if (selectedFilter === 'all') return filteredPredictions;
-
-    return filteredPredictions.filter(prediction => {
-        if (selectedFilter === 'troncales') {
-            return selectedTroncales.length === 0 ||
-                selectedTroncales.includes(prediction.troncal);
-        } else if (selectedFilter === 'estaciones') {
-            return selectedEstaciones.length === 0 ||
-                selectedEstaciones.includes(prediction.station);
-        }
-        return true;
-    });
+    // Filtrar por troncal o estación si están activos
+    if (selectedFilter === 'troncales' && selectedTroncales.length > 0) {
+        filteredPredictions = filteredPredictions.filter(prediction => 
+            selectedTroncales.includes(prediction.troncal || 'N/A'));
+    } else if (selectedFilter === 'estaciones' && selectedEstaciones.length > 0) {
+        filteredPredictions = filteredPredictions.filter(prediction => 
+            selectedEstaciones.includes(prediction.station));
+    }
+    
+    console.log(`Después de todos los filtros: ${filteredPredictions.length} predicciones`);
+    return filteredPredictions;
 }
 
 function initializeSocket() {
@@ -853,35 +822,61 @@ function normalizePredictionDates(predictions) {
                         !window.location.hostname.includes('127.0.0.1');
     console.log('¿Ambiente de producción?', isProduction);
     
+    // Contador para diagnóstico
+    let invalidDates = 0;
+    let pastDates = 0;
+    let futureDates = 0;
+    
     predictions.forEach(prediction => {
         // Guardar la fecha original para diagnóstico
         prediction.original_time = prediction.predicted_time;
         
         try {
-            // Convertir a fecha usando manejo explícito de timezone
-            let predTime = new Date(prediction.predicted_time);
+            // Analizar específicamente el formato de fecha de la BD como se ve en la imagen
+            // "2025-03-30 13:53:35" -> interpretar como hora Colombia (UTC-5)
+            let predTime;
             
-            // Si la conversión resultó en una fecha inválida, intentar otra aproximación
-            if (isNaN(predTime.getTime())) {
-                // Intentar forzar zona horaria de Colombia (UTC-5)
-                if (!prediction.predicted_time.includes('Z') && 
-                    !prediction.predicted_time.includes('+') && 
-                    !prediction.predicted_time.includes('-')) {
-                    predTime = new Date(prediction.predicted_time + '-05:00');
-                } else {
-                    // Último intento: extraer componentes de fecha/hora
-                    const parts = prediction.predicted_time.split('T');
+            if (typeof prediction.predicted_time === 'string') {
+                // Verificar si es formato simple de base de datos (sin T ni Z)
+                if (prediction.predicted_time.includes(' ') && 
+                    !prediction.predicted_time.includes('T') && 
+                    !prediction.predicted_time.includes('Z')) {
+                    
+                    // Formato DB: "2025-03-30 13:53:35" - interpretar como Colombia time
+                    const parts = prediction.predicted_time.split(' ');
                     if (parts.length === 2) {
                         const dateParts = parts[0].split('-').map(Number);
                         const timeParts = parts[1].split(':').map(Number);
-                        predTime = new Date(dateParts[0], dateParts[1]-1, dateParts[2], 
-                                         timeParts[0], timeParts[1], timeParts[2] || 0);
+                        
+                        // Crear fecha explícitamente como UTC
+                        predTime = new Date(Date.UTC(
+                            dateParts[0], dateParts[1]-1, dateParts[2],
+                            timeParts[0], timeParts[1], timeParts[2] || 0
+                        ));
+                        
+                        // Ajustar para la zona horaria de Colombia (-5 horas)
+                        predTime = new Date(predTime.getTime() + (-5 * 60 * 60 * 1000));
+                        
+                        console.log('Fecha DB parseada:', prediction.predicted_time, 
+                            '→', predTime.toISOString(), '(Colombia UTC-5)');
+                    }
+                } else {
+                    // Intentar conversión normal para otros formatos
+                    predTime = new Date(prediction.predicted_time);
+                    
+                    // Si no tiene zona horaria, asumir Colombia
+                    if (!prediction.predicted_time.includes('Z') && 
+                        !prediction.predicted_time.includes('+') && 
+                        !prediction.predicted_time.includes('-')) {
+                        // Ajustar para Colombia
+                        predTime = new Date(predTime.getTime() + (-5 * 60 * 60 * 1000));
                     }
                 }
             }
             
             // Si después de todo sigue inválida, usar la actual + offset aleatorio
-            if (isNaN(predTime.getTime())) {
+            if (isNaN(predTime) || predTime === undefined) {
+                invalidDates++;
                 const randomHours = 1 + Math.floor(Math.random() * 10); // 1-10 horas
                 predTime = new Date(now.getTime() + (randomHours * 60 * 60 * 1000));
                 console.warn('Fecha inválida, usando fallback:', prediction.original_time, '->', predTime);
@@ -889,25 +884,47 @@ function normalizePredictionDates(predictions) {
             
             // Si la fecha está en el pasado, moverla al futuro
             if (predTime < now) {
+                pastDates++;
                 const offsetHours = 1 + Math.floor(Math.random() * 3); // 1-3 horas
                 predTime = new Date(now.getTime() + (offsetHours * 60 * 60 * 1000));
                 console.warn('Fecha en el pasado, ajustando:', prediction.original_time, '->', predTime);
+            } else {
+                futureDates++;
             }
             
-            // Guardar la fecha normalizada en formato ISO con el offset explícito
+            // Guardar la fecha normalizada en formato ISO
             prediction.predicted_time = predTime.toISOString();
             
             // Para depuración, mostrar algunas fechas normalizadas
-            if (Math.random() < 0.01) { // Mostrar ~1% para no saturar la consola
+            if (Math.random() < 0.005) { // Mostrar ~0.5% para no saturar la consola
                 console.log('Fecha normalizada:', prediction.original_time, '->', prediction.predicted_time);
             }
         } catch (e) {
             console.error('Error normalizando fecha:', prediction.predicted_time, e);
+            invalidDates++;
         }
     });
     
-    // Mostrar algunas estadísticas después de normalizar
+    // Mostrar estadísticas después de normalizar
     console.log(`Normalizadas ${predictions.length} fechas de predicciones`);
+    console.log(`- Fechas inválidas corregidas: ${invalidDates}`);
+    console.log(`- Fechas en el pasado corregidas: ${pastDates}`);
+    console.log(`- Fechas en el futuro válidas: ${futureDates}`);
+    
+    // Verificar cuántas predicciones caen en las próximas 3 horas
+    const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+    const proximasTresHoras = predictions.filter(p => {
+        const predTime = new Date(p.predicted_time);
+        return predTime >= now && predTime <= threeHoursFromNow;
+    });
+    
+    console.log(`Predicciones en las próximas 3 horas: ${proximasTresHoras.length}`);
+    if (proximasTresHoras.length > 0) {
+        console.log('Ejemplos de predicciones cercanas:');
+        proximasTresHoras.slice(0, 3).forEach(p => {
+            console.log(`- ${p.station}: ${p.original_time} → ${p.predicted_time}`);
+        });
+    }
 }
 
 // Función para verificar específicamente las predicciones cercanas
