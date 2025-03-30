@@ -44,10 +44,13 @@ def run_daily_predictions():
             from sqlalchemy import func
             
             # Eliminar predicciones viejas (opcional)
-            Prediction.query.filter(
-                func.julianday(Prediction.predicted_time) < func.julianday('now')
+            now_db_time = func.now()
+            logger.info(f"Intentando eliminar predicciones anteriores a: {now_db_time}")
+            num_deleted = db.session.query(Prediction).filter(
+                Prediction.predicted_time < now_db_time
             ).delete(synchronize_session=False)
             db.session.commit()
+            logger.info(f"Eliminadas {num_deleted} predicciones antiguas.")
             
             # Notificar a todos los clientes conectados
             from app import socketio
