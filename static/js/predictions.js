@@ -6,6 +6,7 @@ let selectedFilter = 'all';
 let selectedTroncales = [];
 let selectedEstaciones = [];
 let stationsData = [];
+let timeRangeFilter = 'cercanas'; // 'cercanas', 'medianas', 'lejanas', 'todas'
 
 function initializeSocketHandlers() {
     console.log('Configurando manejadores de Socket.IO para predicciones...');
@@ -83,29 +84,103 @@ function updatePredictionsList(predictions) {
 
     try {
         console.log('Procesando predicciones:', predictions);
+        
+        // Guardar las predicciones originales para usar con los filtros de tiempo
+        const allPredictions = [...predictions];
+        
+        // Aplicar filtros actuales
         const filteredPredictions = filterPredictions(predictions);
         console.log('Predicciones filtradas:', filteredPredictions);
 
+        // Reconstruir la lista de predicciones
+        predictionsList.innerHTML = '';
+        
+        // Agregar selector de rango de tiempo
+        const timeSelector = document.createElement('div');
+        timeSelector.className = 'time-range-selector mb-3';
+        timeSelector.innerHTML = `
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <strong>Rango de tiempo</strong>
+                </div>
+                <div class="card-body">
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn ${timeRangeFilter === 'cercanas' ? 'btn-primary' : 'btn-outline-primary'}" 
+                            data-range="cercanas">Próximas 3h</button>
+                        <button type="button" class="btn ${timeRangeFilter === 'medianas' ? 'btn-primary' : 'btn-outline-primary'}" 
+                            data-range="medianas">3-6h</button>
+                        <button type="button" class="btn ${timeRangeFilter === 'lejanas' ? 'btn-primary' : 'btn-outline-primary'}" 
+                            data-range="lejanas">6-12h</button>
+                        <button type="button" class="btn ${timeRangeFilter === 'muy_lejanas' ? 'btn-primary' : 'btn-outline-primary'}" 
+                            data-range="muy_lejanas">12-24h</button>
+                        <button type="button" class="btn ${timeRangeFilter === 'todas' ? 'btn-primary' : 'btn-outline-primary'}" 
+                            data-range="todas">Todas</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        predictionsList.appendChild(timeSelector);
+        
+        // Configurar eventos para los botones del selector de tiempo
+        const timeButtons = timeSelector.querySelectorAll('.btn');
+        timeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                timeRangeFilter = this.getAttribute('data-range');
+                // Actualizar botones activos
+                timeButtons.forEach(btn => {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-outline-primary');
+                });
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('btn-primary');
+                // Actualizar la lista con el nuevo filtro
+                updatePredictionsList(allPredictions);
+            });
+        });
+
         if (!filteredPredictions.length) {
-            predictionsList.innerHTML = `
-                <div class="alert alert-info" role="alert">
-                    <i class="fas fa-info-circle"></i>
-                    No hay predicciones disponibles para la próxima hora con los filtros seleccionados.
-                </div>`;
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'alert alert-info';
+            emptyMessage.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                No hay predicciones disponibles para el rango de tiempo seleccionado con los filtros actuales.
+            `;
+            predictionsList.appendChild(emptyMessage);
             return;
         }
+
+        // Agregar encabezado informativo
+        const headerMessage = document.createElement('div');
+        headerMessage.className = 'alert alert-primary mb-3';
+        
+        // Personalizar mensaje según el rango seleccionado
+        let rangeText = '';
+        switch(timeRangeFilter) {
+            case 'cercanas': rangeText = 'próximas 3 horas'; break;
+            case 'medianas': rangeText = '3 a 6 horas'; break;
+            case 'lejanas': rangeText = '6 a 12 horas'; break;
+            case 'muy_lejanas': rangeText = '12 a 24 horas'; break;
+            case 'todas': rangeText = 'próximas 24 horas'; break;
+        }
+        
+        headerMessage.innerHTML = `
+            <i class="fas fa-clock"></i>
+            Mostrando predicciones para las ${rangeText} (${filteredPredictions.length} predicciones)
+        `;
+        predictionsList.appendChild(headerMessage);
 
         // Ordenar predicciones por tiempo y riesgo
         filteredPredictions.sort((a, b) => {
             const timeA = new Date(a.predicted_time);
             const timeB = new Date(b.predicted_time);
-            if (timeA === timeB) {
+            if (timeA.getTime() === timeB.getTime()) {
                 return b.risk_score - a.risk_score; // Mayor riesgo primero
             }
             return timeA - timeB;
         });
 
-        predictionsList.innerHTML = ''; // Limpiar lista actual
+        // Crear contenedor para las predicciones
+        const predictionsContainer = document.createElement('div');
         filteredPredictions.forEach(prediction => {
             const riskInfo = getRiskInfo(prediction.risk_score);
             const item = document.createElement('div');
@@ -123,9 +198,11 @@ function updatePredictionsList(predictions) {
                 </div>
             `;
 
-            predictionsList.appendChild(item);
+            predictionsContainer.appendChild(item);
             checkAndNotify(prediction);
         });
+        
+        predictionsList.appendChild(predictionsContainer);
     } catch (error) {
         console.error('Error actualizando lista de predicciones:', error);
         predictionsList.innerHTML = `
@@ -134,6 +211,46 @@ function updatePredictionsList(predictions) {
                 Error al actualizar las predicciones: ${error.message}
             </div>`;
     }
+}
+
+// Función para filtrar predicciones
+function filterPredictions(predictions) {
+    // Filtrar por tiempo según el rango seleccionado
+    const now = new Date();
+    const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+    const sixHoursFromNow = new Date(now.getTime() + 6 * 60 * 60 * 1000);
+    const twelveHoursFromNow = new Date(now.getTime() + 12 * 60 * 60 * 1000);
+    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    predictions = predictions.filter(prediction => {
+        const predTime = new Date(prediction.predicted_time);
+        
+        if (timeRangeFilter === 'cercanas') {
+            return predTime >= now && predTime <= threeHoursFromNow;
+        } else if (timeRangeFilter === 'medianas') {
+            return predTime > threeHoursFromNow && predTime <= sixHoursFromNow;
+        } else if (timeRangeFilter === 'lejanas') {
+            return predTime > sixHoursFromNow && predTime <= twelveHoursFromNow;
+        } else if (timeRangeFilter === 'muy_lejanas') {
+            return predTime > twelveHoursFromNow && predTime <= twentyFourHoursFromNow;
+        } else { // 'todas'
+            return predTime >= now && predTime <= twentyFourHoursFromNow;
+        }
+    });
+
+    // Luego aplicar filtros de usuario
+    if (selectedFilter === 'all') return predictions;
+
+    return predictions.filter(prediction => {
+        if (selectedFilter === 'troncales') {
+            return selectedTroncales.length === 0 ||
+                selectedTroncales.includes(prediction.troncal);
+        } else if (selectedFilter === 'estaciones') {
+            return selectedEstaciones.length === 0 ||
+                selectedEstaciones.includes(prediction.station);
+        }
+        return true;
+    });
 }
 
 // Función para cargar y verificar predicciones
@@ -430,56 +547,6 @@ function createToastContainer() {
     return container;
 }
 
-// Función para filtrar predicciones
-function filterPredictions(predictions) {
-    // Primero filtrar por tiempo - solo mostrar predicciones dentro de la próxima hora
-    const now = new Date();
-    const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
-
-    predictions = predictions.filter(prediction => {
-        const predTime = new Date(prediction.predicted_time);
-        return predTime >= now && predTime <= oneHourFromNow;
-    });
-
-    // Luego aplicar filtros de usuario
-    if (selectedFilter === 'all') return predictions;
-
-    return predictions.filter(prediction => {
-        if (selectedFilter === 'troncales') {
-            return selectedTroncales.length === 0 ||
-                selectedTroncales.includes(prediction.troncal);
-        } else if (selectedFilter === 'estaciones') {
-            return selectedEstaciones.length === 0 ||
-                selectedEstaciones.includes(prediction.station);
-        }
-        return true;
-    });
-}
-
-// Obtener clase de riesgo y estilo basado en el score
-function getRiskInfo(risk_score) {
-    const score = risk_score * 100;
-    if (score > 70) {
-        return {
-            class: 'danger',
-            label: 'Alto',
-            color: 'var(--risk-high)'
-        };
-    } else if (score > 40) {
-        return {
-            class: 'warning',
-            label: 'Medio',
-            color: 'var(--risk-medium)'
-        };
-    }
-    return {
-        class: 'info',
-        label: 'Bajo',
-        color: 'var(--risk-low)'
-    };
-}
-
-
 // Función para verificar y mostrar notificación de predicción
 function checkAndNotify(prediction) {
     if (localStorage.getItem('inAppNotificationsEnabled') !== 'true') return;
@@ -515,4 +582,27 @@ function getTimeUntilIncident(predicted_time) {
 // Función auxiliar para obtener el ID del usuario
 function getUserId() {
     return document.querySelector('.predictions-content').dataset.userId || 'anonymous';
+}
+
+// Obtener clase de riesgo y estilo basado en el score
+function getRiskInfo(risk_score) {
+    const score = risk_score * 100;
+    if (score > 70) {
+        return {
+            class: 'danger',
+            label: 'Alto',
+            color: 'var(--risk-high)'
+        };
+    } else if (score > 40) {
+        return {
+            class: 'warning',
+            label: 'Medio',
+            color: 'var(--risk-medium)'
+        };
+    }
+    return {
+        class: 'info',
+        label: 'Bajo',
+        color: 'var(--risk-low)'
+    };
 }
