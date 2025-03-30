@@ -18,7 +18,7 @@ from flask import current_app
 import numpy as np
 import pandas as pd
 from database import db
-from models import Incident
+from models import Incident, Prediction
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import LSTM, Dense, Dropout
@@ -651,26 +651,84 @@ def update_predictions_periodically():
 
 def get_cached_predictions():
     """
-    Obtiene predicciones del caché con fallback al archivo.
+    Obtiene predicciones con esta prioridad:
+    1. Base de datos PostgreSQL (fuente principal de verdad)
+    2. Archivo JSON de caché (respaldo)
+    3. Generar nuevas si no hay datos en ninguna fuente
     """
     try:
-        # Intentar obtener del archivo de respaldo primero
+        # 1. PRIMERO: Intentar obtener de la base de datos (fuente principal)
+        try:
+            from models import Prediction
+            from app import app
+            
+            with app.app_context():
+                from database import db
+                import pandas as pd
+                from sqlalchemy import func
+                
+                # Obtener las predicciones futuras (a partir de ahora)
+                current_time = datetime.now()
+                predictions_db = Prediction.query.filter(
+                    Prediction.predicted_time >= current_time
+                ).order_by(Prediction.predicted_time).all()
+                
+                if predictions_db and len(predictions_db) > 0:
+                    # Convertir a formato JSON esperable por el frontend
+                    predictions = []
+                    
+                    # Cargar datos de estaciones para obtener coordenadas
+                    with open('static/Estaciones_Troncales_de_TRANSMILENIO.geojson', 'r', encoding='utf-8') as f:
+                        geojson_data = json.load(f)
+                        station_data = {
+                            feature['properties']['nombre_estacion']: {
+                                'lat': feature['geometry']['coordinates'][1],
+                                'lon': feature['geometry']['coordinates'][0],
+                                'troncal': feature['properties'].get('troncal_estacion', 'N/A')
+                            }
+                            for feature in geojson_data['features']
+                            if 'nombre_estacion' in feature['properties']
+                        }
+                    
+                    for pred in predictions_db:
+                        coords = station_data.get(pred.station, {'lat': 0, 'lon': 0, 'troncal': 'N/A'})
+                        
+                        prediction = {
+                            'station': pred.station,
+                            'predicted_time': pred.predicted_time.isoformat(),
+                            'risk_score': float(pred.risk_score),
+                            'incident_type': pred.incident_type,
+                            'latitude': coords['lat'],
+                            'longitude': coords['lon'],
+                            'troncal': pred.troncal if hasattr(pred, 'troncal') else coords['troncal'],
+                            'prediction_made': pred.created_at.isoformat(),
+                            'model_version': 'database'
+                        }
+                        predictions.append(prediction)
+                    
+                    logging.info(f"Predicciones recuperadas de la base de datos: {len(predictions)}")
+                    return predictions
+                else:
+                    logging.warning("No se encontraron predicciones en la base de datos")
+        except Exception as db_error:
+            logging.warning(f"Error obteniendo predicciones de la base de datos: {str(db_error)}")
+        
+        # 2. SEGUNDO: Intentar obtener del archivo de respaldo
         try:
             with open('predictions_cache.json', 'r', encoding='utf-8') as f:
                 predictions = json.load(f)
                 if predictions:
-                    logging.info(f"Predicciones recuperadas del archivo: {len(predictions)}")
+                    logging.info(f"Predicciones recuperadas del archivo JSON: {len(predictions)}")
                     return predictions
         except Exception as file_error:
             logging.warning(f"No se pudo cargar el archivo de respaldo: {str(file_error)}")
 
-        # Si no hay archivo o está vacío, generar nuevas predicciones
-        logging.info("Generando nuevas predicciones ya que no hay caché disponible")
+        # 3. TERCERO: Si no hay datos en ninguna fuente, generar nuevas predicciones
+        logging.info("Generando nuevas predicciones ya que no hay fuentes disponibles")
         predictions = generate_prediction_cache(hours_ahead=24)
         return predictions if predictions else []
-
     except Exception as e:
-        logging.error(f"Error obteniendo predicciones del caché: {str(e)}")
+        logging.error(f"Error obteniendo predicciones: {str(e)}", exc_info=True)
         return []
 
 def enhanced_fallback_prediction(station, pred_time):
