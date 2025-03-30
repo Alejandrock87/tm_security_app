@@ -47,7 +47,8 @@ def run_daily_predictions():
             now_db_time = func.now()
             logger.info(f"Intentando eliminar predicciones anteriores a: {now_db_time}")
             delete_stmt = sql_delete(Prediction).where(Prediction.predicted_time < now_db_time)
-            result = db.session.execute(delete_stmt)
+            # Ejecutar con synchronize_session=False para evitar la evaluación en Python
+            result = db.session.execute(delete_stmt, synchronize_session=False)
             num_deleted = result.rowcount
             db.session.commit()
             logger.info(f"Eliminadas {num_deleted} predicciones antiguas.")
