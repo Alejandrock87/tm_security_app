@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timedelta
 import os
 from sqlalchemy import exc as sql_exceptions
-from app import cache, socketio  # Importar socketio desde app
+# from app import cache  # Eliminado para evitar importación circular
 from urllib.parse import urlparse
 from forms import LoginForm, RegistrationForm, IncidentReportForm
 from incident_utils import get_incidents_for_map, get_incident_statistics
@@ -143,7 +143,15 @@ def init_routes(app):
                     app.logger.info("Incident saved successfully")
 
                     flash('¡Incidente reportado con éxito!')
-                    send_notification(incident.incident_type, incident.timestamp.isoformat())
+                    
+                    # Enviar notificación en tiempo real a todos los usuarios
+                    send_notification(
+                        incident_type=incident.incident_type,
+                        timestamp=incident.timestamp.isoformat(),
+                        nearest_station=incident.nearest_station,
+                        description=incident.description
+                    )
+                    
                     return redirect(url_for('home'))
                 except ValueError as e:
                     db.session.rollback()
