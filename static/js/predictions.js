@@ -738,6 +738,78 @@ function createToastContainer() {
     return container;
 }
 
+/**
+ * Inicia el reentrenamiento manual del modelo
+ */
+function initiateRetraining() {
+    const button = document.getElementById('retrainButton');
+    const statusDiv = document.getElementById('retrainStatus');
+    
+    if (!button || !statusDiv) {
+        console.error('Elementos de reentrenamiento no encontrados');
+        return;
+    }
+    
+    // Deshabilitar botón y mostrar estado de carga
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+    
+    statusDiv.className = 'retrain-status loading';
+    statusDiv.innerHTML = '<i class="fas fa-clock"></i> Iniciando reentrenamiento del modelo...';
+    statusDiv.style.display = 'block';
+    
+    // Realizar petición al endpoint de reentrenamiento
+    fetch('/api/retrain-model', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error en la respuesta del servidor');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Reentrenamiento iniciado:', data);
+        
+        // Mostrar mensaje de éxito
+        statusDiv.className = 'retrain-status success';
+        statusDiv.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <strong>${data.message}</strong><br>
+            <small>${data.info}</small>
+        `;
+        
+        // Recargar historial después de un tiempo
+        setTimeout(() => {
+            loadTrainingHistory();
+        }, 5000);
+        
+    })
+    .catch(error => {
+        console.error('Error al iniciar reentrenamiento:', error);
+        
+        // Mostrar mensaje de error
+        statusDiv.className = 'retrain-status error';
+        statusDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <strong>Error:</strong> ${error.message}
+        `;
+    })
+    .finally(() => {
+        // Rehabilitar botón después de un tiempo
+        setTimeout(() => {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-play"></i> Iniciar Reentrenamiento';
+        }, 3000);
+    });
+}
+
 // Función para verificar y mostrar notificación de predicción
 function checkAndNotify(prediction) {
     if (localStorage.getItem('inAppNotificationsEnabled') !== 'true') return;
@@ -1387,6 +1459,16 @@ function renderTrainingHistory(data) {
         </div>
     `;
     
+    // Mostrar sección de reentrenamiento si es necesario Y el usuario es administrador
+    if (data.needs_retraining && isUserAdmin()) {
+        const retrainSection = document.getElementById('retrainSection');
+        const daysSinceSpan = document.getElementById('daysSinceTraining');
+        if (retrainSection && daysSinceSpan) {
+            daysSinceSpan.textContent = data.days_since_training || 0;
+            retrainSection.style.display = 'block';
+        }
+    }
+    
     // Tarjeta de métricas finales
     if (data.final_metrics) {
         historyHTML += `
@@ -1472,4 +1554,78 @@ function formatTrainingDate(dateString) {
         console.error('Error formateando fecha:', error);
         return dateString;
     }
+}
+
+// Función para verificar si el usuario es administrador
+function isUserAdmin() {
+    const mainElement = document.querySelector('.predictions-content');
+    if (!mainElement) return false;
+    
+    const isAdmin = mainElement.getAttribute('data-user-is-admin');
+    return isAdmin === 'true';
+}
+
+// Función para iniciar el reentrenamiento manual del modelo
+function initiateRetraining() {
+    // Verificar que el usuario sea administrador
+    if (!isUserAdmin()) {
+        console.error('Acceso denegado: Solo los administradores pueden reentrenar el modelo');
+        return;
+    }
+    
+    const button = document.getElementById('retrainButton');
+    const statusDiv = document.getElementById('retrainStatus');
+    
+    if (!button || !statusDiv) {
+        console.error('Elementos de reentrenamiento no encontrados');
+        return;
+    }
+    
+    // Deshabilitar botón y mostrar estado de carga
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reentrenando...';
+    statusDiv.style.display = 'block';
+    statusDiv.className = 'retrain-status loading';
+    statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando reentrenamiento del modelo...';
+    
+    // Enviar petición al backend
+    fetch('/api/retrain-model', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Respuesta del reentrenamiento:', data);
+        
+        // Mostrar mensaje de éxito
+        statusDiv.className = 'retrain-status success';
+        statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + (data.message || 'Reentrenamiento iniciado exitosamente');
+        
+        // Recargar el historial de entrenamiento después de un momento
+        setTimeout(() => {
+            loadTrainingHistory();
+        }, 2000);
+    })
+    .catch(error => {
+        console.error('Error en el reentrenamiento:', error);
+        
+        // Mostrar mensaje de error
+        statusDiv.className = 'retrain-status error';
+        statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error: ' + error.message;
+    })
+    .finally(() => {
+        // Rehabilitar botón después de 3 segundos
+        setTimeout(() => {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-play"></i> Iniciar Reentrenamiento';
+        }, 3000);
+    });
 }

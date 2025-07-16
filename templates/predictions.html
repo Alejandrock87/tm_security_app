@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<main class="predictions-content" data-user-id="{{ current_user.id }}">
+<main class="predictions-content" data-user-id="{{ current_user.id }}" data-user-is-admin="{{ current_user.is_admin|lower }}">
   <div class="predictions-container">
     <header class="predictions-header">
       <i class="fas fa-shield-alt predictions-icon"></i>
@@ -184,6 +184,27 @@
         <div class="training-error" id="trainingError" style="display: none;">
           <i class="fas fa-exclamation-triangle"></i>
           <span>Error al cargar el historial de entrenamiento</span>
+        </div>
+        
+        <!-- Botón de reentrenamiento manual -->
+        <div class="retrain-section" id="retrainSection" style="display: none;">
+          <div class="retrain-card">
+            <div class="retrain-header">
+              <i class="fas fa-sync-alt"></i>
+              <h4>Reentrenamiento Manual</h4>
+            </div>
+            <div class="retrain-content">
+              <p class="retrain-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                El modelo necesita reentrenamiento. Último entrenamiento hace <span id="daysSinceTraining">-</span> días.
+              </p>
+              <button id="retrainButton" class="retrain-button" onclick="initiateRetraining()">
+                <i class="fas fa-play"></i>
+                Iniciar Reentrenamiento
+              </button>
+              <div id="retrainStatus" class="retrain-status" style="display: none;"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

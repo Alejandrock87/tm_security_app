@@ -704,6 +704,57 @@ def init_routes(app):
                 'error': 'Error al cargar el historial de entrenamiento',
                 'status': 'error'
             }), 500
+    
+    @app.route('/api/retrain-model', methods=['POST'])
+    @login_required
+    def retrain_model():
+        """Endpoint para reentrenar el modelo manualmente"""
+        try:
+            # Solo permitir a administradores
+            if not current_user.is_admin:
+                return jsonify({
+                    'error': 'No tienes permisos para reentrenar el modelo',
+                    'status': 'unauthorized'
+                }), 403
+            
+            app.logger.info(f"Reentrenamiento manual iniciado por usuario: {current_user.username}")
+            
+            # Importar y ejecutar el entrenamiento
+            import subprocess
+            import threading
+            
+            def run_training():
+                """Ejecuta el entrenamiento en un hilo separado"""
+                try:
+                    result = subprocess.run(
+                        ["python", "train_model.py"], 
+                        capture_output=True, 
+                        text=True,
+                        timeout=3600  # Timeout de 1 hora
+                    )
+                    app.logger.info(f"Resultado entrenamiento manual: {result.stdout}")
+                    if result.stderr:
+                        app.logger.error(f"Errores en entrenamiento: {result.stderr}")
+                except Exception as e:
+                    app.logger.error(f"Error en entrenamiento manual: {str(e)}", exc_info=True)
+            
+            # Ejecutar en hilo separado para no bloquear la respuesta
+            training_thread = threading.Thread(target=run_training)
+            training_thread.daemon = True
+            training_thread.start()
+            
+            return jsonify({
+                'message': 'Reentrenamiento iniciado correctamente',
+                'status': 'started',
+                'info': 'El proceso puede tardar varios minutos. Revisa los logs para seguimiento.'
+            }), 200
+            
+        except Exception as e:
+            app.logger.error(f"Error al iniciar reentrenamiento: {str(e)}", exc_info=True)
+            return jsonify({
+                'error': 'Error al iniciar el reentrenamiento',
+                'status': 'error'
+            }), 500
 
     return app
 
