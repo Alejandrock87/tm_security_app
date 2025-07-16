@@ -243,9 +243,19 @@
         // Sistema de notificaciones emergentes en tiempo real
         let notificationQueue = [];
         let isShowingNotification = false;
+        let storedNotifications = JSON.parse(localStorage.getItem('tm_notifications') || '[]');
+        
+        // Limpiar notificaciones antiguas al cargar la página
+        cleanOldNotifications();
 
         // Función para mostrar notificaciones emergentes
         function showEmergentNotification(data) {
+            // Verificar si la notificación debe mostrarse según filtros del usuario
+            if (!shouldShowNotificationBasedOnFilters(data)) {
+                console.log('Notificación filtrada según preferencias del usuario:', data);
+                return;
+            }
+            
             // Agregar a la cola si hay una notificación activa
             if (isShowingNotification) {
                 notificationQueue.push(data);
@@ -373,22 +383,80 @@
             }
         }
 
-        // Función para actualizar badge de notificaciones
+        // Función para actualizar badge de notificaciones (legacy - redirige a la nueva función)
         function updateNotificationBadge() {
+            updateNotificationBadgeWithFilters();
+        }
+        
+        // Función para actualizar badge con notificaciones filtradas
+        function updateNotificationBadgeWithFilters() {
             const badge = document.getElementById('notificationBadge');
             if (badge) {
-                const count = parseInt(badge.textContent || '0') + 1;
-                badge.textContent = count;
-                badge.style.display = 'inline-block';
+                // Contar solo notificaciones que pasan los filtros
+                const filteredCount = storedNotifications.filter(notification => 
+                    shouldShowNotificationBasedOnFilters(notification)
+                ).length;
+                
+                badge.textContent = filteredCount;
+                badge.style.display = filteredCount > 0 ? 'inline-block' : 'none';
             }
         }
 
         // Función para agregar a la lista de notificaciones del modal
         function addToNotificationsList(data) {
+            // Crear objeto de notificación con timestamp
+            const notification = {
+                ...data,
+                id: Date.now() + Math.random(), // ID único
+                receivedAt: new Date().toISOString(),
+                timestamp: data.timestamp || new Date().toISOString()
+            };
+            
+            // Agregar a almacenamiento local
+            storedNotifications.unshift(notification);
+            
+            // Mantener solo notificaciones de la última hora
+            const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+            storedNotifications = storedNotifications.filter(n => 
+                new Date(n.receivedAt) > oneHourAgo
+            );
+            
+            // Guardar en localStorage
+            localStorage.setItem('tm_notifications', JSON.stringify(storedNotifications));
+            
+            // Actualizar la UI
+            updateNotificationsListUI();
+        }
+        
+        // Función para actualizar la UI de notificaciones
+        function updateNotificationsListUI() {
             const notificationList = document.getElementById('notifications-list');
-            if (notificationList) {
+            if (!notificationList) return;
+            
+            // Limpiar lista actual
+            notificationList.innerHTML = '';
+            
+            // Filtrar notificaciones según preferencias del usuario
+            const filteredNotifications = storedNotifications.filter(notification => 
+                shouldShowNotificationBasedOnFilters(notification)
+            );
+            
+            if (filteredNotifications.length === 0) {
+                notificationList.innerHTML = `
+                    <div class="list-group-item bg-dark text-white border-secondary text-center">
+                        <p class="mb-0 text-muted">No hay notificaciones recientes</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Agregar notificaciones filtradas
+            filteredNotifications.forEach(data => {
                 const notificationItem = document.createElement('div');
                 notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
+                
+                const timeAgo = getTimeAgo(new Date(data.receivedAt));
+                
                 notificationItem.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
@@ -399,17 +467,99 @@
                             <p class="mb-1 text-light">Estación: ${data.nearest_station}</p>
                             ${data.description ? `<p class="mb-0 text-muted small">${data.description}</p>` : ''}
                         </div>
-                        <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+                        <small class="text-muted">${timeAgo}</small>
                     </div>
                 `;
-                notificationList.insertBefore(notificationItem, notificationList.firstChild);
-            }
+                notificationList.appendChild(notificationItem);
+            });
         }
 
+        // Función para verificar si una notificación debe mostrarse según filtros
+        function shouldShowNotificationBasedOnFilters(data) {
+            try {
+                // Obtener preferencias del usuario desde localStorage
+                const preferences = JSON.parse(localStorage.getItem('notificationPreferences') || '{}');
+                
+                // Si no hay preferencias configuradas, mostrar todas las notificaciones
+                if (!preferences.troncales && !preferences.estaciones && !preferences.incidentTypes) {
+                    return true;
+                }
+                
+                // Verificar filtro por tipo de incidente
+                if (preferences.incidentTypes && preferences.incidentTypes.length > 0) {
+                    if (!preferences.incidentTypes.includes(data.incident_type)) {
+                        return false;
+                    }
+                }
+                
+                // Verificar filtro por estación específica
+                if (preferences.estaciones && preferences.estaciones.length > 0) {
+                    if (!preferences.estaciones.includes(data.nearest_station)) {
+                        return false;
+                    }
+                }
+                
+                // Verificar filtro por troncal (requiere cargar datos de estaciones)
+                if (preferences.troncales && preferences.troncales.length > 0) {
+                    // Esta verificación se puede mejorar cargando los datos de troncales
+                    // Por ahora, si hay filtro de troncal pero no de estación, permitir
+                    return true;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error al verificar filtros de notificación:', error);
+                return true; // En caso de error, mostrar la notificación
+            }
+        }
+        
+        // Función para limpiar notificaciones antiguas
+        function cleanOldNotifications() {
+            const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+            storedNotifications = storedNotifications.filter(n => 
+                new Date(n.receivedAt) > oneHourAgo
+            );
+            localStorage.setItem('tm_notifications', JSON.stringify(storedNotifications));
+        }
+        
+        // Función para calcular tiempo transcurrido
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            
+            if (diffMins < 1) return 'Ahora mismo';
+            if (diffMins < 60) return `Hace ${diffMins} min`;
+            
+            const diffHours = Math.floor(diffMins / 60);
+            if (diffHours < 24) return `Hace ${diffHours}h`;
+            
+            return date.toLocaleDateString();
+        }
+        
+
+        
         // Función legacy para compatibilidad
         function showNotification(data) {
             showEmergentNotification(data);
         }
+        
+        // Cargar notificaciones existentes al abrir el modal
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar UI cuando se abre el modal de notificaciones
+            const notificationModal = document.getElementById('notificationModal');
+            if (notificationModal) {
+                notificationModal.addEventListener('show.bs.modal', function() {
+                    updateNotificationsListUI();
+                    updateNotificationBadge();
+                });
+            }
+            
+            // Actualizar badge al cargar la página
+            setTimeout(() => {
+                updateNotificationBadge();
+            }, 1000);
+        });
     </script>
     {% block scripts %}{% endblock %}
 </body>
