@@ -1,8 +1,9 @@
+# ---- overrides ----
+Flask-Caching==2.0.2
 Flask==2.0.1
 Flask-SQLAlchemy==2.5.1
 Flask-Login==0.6.2
 Flask-WTF==1.0.1
-Flask-Caching==2.0.2
 Flask-SocketIO==5.3.2
 Flask-Cors==3.0.10
 SQLAlchemy==1.4.46
