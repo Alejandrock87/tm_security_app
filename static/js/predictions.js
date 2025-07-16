@@ -1460,13 +1460,21 @@ function renderTrainingHistory(data) {
     `;
     
     // Mostrar sección de reentrenamiento si es necesario Y el usuario es administrador
+    console.log('🔍 Evaluando si mostrar sección de reentrenamiento:');
+    console.log('  - data.needs_retraining:', data.needs_retraining);
+    console.log('  - isUserAdmin():', isUserAdmin());
+    console.log('  - Condición completa:', data.needs_retraining && isUserAdmin());
+    
     if (data.needs_retraining && isUserAdmin()) {
+        console.log('  ✅ Mostrando sección de reentrenamiento');
         const retrainSection = document.getElementById('retrainSection');
         const daysSinceSpan = document.getElementById('daysSinceTraining');
         if (retrainSection && daysSinceSpan) {
             daysSinceSpan.textContent = data.days_since_training || 0;
             retrainSection.style.display = 'block';
         }
+    } else {
+        console.log('  ❌ No se muestra sección de reentrenamiento');
     }
     
     // Tarjeta de métricas finales
@@ -1559,9 +1567,18 @@ function formatTrainingDate(dateString) {
 // Función para verificar si el usuario es administrador
 function isUserAdmin() {
     const mainElement = document.querySelector('.predictions-content');
-    if (!mainElement) return false;
+    console.log('🔍 Verificando rol de administrador:');
+    console.log('  - Elemento principal encontrado:', !!mainElement);
+    
+    if (!mainElement) {
+        console.log('  ❌ No se encontró el elemento .predictions-content');
+        return false;
+    }
     
     const isAdmin = mainElement.getAttribute('data-user-is-admin');
+    console.log('  - Atributo data-user-is-admin:', isAdmin);
+    console.log('  - Es admin (comparación estricta):', isAdmin === 'true');
+    
     return isAdmin === 'true';
 }
 

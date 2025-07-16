@@ -15,7 +15,13 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(20), nullable=False, default='user')
     incidents = db.relationship('Incident', backref='author', lazy='dynamic')
+
+    @property
+    def is_admin(self):
+        """Verifica si el usuario tiene rol de administrador"""
+        return self.role == 'admin'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
