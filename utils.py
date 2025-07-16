@@ -18,10 +18,28 @@ def transaction_context():
         logging.error(f"Transaction error: {str(e)}")
         raise
 
-def send_notification(incident_type, timestamp):
-    # Temporalmente deshabilitado Socket.IO
-    logging.info(f"Notification received: {incident_type} at {timestamp}")
-    return True
+def send_notification(incident_type, timestamp, nearest_station=None, description=None):
+    """Envía notificación en tiempo real via Socket.IO"""
+    try:
+        from app import socketio
+        
+        notification_data = {
+            'incident_type': incident_type,
+            'timestamp': timestamp,
+            'nearest_station': nearest_station or 'Estación no especificada',
+            'description': description,
+            'message': f'Nuevo incidente de {incident_type} reportado'
+        }
+        
+        # Enviar notificación emergente a todos los usuarios conectados
+        socketio.emit('incident_notification', notification_data, namespace='/')
+        
+        logging.info(f"Notificación enviada: {incident_type} en {nearest_station} a las {timestamp}")
+        return True
+        
+    except Exception as e:
+        logging.error(f"Error enviando notificación Socket.IO: {str(e)}")
+        return False
 
 def send_push_notification(incident_type, timestamp, nearest_station, device_token=None):
     try:
