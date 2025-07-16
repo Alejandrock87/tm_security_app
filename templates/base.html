@@ -143,16 +143,16 @@
 
     <!-- Modal de Notificaciones -->
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content bg-dark">
-                <div class="modal-header border-secondary">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-height: 85vh; margin: 7.5vh auto;">
+            <div class="modal-content bg-dark" style="max-height: 85vh; display: flex; flex-direction: column;">
+                <div class="modal-header border-secondary flex-shrink-0">
                     <h5 class="modal-title text-white" id="notificationsModalLabel">
                         <i class="fas fa-bell me-2"></i>
                         Notificaciones en vivo
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body flex-grow-1" style="overflow-y: auto; max-height: calc(85vh - 120px);">
                     <div class="mb-3">
                         <a href="{{ url_for('notifications') }}" class="notification-config-link">
                             <i class="fas fa-cog"></i>
@@ -247,6 +247,12 @@
         
         // Limpiar notificaciones antiguas al cargar la página
         cleanOldNotifications();
+        
+        // Inicializar las notificaciones en la UI
+        function initializeNotificationsUI() {
+            updateNotificationsListUI();
+            updateNotificationBadgeWithFilters();
+        }
 
         // Función para mostrar notificaciones emergentes
         function showEmergentNotification(data) {
@@ -444,7 +450,9 @@
             if (filteredNotifications.length === 0) {
                 notificationList.innerHTML = `
                     <div class="list-group-item bg-dark text-white border-secondary text-center">
-                        <p class="mb-0 text-muted">No hay notificaciones recientes</p>
+                        <i class="fas fa-bell-slash text-muted mb-2" style="font-size: 2rem;"></i>
+                        <p class="mb-0 text-muted">No hay notificaciones en la última hora</p>
+                        <small class="text-muted">Las notificaciones aparecerán aquí cuando se reporten incidentes</small>
                     </div>
                 `;
                 return;
@@ -516,10 +524,15 @@
         // Función para limpiar notificaciones antiguas
         function cleanOldNotifications() {
             const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+            const originalCount = storedNotifications.length;
             storedNotifications = storedNotifications.filter(n => 
                 new Date(n.receivedAt) > oneHourAgo
             );
             localStorage.setItem('tm_notifications', JSON.stringify(storedNotifications));
+            
+            if (originalCount !== storedNotifications.length) {
+                console.log(`Limpieza automática: ${originalCount - storedNotifications.length} notificaciones antiguas eliminadas`);
+            }
         }
         
         // Función para calcular tiempo transcurrido
@@ -547,18 +560,29 @@
         // Cargar notificaciones existentes al abrir el modal
         document.addEventListener('DOMContentLoaded', function() {
             // Actualizar UI cuando se abre el modal de notificaciones
-            const notificationModal = document.getElementById('notificationModal');
+            const notificationModal = document.getElementById('notificationsModal');
             if (notificationModal) {
                 notificationModal.addEventListener('show.bs.modal', function() {
+                    console.log('Modal de notificaciones abierto, actualizando UI...');
                     updateNotificationsListUI();
-                    updateNotificationBadge();
+                    updateNotificationBadgeWithFilters();
                 });
             }
             
-            // Actualizar badge al cargar la página
+            // Cargar notificaciones existentes al cargar la página
             setTimeout(() => {
-                updateNotificationBadge();
-            }, 1000);
+                initializeNotificationsUI();
+            }, 500);
+            
+            // También inicializar inmediatamente
+            initializeNotificationsUI();
+            
+            // Limpiar notificaciones antiguas cada 5 minutos
+            setInterval(() => {
+                cleanOldNotifications();
+                updateNotificationsListUI();
+                updateNotificationBadgeWithFilters();
+            }, 5 * 60 * 1000); // 5 minutos
         });
     </script>
     {% block scripts %}{% endblock %}

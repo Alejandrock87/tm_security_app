@@ -35,6 +35,86 @@
    - Recibe alertas sobre incidentes recientes en tu área de interés.
    - Configura preferencias de notificación según tus necesidades.
 
+## 🆕 Nuevas Funcionalidades Implementadas
+
+### Sistema de Notificaciones Emergentes en Tiempo Real
+
+La aplicación ahora cuenta con un **sistema completo de notificaciones emergentes** que proporciona alertas inmediatas sobre incidentes de seguridad sin depender de notificaciones nativas del dispositivo.
+
+#### ✨ Características Principales
+
+1. **Notificaciones Emergentes Inteligentes**
+   - **Aparición automática**: Las notificaciones aparecen inmediatamente en cualquier pantalla de la aplicación cuando se reporta un incidente
+   - **Diseño atractivo**: Gradiente naranja con animaciones suaves (slideInDown/slideOutUp)
+   - **Información completa**: Tipo de incidente, estación más cercana, descripción y timestamp
+   - **Sonido de alerta**: Notificación sonora usando Web Audio API
+   - **Auto-cierre**: Se cierran automáticamente después de 8 segundos
+   - **Cierre manual**: Opción de cerrar manualmente con botón X
+
+2. **Sistema de Cola de Notificaciones**
+   - **Gestión inteligente**: Si llegan múltiples notificaciones simultáneamente, se muestran en secuencia
+   - **Sin saturación**: Evita la superposición de notificaciones en pantalla
+   - **Procesamiento ordenado**: Las notificaciones se procesan una por una con intervalos de tiempo
+
+3. **Filtros de Notificaciones Personalizables**
+   - **Respeto a preferencias**: Solo se muestran notificaciones que coinciden con los filtros configurados
+   - **Filtros disponibles**:
+     - **Por tipo de incidente**: Hurto, Hurto a mano armada, Cosquilleo, Ataque, etc.
+     - **Por estación específica**: Selecciona estaciones de tu interés
+     - **Por troncal**: Filtra por líneas específicas del sistema Transmilenio
+   - **Comportamiento por defecto**: Si no hay filtros configurados, se muestran todas las notificaciones
+
+4. **Campanita de Notificaciones Mejorada**
+   - **Persistencia de 1 hora**: Las notificaciones se mantienen visibles durante exactamente 60 minutos
+   - **Almacenamiento local**: Usa localStorage para mantener las notificaciones entre sesiones
+   - **Limpieza automática**: Elimina automáticamente notificaciones de más de 1 hora cada 5 minutos
+   - **Contador inteligente**: El badge muestra solo notificaciones filtradas y recientes
+   - **Tiempo relativo**: Muestra "Hace 5 min", "Hace 2h", etc.
+
+5. **Modal de Notificaciones Optimizado**
+   - **Mejor centrado**: Ocupa 85% de la altura de pantalla con márgenes equilibrados
+   - **Altura limitada**: No supera los menús superior e inferior de la aplicación
+   - **Scroll inteligente**: Permite desplazamiento cuando hay muchas notificaciones
+   - **Diseño responsive**: Se adapta perfectamente a cualquier tamaño de pantalla
+   - **UI mejorada**: Mensaje descriptivo con iconos cuando no hay notificaciones
+
+#### 🔧 Aspectos Técnicos
+
+- **Socket.IO**: Comunicación en tiempo real entre servidor y clientes
+- **WebSocket**: Conexiones persistentes para notificaciones instantáneas
+- **Compatible con Railway**: Funciona perfectamente en el entorno de despliegue
+- **Sin permisos requeridos**: No necesita permisos del navegador (notificaciones internas)
+- **Arquitectura escalable**: Soporta múltiples usuarios simultáneos
+- **Logging detallado**: Monitoreo completo para depuración y análisis
+
+#### 📱 Cómo Usar las Notificaciones
+
+1. **Configurar Preferencias**:
+   - Ve a la campanita de notificaciones (🔔) en la barra superior
+   - Haz clic en "Configurar notificaciones"
+   - Selecciona los tipos de incidentes que te interesan
+   - Elige las estaciones o troncales de tu preferencia
+   - Guarda tus preferencias
+
+2. **Recibir Notificaciones**:
+   - Las notificaciones aparecerán automáticamente cuando alguien reporte un incidente
+   - Solo verás notificaciones que coincidan con tus filtros configurados
+   - Escucharás un sonido de alerta (si el audio está habilitado)
+   - Puedes cerrar manualmente o esperar el auto-cierre
+
+3. **Ver Historial**:
+   - Haz clic en la campanita (🔔) para ver todas las notificaciones de la última hora
+   - Las notificaciones se ordenan de más reciente a más antigua
+   - El contador en la campanita muestra cuántas notificaciones tienes
+
+#### 🛡️ Compatibilidad y Seguridad
+
+- **Multiplataforma**: Funciona en escritorio, móvil y tablets
+- **Navegadores soportados**: Chrome, Firefox, Safari, Edge
+- **Sin datos sensibles**: Las notificaciones no exponen información personal
+- **Filtrado seguro**: Solo usuarios autenticados reciben notificaciones
+- **Rendimiento optimizado**: Uso eficiente de memoria y recursos
+
 ## Guía de Uso Paso a Paso
 
 ### 1. Registro e Inicio de Sesión
@@ -272,6 +352,32 @@ Una vez que la aplicación esté desplegada:
 2. Comprueba que las actualizaciones en tiempo real funcionan correctamente
 3. Verifica que las notificaciones se envían como se espera
 
+### 4. Verificar el Sistema de Notificaciones en Tiempo Real
+
+1. **Probar Notificaciones Emergentes**:
+   - Reporta un incidente desde una sesión
+   - Verifica que aparezca la notificación emergente en otras sesiones abiertas
+   - Confirma que el sonido de alerta funciona correctamente
+   - Valida que las animaciones de entrada y salida se ejecutan suavemente
+
+2. **Probar Filtros de Notificaciones**:
+   - Configura filtros específicos en "Configurar notificaciones"
+   - Reporta incidentes que coincidan y no coincidan con los filtros
+   - Confirma que solo se muestran las notificaciones filtradas
+   - Verifica que el badge se actualiza correctamente
+
+3. **Probar Persistencia de 1 Hora**:
+   - Abre el modal de notificaciones (campanita)
+   - Confirma que se muestran las notificaciones de la última hora
+   - Navega a diferentes pantallas y verifica que las notificaciones persisten
+   - Espera a que pasen 60 minutos y confirma la limpieza automática
+
+4. **Probar Modal Mejorado**:
+   - Abre el modal en diferentes tamaños de pantalla
+   - Verifica el centrado y la altura limitada (85% de pantalla)
+   - Agrega múltiples notificaciones y confirma el scroll interno
+   - Valida que no interfiere con los menús superior e inferior
+
 ## Mantenimiento y Supervisión
 
 ### 1. Monitoreo de Recursos
@@ -304,3 +410,78 @@ Para actualizar el código:
 ## Notas sobre el Modelo de ML
 
 El sistema utiliza una Red Neuronal Recurrente (RNN) con capas LSTM para predecir incidentes en el sistema Transmilenio. El entrenamiento se realiza con datos históricos, generando secuencias temporales para predecir el riesgo de incidentes por estación y tipo. La configuración ha sido optimizada para funcionar dentro de los límites de recursos de Railway.
+
+---
+
+## 📅 Changelog - Nuevas Funcionalidades
+
+### Versión 2.0 - Sistema de Notificaciones en Tiempo Real (Julio 2025)
+
+#### ✨ Funcionalidades Añadidas
+
+- **🚨 Notificaciones Emergentes en Tiempo Real**
+  - Sistema completo de alertas emergentes que aparecen en cualquier pantalla
+  - Animaciones CSS suaves (slideInDown/slideOutUp) para entrada y salida
+  - Sonido de notificación usando Web Audio API
+  - Auto-cierre después de 8 segundos con opción de cierre manual
+  - Diseño visual atractivo con gradiente naranja y sombras
+
+- **🔔 Sistema de Cola de Notificaciones**
+  - Gestión inteligente de múltiples notificaciones simultáneas
+  - Procesamiento secuencial para evitar saturación de pantalla
+  - Control de intervalos de tiempo entre notificaciones
+
+- **🎯 Filtros de Notificaciones Personalizables**
+  - Filtrado por tipo de incidente (Hurto, Hurto a mano armada, Cosquilleo, etc.)
+  - Filtrado por estaciones específicas de interés
+  - Filtrado por troncales del sistema Transmilenio
+  - Comportamiento inteligente: sin filtros = todas las notificaciones
+
+- **⏰ Persistencia de Notificaciones (1 Hora)**
+  - Almacenamiento en localStorage para mantener notificaciones entre sesiones
+  - Limpieza automática de notificaciones antiguas cada 5 minutos
+  - Visualización de tiempo relativo ("Hace 5 min", "Hace 2h")
+  - Badge inteligente que muestra solo notificaciones filtradas y recientes
+
+- **📱 Modal de Notificaciones Optimizado**
+  - Mejor centrado en pantalla (85% altura máxima)
+  - Altura limitada que no interfiere con menús superior/inferior
+  - Scroll interno cuando hay muchas notificaciones
+  - Diseño responsive para todos los tamaños de pantalla
+  - UI mejorada con mensajes descriptivos cuando no hay notificaciones
+
+#### 🔧 Mejoras Técnicas
+
+- **Socket.IO**: Implementación completa para comunicación en tiempo real
+- **WebSocket**: Conexiones persistentes para notificaciones instantáneas
+- **Compatibilidad Railway**: Optimizado para el entorno de despliegue en la nube
+- **Arquitectura escalable**: Soporte para múltiples usuarios simultáneos
+- **Logging detallado**: Monitoreo completo para depuración y análisis
+- **Rendimiento optimizado**: Uso eficiente de memoria y recursos del navegador
+
+#### 🛡️ Seguridad y Compatibilidad
+
+- **Autenticación**: Solo usuarios autenticados reciben notificaciones
+- **Filtrado seguro**: Las notificaciones respetan las preferencias de privacidad
+- **Multiplataforma**: Compatible con escritorio, móvil y tablets
+- **Navegadores soportados**: Chrome, Firefox, Safari, Edge
+- **Sin permisos requeridos**: No necesita permisos del navegador
+
+#### 🐛 Problemas Corregidos
+
+- **Persistencia**: Las notificaciones ya no desaparecen al navegar entre pantallas
+- **Modal**: Centrado correcto y altura limitada en todos los dispositivos
+- **Filtros**: Aplicación correcta de filtros tanto en emergentes como en campanita
+- **Limpieza**: Eliminación automática y precisa de notificaciones antiguas
+- **UI**: Mejor experiencia de usuario con animaciones y diseño mejorado
+
+#### 📊 Impacto en el Usuario
+
+- **Alertas inmediatas**: Los usuarios reciben notificaciones instantáneas sobre incidentes
+- **Personalización**: Cada usuario puede configurar qué notificaciones recibir
+- **Mejor UX**: Interfaz más intuitiva y responsive
+- **Información completa**: Detalles completos de cada incidente en tiempo real
+- **Accesibilidad**: Diseño accesible con sonidos y animaciones opcionales
+
+---
+
