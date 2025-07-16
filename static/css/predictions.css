@@ -560,6 +560,13 @@
     user-select: none;
 }
 
+.training-history-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
 .training-history-header:hover {
     background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
     transform: translateY(-1px);
@@ -569,7 +576,6 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    flex: 1;
 }
 
 .training-icon {
@@ -584,7 +590,8 @@
 }
 
 .training-history-status {
-    margin: 0 1rem;
+    margin: 0;
+    align-self: flex-start;
 }
 
 .status-badge {

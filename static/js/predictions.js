@@ -1279,7 +1279,7 @@ async function loadTrainingHistory() {
         console.log('Datos del historial recibidos:', data);
         
         // Actualizar el badge de estado en el header
-        updateTrainingStatus(data.model_trained);
+        updateTrainingStatus(data.status === 'trained');
         
         // Renderizar el contenido
         renderTrainingHistory(data);
@@ -1330,7 +1330,7 @@ function renderTrainingHistory(data) {
     const content = document.querySelector('.training-history-content');
     if (!content) return;
     
-    if (!data.model_trained) {
+    if (data.status !== 'trained') {
         content.innerHTML = `
             <div class="training-grid">
                 <div class="training-card full-width">
@@ -1363,15 +1363,15 @@ function renderTrainingHistory(data) {
             <div class="card-content">
                 <div class="metric-item">
                     <span class="metric-label">Estado del modelo:</span>
-                    <span class="metric-value">${data.model_trained ? 'Entrenado' : 'No entrenado'}</span>
+                    <span class="metric-value">${data.status === 'trained' ? 'Entrenado' : 'No entrenado'}</span>
                 </div>
                 <div class="metric-item">
                     <span class="metric-label">Último entrenamiento:</span>
-                    <span class="metric-value">${data.last_training_date || 'N/A'}</span>
+                    <span class="metric-value">${formatTrainingDate(data.last_trained) || 'N/A'}</span>
                 </div>
                 <div class="metric-item">
                     <span class="metric-label">Épocas completadas:</span>
-                    <span class="metric-value">${data.epochs_completed || 'N/A'}</span>
+                    <span class="metric-value">${data.epochs_trained || 'N/A'}</span>
                 </div>
             </div>
         </div>
@@ -1388,19 +1388,19 @@ function renderTrainingHistory(data) {
                 <div class="card-content">
                     <div class="metric-item">
                         <span class="metric-label">Precisión (entrenamiento):</span>
-                        <span class="metric-value">${(data.final_metrics.accuracy * 100).toFixed(2)}%</span>
+                        <span class="metric-value">${data.final_metrics.accuracy ? (data.final_metrics.accuracy * 100).toFixed(2) + '%' : 'N/A'}</span>
                     </div>
                     <div class="metric-item">
                         <span class="metric-label">Precisión (validación):</span>
-                        <span class="metric-value">${(data.final_metrics.val_accuracy * 100).toFixed(2)}%</span>
+                        <span class="metric-value">${data.final_metrics.val_accuracy ? (data.final_metrics.val_accuracy * 100).toFixed(2) + '%' : 'N/A'}</span>
                     </div>
                     <div class="metric-item">
                         <span class="metric-label">Pérdida (entrenamiento):</span>
-                        <span class="metric-value">${data.final_metrics.loss.toFixed(4)}</span>
+                        <span class="metric-value">${data.final_metrics.loss ? data.final_metrics.loss.toFixed(4) : 'N/A'}</span>
                     </div>
                     <div class="metric-item">
                         <span class="metric-label">Pérdida (validación):</span>
-                        <span class="metric-value">${data.final_metrics.val_loss.toFixed(4)}</span>
+                        <span class="metric-value">${data.final_metrics.val_loss ? data.final_metrics.val_loss.toFixed(4) : 'N/A'}</span>
                     </div>
                 </div>
             </div>

@@ -115,6 +115,75 @@ La aplicación ahora cuenta con un **sistema completo de notificaciones emergent
 - **Filtrado seguro**: Solo usuarios autenticados reciben notificaciones
 - **Rendimiento optimizado**: Uso eficiente de memoria y recursos
 
+### Historial de Entrenamiento Expandible
+
+La pantalla de predicciones ahora incluye una **sección expandible de Historial de Entrenamiento** que permite visualizar información detallada sobre el estado y rendimiento del modelo de inteligencia artificial.
+
+#### ✨ Características Principales
+
+1. **Sección Expandible Inteligente**
+   - **Toggle animado**: Haz clic en el header para expandir/colapsar la sección
+   - **Icono rotativo**: El icono de flecha rota suavemente para indicar el estado
+   - **Carga dinámica**: Los datos se cargan solo cuando se expande la sección
+   - **Estados visuales**: Indicadores claros de carga, éxito y error
+
+2. **Información General del Modelo**
+   - **Estado del modelo**: Muestra si el modelo está entrenado o no
+   - **Última fecha de entrenamiento**: Fecha y hora del último entrenamiento completado
+   - **Épocas completadas**: Número total de épocas de entrenamiento realizadas
+   - **Badge de estado**: Indicador visual en el header (Entrenado/No entrenado)
+
+3. **Métricas de Rendimiento**
+   - **Precisión de entrenamiento**: Porcentaje de precisión alcanzado durante el entrenamiento
+   - **Precisión de validación**: Precisión en el conjunto de validación
+   - **Pérdida de entrenamiento**: Valor de la función de pérdida en entrenamiento
+   - **Pérdida de validación**: Pérdida en el conjunto de validación
+
+4. **Análisis de Aprendizaje**
+   - **Tendencia de pérdida**: Análisis de cómo evolucionó la pérdida durante el entrenamiento
+   - **Tendencia de precisión**: Evolución de la precisión a lo largo de las épocas
+   - **Análisis de sobreajuste**: Evaluación automática de posibles problemas de overfitting
+   - **Recomendaciones**: Sugerencias para mejorar el rendimiento del modelo
+
+#### 🔧 Aspectos Técnicos
+
+- **Carga asíncrona**: Los datos se obtienen del endpoint `/api/training-history` sin bloquear la UI
+- **Manejo de errores**: Gestión robusta de errores de red y del servidor
+- **Renderizado dinámico**: El contenido se genera dinámicamente según los datos disponibles
+- **Diseño responsive**: Se adapta perfectamente a dispositivos móviles y escritorio
+- **Compatibilidad total**: Funciona con la arquitectura actual y despliegue en Railway
+
+#### 📊 Cómo Usar el Historial de Entrenamiento
+
+1. **Acceder a la Sección**:
+   - Ve a la pantalla de "Predicciones" desde el menú principal
+   - Busca la sección "Historial de Entrenamiento" en la parte superior
+   - Observa el badge de estado que indica si el modelo está entrenado
+
+2. **Expandir y Ver Detalles**:
+   - Haz clic en el header de "Historial de Entrenamiento"
+   - La sección se expandirá con una animación suave
+   - Los datos se cargarán automáticamente desde el servidor
+   - Verás un indicador de carga mientras se obtienen los datos
+
+3. **Interpretar la Información**:
+   - **Información General**: Estado actual del modelo y fecha del último entrenamiento
+   - **Métricas Finales**: Rendimiento numérico del modelo en entrenamiento y validación
+   - **Resumen de Aprendizaje**: Análisis cualitativo del proceso de entrenamiento
+
+4. **Estados Posibles**:
+   - **Modelo no entrenado**: Se mostrará un mensaje indicando que no hay historial disponible
+   - **Modelo entrenado**: Se mostrarán todas las métricas y análisis disponibles
+   - **Error de carga**: Se mostrará un mensaje de error con detalles del problema
+
+#### 🛡️ Beneficios para el Usuario
+
+- **Transparencia**: Visibilidad completa del estado y rendimiento del modelo de IA
+- **Confianza**: Información detallada sobre la calidad de las predicciones
+- **Monitoreo**: Capacidad de verificar si el modelo necesita reentrenamiento
+- **Educativo**: Comprensión de cómo funciona el sistema de predicciones
+- **Toma de decisiones**: Información para evaluar la confiabilidad de las predicciones
+
 ## Guía de Uso Paso a Paso
 
 ### 1. Registro e Inicio de Sesión
@@ -378,6 +447,37 @@ Una vez que la aplicación esté desplegada:
    - Agrega múltiples notificaciones y confirma el scroll interno
    - Valida que no interfiere con los menús superior e inferior
 
+### 5. Verificar el Historial de Entrenamiento Expandible
+
+1. **Probar Funcionalidad Básica**:
+   - Ve a la pantalla de "Predicciones" desde el menú principal
+   - Localiza la sección "Historial de Entrenamiento" en la parte superior
+   - Verifica que el badge de estado muestre "Entrenado" o "No entrenado" correctamente
+   - Haz clic en el header para expandir la sección
+
+2. **Probar Animaciones y Estados**:
+   - Confirma que el icono de flecha rota suavemente al expandir/colapsar
+   - Verifica que aparece el indicador de carga mientras se obtienen los datos
+   - Valida que la sección se expande con animación suave
+   - Prueba expandir y colapsar varias veces para verificar la consistencia
+
+3. **Probar Visualización de Datos**:
+   - **Si el modelo está entrenado**: Verifica que se muestren todas las métricas
+     - Información general (estado, fecha, épocas)
+     - Métricas finales (precisión y pérdida de entrenamiento/validación)
+     - Resumen de aprendizaje (tendencias y análisis de sobreajuste)
+   - **Si el modelo no está entrenado**: Confirma que se muestra el mensaje apropiado
+
+4. **Probar Manejo de Errores**:
+   - Desconecta temporalmente la red y expande la sección
+   - Verifica que se muestra un mensaje de error claro
+   - Reconecta la red y confirma que se puede cargar correctamente
+
+5. **Probar Responsive Design**:
+   - Prueba la funcionalidad en diferentes tamaños de pantalla
+   - Verifica que las tarjetas se reorganizan correctamente en móvil
+   - Confirma que el texto y las métricas son legibles en todos los dispositivos
+
 ## Mantenimiento y Supervisión
 
 ### 1. Monitoreo de Recursos
@@ -450,6 +550,16 @@ El sistema utiliza una Red Neuronal Recurrente (RNN) con capas LSTM para predeci
   - Diseño responsive para todos los tamaños de pantalla
   - UI mejorada con mensajes descriptivos cuando no hay notificaciones
 
+- **📈 Historial de Entrenamiento Expandible**
+  - Sección expandible en la pantalla de predicciones para visualizar el estado del modelo de IA
+  - Toggle animado con icono rotativo para expandir/colapsar la sección
+  - Carga dinámica de datos desde el endpoint `/api/training-history`
+  - Visualización de métricas de rendimiento (precisión, pérdida, épocas)
+  - Análisis automático de tendencias y detección de sobreajuste
+  - Badge de estado en tiempo real (Entrenado/No entrenado)
+  - Manejo completo de estados: carga, éxito, error, sin datos
+  - Diseño responsive que se integra perfectamente con el estilo existente
+
 #### 🔧 Mejoras Técnicas
 
 - **Socket.IO**: Implementación completa para comunicación en tiempo real
@@ -482,6 +592,9 @@ El sistema utiliza una Red Neuronal Recurrente (RNN) con capas LSTM para predeci
 - **Mejor UX**: Interfaz más intuitiva y responsive
 - **Información completa**: Detalles completos de cada incidente en tiempo real
 - **Accesibilidad**: Diseño accesible con sonidos y animaciones opcionales
+- **Transparencia del modelo**: Los usuarios pueden ver el estado y rendimiento del modelo de IA
+- **Confianza en las predicciones**: Acceso a métricas de precisión y análisis de calidad
+- **Monitoreo inteligente**: Visualización de tendencias de aprendizaje y detección de problemas
 
 ---
 

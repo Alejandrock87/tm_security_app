@@ -596,9 +596,10 @@ def init_routes(app):
             app.logger.info("Solicitud de historial de entrenamiento recibida")
             
             # Ruta a los archivos de entrenamiento
-            training_history_path = os.path.join('models', 'training_history.json')
-            training_report_path = os.path.join('models', 'training_report.json')
-            model_path = os.path.join('models', 'rnn_model.h5')
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            training_history_path = os.path.join(base_dir, 'models', 'training_history.json')
+            training_report_path = os.path.join(base_dir, 'models', 'training_report.json')
+            model_path = os.path.join(base_dir, 'models', 'rnn_model.h5')
             
             # Inicializar respuesta por defecto
             response_data = {
