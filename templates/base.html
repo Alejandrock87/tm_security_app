@@ -23,6 +23,51 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- CSS Personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    
+    <!-- Estilos para notificaciones emergentes -->
+    <style>
+        @keyframes slideInDown {
+            from {
+                transform: translateX(-50%) translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutUp {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(-100%);
+                opacity: 0;
+            }
+        }
+        
+        #emergent-notification-container .alert {
+            animation-fill-mode: both;
+        }
+        
+        .notification-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+            }
+        }
+    </style>
     {% block styles %}{% endblock %}
 </head>
 
@@ -157,6 +202,12 @@
             socket.on('newNotification', (notification) => {
                 showNotification({ message: notification });
             });
+            
+            // Escuchar notificaciones de incidentes en tiempo real
+            socket.on('incident_notification', (data) => {
+                console.log('Nueva notificación de incidente recibida:', data);
+                showEmergentNotification(data);
+            });
         }
 
         // Inicialización cuando el DOM está listo
@@ -189,28 +240,175 @@
             });
         });
 
-        // Función para mostrar notificaciones in-app
-        function showNotification(data) {
+        // Sistema de notificaciones emergentes en tiempo real
+        let notificationQueue = [];
+        let isShowingNotification = false;
+
+        // Función para mostrar notificaciones emergentes
+        function showEmergentNotification(data) {
+            // Agregar a la cola si hay una notificación activa
+            if (isShowingNotification) {
+                notificationQueue.push(data);
+                return;
+            }
+
+            isShowingNotification = true;
+            
+            // Crear el contenedor de notificación emergente si no existe
+            let notificationContainer = document.getElementById('emergent-notification-container');
+            if (!notificationContainer) {
+                notificationContainer = document.createElement('div');
+                notificationContainer.id = 'emergent-notification-container';
+                notificationContainer.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 9999;
+                    max-width: 90%;
+                    width: 400px;
+                `;
+                document.body.appendChild(notificationContainer);
+            }
+
+            // Crear la notificación emergente
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-warning alert-dismissible fade show shadow-lg';
+            notification.style.cssText = `
+                background: linear-gradient(135deg, #ff6b35, #f7931e);
+                border: none;
+                border-radius: 12px;
+                color: white;
+                margin-bottom: 10px;
+                animation: slideInDown 0.5s ease-out;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            `;
+
+            const incidentTypeIcon = getIncidentIcon(data.incident_type);
+            const timeAgo = 'Ahora mismo';
+            
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="${incidentTypeIcon}" style="font-size: 24px;"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 fw-bold">🚨 Nuevo Incidente Reportado</h6>
+                        <p class="mb-1"><strong>${data.incident_type}</strong> en <strong>${data.nearest_station}</strong></p>
+                        <small class="opacity-75">${timeAgo}</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeEmergentNotification(this)"></button>
+                </div>
+            `;
+
+            notificationContainer.appendChild(notification);
+
+            // Reproducir sonido de notificación
+            playNotificationSound();
+
+            // Auto-cerrar después de 8 segundos
+            setTimeout(() => {
+                closeEmergentNotification(notification.querySelector('.btn-close'));
+            }, 8000);
+
+            // Actualizar badge de notificaciones
+            updateNotificationBadge();
+            
+            // Agregar a la lista de notificaciones del modal
+            addToNotificationsList(data);
+        }
+
+        // Función para cerrar notificación emergente
+        function closeEmergentNotification(button) {
+            const notification = button.closest('.alert');
+            notification.style.animation = 'slideOutUp 0.3s ease-in';
+            
+            setTimeout(() => {
+                notification.remove();
+                isShowingNotification = false;
+                
+                // Mostrar siguiente notificación en cola
+                if (notificationQueue.length > 0) {
+                    const nextNotification = notificationQueue.shift();
+                    setTimeout(() => showEmergentNotification(nextNotification), 300);
+                }
+            }, 300);
+        }
+
+        // Función para obtener icono según tipo de incidente
+        function getIncidentIcon(incidentType) {
+            const icons = {
+                'Hurto': 'fas fa-hand-paper text-danger',
+                'Hurto a mano armada': 'fas fa-exclamation-triangle text-danger',
+                'Cosquilleo': 'fas fa-hand-point-up text-warning',
+                'Ataque': 'fas fa-fist-raised text-danger',
+                'Apertura de puertas': 'fas fa-door-open text-info',
+                'Sospechoso': 'fas fa-eye text-warning',
+                'Acoso': 'fas fa-user-shield text-danger'
+            };
+            return icons[incidentType] || 'fas fa-exclamation-circle text-warning';
+        }
+
+        // Función para reproducir sonido de notificación
+        function playNotificationSound() {
+            try {
+                // Crear un sonido simple usando Web Audio API
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (error) {
+                console.log('No se pudo reproducir el sonido de notificación:', error);
+            }
+        }
+
+        // Función para actualizar badge de notificaciones
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            if (badge) {
+                const count = parseInt(badge.textContent || '0') + 1;
+                badge.textContent = count;
+                badge.style.display = 'inline-block';
+            }
+        }
+
+        // Función para agregar a la lista de notificaciones del modal
+        function addToNotificationsList(data) {
             const notificationList = document.getElementById('notifications-list');
             if (notificationList) {
                 const notificationItem = document.createElement('div');
                 notificationItem.className = 'list-group-item bg-dark text-white border-secondary';
                 notificationItem.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>${data.message || 'Nueva notificación'}</span>
-                        <small>${new Date().toLocaleTimeString()}</small>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="${getIncidentIcon(data.incident_type)} me-2"></i>
+                                <strong>${data.incident_type}</strong>
+                            </div>
+                            <p class="mb-1 text-light">Estación: ${data.nearest_station}</p>
+                            ${data.description ? `<p class="mb-0 text-muted small">${data.description}</p>` : ''}
+                        </div>
+                        <small class="text-muted">${new Date().toLocaleTimeString()}</small>
                     </div>
                 `;
-                notificationList.appendChild(notificationItem);
-
-                // Actualizar badge
-                const badge = document.getElementById('notificationBadge');
-                if (badge) {
-                    const count = parseInt(badge.textContent || '0') + 1;
-                    badge.textContent = count;
-                    badge.style.display = 'inline-block';
-                }
+                notificationList.insertBefore(notificationItem, notificationList.firstChild);
             }
+        }
+
+        // Función legacy para compatibilidad
+        function showNotification(data) {
+            showEmergentNotification(data);
         }
     </script>
     {% block scripts %}{% endblock %}
