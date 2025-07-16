@@ -1373,6 +1373,16 @@ function renderTrainingHistory(data) {
                     <span class="metric-label">Épocas completadas:</span>
                     <span class="metric-value">${data.epochs_trained || 'N/A'}</span>
                 </div>
+                <div class="metric-item">
+                    <span class="metric-label">Días desde entrenamiento:</span>
+                    <span class="metric-value">${data.days_since_training || 0} días</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Necesita reentrenamiento:</span>
+                    <span class="metric-value ${data.needs_retraining ? 'needs-retraining' : 'up-to-date'}">
+                        ${data.needs_retraining ? '⚠️ Sí (>7 días)' : '✓ No'}
+                    </span>
+                </div>
             </div>
         </div>
     `;

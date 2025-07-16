@@ -606,11 +606,13 @@ def init_routes(app):
                 'status': 'not_trained',
                 'last_trained': None,
                 'epochs_trained': 0,
+                'needs_retraining': False,
+                'days_since_training': 0,
                 'final_metrics': {
-                    'training_loss': None,
-                    'validation_loss': None,
-                    'training_accuracy': None,
-                    'validation_accuracy': None
+                    'loss': None,
+                    'val_loss': None,
+                    'accuracy': None,
+                    'val_accuracy': None
                 },
                 'learning_summary': {
                     'loss_trend': 'unknown',
@@ -628,15 +630,32 @@ def init_routes(app):
                     with open(training_report_path, 'r', encoding='utf-8') as f:
                         training_report = json.load(f)
                         
-                        response_data['last_trained'] = training_report.get('timestamp')
+                        timestamp_str = training_report.get('timestamp')
+                        response_data['last_trained'] = timestamp_str
                         response_data['epochs_trained'] = training_report.get('convergence', {}).get('final_epoch', 0)
+                        
+                        # Calcular días desde el último entrenamiento
+                        if timestamp_str:
+                            try:
+                                from datetime import datetime
+                                last_training_date = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+                                current_date = datetime.now()
+                                days_diff = (current_date - last_training_date).days
+                                response_data['days_since_training'] = days_diff
+                                
+                                # Determinar si necesita reentrenamiento (más de 7 días)
+                                response_data['needs_retraining'] = days_diff > 7
+                            except Exception as e:
+                                app.logger.warning(f"Error calculando días desde entrenamiento: {e}")
+                                response_data['days_since_training'] = 0
+                                response_data['needs_retraining'] = False
                         
                         metrics = training_report.get('metrics', {})
                         response_data['final_metrics'] = {
-                            'training_loss': metrics.get('loss'),
-                            'validation_loss': metrics.get('val_loss'),
-                            'training_accuracy': metrics.get('accuracy'),
-                            'validation_accuracy': metrics.get('val_accuracy')
+                            'loss': metrics.get('loss'),
+                            'val_loss': metrics.get('val_loss'),
+                            'accuracy': metrics.get('accuracy'),
+                            'val_accuracy': metrics.get('val_accuracy')
                         }
                 
                 # Leer el historial de entrenamiento para análisis de tendencias
