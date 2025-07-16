@@ -176,12 +176,54 @@ def init_routes(app):
             return redirect(url_for('home'))
         form = RegistrationForm()
         if form.validate_on_submit():
-            user = User(username=form.username.data, email=form.email.data)
-            user.set_password(form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            flash('¡Felicidades, ahora estás registrado!')
-            return redirect(url_for('login'))
+            try:
+                # Validación adicional en el backend como medida de seguridad
+                existing_user_by_username = User.query.filter_by(username=form.username.data).first()
+                if existing_user_by_username:
+                    app.logger.warning(f"Intento de registro con username existente: {form.username.data}")
+                    flash('El nombre de usuario ya está en uso. Por favor, elija otro.')
+                    return render_template('register.html', title='Registro', form=form)
+                
+                existing_user_by_email = User.query.filter_by(email=form.email.data).first()
+                if existing_user_by_email:
+                    app.logger.warning(f"Intento de registro con email existente: {form.email.data}")
+                    flash('El correo electrónico ya está registrado. Por favor, use otro.')
+                    return render_template('register.html', title='Registro', form=form)
+                
+                # Crear nuevo usuario
+                user = User(username=form.username.data, email=form.email.data)
+                user.set_password(form.password.data)
+                
+                app.logger.info(f"Creando nuevo usuario: {form.username.data} con email: {form.email.data}")
+                
+                db.session.add(user)
+                db.session.commit()
+                
+                app.logger.info(f"Usuario registrado exitosamente: {form.username.data}")
+                flash('¡Felicidades, ahora estás registrado!')
+                return redirect(url_for('login'))
+                
+            except sql_exceptions.IntegrityError as e:
+                # Manejo específico para errores de integridad de base de datos
+                db.session.rollback()
+                app.logger.error(f"Error de integridad en registro: {str(e)}")
+                
+                if 'username' in str(e).lower():
+                    flash('El nombre de usuario ya está en uso. Por favor, elija otro.')
+                elif 'email' in str(e).lower():
+                    flash('El correo electrónico ya está registrado. Por favor, use otro.')
+                else:
+                    flash('Error en el registro. Los datos proporcionados ya están en uso.')
+                    
+                return render_template('register.html', title='Registro', form=form)
+                
+            except Exception as e:
+                # Manejo general de errores
+                db.session.rollback()
+                app.logger.error(f"Error general en registro de usuario: {str(e)}", exc_info=True)
+                flash('Ocurrió un error durante el registro. Por favor, intente de nuevo.')
+                return render_template('register.html', title='Registro', form=form)
+                
         return render_template('register.html', title='Registro', form=form)
 
     @app.route('/home')
