@@ -86,6 +86,106 @@
       </div>
     </section>
 
+    <!-- Sección de Historial de Entrenamiento -->
+    <section class="training-history-section">
+      <div class="training-history-header" id="trainingHistoryToggle">
+        <div class="training-history-title">
+          <i class="fas fa-brain training-icon"></i>
+          <h3>Historial de Entrenamiento</h3>
+        </div>
+        <div class="training-history-status" id="trainingStatus">
+          <span class="status-badge" id="statusBadge">Cargando...</span>
+        </div>
+        <i class="fas fa-chevron-down toggle-icon" id="toggleIcon"></i>
+      </div>
+      
+      <div class="training-history-content" id="trainingHistoryContent">
+        <div class="training-loading" id="trainingLoading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <span>Cargando historial de entrenamiento...</span>
+        </div>
+        
+        <div class="training-data" id="trainingData" style="display: none;">
+          <div class="training-grid">
+            <!-- Estado del Modelo -->
+            <div class="training-card">
+              <div class="card-header">
+                <i class="fas fa-info-circle"></i>
+                <h4>Estado del Modelo</h4>
+              </div>
+              <div class="card-content">
+                <div class="metric-item">
+                  <span class="metric-label">Estado:</span>
+                  <span class="metric-value" id="modelStatus">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Último entrenamiento:</span>
+                  <span class="metric-value" id="lastTrained">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Épocas completadas:</span>
+                  <span class="metric-value" id="epochsTrained">-</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Métricas Finales -->
+            <div class="training-card">
+              <div class="card-header">
+                <i class="fas fa-chart-line"></i>
+                <h4>Métricas Finales</h4>
+              </div>
+              <div class="card-content">
+                <div class="metric-item">
+                  <span class="metric-label">Pérdida (entrenamiento):</span>
+                  <span class="metric-value" id="trainingLoss">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Pérdida (validación):</span>
+                  <span class="metric-value" id="validationLoss">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Precisión (entrenamiento):</span>
+                  <span class="metric-value" id="trainingAccuracy">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Precisión (validación):</span>
+                  <span class="metric-value" id="validationAccuracy">-</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resumen de Aprendizaje -->
+            <div class="training-card full-width">
+              <div class="card-header">
+                <i class="fas fa-analytics"></i>
+                <h4>Resumen de Aprendizaje</h4>
+              </div>
+              <div class="card-content">
+                <div class="metric-item">
+                  <span class="metric-label">Tendencia de pérdida:</span>
+                  <span class="metric-value trend" id="lossTrend">-</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Tendencia de precisión:</span>
+                  <span class="metric-value trend" id="accuracyTrend">-</span>
+                </div>
+                <div class="metric-item full-width">
+                  <span class="metric-label">Análisis de sobreajuste:</span>
+                  <span class="metric-value analysis" id="overfittingAnalysis">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="training-error" id="trainingError" style="display: none;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Error al cargar el historial de entrenamiento</span>
+        </div>
+      </div>
+    </section>
+
     <section id="predictionsList" class="predictions-list" aria-live="polite">
       <!-- Las predicciones se cargarán dinámicamente aquí -->
     </section>

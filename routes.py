@@ -586,6 +586,105 @@ def init_routes(app):
             app.logger.error(f"Error al enviar notificación de prueba: {str(e)}")
             return jsonify({'error': str(e)}), 500
 
+    @app.route('/api/training-history')
+    @login_required
+    def api_training_history():
+        """
+        Endpoint para obtener el historial de entrenamiento del modelo.
+        """
+        try:
+            app.logger.info("Solicitud de historial de entrenamiento recibida")
+            
+            # Ruta a los archivos de entrenamiento
+            training_history_path = os.path.join('models', 'training_history.json')
+            training_report_path = os.path.join('models', 'training_report.json')
+            model_path = os.path.join('models', 'rnn_model.h5')
+            
+            # Inicializar respuesta por defecto
+            response_data = {
+                'status': 'not_trained',
+                'last_trained': None,
+                'epochs_trained': 0,
+                'final_metrics': {
+                    'training_loss': None,
+                    'validation_loss': None,
+                    'training_accuracy': None,
+                    'validation_accuracy': None
+                },
+                'learning_summary': {
+                    'loss_trend': 'unknown',
+                    'accuracy_trend': 'unknown',
+                    'overfitting_analysis': 'No hay datos suficientes para análisis'
+                }
+            }
+            
+            # Verificar si el modelo existe
+            if os.path.exists(model_path):
+                response_data['status'] = 'trained'
+                
+                # Leer el reporte de entrenamiento
+                if os.path.exists(training_report_path):
+                    with open(training_report_path, 'r', encoding='utf-8') as f:
+                        training_report = json.load(f)
+                        
+                        response_data['last_trained'] = training_report.get('timestamp')
+                        response_data['epochs_trained'] = training_report.get('convergence', {}).get('final_epoch', 0)
+                        
+                        metrics = training_report.get('metrics', {})
+                        response_data['final_metrics'] = {
+                            'training_loss': metrics.get('loss'),
+                            'validation_loss': metrics.get('val_loss'),
+                            'training_accuracy': metrics.get('accuracy'),
+                            'validation_accuracy': metrics.get('val_accuracy')
+                        }
+                
+                # Leer el historial de entrenamiento para análisis de tendencias
+                if os.path.exists(training_history_path):
+                    with open(training_history_path, 'r', encoding='utf-8') as f:
+                        history = json.load(f)
+                        
+                        # Analizar tendencias de pérdida
+                        if 'loss' in history and len(history['loss']) > 1:
+                            loss_values = history['loss']
+                            if loss_values[-1] < loss_values[0]:
+                                response_data['learning_summary']['loss_trend'] = 'decreasing'
+                            else:
+                                response_data['learning_summary']['loss_trend'] = 'increasing'
+                        
+                        # Analizar tendencias de precisión
+                        if 'accuracy' in history and len(history['accuracy']) > 1:
+                            acc_values = history['accuracy']
+                            if acc_values[-1] > acc_values[0]:
+                                response_data['learning_summary']['accuracy_trend'] = 'increasing'
+                            else:
+                                response_data['learning_summary']['accuracy_trend'] = 'decreasing'
+                        
+                        # Análisis de sobreajuste
+                        if ('val_loss' in history and 'loss' in history and 
+                            len(history['val_loss']) > 0 and len(history['loss']) > 0):
+                            
+                            final_train_loss = history['loss'][-1] if history['loss'] else 0
+                            final_val_loss = history['val_loss'][-1] if history['val_loss'] else 0
+                            
+                            if final_val_loss > final_train_loss * 1.2:
+                                response_data['learning_summary']['overfitting_analysis'] = 'Posible sobreajuste detectado: la pérdida de validación es significativamente mayor que la de entrenamiento'
+                            elif final_val_loss > final_train_loss * 1.1:
+                                response_data['learning_summary']['overfitting_analysis'] = 'Ligero sobreajuste: diferencia moderada entre pérdidas de entrenamiento y validación'
+                            else:
+                                response_data['learning_summary']['overfitting_analysis'] = 'Buen balance: no se detecta sobreajuste significativo'
+                        else:
+                            response_data['learning_summary']['overfitting_analysis'] = 'No hay datos de validación disponibles para análisis'
+            
+            app.logger.info(f"Historial de entrenamiento enviado - Estado: {response_data['status']}")
+            return jsonify(response_data)
+            
+        except Exception as e:
+            app.logger.error(f"Error al obtener historial de entrenamiento: {str(e)}", exc_info=True)
+            return jsonify({
+                'error': 'Error al cargar el historial de entrenamiento',
+                'status': 'error'
+            }), 500
+
     return app
 
 

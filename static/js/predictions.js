@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initializeFilters();
     initializeNotifications();
+    initializeTrainingHistory();
     loadAndCheckPredictions();
     setInterval(loadAndCheckPredictions, 60000); // Actualizar cada minuto
 });
@@ -1199,6 +1200,266 @@ function diagnoseNearbyPredictions(predictions) {
     } else {
         console.log(`✅ Se encontraron ${countByStatus.cercana} predicciones para las próximas 3 horas`);
     }
+}
+
+// ===== FUNCIONES PARA HISTORIAL DE ENTRENAMIENTO =====
+
+// Inicializar la sección de historial de entrenamiento
+function initializeTrainingHistory() {
+    console.log('Inicializando sección de historial de entrenamiento...');
     
-    console.log('=== FIN DEL DIAGNÓSTICO DE PREDICCIONES CERCANAS ===');
+    const trainingHeader = document.querySelector('.training-history-header');
+    if (!trainingHeader) {
+        console.log('No se encontró la sección de historial de entrenamiento');
+        return;
+    }
+    
+    // Agregar evento click para expandir/colapsar
+    trainingHeader.addEventListener('click', toggleTrainingHistory);
+    
+    console.log('Sección de historial de entrenamiento inicializada correctamente');
+}
+
+// Función para expandir/colapsar la sección de historial
+function toggleTrainingHistory() {
+    console.log('Alternando visibilidad del historial de entrenamiento...');
+    
+    const content = document.querySelector('.training-history-content');
+    const toggleIcon = document.querySelector('.toggle-icon');
+    
+    if (!content || !toggleIcon) {
+        console.error('No se encontraron elementos necesarios para el toggle');
+        return;
+    }
+    
+    const isExpanded = content.classList.contains('expanded');
+    
+    if (isExpanded) {
+        // Colapsar
+        content.classList.remove('expanded');
+        toggleIcon.classList.remove('rotated');
+        console.log('Sección colapsada');
+    } else {
+        // Expandir y cargar datos
+        content.classList.add('expanded');
+        toggleIcon.classList.add('rotated');
+        console.log('Sección expandida, cargando datos...');
+        loadTrainingHistory();
+    }
+}
+
+// Función para cargar el historial de entrenamiento
+async function loadTrainingHistory() {
+    console.log('Cargando historial de entrenamiento...');
+    
+    const content = document.querySelector('.training-history-content');
+    if (!content) {
+        console.error('No se encontró el contenedor de contenido');
+        return;
+    }
+    
+    // Mostrar indicador de carga
+    showTrainingLoading();
+    
+    try {
+        const response = await fetch('/api/training-history', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Datos del historial recibidos:', data);
+        
+        // Actualizar el badge de estado en el header
+        updateTrainingStatus(data.model_trained);
+        
+        // Renderizar el contenido
+        renderTrainingHistory(data);
+        
+    } catch (error) {
+        console.error('Error cargando historial de entrenamiento:', error);
+        showTrainingError(error.message);
+    }
+}
+
+// Mostrar indicador de carga
+function showTrainingLoading() {
+    const content = document.querySelector('.training-history-content');
+    if (!content) return;
+    
+    content.innerHTML = `
+        <div class="training-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Cargando historial de entrenamiento...</span>
+        </div>
+    `;
+}
+
+// Mostrar error
+function showTrainingError(message) {
+    const content = document.querySelector('.training-history-content');
+    if (!content) return;
+    
+    content.innerHTML = `
+        <div class="training-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Error al cargar el historial: ${message}</span>
+        </div>
+    `;
+}
+
+// Actualizar el estado del modelo en el header
+function updateTrainingStatus(isTrained) {
+    const statusBadge = document.querySelector('.status-badge');
+    if (!statusBadge) return;
+    
+    statusBadge.className = `status-badge ${isTrained ? 'trained' : 'not-trained'}`;
+    statusBadge.textContent = isTrained ? 'Entrenado' : 'No entrenado';
+}
+
+// Renderizar el historial de entrenamiento
+function renderTrainingHistory(data) {
+    const content = document.querySelector('.training-history-content');
+    if (!content) return;
+    
+    if (!data.model_trained) {
+        content.innerHTML = `
+            <div class="training-grid">
+                <div class="training-card full-width">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h4>Estado del Modelo</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric-item full-width">
+                            <span class="metric-label">Estado:</span>
+                            <span class="metric-value full-width">El modelo no ha sido entrenado aún. No hay historial disponible.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    // Construir el HTML del historial
+    let historyHTML = '<div class="training-grid">';
+    
+    // Tarjeta de información general
+    historyHTML += `
+        <div class="training-card">
+            <div class="card-header">
+                <i class="fas fa-info-circle"></i>
+                <h4>Información General</h4>
+            </div>
+            <div class="card-content">
+                <div class="metric-item">
+                    <span class="metric-label">Estado del modelo:</span>
+                    <span class="metric-value">${data.model_trained ? 'Entrenado' : 'No entrenado'}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Último entrenamiento:</span>
+                    <span class="metric-value">${data.last_training_date || 'N/A'}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Épocas completadas:</span>
+                    <span class="metric-value">${data.epochs_completed || 'N/A'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Tarjeta de métricas finales
+    if (data.final_metrics) {
+        historyHTML += `
+            <div class="training-card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Métricas Finales</h4>
+                </div>
+                <div class="card-content">
+                    <div class="metric-item">
+                        <span class="metric-label">Precisión (entrenamiento):</span>
+                        <span class="metric-value">${(data.final_metrics.accuracy * 100).toFixed(2)}%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Precisión (validación):</span>
+                        <span class="metric-value">${(data.final_metrics.val_accuracy * 100).toFixed(2)}%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Pérdida (entrenamiento):</span>
+                        <span class="metric-value">${data.final_metrics.loss.toFixed(4)}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Pérdida (validación):</span>
+                        <span class="metric-value">${data.final_metrics.val_loss.toFixed(4)}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Tarjeta de resumen de aprendizaje
+    if (data.learning_summary) {
+        historyHTML += `
+            <div class="training-card full-width">
+                <div class="card-header">
+                    <i class="fas fa-brain"></i>
+                    <h4>Resumen de Aprendizaje</h4>
+                </div>
+                <div class="card-content">
+                    <div class="metric-item full-width">
+                        <span class="metric-label">Tendencia de pérdida:</span>
+                        <span class="metric-value trend full-width" data-trend="${data.learning_summary.loss_trend}">
+                            ${data.learning_summary.loss_trend}
+                        </span>
+                    </div>
+                    <div class="metric-item full-width">
+                        <span class="metric-label">Tendencia de precisión:</span>
+                        <span class="metric-value trend full-width" data-trend="${data.learning_summary.accuracy_trend}">
+                            ${data.learning_summary.accuracy_trend}
+                        </span>
+                    </div>
+                    <div class="metric-item full-width">
+                        <span class="metric-label">Análisis de sobreajuste:</span>
+                        <span class="metric-value analysis full-width">
+                            ${data.learning_summary.overfitting_analysis}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    historyHTML += '</div>';
+    
+    content.innerHTML = historyHTML;
+    console.log('Historial de entrenamiento renderizado correctamente');
+}
+
+// Función auxiliar para formatear fechas
+function formatTrainingDate(dateString) {
+    if (!dateString) return 'N/A';
+    
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    } catch (error) {
+        console.error('Error formateando fecha:', error);
+        return dateString;
+    }
 }
